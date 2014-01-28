@@ -39,7 +39,8 @@ div#advSearchTabs .x-panel-header {
 }
 
 .user-button {
-	background-color: #CCC34E;
+	background-color: rgba(118,123,126,0.0);
+	outline: none;
 }
 
 #lang-form div div form div input {
@@ -167,7 +168,7 @@ div.facets * .facet-more-bt,div.facets * .facet-less-bt {
 }
 
 .user-button a {
-	color: white;
+	color: #767B7E;
 }
 
 #permalink-div {

@@ -665,16 +665,21 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
             var handler = linkButton[0].handler || function () {
                 window.open(linkButton[0].href);
             };
+						var tTip = label;
+						if (linkButton[0].text == '') {
+							tTip = linkButton[0].text;
+						}
             bt = new Ext.Button({
-                text: label,
-                tooltip: linkButton[0].text,
+                //text: label,
+                tooltip: tTip,
                 handler: handler,
                 iconCls: GeoNetwork.Util.protocolToCSS[currentType] || currentType,
                 renderTo: el
             });
         } else {
             bt = new Ext.Button({
-                text: label,
+                //text: label,
+                tooltip: label,
                 menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton}),
                 iconCls: GeoNetwork.Util.protocolToCSS[currentType] || currentType,
                 renderTo: el

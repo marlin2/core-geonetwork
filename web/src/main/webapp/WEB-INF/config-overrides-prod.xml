@@ -1,5 +1,5 @@
 <overrides>
 	<import file="/WEB-INF/server-props-overrides.xml"/>
 	<import file="/WEB-INF/anzmest-config-overrides.xml"/>
-<!--	<import file="/WEB-INF/site-config-overrides.xml"/> -->
+	<import file="/WEB-INF/uow-config-overrides.xml"/>
 </overrides>
