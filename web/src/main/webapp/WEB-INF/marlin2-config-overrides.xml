@@ -1,0 +1,36 @@
+<overrides>
+  <!-- Not yet 
+	<file name=".*WEB-INF/config\.xml">
+		<replaceXML xpath="resources">
+			<resource enabled="true">
+      	<name>main-db</name>
+      	<provider>jeeves.resources.dbms.JNDIPool</provider>
+      	<config>
+        	<context>java:/comp/env</context>
+        	<resourceName>jdbc/geonetwork</resourceName>
+        	<url>jdbc:postgresql_postGIS://localhost:5432/geonetworkdb</url>
+        	<provideDataStore>true</provideDataStore>
+        	<maxOpenPreparedStatements>300</maxOpenPreparedStatements>
+      	</config>
+    	</resource>
+		</replaceXML>
+	</file>
+  -->
+	<!-- add smart description to the strings file -->
+	<file name=".*geonetwork/loc/eng/xml/strings\.xml">
+		<replaceXML xpath="welcome.text">
+			<b>MarLIN - Marine and Atmospheric Research Laboratories Information Network</b>
+			<p></p>
+			<p></p>
+		</replaceXML>
+	</file>
+	<!-- Add smart-metadata.uow.edu.au as geoserver layers for maps in
+	     classic interface only -->
+	<file name=".*WEB-INF/config-gui\.xml">
+		<!-- set server to use geoserver -->
+		<replaceAtt xpath="mapViewer/layers/layer" attName="server" value="http://smart-metadata.uow.edu.au:80/geoserver/wms" />
+		<!-- switch off OSM in html5ui etc - we're using our own OSM server 
+		     and it uses EPSG:4326 thank god... -->
+		<replaceXML xpath="map/osm_map"/>
+	</file>
+</overrides>
