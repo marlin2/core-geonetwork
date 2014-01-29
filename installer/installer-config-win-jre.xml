@@ -5,7 +5,7 @@
 	<!-- =================================================================================== -->
 	
 	<info>
-		<appname>geonetwork-anzmest-@version@</appname>
+		<appname>geonetwork-anzmest-marlin-@version@</appname>
 		<appversion>@version@ @subVersion@</appversion>
 		<authors>
 			<author name="OSGeo"                email="geonetwork@osgeo.org"/>			 
