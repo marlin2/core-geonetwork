@@ -1,7 +1,7 @@
-Smart Infrastructure Facility (UOW) Fork of ANZMEST 2.10.x
-----------------------------------------------------------
+CSIRO MarLIN Fork of ANZMEST 2.10.x
+-----------------------------------
 
-This repository is ANZMEST (GeoNetwork) 2.10.x plus UOW customisations and configuration. Most customisations are in the html5ui.
+This repository is ANZMEST (GeoNetwork) 2.10.x plus CSIRO MarLIN customisations and configuration. Most customisations are in the html5ui.
 
 ANZMEST
 -------
