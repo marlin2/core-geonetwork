@@ -52,7 +52,8 @@ if (useOSMLayers) {
 		GeoNetwork.map.EXTENT = new OpenLayers.Bounds(-180,-90,180,90);
 		//GeoNetwork.map.EXTENT = new OpenLayers.Bounds(-5.1,41,9.7,51);
     GeoNetwork.map.BACKGROUND_LAYERS = [];
-    GeoNetwork.map.CONTEXT = "../../maps/geoserver_localhost.wmc";
+    //GeoNetwork.map.CONTEXT = "../../maps/geoserver_localhost.wmc";
+    GeoNetwork.map.CONTEXT = "../../maps/geoserver_marlin2-dev.it.csiro.au.wmc";
     //GeoNetwork.map.OWS = "../../maps/demis.xml";
 }
 

@@ -1,5 +1,4 @@
 <overrides>
-  <!-- Not yet 
 	<file name=".*WEB-INF/config\.xml">
 		<replaceXML xpath="resources">
 			<resource enabled="true">
@@ -8,14 +7,13 @@
       	<config>
         	<context>java:/comp/env</context>
         	<resourceName>jdbc/geonetwork</resourceName>
-        	<url>jdbc:postgresql_postGIS://localhost:5432/geonetworkdb</url>
+        	<url>jdbc:oracle:thin:@aqua.hba.marine.csiro.au:1521:AQUA</url>
         	<provideDataStore>true</provideDataStore>
         	<maxOpenPreparedStatements>300</maxOpenPreparedStatements>
       	</config>
     	</resource>
 		</replaceXML>
 	</file>
-  -->
   <!-- add ldap settings in config-security-ldap.xml -->
   <spring>
     <import file="WEB-INF/config-security-ldap.xml"/>
@@ -28,15 +26,14 @@
 	<!-- add marlin description to the strings file -->
 	<file name=".*geonetwork/loc/eng/xml/strings\.xml">
 		<replaceXML xpath="welcome.text">
-			<b>MarLIN - Marine and Atmospheric Research Laboratories Information Network</b>
-			<p></p>
-			<p></p>
+			<b>Welcome to MarLIN - the CSIRO Marine and Atmospheric Research Laboratories Information Network</b>
+			<p>MarLIN is the searchable metadatabase (directory of datasets) for data held by the CSIRO Division of Marine and Atmospheric Research (CMAR). It is an initiative of the Divisional Data Centre. MarLIN is designed to hold descriptions of datasets collected by, or currently held within, CSIRO Marine and Atmospheric Research plus its predecessors (Divisions of Marine Research, Atmospheric Research, Fisheries, Oceanography, and Fisheries &amp; Oceanography)</p>
 		</replaceXML>
 	</file>
 	<!-- Add geoserver layers for maps in classic interface only -->
 	<file name=".*WEB-INF/config-gui\.xml">
 		<!-- set server to use geoserver -->
-		<replaceAtt xpath="mapViewer/layers/layer" attName="server" value="http://localhost:8080/geoserver/wms" />
+		<replaceAtt xpath="mapViewer/layers/layer" attName="server" value="http://marlin2-dev.its.csiro.au/geoserver/wms" />
 		<!-- switch off OSM in html5ui etc -->
 		<replaceXML xpath="map/osm_map"/>
 	</file>
