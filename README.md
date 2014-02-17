@@ -3,6 +3,8 @@ CSIRO MarLIN Fork of ANZMEST 2.10.x
 
 This repository is ANZMEST (GeoNetwork) 2.10.x plus CSIRO MarLIN customisations and configuration. Most customisations are in the html5ui.
 
+Collaborators are on the github site.
+
 ANZMEST
 -------
 
