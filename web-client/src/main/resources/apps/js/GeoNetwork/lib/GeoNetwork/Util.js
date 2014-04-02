@@ -146,11 +146,12 @@ GeoNetwork.Util = {
     getBaseUrl: function(url){
         return url.substring(0, url.indexOf('?') || url.indexOf('#') || url.length);
     },
-    /** api: property[protocolToCSS] 
+    /** api: method[protocolToCSS] 
      *  
-     *  Provide a mapping between various GeoNetwork protocol and the CSS icon class
+     *  Provide a mapping between various GeoNetwork protocol and mime types and the CSS icon class. Return a generic class if we don't have a mapping.
      */
-    protocolToCSS: {
+    protocolToCSS: function(type) {
+      var typesAndProtocols = {
         'application/vnd.ogc.wms_xml': 'addLayerIcon',
         'application/vnd.ogc.wmc': 'addLayerIcon',
         'OGC:WMS': 'addLayer',
@@ -159,10 +160,13 @@ GeoNetwork.Util = {
         'ACCESS MAP VIEWER': 'addLayer',
         'application/vnd.google-earth.kml+xml': 'md-mn-kml',
         'application/zip': 'md-mn-zip',
-        'WWW:DOWNLOAD-1.0-http--download': 'md-mn-zip',
+        'WWW:DOWNLOAD-1.0-http--download': 'md-mn-download',
         'application/x-compressed': 'md-mn-zip',
         'text/html': 'md-mn-www',
         'text/plain': 'md-mn-www'
+      };
+
+      return typesAndProtocols[type] || 'md-mn-www';
     },
     // TODO : add function to compute color map
     defaultColorMap: [

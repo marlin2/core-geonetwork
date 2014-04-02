@@ -570,7 +570,6 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                          hasDownloadAction = false;
                     
                     store.each(function (record) {
-                        
                         // Avoid empty URL
                         if (record.get('href') !== '') {
                             // Check that current record type is the same as the previous record
@@ -673,7 +672,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                 //text: label,
                 tooltip: tTip,
                 handler: handler,
-                iconCls: GeoNetwork.Util.protocolToCSS[currentType] || currentType,
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType),
                 renderTo: el
             });
         } else {
@@ -681,7 +680,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                 //text: label,
                 tooltip: label,
                 menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton}),
-                iconCls: GeoNetwork.Util.protocolToCSS[currentType] || currentType,
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType),
                 renderTo: el
             });
         }
