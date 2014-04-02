@@ -577,7 +577,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                             // or create a new button to be added later
                             if (currentType === null || currentType !== record.get('type')) {
                                 if (linkButton.length !== 0) {
-                                    view.addLinkMenu(linkButton, label, currentType, el);
+                                    view.addLinkMenu(id, linkButton, label, currentType, el);
                                 }
                                 linkButton = [];
                                 currentType = record.get('type');
@@ -620,7 +620,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                                 // If link is uploaded to GeoNetwork the resources.get service is used
                                 // Check if allowDownload 
                                 var displayLink = true;
-                                if (record.get('href').indexOf('resources.get') !== -1) {
+                                if ((record.get('href').indexOf('resources.get') !== -1) || (record.get('href').indexOf('file.disclaimer') !== -1)) {
                                     displayLink = allowDownload;
                                 } else if (currentType === 'application/vnd.google-earth.kml+xml') {
                                     // Google earth link is provided when a WMS is provided
@@ -639,7 +639,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                     });
                     // Add the latest button
                     if (linkButton !== null && linkButton.length !== 0) {
-                        view.addLinkMenu(linkButton, label, currentType, el);
+                        view.addLinkMenu(id, linkButton, label, currentType, el);
                     }
                     
                     // Add the download all button
@@ -662,7 +662,14 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
      *  If there is only one element in the linkButton array, display a menu
      *  and display a dropdown menu if not.
      */
-    addLinkMenu: function (linkButton, label, currentType, el) {
+    addLinkMenu: function (parentId, linkButton, label, currentType, el) {
+        var buttonId = label+'-'+parentId;
+        if (Ext.get(buttonId)) { // don't need to add them again
+          return;
+        }
+
+        var href = linkButton[0].href;
+        var isDownload = (href.indexOf('resources.get') !== -1) || (href.indexOf('file.disclaimer') !== -1);
         if (linkButton.length === 1) {
             var handler = linkButton[0].handler || function () {
                 window.open(linkButton[0].href);
@@ -672,18 +679,18 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
 							tTip = linkButton[0].text;
 						}
             bt = new Ext.Button({
-                //text: label,
+                id: buttonId,
                 tooltip: tTip,
                 handler: handler,
-                iconCls: GeoNetwork.Util.protocolToCSS(currentType, (linkButton[0].href.indexOf('resources.get') !== -1)),
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
                 renderTo: el
             });
         } else {
             bt = new Ext.Button({
-                //text: label,
+                id: buttonId,
                 tooltip: label,
                 menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton[0]}),
-                iconCls: GeoNetwork.Util.protocolToCSS(currentType, (linkButton[0].href.indexOf('resources.get') !== -1)),
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
                 renderTo: el
             });
         }
