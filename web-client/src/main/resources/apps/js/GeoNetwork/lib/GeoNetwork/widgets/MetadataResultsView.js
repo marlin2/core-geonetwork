@@ -674,7 +674,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
             var handler = linkButton[0].handler || function () {
                 window.open(linkButton[0].href);
             };
-						var tTip = label;
+						var tTip = label + ' ' + href;
 						if (linkButton[0].text == '') {
 							tTip = linkButton[0].text;
 						}

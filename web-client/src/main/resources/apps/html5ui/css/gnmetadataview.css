@@ -317,9 +317,11 @@ Display hyperlink as text next to element
 	background-image: url(../images/default/folder_key.png) !important;
 }
 
+/* overriden by md-mn-download in main.css
 .md-mn-download {
 	background-image: url(../images/default/download.png) !important;
 }
+*/
 
 .mn-user-location {
 	background-image: url(../images/default/user_location.png) !important;
