@@ -150,7 +150,7 @@ GeoNetwork.Util = {
      *  
      *  Provide a mapping between various GeoNetwork protocol and mime types and the CSS icon class. Return a generic class if we don't have a mapping.
      */
-    protocolToCSS: function(type) {
+    protocolToCSS: function(type, useDownload) {
       var typesAndProtocols = {
         'application/vnd.ogc.wms_xml': 'addLayerIcon',
         'application/vnd.ogc.wmc': 'addLayerIcon',
@@ -166,7 +166,9 @@ GeoNetwork.Util = {
         'text/plain': 'md-mn-www'
       };
 
-      return typesAndProtocols[type] || 'md-mn-www';
+      var defaultCSS = 'md-mn-www';
+      if (useDownload) defaultCSS = 'md-mn-download';
+      return typesAndProtocols[type] || defaultCSS;
     },
     // TODO : add function to compute color map
     defaultColorMap: [

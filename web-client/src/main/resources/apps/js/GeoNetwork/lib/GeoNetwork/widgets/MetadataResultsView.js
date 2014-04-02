@@ -602,7 +602,8 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                                             // FIXME : ref to app
                                             app.switchMode('1', true);
                                             app.getIMap().addWMSLayer([[record.get('title'), record.get('href'), record.get('name'), uuid]]);
-                                        }
+                                        },
+                                        href: record.get('href')
                                     });
                                 }
                             } else if (currentType === 'application/vnd.ogc.wmc') {
@@ -612,7 +613,8 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                                         // FIXME : ref to app
                                         app.switchMode('1', true);
                                         app.getIMap().addWMC(record.get('href'));
-                                    }
+                                    },
+                                    href: record.get('href')
                                 });
                             } else {
                                 // If link is uploaded to GeoNetwork the resources.get service is used
@@ -647,7 +649,8 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                             handler: function () {
                                 // FIXME : this call require the catalogue to be named catalogue
                                 catalogue.metadataPrepareDownload(id);
-                            }
+                            },
+                            href: record.get('href')
                         }], OpenLayers.i18n('prepareDownload'), 'downloadAllIcon', el);
                     }
                 }
@@ -672,15 +675,15 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                 //text: label,
                 tooltip: tTip,
                 handler: handler,
-                iconCls: GeoNetwork.Util.protocolToCSS(currentType),
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType, (linkButton[0].href.indexOf('resources.get') !== -1)),
                 renderTo: el
             });
         } else {
             bt = new Ext.Button({
                 //text: label,
                 tooltip: label,
-                menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton}),
-                iconCls: GeoNetwork.Util.protocolToCSS(currentType),
+                menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton[0]}),
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType, (linkButton[0].href.indexOf('resources.get') !== -1)),
                 renderTo: el
             });
         }
