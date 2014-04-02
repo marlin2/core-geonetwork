@@ -296,13 +296,14 @@ Display hyperlink as text next to element
 	background-image: url(../images/default/user.png) !important;
 }
 
+.md-mn-badd {
+	background-image: url(../images/default/brick_add.png) !important;
+}
+
+/* overriden by main.css
 .md-mn-pdf {
 	background-image: url(../images/default/page_white_acrobat.png)
 		!important;
-}
-
-.md-mn-badd {
-	background-image: url(../images/default/brick_add.png) !important;
 }
 
 .md-mn-zip {
@@ -317,7 +318,6 @@ Display hyperlink as text next to element
 	background-image: url(../images/default/folder_key.png) !important;
 }
 
-/* overriden by md-mn-download in main.css
 .md-mn-download {
 	background-image: url(../images/default/download.png) !important;
 }

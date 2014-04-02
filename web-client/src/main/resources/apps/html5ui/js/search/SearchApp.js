@@ -177,7 +177,8 @@ GeoNetwork.searchApp = function() {
                 name : 'O_nodynamicdownload_',
                 id : 'o_nodynamicdownload',
                 boxLabel : OpenLayers.i18n('No direct download'),
-                renderTo : "ck3"
+                renderTo : "ck3",
+                hidden: true
             });
 
             noDirectDownload_.on("check", function(el) {

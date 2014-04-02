@@ -205,7 +205,7 @@ span.license{background-image:url(../../smart/img/icon_gebruiksvoorwaarden.png)!
 .md-mn-user{background-image:url(../images/default/user.png)!important;}
 .md-mn-badd{background-image:url(../images/default/brick_add.png)!important;}
 .md-mn-kml{background-image:url(../../smart/img/icon_googleearth.png)!important;width:24px!important;height:24px!important;}
-.md-mn-www,.md-mn-kml,.md-mn-zip,.md-mn-pdf{background-image:url(../../smart/img/icon_link.png)!important;width:24px!important;height:24px!important;}
+.md-mn-www{background-image:url(../../smart/img/icon_link.png)!important;width:24px!important;height:24px!important;}
 .md-mn-download,.md-mn-ftp,.md-mn-ftps,.md-mn-zip{background-image:url(../../smart/img/icon_download_dataset.png)!important;width:24px!important;height:24px!important;}
 li.x-menu-list-item img.md-mn-zip{height:16px!important;width:16px!important;background-image:url(../../images/default/page_white_compressed.png)!important;}
 li.x-menu-list-item img.md-mn-csv{background-image:url(../../images/default/page_white.png)!important;width:16px!important;height:16px!important;}
