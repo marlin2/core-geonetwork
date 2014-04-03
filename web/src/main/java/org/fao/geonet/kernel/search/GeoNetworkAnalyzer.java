@@ -30,6 +30,7 @@ import org.apache.lucene.analysis.core.StopFilter;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.fao.geonet.constants.Geonet;
 
@@ -79,7 +80,8 @@ public final class GeoNetworkAnalyzer extends Analyzer {
      */
     @Override
     protected TokenStreamComponents createComponents(final String fieldName, final Reader reader) {
-        final Tokenizer source = new StandardTokenizer(Geonet.LUCENE_VERSION, reader);
+        //final Tokenizer source = new StandardTokenizer(Geonet.LUCENE_VERSION, reader);
+        final Tokenizer source = new WhitespaceTokenizer(Geonet.LUCENE_VERSION, reader);
         ASCIIFoldingFilter asciiFoldingFilter = new ASCIIFoldingFilter(new LowerCaseFilter(Geonet.LUCENE_VERSION, new StandardFilter(Geonet.LUCENE_VERSION, source)));
         if(CollectionUtils.isNotEmpty(this.stopwords)) {
             return new TokenStreamComponents(source, new StopFilter(Geonet.LUCENE_VERSION, asciiFoldingFilter, this.stopwords));
