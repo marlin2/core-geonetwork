@@ -53,6 +53,7 @@ function showBrowse() {
     show("main");
     hide("search-form");
 
+    hideAbout();
     hideSearch();
     hideBigMap();
     hideMetadata();
@@ -79,9 +80,33 @@ function hideBrowse() {
     //hide("popular-metadata");
 }
 
+function showAbout() {
+
+    show("about");
+    hide("search-form");
+
+    hideBrowse();
+    hideSearch();
+    hideBigMap();
+    hideMetadata();
+
+    app.breadcrumb.setCurrent(app.breadcrumb.defaultSteps[2]);
+
+    Ext.each(Ext.query('a', Ext.get("main-navigation").dom), function(a) {
+        Ext.get(a).removeClass("selected");
+    });
+
+    Ext.get("about-tab").addClass("selected");
+}
+
+function hideAbout() {
+    hide("about");
+}
+
 function showBigMap() {
     hideBrowse();
     hideSearch();
+    hideAbout();
     hideAdvancedSearch();
     hideMetadata();
     show("search-form");
@@ -120,6 +145,7 @@ function hideBigMap() {
 
 function showSearch() {
     hideBrowse();
+    hideAbout();
     hideMetadata();
     hideBigMap();
     show("search-form");
@@ -159,6 +185,7 @@ function showMetadata() {
 
     show("search-form");
     hideBrowse();
+    hideAbout();
     hideSearch();
     hideBigMap();
     hideAdvancedSearch();

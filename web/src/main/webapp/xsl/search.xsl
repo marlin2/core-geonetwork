@@ -182,7 +182,7 @@
 											</a>
 										</li>
 										<li>
-											<a id="about-tab" href="http://geonetwork-opensource.org/" target="about">
+											<a id="about-tab" href="javascript:showAbout();">
 												<xsl:value-of select="/root/gui/strings/about" />
 											</a>
 										</li>
@@ -252,6 +252,12 @@
 	                        </section>
 												</div>
 	                    </div>
+
+	                    <div id="about" style="display:none;">
+	                    	<div id="about-text">
+	                      	<xsl:copy-of select="/root/gui/strings/about.text"/>
+                        </div>
+                      </div>
 	                    
 						<div id="big-map-container" style="display:none;"/>
                        <div id="metadata-info" style="display:none;"/>
