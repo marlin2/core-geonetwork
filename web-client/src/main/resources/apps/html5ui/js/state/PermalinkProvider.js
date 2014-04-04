@@ -294,9 +294,7 @@ Ext
 
                         link = link.substring(link.indexOf("|") + 1);
 
-                        return window.location.href.match(
-                                /(http.*\/.*)\/srv\.*/, '')[1]
-                                + '/srv/search' + "/?uuid=" + link;
+                        return GeoNetwork.Util.getBaseUrl(location.href) + "?uuid=" + link;
                     },
                     /**
                      * api: method[getLink] :param base: ``String`` The base

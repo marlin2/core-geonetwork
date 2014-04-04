@@ -144,7 +144,13 @@ GeoNetwork.Util = {
         return parameters;
     },
     getBaseUrl: function(url){
-        return url.substring(0, url.indexOf('?') || url.indexOf('#') || url.length);
+        if (url.indexOf('?') > 0) {
+          return url.substring(0, url.indexOf('?'));
+        } else if (url.indexOf('#') > 0) {
+          return url.substring(0, url.indexOf('#'));
+        } else {
+          return url;
+        }
     },
     /** api: method[protocolToCSS] 
      *  
