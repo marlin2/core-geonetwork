@@ -163,7 +163,8 @@ GeoNetwork.Util = {
         'WWW:DOWNLOAD-1.0-http--download': 'md-mn-download',
         'application/x-compressed': 'md-mn-zip',
         'text/html': 'md-mn-www',
-        'text/plain': 'md-mn-www'
+        'text/plain': 'md-mn-www',
+        'bookmark': 'md-mn-bookmark'
       };
 
       var defaultCSS = 'md-mn-www';

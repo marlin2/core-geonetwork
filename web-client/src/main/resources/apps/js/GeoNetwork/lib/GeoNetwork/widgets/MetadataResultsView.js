@@ -539,14 +539,30 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
      */
     dislayLinks: function (records) {
         var view = this;
+
         Ext.each(records, function (r) {
             var links = r.get('links'),
                 id = r.get('id'),
-                uuid = r.get('uuid');
+                uuid = r.get('uuid'),
+                div = Ext.query('#md-links-' + id, view.el.dom.body),
+                el = Ext.get(div[0]);
+
+            // Add permanent link (can copy for bookmark)
+            var menu = new Ext.menu.Menu(),
+                bHref = this.catalogue.services.rootUrl + 'search?&uuid=' + escape(uuid);
+
+            var permalinkMenu = new Ext.menu.TextItem({text: '<input value="' + bHref + '"/></br><a href="' + bHref + '">Link</a>'});
+            menu.add('<b class="menu-title">' 
+                      + OpenLayers.i18n('permalinkInfo') + '</b>',
+                      permalinkMenu);
+            view.addLinkMenu(id, [{
+              text: 'Bookmark Link',
+              href: bHref,
+              menu: menu
+            }], OpenLayers.i18n('Bookmark Link'), 'bookmark', el);
+
             
             if (links.length > 0) {
-                var div = Ext.query('#md-links-' + id, view.el.dom.body),
-                    el = Ext.get(div[0]);
                 
                 // The template may not defined a md-links placeholder
                 if (el) {
@@ -644,7 +660,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                     
                     // Add the download all button
                     if (hasDownloadAction) {
-                        view.addLinkMenu([{
+                        view.addLinkMenu(id, [{
                             text: 'download',
                             handler: function () {
                                 // FIXME : this call require the catalogue to be named catalogue
@@ -678,13 +694,23 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
 						if (linkButton[0].text == '') {
 							tTip = linkButton[0].text;
 						}
-            bt = new Ext.Button({
+            if (linkButton[0].menu) {
+              bt = new Ext.Button({
+                id: buttonId,
+                tooltip: tTip,
+                menu: linkButton[0].menu,
+                iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
+                renderTo: el
+              });
+            } else {
+              bt = new Ext.Button({
                 id: buttonId,
                 tooltip: tTip,
                 handler: handler,
                 iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
                 renderTo: el
-            });
+              });
+            }
         } else {
             bt = new Ext.Button({
                 id: buttonId,
