@@ -342,7 +342,9 @@ GeoNetwork.searchApp = function() {
                     anchor : '100%'
                 },
 
-                items : inspireFields
+                items : inspireFields,
+                hidden: true // NOTE: Added to anzmest to prevent INSPIRE from
+                             // appearing
             };
 
             var formItems = [];
