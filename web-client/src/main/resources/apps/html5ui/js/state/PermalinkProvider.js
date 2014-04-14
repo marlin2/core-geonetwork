@@ -307,6 +307,7 @@ Ext
 
                         // Before doing GeoExt stuff, add tabs (metadata)
 
+                        /*
                         var tabs = GeoNetwork.state.History.getToken();
 
                         if (!tabs || tabs == 'null')
@@ -322,6 +323,7 @@ Ext
                         }
 
                         base = tabs;
+                        */
 
                         // Now we continue with GeoExt stuff
                         var params = {};

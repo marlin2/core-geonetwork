@@ -152,10 +152,8 @@ GeoNetwork.MetadataResultsToolbar = Ext.extend(Ext.Toolbar, {
         // Permalink
         if(this.permalinkProvider) {
             var l = this.permalinkProvider.getLink;
-            var permUrl = this.catalogue.hostUrl+'/srv/'+this.catalogue.lang+'/search#';
-            permUrl += l(permUrl);
             cmp.push(['|']);
-            cmp.push(GeoNetwork.Util.buildPermalinkMenu(permUrl));
+            cmp.push(GeoNetwork.Util.buildPermalinkMenu(l, this.permalinkProvider));
         }
         
         GeoNetwork.MetadataResultsToolbar.superclass.initComponent.call(this);
