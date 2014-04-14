@@ -535,10 +535,8 @@ GeoNetwork.searchApp = function() {
                 searchFormCmp : Ext
                         .getCmp('advanced-search-options-content-form'),
                 sortByCmp : Ext.getCmp('E_sortBy'),
-                metadataResultsView : metadataResultsView
-            // Permalink provider is broken due to cookie state probably
-            // so remove it from the NGR GUI FIXME
-            // permalinkProvider : permalinkProvider
+                metadataResultsView : metadataResultsView,
+                permalinkProvider : permalinkProvider
             });
 
             var bBar = this.createBBar();
