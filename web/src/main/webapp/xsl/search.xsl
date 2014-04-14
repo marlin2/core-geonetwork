@@ -461,6 +461,15 @@
                             <xsl:attribute name="src"><xsl:value-of
                                 select="$baseUrl" />/apps/html5ui/js/App.js</xsl:attribute>
 						</script>
+            <script type="text/javascript">
+              <xsl:attribute name="src"><xsl:value-of select="$baseUrl" />/apps/html5ui/js/MarLIN/SearchFormTools.js</xsl:attribute>
+						</script>
+            <script type="text/javascript">
+              <xsl:attribute name="src"><xsl:value-of select="$baseUrl" />/apps/html5ui/js/MarLIN/KeywordSelectionPanel.js</xsl:attribute>
+						</script>
+            <script type="text/javascript">
+              <xsl:attribute name="src"><xsl:value-of select="$baseUrl" />/apps/html5ui/js/MarLIN/app.SearchField.js</xsl:attribute>
+						</script>
 						
 					</xsl:when>
 					<xsl:otherwise>

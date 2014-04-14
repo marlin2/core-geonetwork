@@ -349,25 +349,41 @@ GeoNetwork.searchApp = function() {
 
             var formItems = [];
 
+            var marlinFields = MarLIN.SearchFormTools.getFields
+                                (catalogue.services, true);
             formItems.push({
                 id : 'advSearchTabs',
-                layout : {
-                    type : 'hbox',
-                    defaultMargins : '0 5 0 5',
-                    pack : 'left',
-                    align : 'top',
-                    width : '100%'
-                },
-                border : false,
-                items : [ {
-                    id : 'what-inspire',
-                    layout : 'form',
-                    defaults : {
-                        anchor : '100%'
-                    },
-                    border : false,
-                    items : [ what, inspire ]
-                }, where, when ]
+                plain: true,
+                items:[
+                   // MarLIN panel
+                   {
+                      title:'Keyword Selectors',
+                      margins:'5 5 5 5',
+                      layout:'form',
+                      autoHeight: true,
+                      items: marlinFields
+                   },
+                   // Standard Advanced panel
+                   {
+                      plain: true,
+                      layout : {
+                          type : 'hbox',
+                          defaultMargins : '5 5 5 5',
+                          pack : 'center',
+                          align : 'center',
+                          width : '100%'
+                      },
+                      border : false,
+                      items : [ {
+                          id : 'what-inspire',
+                          layout : 'form',
+                          defaults : {
+                              anchor : '100%'
+                          },
+                          border : false,
+                          items : [ what, inspire ]
+                      }, where, when ]
+                   }]
             });
 
             this.setAdminFieldsCallback([ metadataTypeField ]);

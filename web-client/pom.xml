@@ -498,6 +498,9 @@
                   <include>${project.build.directory}/classes/apps/html5ui/js/state/PermalinkProvider.js</include>
                   <include>${project.build.directory}/classes/apps/html5ui/js/state/History.js</include>
                   <include>${project.build.directory}/classes/apps/html5ui/js/BreadCrumb.js</include>
+                  <include>${project.build.directory}/classes/apps/html5ui/js/MarLIN/app.SearchField.js</include>
+                  <include>${project.build.directory}/classes/apps/html5ui/js/MarLIN/KeywordSelectionPanel.js</include>
+                  <include>${project.build.directory}/classes/apps/html5ui/js/MarLIN/SearchFormTools.js</include>
                   <include>${project.build.directory}/classes/apps/html5ui/js/App.js</include>
               </includes>
             </aggregation>
