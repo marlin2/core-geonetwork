@@ -278,6 +278,7 @@ GeoNetwork.app = function() {
             listeners : {
                 editorClosed : function() {
                     showSearch();
+                    Ext.getCmp('advanced-search-options-content-form').fireEvent('search');
                     Ext.get("search-form").show();
                 }
             }
