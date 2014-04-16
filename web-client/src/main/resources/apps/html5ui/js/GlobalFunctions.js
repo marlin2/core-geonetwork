@@ -70,8 +70,6 @@ function showBrowse() {
     });
 
     Ext.get("browse-tab").addClass("selected");
-
-    //hideAdvancedSearch();
 }
 
 function hideBrowse() {
@@ -107,13 +105,8 @@ function showBigMap() {
     hideBrowse();
     hideSearch();
     hideAbout();
-    hideAdvancedSearch();
     hideMetadata();
-    show("search-form");
-
-    // Hide advanced search
-    hide('advanced-search-options');
-    show('show-advanced');
+    hide("search-form");
 
     // show map
     show("big-map-container");
@@ -183,12 +176,11 @@ function hideSearch() {
 
 function showMetadata() {
 
-    show("search-form");
+    hide("search-form");
     hideBrowse();
     hideAbout();
     hideSearch();
     hideBigMap();
-    hideAdvancedSearch();
 
     show("metadata-info");
 
@@ -326,7 +318,7 @@ function hideAdvancedSearch(updateSearch) {
 
         Ext.getCmp('E_nodynamicdownload').suspendEvents(false);
         Ext.getCmp('E_nodynamicdownload').checked = (
-                Ext.getCmp("o_nodynamicdownload").getValue());
+        Ext.getCmp("o_nodynamicdownload").getValue());
         Ext.getCmp('E_nodynamicdownload').resumeEvents();
 
         GeoNetwork.state.History.resumeEvents();
