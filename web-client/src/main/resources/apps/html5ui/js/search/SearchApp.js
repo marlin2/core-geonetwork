@@ -259,7 +259,8 @@ GeoNetwork.searchApp = function() {
             });
             var serviceTypeField = GeoNetwork.util.INSPIRESearchFormTools
                     .getServiceTypeField(true);
-            advancedCriteria.push(themekeyField, orgNameField,
+            //advancedCriteria.push(themekeyField, orgNameField,
+            advancedCriteria.push(
                     metadataTypeField, ownerField, isHarvestedField, siteId);
 
             var sortByCombo = new Ext.form.TextField({
