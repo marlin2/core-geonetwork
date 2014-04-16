@@ -131,16 +131,41 @@
 
 			<div class="grey">
 					<a href="javascript:window.print();" id="printer-button">Print</a>
-					<!--
-					<a id="feedback-site-button" target="_blank" href="https://www.pdok.nl/nl/over-pdok/contact-met-pdok/contactformulier">Feedback</a>
-					-->
 					<a id="rss-button" href="/geonetwork/srv/eng/rss.latest">RSS</a>
 					<span class="user-button">
-						<a id="user-button" href="javascript:toggleLogin();">Log In</a>
-						<label id="username_label"></label>
-						<label id="name_label"></label>
-						<label id="profile_label"></label>
-						<a href="javascript:catalogue.admin();" id="administration_button" style="display:none">Administration</a>
+						<a id="user-button">
+							<xsl:choose>
+								<xsl:when test="string(/root/gui/session/userId)=''">
+								  <xsl:attribute name="href">javascript:toggleLogin();</xsl:attribute>
+									Sign In
+							  </xsl:when>
+								<xsl:otherwise>
+								  <xsl:attribute name="href">javascript:app.loginApp.logout();</xsl:attribute>
+									Sign Out
+							  </xsl:otherwise>
+						  </xsl:choose>
+						</a>
+						<label id="username_label">
+							<xsl:if test="string(/root/gui/session/userId)!=''">
+								<xsl:value-of select="concat(/root/gui/session/name,' ')"/>
+							</xsl:if>
+						</label>
+						<label id="name_label">
+							<xsl:if test="string(/root/gui/session/userId)!=''">
+								<xsl:value-of select="concat(/root/gui/session/surname,' ')"/>
+							</xsl:if>
+						</label>
+						<label id="profile_label">
+							<xsl:if test="string(/root/gui/session/userId)!=''">
+								<xsl:value-of select="concat('(',/root/gui/session/profile,')')"/>	
+							</xsl:if>
+						</label>
+						<a href="javascript:catalogue.admin();" id="administration_button">
+							<xsl:if test="string(/root/gui/session/userId)=''">
+								<xsl:attribute name="style">display:none;</xsl:attribute>
+							</xsl:if>
+							Administration
+						</a>
 						<script>function false_(){ return false; }</script>
 						<form id="login-form" style="display: none;" onsubmit="return false_();">
 							<div id="login_div">
@@ -153,9 +178,6 @@
 						</form>
 				  </span>
 					<a id="help-tab" target="_blank" href="/geonetwork/docs/eng/users">Help</a>
-					<!--
-					<a id="contact-tab" target="_blank" href="https://www.pdok.nl/nl/over-pdok/contact-met-pdok">Contact</a>
-					-->
 					<div style="display:none;" id="lang-form"></div>
 			</div>
 				
