@@ -140,7 +140,7 @@
 						<label id="username_label"></label>
 						<label id="name_label"></label>
 						<label id="profile_label"></label>
-						<a href="javascript:catalogue.admin();" id="administration_button" style="display:none">Administration</a>
+						<a href="/geonetwork/srv/eng/admin" id="administration_button" style="display:none" target="_blank">Administration</a>
 						<script>function false_(){ return false; }</script>
 						<form id="login-form" style="display: none;" onsubmit="return false_();">
 							<div id="login_div">
