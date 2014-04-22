@@ -294,7 +294,11 @@ Ext
 
                         link = link.substring(link.indexOf("|") + 1);
 
-                        return GeoNetwork.Util.getBaseUrl(location.href) + "?uuid=" + link;
+                        // Get base url and language
+                        var urlParts = window.location.href.match(/(http.*\/.*)\/srv\/(.*)\/.*/, '');
+
+                        return urlParts[1]
+                          + '/srv/' + urlParts[2] + '/search' + "?uuid=" + link;
                     },
                     /**
                      * api: method[getLink] :param base: ``String`` The base
