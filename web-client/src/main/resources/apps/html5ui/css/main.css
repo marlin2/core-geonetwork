@@ -1431,27 +1431,6 @@ div.facets * .facet-more-bt,div.facets * .facet-less-bt {
 	background:none;
 }
 
-/* FIXME: Check out positioning and also missing feedback button
-#feedback-button { 
-  background-image: url('../images/sprites/sprite_coment.gif');
-  background-position: 0 1;
-  background-position-x: 0;
-  background-position-y: 1px;
-}
-
-#permalink-button {
-  background-image: url('../../smart/images/default/link.gif');
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-
-#share-button {
-  background-image: url('../../smart/images/default/share.gif');
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-*/
-
 #viewpanel-feedback {
 	background-position: -101px 0px;
 	background-position-x: -101px;
