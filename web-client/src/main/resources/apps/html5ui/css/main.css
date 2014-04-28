@@ -1865,9 +1865,9 @@ dl.xml * dd {
 legend[id*="MD_Metadata"][id*="root"] span span div.alert{display:none;}
 
 .olMapViewport div.x-mask-loading,.olMap div.x-mask-loading{display:none;wg;}
-div.olControlZoom button{display:block;margin:1px;padding:0;color:white;font-size:18px;font-family:'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;font-weight:bold;text-decoration:none;text-align:center;height:22px;width:22px;line-height:19px;background:#130085;background:rgba(0,60,136,0.5);filter:alpha(opacity = 80);border:none;}
-button.olControlZoomOut{border-radius:0 0 4px 4px;}
-button.olControlZoomIn{border-radius:4px 4px 0 0;}
+
+div.olControlZoom > a.olControlZoomOut{color: white!important; border-radius:0 0 4px 4px;}
+div.olControlZoom > a.olControlZoomIn{color: white!important; border-radius:4px 4px 0 0;}
 
 #mini-map{position:fixed;z-index:10000;right:60px;bottom:33px;}
 
