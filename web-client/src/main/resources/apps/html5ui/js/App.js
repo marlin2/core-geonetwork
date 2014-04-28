@@ -407,6 +407,8 @@ GeoNetwork.app = function() {
                 + record.get('title')
                 + " "
                 + Ext.state.Manager.getProvider().getPrettyLink();
+
+        console.log("SSSSSSSSS "+record.get('title')+' XXX '+Ext.state.Manager.getProvider().getPrettyLink());
         Ext.get("custom-tweet-button").dom.title = "Tweet this";
 
         var fb_url = "https://www.facebook.com/dialog/feed?app_id=307560442683468&redirect_uri="
@@ -464,7 +466,6 @@ GeoNetwork.app = function() {
         var div = Ext.getCmp("recent-viewed");
 
         if (!div) {
-
             var store = new Ext.data.ArrayStore({
                 autoDestroy : true,
                 autoSave : true,
@@ -474,21 +475,31 @@ GeoNetwork.app = function() {
             });
 
             var tpl = new Ext.XTemplate(
-                    '<tpl for=".">',
+                  '<tpl for=".">',
                     '<div class="thumb-wrap" id="recent-viewed_{uuid}">',
-                    '<a href="javascript:app.searchApp.addMetadata(\'{uuid}\', true);"><div class="thumb">',
-                    '<h1>{title}</h1>',
-                    '<img src="{thumbnail}" title="{title}" alt="{title}">',
-                    '<span>{description}</span>', '</div></a>', '</div>',
-                    '</tpl>');
+                      '<a href="javascript:app.searchApp.addMetadata(\'{uuid}\', true);">',
+                        //'<div class="thumb">',
+                          '<h1>{title}</h1>',
+                          //'<span>{description}</span>', 
+                        //'</div>',
+                      '</a>', 
+                    '</div>',
+                  '</tpl>');
+
             div = new Ext.DataView({
                 store : store,
                 tpl : tpl,
                 autoHeight : true,
                 overClass : 'x-view-over',
-                renderTo : "recent-viewed-div",
                 id : "recent-viewed"
             });
+
+						var p = new Ext.Panel({
+            	border : false,
+            	bodyCssClass : 'md-view',
+            	items : div,
+							renderTo: "recent-viewed-div"
+        		});
         }
 
         var description = record.get('abstract');
@@ -512,7 +523,7 @@ GeoNetwork.app = function() {
                 description : description
             }));
         }
-        while (div.store.data.length > 4) {
+        while (div.store.data.length > 5) {
             div.store.remove(div.store.data.items[div.store.data.length - 1]);
         }
 

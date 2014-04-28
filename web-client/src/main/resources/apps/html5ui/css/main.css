@@ -182,11 +182,9 @@ body {
 }
 
 #secondary-aside {
+  margin-left:10px;
   float:right;
   width:200px;
-  padding:2px;
-  position:relative;
-  background-color:white;
 }
 
 .left-column-header {
@@ -429,7 +427,10 @@ nav {
   display: block;
 }
 
-aside#main-aside header {
+/* ===============
+ Right aside sidebar
+ =============== */
+aside#secondary-aside header {
   padding-top: 6px;
   font-weight: bolder;
 }

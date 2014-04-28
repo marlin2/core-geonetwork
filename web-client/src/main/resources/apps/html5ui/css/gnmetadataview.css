@@ -640,6 +640,13 @@ div.help ul li {
 	background: url(../images/default/bg_stripe.png) !important;
 }
 
+/* search result --- right sidebar */
+#search-container .secondary-aside header {
+	padding: 4px 6px 4px 6px;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
 /* search result --- left sidebar */
 #search-container .main-aside header {
 	padding: 4px 6px 4px 6px;
@@ -811,11 +818,6 @@ div#resultsPanel .x-toolbar-right {
 #resultsPanel .md-simple .md-links {
 	margin: 0px 0px 0px 4px;
 	float: left;
-}
-/* search result --- right sidebar */
-#search-container #secondary-aside {
-	margin-left: 3px;
-	padding-top: 0px
 }
 
 #search-container #secondary-aside .x-panel-header {
