@@ -613,7 +613,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                             var text = null, handler = null;
                             
                             // Only display WMS link if dynamic property set to true for current user & record
-                            if ((currentType === 'application/vnd.ogc.wms_xml' || currentType === 'OGC:WMS')) {
+                            if (currentType === 'application/vnd.ogc.wms_xml' || (currentType.indexOf('OGC:WMS') > -1)) {
                                 if (allowDynamic) {
                                     linkButton.push({
                                         text: record.get('title') || record.get('name'),
@@ -719,13 +719,30 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
               });
             }
         } else {
-            bt = new Ext.Button({
-                id: buttonId,
-                tooltip: label,
-                menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton}),
-                iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
-                renderTo: el
-            });
+						if (linkButton[0].handler) { // if handlers then create button list
+							var items = [];
+            	Ext.each(linkButton, function (button) {
+              	items.push(new Ext.Button({
+                	handler: button.handler,
+                	text: button.text
+              	}));
+					  	});
+            	bt = new Ext.Button({
+                	id: buttonId,
+                	tooltip: label,
+                	menu: new Ext.menu.Menu({cls: 'links-mn', items: items}),
+                	iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
+                	renderTo: el
+            	});
+						} else {
+            	bt = new Ext.Button({
+                	id: buttonId,
+                	tooltip: label,
+                	menu: new Ext.menu.Menu({cls: 'links-mn', items: linkButton}),
+                	iconCls: GeoNetwork.Util.protocolToCSS(currentType, isDownload),
+                	renderTo: el
+            	});
+						}
         }
     },
     /** private: method[dislayRelations]
