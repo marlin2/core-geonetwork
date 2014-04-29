@@ -408,7 +408,6 @@ GeoNetwork.app = function() {
                 + " "
                 + Ext.state.Manager.getProvider().getPrettyLink();
 
-        console.log("SSSSSSSSS "+record.get('title')+' XXX '+Ext.state.Manager.getProvider().getPrettyLink());
         Ext.get("custom-tweet-button").dom.title = "Tweet this";
 
         var fb_url = "https://www.facebook.com/dialog/feed?app_id=307560442683468&redirect_uri="
@@ -491,14 +490,16 @@ GeoNetwork.app = function() {
                 tpl : tpl,
                 autoHeight : true,
                 overClass : 'x-view-over',
-                id : "recent-viewed"
+                id : "recent-viewed",
+								emptyText: 'No metadata viewed/edited recently'
             });
 
 						var p = new Ext.Panel({
             	border : false,
             	bodyCssClass : 'md-view',
             	items : div,
-							renderTo: "recent-viewed-div"
+							renderTo: "recent-viewed-div",
+							id: "recent-items-panel"
         		});
         }
 
@@ -511,7 +512,14 @@ GeoNetwork.app = function() {
 
         Ext.each(div.store.data.items, function(e) {
             if (e.data.uuid === record.get('uuid')) {
+								// just in case any info changed, then update
+								e.beginEdit();
+								e.data.title = record.get('title'); 
+                e.data.thumbnail = record.get('thumbnail'),
+								e.data.description = description; 
                 alreadyThere = true;
+								e.endEdit();
+								e.commit(true);
             }
         });
 
@@ -522,7 +530,10 @@ GeoNetwork.app = function() {
                 thumbnail : record.get('thumbnail'),
                 description : description
             }));
-        }
+        } else {
+					div.refresh(); // store may have been updated above
+				}
+
         while (div.store.data.length > 5) {
             div.store.remove(div.store.data.items[div.store.data.length - 1]);
         }

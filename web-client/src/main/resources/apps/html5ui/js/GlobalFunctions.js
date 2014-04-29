@@ -321,6 +321,8 @@ function hideAdvancedSearch(updateSearch) {
         Ext.getCmp("o_nodynamicdownload").getValue());
         Ext.getCmp('E_nodynamicdownload').resumeEvents();
 
+				Ext.getCmp('sortByToolBar').setValue("relevance");
+
         GeoNetwork.state.History.resumeEvents();
 
     }
