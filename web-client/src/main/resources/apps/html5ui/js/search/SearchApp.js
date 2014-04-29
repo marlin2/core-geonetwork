@@ -233,15 +233,20 @@ GeoNetwork.searchApp = function() {
                 // tpl: tpl,
                 fieldLabel : OpenLayers.i18n('org')
             });
-            // var denominatorField = GeoNetwork.util.SearchFormTools
-            // .getScaleDenominatorField(true);
 
-            // var groupField = GeoNetwork.util.SearchFormTools.getGroupField(
-            // catalogue.services.getGroups, true);
-            var metadataTypeField = GeoNetwork.util.SearchFormTools
-                    .getMetadataTypeField(true);
-            // var validField = GeoNetwork.util.SearchFormTools
-            // .getValidField(true);
+        		var catalogueField = GeoNetwork.util.SearchFormTools.getCatalogueField(
+                		catalogue.services.getSources, catalogue.services.logoUrl, true);
+        		var groupField = GeoNetwork.util.SearchFormTools.getGroupField(
+                		catalogue.services.getGroups, true);
+        		var metadataTypeField = GeoNetwork.util.SearchFormTools
+                		.getMetadataTypeField(true);
+        		var categoryField = GeoNetwork.util.SearchFormTools.getCategoryField(
+                		catalogue.services.getCategories, '../../apps/images/default/category/', true);
+        		var validField = GeoNetwork.util.SearchFormTools.getValidField(true);
+        		var spatialTypes = GeoNetwork.util.SearchFormTools
+                		.getSpatialRepresentationTypeField(null, true);
+        		var denominatorField = GeoNetwork.util.SearchFormTools
+                		.getScaleDenominatorField(true);
 
             // Add hidden fields to be use by quick metadata links from the
             // admin panel (eg. my metadata).
@@ -257,11 +262,14 @@ GeoNetwork.searchApp = function() {
                 name : 'E_siteId',
                 hidden : true
             });
-            var serviceTypeField = GeoNetwork.util.INSPIRESearchFormTools
-                    .getServiceTypeField(true);
-            //advancedCriteria.push(themekeyField, orgNameField,
+						var serviceTypeField = GeoNetwork.util.INSPIRESearchFormTools
+						    .getServiceTypeField(true);
+
+						// Leave out themekeyField and orgNameField - handled elsewhere
             advancedCriteria.push(
-                    metadataTypeField, ownerField, isHarvestedField, siteId);
+										catalogueField, groupField, metadataTypeField, 
+										categoryField, validField, spatialTypes, denominatorField,
+                    ownerField, isHarvestedField, siteId);
 
             var sortByCombo = new Ext.form.TextField({
                 name : 'E_sortBy',
@@ -387,7 +395,7 @@ GeoNetwork.searchApp = function() {
                    }]
             });
 
-            this.setAdminFieldsCallback([ metadataTypeField ]);
+            this.setAdminFieldsCallback([ metadataTypeField, groupField ]);
 
             return new GeoNetwork.SearchFormPanel({
                 id : 'advanced-search-options-content-form',
