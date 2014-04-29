@@ -584,8 +584,11 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                     var linkButton = [], label = null, currentType = null, bt,
                          allowDynamic = r.get('dynamic'), allowDownload = r.get('download'),
                          hasDownloadAction = false;
-                    
+                
+                    var nid = 0;
                     store.each(function (record) {
+                        nid += 1;
+                        var linkId = nid+"-"+uuid;
                         // Avoid empty URL
                         if (record.get('href') !== '') {
                             // Check that current record type is the same as the previous record
@@ -593,7 +596,7 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                             // or create a new button to be added later
                             if (currentType === null || currentType !== record.get('type')) {
                                 if (linkButton.length !== 0) {
-                                    view.addLinkMenu(id, linkButton, label, currentType, el);
+                                    view.addLinkMenu(linkId, linkButton, label, currentType, el);
                                 }
                                 linkButton = [];
                                 currentType = record.get('type');
@@ -653,14 +656,18 @@ GeoNetwork.MetadataResultsView = Ext.extend(Ext.DataView, {
                         }
                         
                     });
-                    // Add the latest button
+                    // Add the last button
+                    nid++;
+                    var linkId = nid+"-"+uuid;
                     if (linkButton !== null && linkButton.length !== 0) {
-                        view.addLinkMenu(id, linkButton, label, currentType, el);
+                        view.addLinkMenu(linkId, linkButton, label, currentType, el);
                     }
                     
                     // Add the download all button
                     if (hasDownloadAction) {
-                        view.addLinkMenu(id, [{
+                        nid++;
+                        linkId = nid+"-"+uuid;
+                        view.addLinkMenu(linkId, [{
                             text: 'download',
                             handler: function () {
                                 // FIXME : this call require the catalogue to be named catalogue
