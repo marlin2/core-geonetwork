@@ -263,7 +263,7 @@
 	                    	<div id="welcome-text">
 	                      	<xsl:copy-of select="/root/gui/strings/welcome.text"/>
 												</div>
-												<div style="display:none;">
+												<div>
 	                        <a href="javascript:toggle('cloud-tag')" id="tag-cloud-button"> <xsl:value-of select="/root/gui/strings/tag_label" /></a>
 	                        <div id="cloud-tag" style="display:none;"></div>
 	                        <section>
@@ -292,7 +292,7 @@
 							</aside>
 							<article>
 								<aside id="secondary-aside" class="secondary-aside" style="display:none;">
-									<header><xsl:value-of select="'RECENT'" /></header>
+									<header><xsl:value-of select="/root/gui/strings/recentlyViewed" /></header>
                   <div id="recent-viewed-div"></div>
                   <div id="mini-map"></div>
 								</aside>

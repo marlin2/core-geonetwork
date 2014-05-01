@@ -737,6 +737,7 @@ ISO 19115 не позволяет иметь более одного.
 	<rawMetadata>Raw Metadata Insert</rawMetadata>
 	<rebuild>Перестроить</rebuild>
 	<recentAdditions>Последние изменения</recentAdditions>
+	<recentlyViewed>Recent</recentlyViewed>
 	<refSysTab>Система ссылки</refSysTab>
 	<region>Регион</region>
 	<register>Регистрировать</register>
