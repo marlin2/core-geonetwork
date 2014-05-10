@@ -40,8 +40,7 @@
      </ul>
      </p>
 		</replaceXML>
-    <addXML xpath="">
-      <about.text>
+    <replaceXML xpath="about.text">
         <!--About MarLIN Text-->
         <h4>About MarLIN</h4>
 
@@ -58,8 +57,7 @@
         </ul></p>
 
         <p>For more information about the GeoNetwork Open Source product on which this version of MarLIN is built, see the <a href="http://geonetwork-opensource.org/">GeoNetwork project home page</a>. To contact the MarLIN development team to request new features or report problems, please use the email <a href="mailto:CMARMarLINSupport@csiro.au">CMARMarLINSupport@csiro.au</a>.</p>
-      </about.text>
-    </addXML>
+    </replaceXML>
 	</file>
 	<!-- Add geoserver layers for maps in classic interface only -->
 	<file name=".*WEB-INF/config-gui\.xml">

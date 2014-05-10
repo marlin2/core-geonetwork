@@ -272,10 +272,10 @@
 					
 
 	                    <div id="browser">
+	                    	<div id="welcome-text">
+	                        <xsl:copy-of select="/root/gui/strings/welcome.text"/>
+												</div>
                         <aside class="tag-aside">
-	                    	  <div id="welcome-text">
-	                      	  <xsl:copy-of select="/root/gui/strings/welcome.text"/>
-												  </div>
                           <div id="tags">
                             <header><h1><span><xsl:value-of select="/root/gui/strings/tag_label" /></span></h1></header>
                             <div id="cloud-tag"></div>
