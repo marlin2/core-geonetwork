@@ -1272,8 +1272,8 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
      *  Open the administration interface according to adminAppUrl properties.
      */
     admin: function(){
-        var win = window.open(this.adminAppUrl, '_blank');
-				win.focus();
+      var win = window.open(this.adminAppUrl, '_blank');
+      win.focus();
     },
     /** api: method[admin]
     *

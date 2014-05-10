@@ -17,6 +17,8 @@
  
  <!-- <client type="redirect" widget="false" url="main.home" /> -->
  <client type="redirect" widget="true" url="search" createParameter="#create" stateId="s"/>
+
+ <html5ui-footer>false</html5ui-footer>
  
  <!-- Classic interface using the xslt layout-templates -->
  <!-- <client type="redirect" widget="false" url="main.home" parameters="" stateId="" createParameter=""/> -->

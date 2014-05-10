@@ -47,7 +47,7 @@ GeoNetwork.app = function() {
         });
         latestView.tpl = GeoNetwork.HTML5UI.Templates.THUMBNAIL_SIMPLER;
         catalogue.kvpSearch(
-                "fast=index&from=1&to=3&sortBy=changeDate",
+                "fast=index&from=1&to=4&sortBy=changeDate",
                 function(e) {
                     Ext.each(Ext.DomQuery.select('.md-action-menu'), function(
                             el) {
@@ -95,7 +95,7 @@ GeoNetwork.app = function() {
         });
         latestView.tpl = GeoNetwork.HTML5UI.Templates.THUMBNAIL_SIMPLER;
         catalogue.kvpSearch(
-                "fast=index&from=1&to=3&sortBy=popularity",
+                "fast=index&from=1&to=4&sortBy=popularity",
                 function(e) {
                     Ext.each(Ext.DomQuery.select('.md-action-menu'), function(
                             el) {
@@ -215,51 +215,44 @@ GeoNetwork.app = function() {
     };
 
     /**
-     * Create a language switcher menu. This one changes the url so the language
-     * is now on Jeeves mode.
+     * Create a language switcher menu.
      * 
      */
-    var createLanguageSwitcher = function(lang) {
-        return new Ext.form.FormPanel({
-            renderTo : 'lang-form',
-            width : 400,
-            border : false,
-            layout : 'anchor',
-            hidden : GeoNetwork.Util.locales.length === 1 ? true : false,
-            items : [ new Ext.form.ComboBox({
-                mode : 'local',
-                triggerAction : 'all',
-                height : '100%',
-                store : new Ext.data.ArrayStore({
-                    idIndex : 2,
-                    fields : [ 'id', 'name', 'id2' ],
-                    data : GeoNetwork.Util.locales
-                }),
-                valueField : 'id2',
-                displayField : 'name',
-                value : lang,
-                listeners : {
-                    select : function(cb, record, idx) {
+    var createLanguagesMenu = function(lang) {
+        var items = [],
+            lang = /srv\/([a-z]{3})\/search/.exec(window.location.href);
 
-                        var lang = /srv\/([a-z]{3})\/search/
-                                .exec(window.location.href);
+        if (Ext.isArray(lang)) {
+          lang = lang[1];
+        }
 
-                        if (Ext.isArray(lang)) {
-                            lang = lang[1];
-                        }
+        var href; 
+        if (lang === null) currentLang = 'eng';
+        else currentLang = lang;
 
-                        if (lang === null) {
-                            window.location.pathname = window.location.pathname
-                                    .replace('/srv/search', '/srv/'
-                                            + cb.getValue() + '/search');
-                        } else {
-                            window.location.pathname = window.location.pathname
-                                    .replace(lang, cb.getValue());
-                        }
+        Ext.each(GeoNetwork.Util.locales, function(locale) {
+          if (lang === null) {
+            href = window.location.pathname.replace('/srv/search', '/srv/'+ locale[2] + '/search');
+          } else {
+            href = window.location.pathname.replace(lang, locale[2]);
+          }
 
-                    }
-                }
-            }) ]
+          if (currentLang === locale[2] || currentLang === locale[0]) currentLang = locale[1];
+          items.push({
+            text: locale[1],
+            href: href,
+            height: '100%'
+          });
+        });
+
+        return new Ext.menu.Menu({
+              id:       'lang-menu',
+              renderTo: 'lang-form',
+              floating: false,
+              border: false,
+              plain: true,
+              showSeparator: false,
+              items: items
         });
     };
 
@@ -501,6 +494,10 @@ GeoNetwork.app = function() {
 							renderTo: "recent-viewed-div",
 							id: "recent-items-panel"
         		});
+
+            catalogue.on('afterLogout', function() {
+              store.removeAll(); // empty store underlying dataview
+            });
         }
 
         var description = record.get('abstract');
@@ -591,7 +588,7 @@ GeoNetwork.app = function() {
                         urlParameters.extent[2], urlParameters.extent[3]);
             }
 
-            createLanguageSwitcher(lang);
+            createLanguagesMenu(lang);
 
             // Init cookie
             cookie = new Ext.state.CookieProvider({

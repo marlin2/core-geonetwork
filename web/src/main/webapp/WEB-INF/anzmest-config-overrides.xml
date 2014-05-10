@@ -24,6 +24,20 @@
 			<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-ftp--downloaddata">Data File for download through FTP</protocolChoice>
 			<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-ftp--downloadother">Other File for download through FTP</protocolChoice>
 		</addXML>
+    <replaceXML xpath="welcome.text">
+      <h4>Welcome to ANZMEST - GeoNetwork 2.10.x plus AU/NZ Schema Plugins</h4>
+      <p>
+      You can change this short welcome text by editing WEB-INF/anzmest-config-overrides.xml or (better) by taking this configuration from that file and creating your own configuration overrides xml file and adding it to WEB-INF/configuration-overrides-prod.xml.
+      </p>
+    </replaceXML>
+    <replaceXML xpath="about.text">
+      <h4>About your site</h4>
+      <p>
+      You can change this text by editing WEB-INF/anzmest-config-overrides.xml or (better) by taking this configuration from that file and creating your own configuration overrides xml file and adding it to WEB-INF/configuration-overrides-prod.xml.
+      </p>
+      <p>You can change the logo shown above the tabs by copying your own logo to apps/html5ui/images/banner_logo.png.
+      </p>
+    </replaceXML>
 	</file>
 	<!-- all services in config-metadata-schemaplugins.xml need to be in added
 	     to the spring security config -->
