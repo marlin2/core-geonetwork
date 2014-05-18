@@ -815,6 +815,12 @@
               </includes>
             </resource>
           
+						<!-- harvesting icons -->
+            <resource>
+              <directory>${geonetwork.webapp.dir}/images/harvesting</directory>
+              <targetPath>WEB-INF/data/data/resources/images/harvesting</targetPath>
+            </resource>
+
             <!-- Remove comment tag to include documentation in the build. 
             Python and Latex are required to build the documentation. -->
             

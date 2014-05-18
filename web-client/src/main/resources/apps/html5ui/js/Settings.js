@@ -123,3 +123,20 @@ GeoNetwork.Settings.viewPanelButtonCSS = function(buttonId) {
 			return buttonsAndClasses[buttonId];
 }
 
+/** Provide CSS classes for icons in view panel when displaying related  
+ * records eg. parent, sibling, children, fcat
+ */
+GeoNetwork.Settings.relationToCSS = function(type, subType) {
+      /* 'servicess|children|related|parent|dataset|fcats|sibling|associated' */
+      var typesAndClasses = {
+        'parent':    'fabutton-1x fa fa-long-arrow-up',
+        'sibling':   'fabutton-1x fa fa-arrows-h',
+        'children':  'fabutton-1x fa fa-long-arrow-down',
+				'services':   'fabutton-1x fa fa-cog',
+				'fcats':     'fabutton-1x fa fa-table' 
+		  };
+			/* If the type isn't listed then the relationship won't be displayed */
+			//console.log('Mapped type: '+type+' (subtype: '+subType+') to '+typesAndClasses[type]);
+			return typesAndClasses[type];
+}
+
