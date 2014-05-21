@@ -450,6 +450,7 @@ public class DataManager {
                         sb.append(xlink.getValue()); sb.append(" ");
                     }
                     moreFields.add(SearchManager.makeField("_xlink", sb.toString(), true, true));
+										// ok to use servContext here
                     Processor.detachXLink(md, servContext);
                 }
                 else {
@@ -2183,8 +2184,8 @@ public class DataManager {
      * @return
      * @throws Exception
      */
-    public Element getThumbnails(Dbms dbms, String id) throws Exception {
-        Element md = xmlSerializer.select(dbms, "Metadata", id);
+    public Element getThumbnails(Dbms dbms, String id, ServiceContext context) throws Exception {
+        Element md = xmlSerializer.select(dbms, "Metadata", id, context);
 
         if (md == null)
             return null;
@@ -2373,7 +2374,7 @@ public class DataManager {
      */
     private void manageCommons(Dbms dbms, ServiceContext context, String id, Element env, String styleSheet) throws Exception {
         Lib.resource.checkEditPrivilege(context, id);
-        Element md = xmlSerializer.select(dbms, "Metadata", id);
+        Element md = xmlSerializer.select(dbms, "Metadata", id, context);
 
         if (md == null) return;
 
@@ -3465,6 +3466,8 @@ public class DataManager {
     private HarvestManager harvestMan;
     private String dataDir;
     private String thesaurusDir;
+		// Note: servContext is logged in as administrator so use with care
+		// eg. notifyMetadata service
     private ServiceContext servContext;
     private String appPath;
     private String stylePath;
