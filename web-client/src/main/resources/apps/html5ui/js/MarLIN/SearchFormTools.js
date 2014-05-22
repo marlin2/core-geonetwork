@@ -33,8 +33,8 @@ MarLIN.ThesaurusPanel = null;
 
 MarLIN.Thesauri = [
 	{
-		thesaurus: 'geonetwork.thesaurus.register.project.urn:marine.csiro.au:projectregister',
-		thesaurusShortName: 'register.project.urn:marine.csiro.au:projectregister',
+		thesaurus: 'geonetwork.thesaurus.register.project.urn:marlin.csiro.au:projectregister',
+		thesaurusShortName: 'register.project.urn:marlin.csiro.au:projectregister',
 		luceneFieldName:	'E_siblings_project',
 		label:						'Project',
 		valueField:				'value',
@@ -43,8 +43,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.project.urn:marine.csiro.au:globalprojectregister',
-		thesaurusShortName: 'register.project.urn:marine.csiro.au:globalprojectregister',
+		thesaurus: 'geonetwork.thesaurus.register.project.urn:marlin.csiro.au:globalprojectregister',
+		thesaurusShortName: 'register.project.urn:marlin.csiro.au:globalprojectregister',
 		luceneFieldName:	'E_siblings_project',
 		label:						'Global Project',
 		valueField:				'value',
@@ -53,8 +53,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.survey.urn:marine.csiro.au:surveyregister',
-		thesaurusShortName: 'register.survey.urn:marine.csiro.au:surveyregister',
+		thesaurus: 'geonetwork.thesaurus.register.survey.urn:marlin.csiro.au:surveyregister',
+		thesaurusShortName: 'register.survey.urn:marlin.csiro.au:surveyregister',
 		luceneFieldName:	'E_siblings_survey',
 		label:						'Survey',
 		valueField:				'value',
@@ -62,31 +62,9 @@ MarLIN.Thesauri = [
 		thesaurusField:		'value',
 		multi:						true
 	},
-	/* Leave caab out for now as it needs different handling due to size
 	{ 
-		thesaurus: 'geonetwork.thesaurus.external.taxon.urn:marine.csiro.au:caabregister',
-		thesaurusShortName: 'external.taxon.urn:marine.csiro.au:caabregister',
-		luceneFieldName:	'E_keywordId',
-		label:						'CAAB Code',
-		valueField:				'uri',
-		displayField:			'value',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	*/
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:taxonomicGroup',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:taxonomicGroup',
-		luceneFieldName:	'E_keywordId',
-		label:						'Taxon Group',
-		valueField:				'uri',
-		displayField:			'definition',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:gcmd',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:gcmd',
+		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:gcmd',
+		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:gcmd',
 		luceneFieldName:	'E_keywordId',
 		label:						'Science Keyword',
 		valueField:				'uri',
@@ -95,8 +73,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:standardDataType',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:standardDataType',
+		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:standardDataType',
+		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:standardDataType',
 		luceneFieldName:	'E_keywordId',
 		label:						'Data Type',
 		valueField:				'uri',
@@ -105,8 +83,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:cmarAOI',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:cmarAOI',
+		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:cmarAOI',
+		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:cmarAOI',
 		luceneFieldName:	'E_keywordId',
 		label:						'Areas of Interest',
 		valueField:				'uri',
@@ -115,8 +93,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marine.csiro.au:keywords:dataSource',
-		thesaurusShortName: 'register.dataSource.urn:marine.csiro.au:keywords:dataSource',
+		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marlin.csiro.au:keywords:dataSource',
+		thesaurusShortName: 'register.dataSource.urn:marlin.csiro.au:keywords:dataSource',
 		luceneFieldName:	'E_keywordId',
 		label:						'Data Source',
 		valueField:				'uri',
@@ -125,50 +103,10 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:habitat',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:habitat',
-		luceneFieldName:	'E_keywordId',
-		label:						'Habitat',
-		valueField:				'uri',
-		displayField:			'definition',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.equipment.urn:marine.csiro.au:keywords:equipment',
-		thesaurusShortName: 'register.equipment.urn:marine.csiro.au:keywords:equipment',
-		luceneFieldName:	'E_keywordId',
-		label:						'Equipment',
-		valueField:				'uri',
-		displayField:			'definition',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:subject',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:subject',
-		luceneFieldName:	'E_keywordId',
-		label:						'Subject',
-		valueField:				'uri',
-		displayField:			'value',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marine.csiro.au:keywords:anzlicSearch',
-		thesaurusShortName: 'register.theme.urn:marine.csiro.au:keywords:anzlicSearch',
+		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:anzlicSearch',
+		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:anzlicSearch',
 		luceneFieldName:	'E_keywordId',
 		label:						'ANZLIC',
-		valueField:				'uri',
-		displayField:			'value',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.place.urn:marine.csiro.au:keywords:region',
-		thesaurusShortName: 'register.place.urn:marine.csiro.au:keywords:region',
-		luceneFieldName:	'E_keywordId',
-		label:						'Region',
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
@@ -183,9 +121,8 @@ MarLIN.ThesauriStore = new Ext.data.JsonStore({
 MarLIN.buildKeywordRow = function(services, selector, thesaurusInfo) {
 	var button = new Ext.Button({
 			id: 'thesaurusBt'+thesaurusInfo.get('thesaurus'), 
-			margins:'3 5 3 5',
-			icon: '../images/default/map/icon_zoomin.png',
-			iconAlign: 'right',
+			iconCls: 'fabutton-1x fa fa-search-plus',
+			cls: 'marlin-keyword-search-button',
 			toolTip: 'Search '+thesaurusInfo.get('label')+' List',
 			listeners: {
 						click: function(){
@@ -337,6 +274,7 @@ MarLIN.SearchFormTools = {
                 id : 'marLINResourceType',
                 name : 'E_type',
                 mode : 'local',
+								anchor: '95%',
                 triggerAction : 'all',
                 fieldLabel : 'Resource Type',
                 store : new Ext.data.ArrayStore({
@@ -377,6 +315,7 @@ MarLIN.SearchFormTools = {
 
         var orgNameField = new Ext.ux.form.SuperBoxSelect({
             hideLabel: false,
+						anchor: '95%',
             minChars: 0,
             queryParam: 'q',
             hideTrigger: false,
@@ -470,7 +409,8 @@ MarLIN.SearchFormTools = {
                 fieldLabel : thesaurusInfo.get('label'),
                 store : keyStore,
                 valueField : thesaurusInfo.get('valueField'),
-                displayField : thesaurusInfo.get('displayField') 
+                displayField : thesaurusInfo.get('displayField'),
+								anchor: '98%'
             };
         if (thesaurusInfo.get('multi')) {
             Ext.apply(config, {
@@ -503,8 +443,9 @@ MarLIN.SearchFormTools = {
 			MarLIN.ThesaurusPanel = new Ext.Panel({
 				layout: 'form',
 				border: false,
-				autoWidth: true,
+				anchor: '100%', // parent is a form panel
 				autoHeight: true,
+				id: 'marlin-keywords',
 				items: [this.getResourceTypeField(multi), this.getOrganisationField(services)]
 			});
 

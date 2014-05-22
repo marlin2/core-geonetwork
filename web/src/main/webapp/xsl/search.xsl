@@ -82,6 +82,10 @@
                     <xsl:attribute name="href"><xsl:value-of
                         select="$baseUrl" />/apps/html5ui/css/colors.css</xsl:attribute>
                 </link>
+                <link rel="stylesheet">
+                    <xsl:attribute name="href"><xsl:value-of
+                        select="$baseUrl" />/apps/html5ui/css/marlin.css</xsl:attribute>
+                </link>
 				<link rel="stylesheet">
 					<xsl:attribute name="href"><xsl:value-of
 						select="$baseUrl" />/apps/html5ui/css/gnmetadatadefault.css</xsl:attribute>
