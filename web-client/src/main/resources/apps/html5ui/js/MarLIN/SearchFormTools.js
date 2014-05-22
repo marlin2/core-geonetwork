@@ -35,38 +35,38 @@ MarLIN.Thesauri = [
 	{
 		thesaurus: 'geonetwork.thesaurus.register.project.urn:marlin.csiro.au:projectregister',
 		thesaurusShortName: 'register.project.urn:marlin.csiro.au:projectregister',
-		luceneFieldName:	'E_siblings_project',
+		luceneFieldName:	'E_keywordId',
 		label:						'Project',
-		valueField:				'value',
-		displayField:			'definition',
-		thesaurusField:		'value',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
 		multi:						true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.project.urn:marlin.csiro.au:globalprojectregister',
 		thesaurusShortName: 'register.project.urn:marlin.csiro.au:globalprojectregister',
-		luceneFieldName:	'E_siblings_project',
+		luceneFieldName:	'E_keywordId',
 		label:						'Global Project',
-		valueField:				'value',
-		displayField:			'definition',
-		thesaurusField:		'value',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
 		multi:						true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.survey.urn:marlin.csiro.au:surveyregister',
 		thesaurusShortName: 'register.survey.urn:marlin.csiro.au:surveyregister',
-		luceneFieldName:	'E_siblings_survey',
+		luceneFieldName:	'E_keywordId',
 		label:						'Survey',
-		valueField:				'value',
+		valueField:				'uri',
 		displayField:			'definition',
-		thesaurusField:		'value',
+		thesaurusField:		'uri',
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:gcmd',
-		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:gcmd',
+		thesaurus: 'geonetwork.thesaurus.register.source.urn:marlin.csiro.au:sourceregister',
+		thesaurusShortName: 'register.source.urn:marlin.csiro.au:sourceregister',
 		luceneFieldName:	'E_keywordId',
-		label:						'Science Keyword',
+		label:						'Source',
 		valueField:				'uri',
 		displayField:			'definition',
 		thesaurusField:		'uri',
@@ -371,11 +371,11 @@ MarLIN.SearchFormTools = {
 								});
 
 								var theField = thesaurusInfo.get('thesaurusField');
-								//console.log('Checking '+theField);
+								console.log('Checking '+theField);
 								lStore.on({ 
 									'load': function() { 
 
-										//console.log('loaded from '+thesaurusInfo.get('thesaurus')+' records '+lStore.getTotalCount());
+										console.log('loaded from '+thesaurusInfo.get('thesaurus')+' records '+lStore.getTotalCount());
 										if (lStore.getTotalCount() > 0) {
 										/* Alternative not good
 											keyStore.each(function(item) {
@@ -388,6 +388,7 @@ MarLIN.SearchFormTools = {
 										*/
 											var r = keyStore.getRange();
 											for (var j = 0, l = r.length;j < l;j++) {
+												console.log('Checking '+r[j].get(theField));
 												if (lStore.findExact('value',r[j].get(theField)) < 0) {
 													keyStore.remove(r[j]);
 												}
