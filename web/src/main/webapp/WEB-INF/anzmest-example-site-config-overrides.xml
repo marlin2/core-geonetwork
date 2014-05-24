@@ -1,0 +1,13 @@
+<overrides xmlns:sec="http://www.springframework.org/schema/security">
+	<!-- replace welcome.text and about.text string shown in interface -->
+	<file name=".*geonetwork/loc/eng/xml/strings\.xml">
+		<replaceXML xpath="welcome.text">
+			<b>Welcome to ANZMEST example site!<b>
+			<p>On this site you can search for datasets and services delivered by example site</p>
+		</replaceXML>
+		<replaceXML xpath="about.text">
+			<b>About ANZMEST example organisation<b>
+			<p>Our organisation produces datasets delivered via OGC services.</p>
+		</replaceXML>
+	</file>
+</overrides>

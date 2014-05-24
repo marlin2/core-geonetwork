@@ -1399,10 +1399,22 @@
 	<latestDatasets>Latest</latestDatasets>
 	<popularDatasets>Popular</popularDatasets>
 	<filter>Filter</filter>
-	<welcome.text>Welcome to GeoNetwork</welcome.text>
+	<welcome.text>
+      <h4>Welcome to ANZMEST - GeoNetwork 2.10.x plus AU/NZ Schema Plugins</h4>
+      <p>
+      You can change this short welcome text by adding your own configuration overrides xml file to <code>WEB-INF/configuration-overrides-prod.xml</code> - see example <code>WEB-INF/anzmest-example-site-config-overrides.xml</code>.
+      </p>
+  </welcome.text>
 	<tag_label>Tags</tag_label>
 	<map_label>Map</map_label>
-  <about.text>About this site</about.text>
+  <about.text>
+      <h4>About your site</h4>
+      <p>
+      You can change this short text describing your site by adding your own configuration overrides xml file to <code>WEB-INF/configuration-overrides-prod.xml</code> - see example <code>WEB-INF/anzmest-example-site-config-overrides.xml</code>.
+      </p>
+      <p>You can change the GeoNetwork OpenSource logo shown above by copying your own logo to apps/html5ui/images/banner_logo.png.
+      </p>
+	</about.text>
   <signIn>Sign In</signIn>
   <signOut>Sign Out</signOut>
 	<rss-button>RSS</rss-button>
