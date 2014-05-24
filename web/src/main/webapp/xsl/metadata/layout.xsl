@@ -1390,12 +1390,8 @@
               		<xsl:value-of select="$schema"/>
               		<xsl:text>&quot;,catalogue.services.schemaInfo, GeoNetwork.util.HelpTools.showtt)</xsl:text>
               	</xsl:attribute>
-                <img class="x-panel-inline-icon">
-                	<xsl:attribute name="src">
-                		<xsl:value-of select="/root/gui/url"/>
-                		<xsl:text>/apps/images/default/help.png</xsl:text>
-                	</xsl:attribute>
-                </img>
+								&#160;
+								<i class="fa fa-1x fa-question-circle"></i>
               </span>
             </xsl:when>
             <xsl:otherwise>

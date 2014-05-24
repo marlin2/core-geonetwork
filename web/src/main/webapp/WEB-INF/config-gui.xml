@@ -18,6 +18,7 @@
  <!-- <client type="redirect" widget="false" url="main.home" /> -->
  <client type="redirect" widget="true" url="search" createParameter="#create" stateId="s"/>
 
+ <!-- if true then display the footer image in the html5ui interface -->
  <html5ui-footer>false</html5ui-footer>
 
  <iso19139.mcp>
