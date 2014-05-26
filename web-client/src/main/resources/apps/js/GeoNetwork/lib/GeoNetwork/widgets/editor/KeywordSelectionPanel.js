@@ -82,6 +82,11 @@ GeoNetwork.editor.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
      * relative imagePath for ItemSelector
      */
     imagePath: undefined,
+
+		/**
+		 * Maximum number of keywords to return from search (default: 50)
+		 */
+		maxKeywords: 50,
     
     name: 'gmd:descriptiveKeywords',
     /**
@@ -91,8 +96,7 @@ GeoNetwork.editor.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
     keywordsSelected: [],
     
     initComponent: function(){
-    
-    
+   
         this.keywordStore = new Ext.data.Store({
             proxy: new Ext.data.HttpProxy({
                 url: this.catalogue.services.searchKeyword, // FIXME : global var
@@ -211,7 +215,7 @@ GeoNetwork.editor.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
             xtype: 'textfield',
             name: 'maxResults',
             id: 'maxResults',
-            value: 50,
+            value: this.maxKeywords,
             width: 40
         };
     },

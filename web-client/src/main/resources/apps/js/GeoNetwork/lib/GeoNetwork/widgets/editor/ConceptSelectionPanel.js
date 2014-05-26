@@ -499,7 +499,7 @@ GeoNetwork.editor.ConceptSelectionPanel = Ext.extend(Ext.Panel, {
     getLimitInput: function () {
         this.nbResultsField = new Ext.form.TextField({
             name: 'maxResults',
-            value: '50',
+            value: this.maxKeywords,
             width: 40
         });
         return this.nbResultsField;
@@ -784,7 +784,8 @@ GeoNetwork.editor.ConceptSelectionPanel.init = function (cfg) {
                     xmlField: id + '_xml',
                     renderTo: id + '_panel',
                     itemSelectorWidth: jsonConfig.itemSelectorWidth,
-                    itemSelectorHeight: jsonConfig.itemSelectorHeight
+                    itemSelectorHeight: jsonConfig.itemSelectorHeight,
+										maxKeywords: cfg.maxKeywords || 50
                 });
             }
         }

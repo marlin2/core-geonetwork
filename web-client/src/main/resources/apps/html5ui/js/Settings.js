@@ -122,7 +122,7 @@ GeoNetwork.Settings.viewPanelButtonCSS = function(buttonId) {
         'viewpanel-permalink': 'viewpanel-button fabutton fa fa-link md-vw-link'
 		  };
 			return buttonsAndClasses[buttonId];
-}
+};
 
 /** Provide CSS classes for icons in view panel when displaying related  
  * records eg. parent, sibling, children, fcat
@@ -139,5 +139,6 @@ GeoNetwork.Settings.relationToCSS = function(type, subType) {
 			/* If the type isn't listed then the relationship won't be displayed */
 			//console.log('Mapped type: '+type+' (subtype: '+subType+') to '+typesAndClasses[type]);
 			return typesAndClasses[type];
-}
+};
 
+GeoNetwork.Settings.maxKeywords = 5000;

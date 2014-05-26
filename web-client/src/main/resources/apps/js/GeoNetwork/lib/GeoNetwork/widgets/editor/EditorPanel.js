@@ -43,6 +43,7 @@ GeoNetwork.editor.EditorPanel = Ext.extend(Ext.Panel, {
     frame: false,
     tbarConfig: undefined,
     id: 'editorPanel', // Only one Editor panel allowed by Document
+		maxKeywords: 50, // default number of keywords/terms to show
     
     defaultConfig: {
         /**
@@ -434,6 +435,7 @@ GeoNetwork.editor.EditorPanel = Ext.extend(Ext.Panel, {
                 this.keywordSelectionPanel = new GeoNetwork.editor.KeywordSelectionPanel({
                     catalogue: this.catalogue,
                     imagePath: this.selectionPanelImgPath,
+										maxKeywords: this.maxKeywords,
                     listeners: {
                         keywordselected: function(panel, keywords){
                             GeoNetwork.editor.EditorTools.addHiddenFormFieldForFragment(panel, keywords, editorPanel);
@@ -987,7 +989,7 @@ GeoNetwork.editor.EditorPanel = Ext.extend(Ext.Panel, {
         this.catalogue.extentMap.initMapDiv();
         
         // Create concept selection widgets where relevant
-        GeoNetwork.editor.ConceptSelectionPanel.init({imagePath: this.selectionPanelImgPath});
+        GeoNetwork.editor.ConceptSelectionPanel.init({imagePath: this.selectionPanelImgPath, maxKeywords: this.maxKeywords});
         
         // TODO : Update toolbar metadata type value according to form content
         //Ext.get('template').dom.value=item.value;

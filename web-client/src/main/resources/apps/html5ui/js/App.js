@@ -268,6 +268,7 @@ GeoNetwork.app = function() {
             xlinkOptions : {
                 CONTACT : true
             },
+						maxKeywords: GeoNetwork.Settings.maxKeywords,
             listeners : {
                 editorClosed : function() {
                     showSearch();
