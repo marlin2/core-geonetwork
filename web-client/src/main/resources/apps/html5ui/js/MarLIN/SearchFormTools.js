@@ -371,11 +371,11 @@ MarLIN.SearchFormTools = {
 								});
 
 								var theField = thesaurusInfo.get('thesaurusField');
-								console.log('Checking '+theField);
+								//console.log('Checking '+theField);
 								lStore.on({ 
 									'load': function() { 
 
-										console.log('loaded from '+thesaurusInfo.get('thesaurus')+' records '+lStore.getTotalCount());
+										//console.log('loaded from '+thesaurusInfo.get('thesaurus')+' records '+lStore.getTotalCount());
 										if (lStore.getTotalCount() > 0) {
 										/* Alternative not good
 											keyStore.each(function(item) {
@@ -388,7 +388,7 @@ MarLIN.SearchFormTools = {
 										*/
 											var r = keyStore.getRange();
 											for (var j = 0, l = r.length;j < l;j++) {
-												console.log('Checking '+r[j].get(theField));
+												//console.log('Checking '+r[j].get(theField));
 												if (lStore.findExact('value',r[j].get(theField)) < 0) {
 													keyStore.remove(r[j]);
 												}
