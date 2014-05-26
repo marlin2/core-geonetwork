@@ -313,7 +313,8 @@ GeoNetwork.app = function() {
             record : record,
             buttonWidth : button_width,
             buttonHeight : button_height,
-						viewPanelButtonCSS: GeoNetwork.Settings.viewPanelButtonCSS
+						viewPanelButtonCSS: GeoNetwork.Settings.viewPanelButtonCSS,
+						scrapViewSimple: (GeoNetwork.defaultViewMode !== 'view-simple')
         });
 
         // aResTab.on("afterrender", function() {

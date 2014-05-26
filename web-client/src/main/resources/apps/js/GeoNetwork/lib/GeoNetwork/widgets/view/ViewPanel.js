@@ -92,6 +92,7 @@ GeoNetwork.view.ViewPanel = Ext.extend(Ext.Panel, {
     buttonWidth : undefined,
     buttonHeight : undefined,
 		viewPanelButtonCSS : undefined,
+		scrapViewSimple: false, // if true then remove view-simple from options
 
     /** api: method[displayLinks]
      *  Display metadata links.
@@ -262,6 +263,7 @@ GeoNetwork.view.ViewPanel = Ext.extend(Ext.Panel, {
         menu.push([OpenLayers.i18n('simpleViewMode'), 'view-simple', isSimpleModeActive]);
         
         this.printMode = this.currTab;
+				var scrapViewSimple = this.scrapViewSimple;
         
         for (i = 0; i < modes.length; i++) {
             if (modes[i].firstChild) {
@@ -299,9 +301,14 @@ GeoNetwork.view.ViewPanel = Ext.extend(Ext.Panel, {
                 }
             }
         }
-        
+       
         // If another mode is active turn off simple mode.
         menu[0][2] = isSimpleModeActive;
+
+				// If our default view is not view-simple then scrapViewSimple is 
+				// true and we remove it from the menu 
+				if (scrapViewSimple) menu.splice(0,1);
+
         this.updateToolbar(menu);
     },
     updateToolbar: function(modes){
