@@ -420,6 +420,14 @@
 						</script>
 						<script type="text/javascript">
 							<xsl:attribute name="src"><xsl:value-of
+								select="$baseUrl" />/apps/js/ext-ux/ISODateTime/ISODateTime.js</xsl:attribute>
+						</script>
+						<script type="text/javascript">
+							<xsl:attribute name="src"><xsl:value-of
+								select="$baseUrl" />/apps/js/ext-ux/DateFieldFormats/DateFieldFormats.js</xsl:attribute>
+						</script>
+						<script type="text/javascript">
+							<xsl:attribute name="src"><xsl:value-of
 								select="$baseUrl" />/apps/js/ext-ux/RowExpander/RowExpander.js</xsl:attribute>
 						</script>
 						<script type="text/javascript">
@@ -442,6 +450,10 @@
 						<script type="text/javascript">
 							<xsl:attribute name="src"><xsl:value-of
 								select="$baseUrl" />/apps/js/proj4js-compressed.js</xsl:attribute>
+						</script>
+						<script type="text/javascript">
+							<xsl:attribute name="src"><xsl:value-of
+								select="$baseUrl" />/apps/js/moment-with-langs.js</xsl:attribute>
 						</script>
 						<script type="text/javascript">
 							<xsl:attribute name="src"><xsl:value-of
