@@ -800,6 +800,7 @@
                 <exclude>iso19139.rndt/**</exclude>
                 <exclude>iso19139.nap*/**</exclude>
                 <exclude>iso19139.ngmp/**</exclude>
+                <exclude>iso19115-3/**</exclude>
                 <exclude>dist/**</exclude>
                 <exclude>.build/**</exclude>
                 <exclude>build.xml</exclude>
