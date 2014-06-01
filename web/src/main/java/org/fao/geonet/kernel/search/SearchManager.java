@@ -25,6 +25,8 @@ package org.fao.geonet.kernel.search;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -929,6 +931,19 @@ public class SearchManager {
 			if (sb.length() > 0)
 				sb.append(" ");
 			sb.append(text);
+			// if its not a URI then add another text entry without the punctuation
+			try {
+				URI uri = new URI(text);
+				if (uri.getScheme() == null) {
+					sb.append(" ");
+					// Remove all punctuation chars
+					sb.append(text.replaceAll("\\p{P}",""));
+				}
+			} catch (URISyntaxException ui) {
+				sb.append(" ");
+				// Remove all punctuation chars
+				sb.append(text.replaceAll("\\p{P}",""));
+			}
 		}
 		List children = metadata.getChildren();
 		if (children.size() > 0) {
