@@ -937,12 +937,12 @@ public class SearchManager {
 				if (uri.getScheme() == null) {
 					sb.append(" ");
 					// Remove all punctuation chars
-					sb.append(text.replaceAll("\\p{P}",""));
+					sb.append(text.replaceAll("\\p{Punct}",""));
 				}
 			} catch (URISyntaxException ui) {
 				sb.append(" ");
 				// Remove all punctuation chars
-				sb.append(text.replaceAll("\\p{P}",""));
+				sb.append(text.replaceAll("\\p{Punct}",""));
 			}
 		}
 		List children = metadata.getChildren();
