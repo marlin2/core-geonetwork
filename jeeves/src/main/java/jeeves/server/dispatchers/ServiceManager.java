@@ -598,20 +598,18 @@ public class ServiceManager
 		{
 			//--- if there is no output page we output the xml result (if any)
 
-			if	(response == null)
+			if	(response == null) {
 				warning("Response is null and there is no output page for : " +req.getService());
-			else
-			{
+			} else {
 				info("     -> writing xml for : " +req.getService());
 
-				//--- this logging is usefull for xml services that are called by javascript code
-                if(isDebug()) debug("Service xml is :\n"+Xml.getString(response));
+				//--- this logging is useful for xml services that are called by javascript code
+        if(isDebug()) debug("Service xml is :\n"+Xml.getString(response));
 
 				InputMethod  in  = req.getInputMethod();
 				OutputMethod out = req.getOutputMethod();
 
-				if (in == InputMethod.SOAP || out == OutputMethod.SOAP)
-				{
+				if (in == InputMethod.SOAP || out == OutputMethod.SOAP) {
 
                     // Did we set up a status code for the response?
                     if (context.getStatusCode() != null) {
@@ -621,20 +619,26 @@ public class ServiceManager
 
 					req.beginStream("application/soap+xml; charset=UTF-8", cache);
 
-					if (!SOAPUtil.isEnvelope(response))
+					if (!SOAPUtil.isEnvelope(response)) {
 						response = SOAPUtil.embed(response);
-				}
-				else
-					req.beginStream("application/xml; charset=UTF-8", cache);
+					}
+					req.write(response);
 
-                req.write(response);
-			}
-		}
+				} else {
+					if (req.hasJSONOutput()) {
+            req.beginStream("application/json; charset=UTF-8", cache);
+            req.getOutputStream().write(Xml.getJSON(response).getBytes(Jeeves.ENCODING));
+            req.endStream();
+          } else {
+            req.beginStream("application/xml; charset=UTF-8", cache);
+            req.write(response);
+          }	
+			 }
+		 }
 
 		//--- FILE output
 
-		else if (outPage.isFile())
-		{
+		} else if (outPage.isFile()) {
 			// PDF Output
 			if (outPage.getContentType().equals("application/pdf") && !outPage.getStyleSheet().equals("")) {
 
@@ -780,22 +784,37 @@ public class ServiceManager
 				{
 					info("     -> transforming with stylesheet : " +styleSheet);
 
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-					try
-					{
-                        TimerContext timerContext = context.getMonitorManager().getTimer(ServiceManagerXslOutputTransformTimer.class).time();
-                        try {
-                            //--- first we do the transformation
-                            Xml.transform(rootElem, styleSheet, baos);
-                        } finally {
-                            timerContext.stop();
-                        }
+					try {
 						//--- then we set the content-type and output the result
+						// If JSON output requested, run the XSLT transformation and the JSON
+												if (req.hasJSONOutput()) {
+                            Element xsltResponse = null;
+                            TimerContext timerContext = context.getMonitorManager().getTimer(ServiceManagerXslOutputTransformTimer
+                                    .class).time();
+                            try {
+                                //--- first we do the transformation
+                                xsltResponse = Xml.transform(rootElem, styleSheet);
+                            } finally {
+                                timerContext.stop();
+                            }
+                            req.beginStream("application/json; charset=UTF-8", cache);
+                            req.getOutputStream().write(Xml.getJSON(xsltResponse).getBytes(Jeeves.ENCODING));
+                            req.endStream();
+                        } else {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            TimerContext timerContext = context.getMonitorManager().getTimer(ServiceManagerXslOutputTransformTimer
+                                    .class).time();
+                            try {
+                                //--- first we do the transformation
+                                Xml.transform(rootElem, styleSheet, baos);
+                            } finally {
+                                timerContext.stop();
+                            }
+                            req.beginStream(outPage.getContentType(), cache);
+                            req.getOutputStream().write(baos.toByteArray());
+                            req.endStream();
+                        }	
 
-						req.beginStream(outPage.getContentType(), cache);
-						req.getOutputStream().write(baos.toByteArray());
-						req.endStream();
 					}
 					catch(Exception e)
 					{
@@ -936,6 +955,7 @@ public class ServiceManager
 		root.addContent(new Element(Jeeves.Elem.LOC_URL)     .setText(baseUrl +"/loc/"+ lang));
 		root.addContent(new Element(Jeeves.Elem.BASE_SERVICE).setText(baseUrl +"/"+ Jeeves.Prefix.SERVICE));
 		root.addContent(new Element(Jeeves.Elem.LOC_SERVICE) .setText(baseUrl +"/"+ Jeeves.Prefix.SERVICE +"/"+ lang));
+		root.addContent(new Element(Jeeves.Elem.NODE_ID).setText("srv"));
 	}
 
 	//---------------------------------------------------------------------------

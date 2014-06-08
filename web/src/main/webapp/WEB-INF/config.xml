@@ -1514,7 +1514,10 @@
 	<include>config-sru.xml</include>
 	<include>config-csw-servers.xml</include>
 	<include>config-monitoring.xml</include>
-    <include>config-dcat-rdf.xml</include>
+  <include>config-dcat-rdf.xml</include>
+
+	<!-- Include Angular Editor in 2.10.x -->
+	<include>config/config-ui-metadata.xml</include>
 
 	<!-- ====================================================================== -->
 

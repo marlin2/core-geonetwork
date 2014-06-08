@@ -11,6 +11,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="accessDecisionManager" ref="accessDecisionManager"></property>
         <property name="securityMetadataSource">
             <sec:filter-security-metadata-source use-expressions="true" request-matcher="regex" id="coreFilterSecurityMetadataSource">
+								<sec:intercept-url pattern="/static/.*" access="permitAll"/>
+								<sec:intercept-url pattern="/catalog/.*" access="permitAll"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/xml.thesaurus.getList!?.*" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/monitor/.*" access="hasRole('Monitor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/monitor" access="hasRole('Monitor')"></sec:intercept-url>
                 <sec:intercept-url pattern="/\w*healthcheck" access="hasRole('Monitor')"></sec:intercept-url>
@@ -378,6 +381,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <sec:intercept-url pattern="/srv/[a-z]{2,3}/xml.regions.category.list!?.*" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/srv/[a-z]{2,3}/region.getmap.\w\w\w!?.*" access="permitAll"></sec:intercept-url>
                 <sec:intercept-url pattern="/srv/[a-z]{2,3}/region\.geom\.\w\w\w!?.*" access="permitAll"></sec:intercept-url>
+
+								<!-- Angular Editor -->
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/catalog.edit!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.save!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.saveonly!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.save.and.close!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.edit.cancel!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.add!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.remove!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.up!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.down!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.element.info!?.*" access="permitAll"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.attribute.remove!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.thumbnail.upload!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.thumbnail.remove!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.validate!?.*" access="hasRole('Editor')"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.relations!?.*" access="permitAll"/>
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/md.suggestion!?.*" access="hasRole('Editor')"/>
+
+								<sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/info!?@.*" access="permitAll"/>
 
 
                 <sec:intercept-url pattern="/.*" access="denyAll"></sec:intercept-url>

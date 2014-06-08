@@ -404,6 +404,12 @@
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
+		<dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>web-ui</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
     
     <dependency>
 		<groupId>org.xhtmlrenderer</groupId>
@@ -419,6 +425,12 @@
 		<groupId>org.xhtmlrenderer</groupId>
 		<artifactId>flying-saucer-pdf-itext5</artifactId>
 		<version>9.0.1</version>
+	</dependency>
+
+	<dependency>
+	  <groupId>${project.groupId}</groupId>
+		<artifactId>wro4j</artifactId>
+		<version>${project.version}</version>
 	</dependency>
 	
 	
@@ -767,7 +779,6 @@
           </aggregations>
         </configuration>
       </plugin>
-
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
@@ -775,6 +786,12 @@
           <!-- Filter resources according to current profile properties
               (see src/main/filters) and copy them to the webapp -->
           <webResources>
+						<resource>
+                <directory>${project.basedir}/../web-client/src/main/resources</directory>
+            </resource>	
+						<resource>
+						  <directory>${project.basedir}/../web-ui/src/main/resources</directory>
+						</resource>
             <resource>
               <directory>${build.webapp.resources}</directory>
             </resource>
@@ -800,6 +817,7 @@
                 <exclude>iso19139.rndt/**</exclude>
                 <exclude>iso19139.nap*/**</exclude>
                 <exclude>iso19139.ngmp/**</exclude>
+                <exclude>iso19115-1-2013/**</exclude>
                 <exclude>iso19115-3/**</exclude>
                 <exclude>dist/**</exclude>
                 <exclude>.build/**</exclude>
@@ -858,13 +876,20 @@
                 </includes>
             </resource>-->
           </webResources>
+					<!--
           <overlays>
             <overlay>
               <groupId>${project.groupId}</groupId>
               <artifactId>geonetwork-client</artifactId>
               <type>jar</type>
             </overlay>
+            <overlay>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>web-ui</artifactId>
+              <type>jar</type>
+            </overlay>
           </overlays>
+					-->
           <!-- <packagingExcludes>WEB-INF/data/**</packagingExcludes> -->
           <packagingExcludes>xml/schemas/**</packagingExcludes>
 <!--          <warSourceDirectory>src/main/geonetwork</warSourceDirectory> -->
@@ -877,8 +902,8 @@
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-				<version>7.5.0.v20110901</version>
         <configuration>
+					<contextXml>${basedir}/jetty-context.xml</contextXml>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.bio.SocketConnector">
               <port>8080</port>
@@ -904,7 +929,7 @@
             <contextPath>/geonetwork</contextPath>
           	<descriptor>${project.build.directory}/WEB-INF/web.xml</descriptor>
 						<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
-							<resourcesAsCSV>${basedir}/src/main/webapp,${build.webapp.resources}${widgets.webapp.resources}</resourcesAsCSV>
+							<resourcesAsCSV>${basedir}/src/main/webapp,${build.webapp.resources}${widgets.webapp.resources},${rootProjectDir}/web-ui/src/main/resources/</resourcesAsCSV>
 						</baseResource>
           </webAppConfig>
           <stopKey>JETTY_TOP</stopKey>
@@ -929,6 +954,80 @@
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>findbugs-maven-plugin</artifactId>
 		  </plugin>
+
+            <!--
+                The following plugin is the maven configuration for:
+                Web Resource Optimizer For Java (WRO4J)  https://code.google.com/p/wro4j/wiki/Introduction
+
+                The output files are unimportant because the purpose of the maven plugin (in our usage) is to
+                only check that the javascript and css file can be correctly compiled, linted, compressed, etc...
+
+                There is a Servlet filter (see web.xml) that does the actual compilation,linting,compression at runtime.
+                The filter allows a developer to be able to make live modifications and automatically have the
+                compiling/linting/compression done during the development rather than just at build time.
+
+                WRO4J intelligently caches minified files (and automatically handles gzipping)
+            -->
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <version>${wro.version}</version>
+                <executions>
+                    <execution>
+                        <id>test-javascript-optimization</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- The targetGroups are the groups to test for existence.  if they are not found then
+                         an error is raised.  Currently the groups from web-ui, web-client and web are listed
+                         here.  If web-client (for example) is removed then remove the group below
+
+                         Note:  all groups must be on the same line with not whitespace.
+                    -->
+                    <targetGroups>gn,gn_admin,gn_login,lib,geonetwork-client-ext-ux_css,geonetwork-client_css,geonetwork-client-mini-nomap,geonetwork-client-mini,geonetwork-client-search-app,geonetwork-client-tabsearch-app,geonetwork-client-html5ui-app,closure_deps,srv_custom_style</targetGroups>
+                    <minimize>true</minimize>
+                    <destinationFolder>${wro4jOutput}</destinationFolder>
+                    <cssDestinationFolder>${wro4jOutput}/css</cssDestinationFolder>
+                    <jsDestinationFolder>${wro4jOutput}/js</jsDestinationFolder>
+                    <contextFolder>${basedir}/src/main/webapp/</contextFolder>
+                    <wroManagerFactory>org.fao.geonet.wro4j.GeonetworkMavenWrojManagerFactory</wroManagerFactory>
+                    <extraConfigFile>${build.webapp.resources}/WEB-INF/wro.properties</extraConfigFile>
+                    <incrementalBuildEnabled>false</incrementalBuildEnabled>
+                    <parallelProcessing>true</parallelProcessing>
+                    <options>sub</options>
+                    <failFast>true</failFast>
+                    <failNever>false</failNever>
+                    <failThreshold>0</failThreshold>
+                </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>wro4j</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>web-ui</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>geonetwork-client</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.github.sommeri</groupId>
+                        <artifactId>less4j</artifactId>
+                        <version>1.2.1</version>
+                    </dependency>
+                </dependencies>
+
+            </plugin>
 		  <plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-checkstyle-plugin</artifactId>
@@ -1031,5 +1130,6 @@
     <widgets.webapp.resources></widgets.webapp.resources>
     <system.specific.overrides></system.specific.overrides>
     <rootProjectDir>${basedir}/..</rootProjectDir>
+		<wro4jOutput>${project.build.directory}/wro4j-output/</wro4jOutput>
   </properties>
 </project>

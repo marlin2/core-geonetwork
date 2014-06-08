@@ -266,7 +266,7 @@
       <dependency>
         <groupId>org.jdom</groupId>
         <artifactId>jdom</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.3</version>
       </dependency>
       <dependency>
         <groupId>xalan</groupId>
@@ -953,6 +953,8 @@
     <module>oaipmh</module>
     <module>sde</module>
     <module>web-client</module>
+    <module>wro4j</module>
+    <module>web-ui</module>
     <module>web</module>
   </modules>
 
@@ -970,6 +972,7 @@
         <module>web-itest</module>
       </modules>
     </profile>
+		<!--
     <profile>
       <id>gast</id>
       <activation>
@@ -981,6 +984,7 @@
         <module>gast</module>
       </modules>
     </profile>
+		-->
     <profile>
       <id>geoserver</id>
       <activation>
@@ -1009,12 +1013,13 @@
   </distributionManagement>
 
   <properties>
-    <jetty.version>7.3.1.v20110307</jetty.version>
+    <jetty.version>8.1.9.v20130131</jetty.version>
     <geotools.version>8.6</geotools.version>
     <lucene.version>4.1.0</lucene.version>
     <spring.version>3.1.1.RELEASE</spring.version>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH'\:'mm'\:'ssZ</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
     <rootProjectDir>..</rootProjectDir>
+		<wro.version>1.7.1</wro.version>
   </properties>
 </project>
