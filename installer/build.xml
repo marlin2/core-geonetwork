@@ -32,7 +32,7 @@
 	<property name="propsdir" value="../.props" />
 	<property name="ant.build.javac.target" value="1.5"/>
 	<property name="debugOn" value="on"/> <!-- on off true false yes no -->
-    <property name="thesaurusUrl" value="https://raw.github.com/geonetwork/util-gemet/master/thesauri" />
+    <property name="thesaurusUrl" value="/var/tmp" />
 
 	<!-- =================================================================================== -->
 	
@@ -49,14 +49,14 @@
     <target name="thesaurusDownload">
         <mkdir	dir ="../web/target/thesauri" />
 
-        <get src="${thesaurusUrl}/gemet.rdf"
-        	dest="../web/target/thesauri/gemet.rdf" usetimestamp="true" />
+        <copy file="${thesaurusUrl}/gemet.rdf"
+        	toFile="../web/target/thesauri/gemet.rdf"/>
 
-        <get src="${thesaurusUrl}/inspire-service-taxonomy.rdf"
-             dest="../web/target/thesauri/inspire-service-taxonomy.rdf" usetimestamp="true" />
+        <copy file="${thesaurusUrl}/inspire-service-taxonomy.rdf"
+             toFile="../web/target/thesauri/inspire-service-taxonomy.rdf"/>
 
-         <get src="${thesaurusUrl}/inspire-theme.rdf"
-             dest="../web/target/thesauri/inspire-theme.rdf" usetimestamp="true" />
+         <copy file="${thesaurusUrl}/inspire-theme.rdf"
+             toFile="../web/target/thesauri/inspire-theme.rdf"/>
     </target>
 
     <target name="inspireDbSettings">
