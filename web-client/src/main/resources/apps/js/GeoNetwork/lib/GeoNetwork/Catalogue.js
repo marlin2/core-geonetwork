@@ -988,6 +988,37 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
             window.open(this.services.mdEdit + '?id=' + id, this.windowName, this.windowOption);
         }
     },
+		/**
+     * Return true if browser is supported.
+     * Display an error message if not and return false.
+     */
+    isSupportedBrowser: function(msg) {
+      if (Ext.isIE6 || Ext.isIE7 || Ext.isIE8) {
+        this.showError(OpenLayers.i18n('unsupportedBrowser'), msg);
+        return false;
+      } else {
+        return true;
+      }
+    },
+    metadataEdit2: function(id, create, group, child, isTemplate, schema){
+      if (this.isSupportedBrowser(OpenLayers.i18n('editorBrowserRestriction'))) {
+        var url = 'catalog.edit#/';
+        if (create) {
+          if (id) {
+            if (child) {
+              url += 'create?childOf=' + id;
+            } else {
+              url += 'create?from=' + id;
+            }
+          } else {
+            url += 'create';
+          }
+        } else {
+          url += 'metadata/' + id;
+        }
+        window.open(url, '_blank');
+      }
+    },
     /** api: method[metadataDuplicate]
      *  :param uuid: ``String`` Uuid of the metadata to duplicate
      *

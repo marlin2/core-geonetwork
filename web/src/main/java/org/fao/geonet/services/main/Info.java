@@ -109,12 +109,15 @@ public class Info implements Service {
 
 
 			if (type.equals("site")) {
-				result.addContent(gc.getSettingManager().get("system", -1));
-			}
+				result.addContent(sm.get("system", -1));
+			} else if (type.equals("config")) {
+        // Return a set of properties which define what
+        // to display or not in the user interface
+							String  xslPath = context.getAppPath() + Geonet.Path.STYLESHEETS+ "/xml";
+    					Element sets  = gc.getSettingManager().getAll();
 
-			else if (type.equals("inspire"))
-				result.addContent(gc.getSettingManager().get("system/inspire", -1));
-
+			} else if (type.equals("inspire"))
+			  result.addContent(gc.getSettingManager().getAll());
 			else if (type.equals("categories"))
 				result.addContent(Lib.local.retrieve(dbms, "Categories"));
 
@@ -171,7 +174,6 @@ public class Info implements Service {
 		}
 		
 		result.addContent(getEnv(context));
-
 		Element response = Xml.transform(result, xslPath +"/info.xsl");
 
         return response;
@@ -598,6 +600,7 @@ public class Info implements Service {
 	private Element getEnv(ServiceContext context)
 	{
 		return new Element("env")
-						.addContent(new Element("baseURL").setText(context.getBaseUrl()));
+						.addContent(new Element("baseURL").setText(context.getBaseUrl()))
+						.addContent(new Element("node").setText(context.getNodeId()));
 	}
 }

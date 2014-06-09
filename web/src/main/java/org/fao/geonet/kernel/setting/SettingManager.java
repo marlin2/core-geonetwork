@@ -118,6 +118,23 @@ public class SettingManager
 	//---------------------------------------------------------------------------
 	//--- Getters
 	//---------------------------------------------------------------------------
+	public Element getAll()
+	{
+		lock.readLock().lock();
+		try {
+			Element r = new Element("root");
+			Setting s = root;
+			for (Setting child : s.getChildren()) {
+				Element top = new Element(child.getName());
+				top.addContent(build(child, -1));	
+				r.addContent(top);
+			}
+			return r;
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
+
 	public Element get(String path, int level)
 	{
 		lock.readLock().lock();
