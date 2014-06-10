@@ -67,6 +67,7 @@
         <jsSource webappPath="scripts/geonetwork.js"/>
         <jsSource webappPath="scripts/modalbox.js"/>
         <jsSource webappPath="scripts/form_check.js"/>
+        <jsSource webappPath="scripts/prototype.js"/>
     </declarative>
 
     <declarative name="gn.search" pathOnDisk="${project.basedir}/src/main/webapp">

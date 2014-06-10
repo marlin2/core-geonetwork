@@ -75,6 +75,22 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class SettingManager
 {
+
+  public static final String SYSTEM_SITE_SITE_ID_PATH = "system/site/siteId";
+  public static final String SYSTEM_SITE_NAME_PATH = "system/site/name";
+  public static final String CSW_TRANSACTION_XPATH_UPDATE_CREATE_NEW_ELEMENTS = "system/csw/transactionUpdateCreateXPath";
+
+  public static final String SYSTEM_PROXY_USE = "system/proxy/use";
+  public static final String SYSTEM_PROXY_HOST = "system/proxy/host";
+  public static final String SYSTEM_PROXY_PORT = "system/proxy/port";
+  public static final String SYSTEM_PROXY_USERNAME = "system/proxy/username";
+  public static final String SYSTEM_PROXY_PASSWORD = "system/proxy/password";
+
+  public static final String SYSTEM_LUCENE_IGNORECHARS = "system/requestedLanguage/ignorechars";
+  public static final String SYSTEM_REQUESTED_LANGUAGE_SORTED = "system/requestedLanguage/sorted";
+  public static final String SYSTEM_REQUESTED_LANGUAGE_ONLY = "system/requestedLanguage/only";
+  public static final String SYSTEM_AUTODETECT_ENABLE = "system/autodetect/enable";
+  public static final String SYSTEM_XLINKRESOLVER_ENABLE = "system/xlinkResolver/enable";
 	private Setting root;
 	private Dbms dbms;
 	//---------------------------------------------------------------------------
@@ -168,6 +184,27 @@ public class SettingManager
 			lock.readLock().unlock();
 		}
 	}
+
+	//---------------------------------------------------------------------------
+
+	public Element getValues(String[] keys) {
+    Element env = new Element("settings");
+    for (int i = 0; i < keys.length; i++) {
+      String key = keys[i];
+      Setting se = resolve(key);
+      if (se == null) {
+        Log.error(Geonet.SETTINGS, "  Requested setting with name: " + key + " not found. Add it to the settings table.");
+      } else {
+        String value = se.getValue();
+        if (value != null) {
+          Element setting = new Element("setting");
+          setting.setAttribute("name", key).setAttribute("value", value);
+          env.addContent(setting);
+        }
+      }
+    }
+    return env;
+  }
 
 	//---------------------------------------------------------------------------
 	//--- Setters

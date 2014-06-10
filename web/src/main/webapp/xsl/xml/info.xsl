@@ -42,26 +42,43 @@
 
 	<!-- ============================================================================================= -->
 
-	<xsl:template match="system">
-		<site>
-			<name><xsl:value-of select="children/site/children/name/value"/></name>
-			<organization><xsl:value-of select="children/site/children/organization/value"/></organization>
-			<siteId><xsl:value-of select="children/site/children/siteId/value"/></siteId>
-			<platform>
-				<name>geonetwork</name>
-				<version><xsl:value-of select="children/platform/children/version/value"/></version>
-				<subVersion><xsl:value-of select="children/platform/children/subVersion/value"/></subVersion>
-			</platform>
-		</site>
+	<xsl:template match="settings">
+		<xsl:choose>
+			<xsl:when test="setting[@name='system/site/name']">
+				<site>
+					<name><xsl:value-of select="setting[@name='system/site/name']/@value"/></name>
+					<organization><xsl:value-of select="setting[@name='system/site/organization']/@value"/></organization>
+					<siteId><xsl:value-of select="setting[@name='system/site/siteId']/@value"/></siteId>
+					<platform>
+						<name>geonetwork</name>
+						<version><xsl:value-of select="setting[@name='system/platform/version']/@value"/></version>
+						<subVersion><xsl:value-of select="setting[@name='system/platform/subVersion']/@value"/></subVersion>
+					</platform>
+				</site>
+			</xsl:when>
+			<!-- Only INSPIRE -->
+			<xsl:when test="not(setting[@name='system/site/name']) and setting[@name='system/inspire/enable']">
+				<inspire>
+					<enable><xsl:value-of select="setting[@name='system/inspire/enable']/@value"/></enable>
+					<enableSearchPanel><xsl:value-of select="setting[@name='system/inspire/enableSearchPanel']/@value"/></enableSearchPanel>
+				</inspire>
+			</xsl:when>
+			<xsl:when test="not(setting[@name='system/site/name']) and setting[@name='system/harvester/enableEditing']">
+				<harvester>
+					<enable><xsl:value-of select="setting[@name='system/harvester/enableEditing']/@value"/></enable>
+				</harvester>
+			</xsl:when>
+		    <xsl:when test="not(setting[@name='system/site/name']) and setting[@name='system/metadataprivs/usergrouponly']">
+		        <metadataprivs>
+		            <userGroupOnly><xsl:value-of select="setting[@name='system/metadataprivs/usergrouponly']/@value"/></userGroupOnly>
+		        </metadataprivs>
+		    </xsl:when>
+			<xsl:otherwise>
+				
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
-    <xsl:template match="inspire">
-        <inspire>
-            <enable><xsl:value-of select="children/enable/value"/></enable>
-            <enableSearchPanel><xsl:value-of select="children/enableSearchPanel/value"/></enableSearchPanel>
-        </inspire>
-    </xsl:template>
-	
 	<!-- ============================================================================================= -->
 
     <xsl:template match="isolanguages">

@@ -109,16 +109,34 @@ public class Info implements Service {
 
 
 			if (type.equals("site")) {
-				result.addContent(sm.get("system", -1));
+				// adds all listed values in settings element
+				result.addContent(sm.getValues(	
+					new String[]{
+						SettingManager.SYSTEM_SITE_NAME_PATH,
+						"system/site/organization",
+						SettingManager.SYSTEM_SITE_SITE_ID_PATH,
+						"system/platform/version",
+						"system/platform/subVersion"
+					}
+				));
 			} else if (type.equals("config")) {
         // Return a set of properties which define what
         // to display or not in the user interface
 				Element configEl = new Element("config");
 				configEl.addContent(gc.getSettingManager().getAll());
 			  result.addContent(configEl);
-			} else if (type.equals("inspire"))
-			  result.addContent(gc.getSettingManager().getAll());
-			else if (type.equals("categories"))
+			} else if (type.equals("inspire")) {
+				result.addContent(gc.getSettingManager().getValues(
+				   new String[]{
+							"system/inspire/enableSearchPanel",
+							"system/inspire/enable"}));
+			} else if (type.equals("harvester")) {
+			   result.addContent(gc.getSettingManager().getValues(
+				 new String[]{ "system/harvester/enableEditing"}));
+			} else if (type.equals("userGroupOnly")) {
+			   result.addContent(gc.getSettingManager().getValues(
+				 new String[]{"system/metadataprivs/usergrouponly"}));
+			} else if (type.equals("categories"))
 				result.addContent(Lib.local.retrieve(dbms, "Categories"));
 
             else if (type.equals("groups"))   {
