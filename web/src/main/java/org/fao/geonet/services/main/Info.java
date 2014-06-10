@@ -113,9 +113,9 @@ public class Info implements Service {
 			} else if (type.equals("config")) {
         // Return a set of properties which define what
         // to display or not in the user interface
-							String  xslPath = context.getAppPath() + Geonet.Path.STYLESHEETS+ "/xml";
-    					Element sets  = gc.getSettingManager().getAll();
-
+				Element configEl = new Element("config");
+				configEl.addContent(gc.getSettingManager().getAll());
+			  result.addContent(configEl);
 			} else if (type.equals("inspire"))
 			  result.addContent(gc.getSettingManager().getAll());
 			else if (type.equals("categories"))
