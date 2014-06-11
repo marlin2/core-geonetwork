@@ -195,7 +195,7 @@
       <class name=".services.metadata.AddElement"/>
 
       <output sheet="../xslt/ui-metadata/edit/edit-embedded.xsl">
-        <call name="currTab" class=".guiservices.util.GetCurrentMDEditingTab"/>
+        <call name="currTab" class=".guiservices.util.GetCurrentMDTab"/>
         <call name="position" class=".guiservices.util.GetPositionMD"/>
         <call name="groups" class=".guiservices.groups.GetMine"/>
         <call name="sources" class=".guiservices.util.Sources"/>
