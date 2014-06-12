@@ -42,6 +42,32 @@
 
 	<!-- ============================================================================================= -->
 
+	<xsl:template mode="allprocessor" match="*">
+		<xsl:variable name="qname" select="name()"/>
+		<xsl:element name="{$qname}">
+			<xsl:choose>
+				<xsl:when test="children">
+					<xsl:apply-templates mode="allprocessor" select="children/*"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="value"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>	
+	</xsl:template>
+
+	<!-- ============================================================================================= -->
+
+	<xsl:template match="all">
+		<system>
+			<xsl:for-each select="root/system/system/children/*">
+				<xsl:apply-templates mode="allprocessor" select="."/>
+			</xsl:for-each>
+		</system>
+	</xsl:template>
+
+	<!-- ============================================================================================= -->
+
 	<xsl:template match="settings">
 		<xsl:choose>
 			<xsl:when test="setting[@name='system/site/name']">
