@@ -404,6 +404,9 @@
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini.js', $minimize)}"></script>
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-html5ui-app.js', $minimize)}"></script>
+				<script type="text/javascript" src="{concat($baseUrl, '/static/gn.libs.js', $minimize)}"></script>
+				<script type="text/javascript" src="{concat($baseUrl, '/static/gn.libs.scriptaculous.js',$minimize)}"/><xsl:text>&#10;</xsl:text>
+				<script type="text/javascript" src="{concat($baseUrl, '/static/gn.libs.js', $minimize)}"></script>
 				<script type="text/javascript" src="{concat($baseUrl, '/static/gn.js', $minimize)}"></script>
 
 

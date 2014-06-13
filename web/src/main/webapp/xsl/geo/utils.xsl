@@ -13,20 +13,16 @@
 			};
 		</script>
 
-		<xsl:choose>
-			<xsl:when test="/root/request/debug">
-				<script type="text/javascript" src="{/root/gui/url}/scripts/prototype.js"/><xsl:text>&#10;</xsl:text>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/geonetwork.js"/><xsl:text>&#10;</xsl:text>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/scriptaculous/scriptaculous.js?load=slider,effects,controls"/><xsl:text>&#10;</xsl:text>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/modalbox.js"/><xsl:text>&#10;</xsl:text>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/form_check.js"/><xsl:text>&#10;</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/lib/gn.libs.js"/><xsl:text>&#10;</xsl:text>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/lib/gn.libs.scriptaculous.js"/><xsl:text>&#10;</xsl:text>
-				<script type="text/javascript" src="{/root/gui/url}/scripts/lib/gn.js"/><xsl:text>&#10;</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+			<xsl:variable name="minimize">
+            <xsl:choose>
+                <xsl:when test="/root/request/debug">?minimize=false</xsl:when>
+                <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.libs.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.libs.scriptaculous.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.js{$minimize}"/><xsl:text>&#10;</xsl:text>
 	</xsl:template>
 
 	<xsl:template name="geoCssHeader">
