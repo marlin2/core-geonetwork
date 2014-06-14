@@ -52,12 +52,10 @@
       };
 
       var init = function() {
-        if (!angular.isUndefined($scope.groups)) {
-        	$http.get('info@json?type=groups&profile=Editor', {cache: true}).
-           success(function(data) {
-           		scope.groups = data !== 'null' ? data.groups : null;
+        $http.get('info@json?type=groups&profile=Editor', {cache: true}).
+          success(function(data) {
+         		$scope.groups = data !== 'null' ? data.groups : null;
           });
-				}
 
         if ($routeParams.id) {
           gnMetadataManager.create(
