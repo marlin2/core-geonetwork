@@ -148,7 +148,7 @@
              function loadGroups() {
                $http.get('info@json?type=groups', {cache: true})
                  .success(function(data) {
-                 scope.groups = data !== 'null' ? data.group : null;
+                 scope.groups = data !== 'null' ? data.groups : null;
                });
              }
              var init = function() {

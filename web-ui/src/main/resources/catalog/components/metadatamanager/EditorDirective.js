@@ -32,7 +32,7 @@
           var init = function() {
             $http.get('info@json?type=groups&profile=Editor', {cache: true}).
                 success(function(data) {
-                  scope.groups = data !== 'null' ? data.group : null;
+                  scope.groups = data !== 'null' ? data.groups : null;
                 });
           };
 
