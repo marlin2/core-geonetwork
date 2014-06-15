@@ -76,7 +76,6 @@ public class Update extends NotInReadOnlyModeService {
 		Dbms dbms = (Dbms) context.getResourceManager().open(Geonet.Res.MAIN_DB);
 
 		String id         = Utils.getIdentifierFromParameters(params, context);
-		String version    = Util.getParam(params, Params.VERSION);
 		String isTemplate = Util.getParam(params, Params.TEMPLATE, "n");
 		String showValidationErrors = Util.getParam(params, Params.SHOWVALIDATIONERRORS, "false");
 		String title      = params.getChildText(Params.TITLE);

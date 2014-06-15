@@ -126,6 +126,14 @@ public class BasicContext
 	public void info   (String message) { logger.info   (message); }
 	public void warning(String message) { logger.warning(message); }
 	public void error  (String message) { logger.error  (message); }
+  /**
+     * Return the id of the current node.
+     *
+     * @return the id of the current node.
+     */
+    public String getNodeId() {
+        return "srv";
+    }	
 }
 
 //=============================================================================

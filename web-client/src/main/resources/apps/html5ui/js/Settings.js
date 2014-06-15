@@ -30,6 +30,9 @@ GeoNetwork.searchDefault = {
 };
 GeoNetwork.advancedFormButton = true;
 
+GeoNetwork.Settings.hideAngularEditor = false;
+GeoNetwork.Settings.hideExtEditor = true;
+
 GeoNetwork.Settings.editor = {
     defaultViewMode : 'simple',
     editHarvested: true

@@ -55,7 +55,8 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
     },
     resultsView: undefined,
     catalogue: undefined,
-    editAction: undefined,
+		extEditorAction: undefined,
+		angularEditorAction: undefined,
     deleteAction: undefined,
     zoomToAction: undefined,
     otherActions: undefined,
@@ -87,7 +88,7 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
      initAction: function(){        
     /* Edit menu */
     /* TODO : only displayer for logged in users */
-        this.editAction = new Ext.Action({
+				this.extEditorAction = new Ext.Action({
             text: OpenLayers.i18n('edit'),
             iconCls: 'md-mn-edit',
             handler: function(){
@@ -96,6 +97,15 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
             },
             scope: this
         });
+        this.angularEditorAction = new Ext.Action({
+            text: OpenLayers.i18n('edit'),
+            iconCls: 'md-mn-edit',
+            handler: function(){
+                var id = this.record.get('id');
+                this.catalogue.metadataEdit2(id);
+            },
+            scope: this
+        });	
         this.deleteAction = new Ext.Action({
             text: OpenLayers.i18n('delete'),
             iconCls: 'md-mn-del',
@@ -111,7 +121,11 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
             iconCls: 'md-mn-copy',
             handler: function(){
                 var id = this.record.get('id');
+							if (GeoNetwork.Settings.hideAngularEditor === true) {
                 GeoNetwork.editor.EditorTools.showNewMetadataWindow(this, id, OpenLayers.i18n('duplicate'), false);
+              } else {
+                catalogue.metadataEdit2(id, true, null, false, 'n', null);
+              }
             },
             scope: this
         });
@@ -120,7 +134,11 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
             iconCls: 'childIcon',
             handler: function(){
                 var id = this.record.get('id');
+							if (GeoNetwork.Settings.hideAngularEditor === true) {
                 GeoNetwork.editor.EditorTools.showNewMetadataWindow(this, id, OpenLayers.i18n('createChild'), true);
+              } else {
+                catalogue.metadataEdit2(id, true, null, true, 'n', null);
+              }
             },
             scope: this
         });
@@ -269,7 +287,8 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
     
     composeMenu: function(){
         if(!this.catalogue.isReadOnly()) {
-            this.add(this.editAction);
+						this.add(this.angularEditorAction);
+            this.add(this.extEditorAction);
             this.add(this.deleteAction);
             this.otherActions = new Ext.menu.Item({
                 text: OpenLayers.i18n('otherActions'),
@@ -333,19 +352,30 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
                 (this.catalogue.identifiedUser && this.catalogue.identifiedUser.role !== 'RegisteredUser'),
             isReadOnly = this.catalogue.isReadOnly();
 
+				this.extEditorAction.hide();
+		    this.angularEditorAction.hide();
+
         /* Actions and menu visibility for logged in user */
         if (!identified || isReadOnly) {
-            this.editAction.hide();
+						this.extEditorAction.setText(OpenLayers.i18n('edit'));
+						this.angularEditorAction.setText(OpenLayers.i18n('edit'));
             this.deleteAction.hide();
         } else {
-            this.editAction.show();
-            this.deleteAction.show();
+					if (GeoNetwork.Settings.hideExtEditor === false) {
+					  this.extEditorAction.show();
+        		this.extEditorAction.setDisabled(!isEditable || isReadOnly);
+					}
+					// Display by default Angular editor
+					if (!GeoNetwork.Settings.hideAngularEditor) {
+						this.angularEditorAction.show();
+						this.angularEditorAction.setDisabled(!isEditable || isReadOnly);
+					}
+					this.deleteAction.show();
         }
         if(this.otherActions) this.otherActions.setVisible(identified);
         this.adminMenuSeparator.setVisible(identified);
         
         /* Actions status depend on records */
-        this.editAction.setDisabled(!isEditable || isReadOnly);
         this.adminAction.setDisabled((!isEditable && !isHarvested) || isReadOnly);
         this.statusAction.setDisabled(!isEditable && !isHarvested);
         this.versioningAction.setDisabled((!isEditable && !isHarvested) || isReadOnly);

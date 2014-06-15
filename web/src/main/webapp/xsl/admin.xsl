@@ -6,6 +6,26 @@
 
     <xsl:include href="main.xsl"/>
 
+		<xsl:template name="adminscript">
+
+    <xsl:variable name="minimize">
+            <xsl:choose>
+                <xsl:when test="/root/request/debug">?minimize=false</xsl:when>
+                <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+				<script type="text/javascript" src="{/root/gui/url}/static/gn.libs.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.libs.scriptaculous.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.search.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <!-- Editor JS is still required here at least for batch operation -->
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.editor.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <script type="text/javascript" src="{/root/gui/url}/static/gn.libs.map.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+        <script type="text/javascript" src="{/root/gui/url}/static/kernel.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+		</xsl:template>
+
     <!-- Use the link parameter to display a custom hyperlink instead of
     a default GeoNetwork Jeeves service URL. -->
     <xsl:template name="addrow">
@@ -102,6 +122,8 @@
         <xsl:call-template name="formLayout">
             <xsl:with-param name="title" select="/root/gui/strings/admin"/>
             <xsl:with-param name="content">
+
+								<xsl:call-template name="adminscript"/>
 
                 <xsl:variable name="readonly" select="/root/gui/env/readonly = 'true'"/>
 
