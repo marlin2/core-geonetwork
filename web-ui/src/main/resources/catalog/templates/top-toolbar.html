@@ -1,14 +1,18 @@
-<a class="navbar-brand" href="{{pages.home}}">
+<a class="navbar-brand" ng-hide="true" href="{{pages.home}}">
   <img class="gn-logo" ng-src="../../images/logos/{{info.site.siteId}}.gif?{{info.site.lastUpdate}}"/>
   {{info.site.name}}</a>
 <a class="navbar-brand" href="{{pages.signin}}" 
     data-ng-show="!authenticated"
     data-ng-keypress="$event"
+		ng-hide="true"
     data-translate="">signIn</a>
-<a class="navbar-brand" href="{{pages.admin}}" data-ng-show="authenticated" data-translate>adminConsole</a>
+<a class="navbar-brand" href="{{pages.admin}}" 
+		ng-hide="true" 
+		data-translate>adminConsole</a>
 
+<!--		data-ng-show="authenticated" replaced with ng-hide="true" -->
 
-<div class="navbar-collapse navbar-ex1-collapse pull-right">
+<div class="navbar-collapse navbar-ex1-collapse pull-right" ng-hide="true">
     <ul class="nav navbar-nav">
         <li data-ng-show="authenticated">
             <p class="navbar-text"><img class="img-circle" ng-src="http://gravatar.com/avatar/{{u.email | md5}}?s=18"/>
