@@ -23,7 +23,8 @@
       <li class="dropdown" id="gn-view-menu-{$metadataId}">
         <a class="dropdown-toggle" data-toggle="dropdown" href="" 
           title="{$i18n/selectView}">
-          <i class="fa fa-eye"></i>
+          <!-- <i class="fa fa-eye"></i> -->
+					<span data-translate="">VIEWS</span>
           <b class="caret"/>
         </a>
         <ul class="dropdown-menu">
