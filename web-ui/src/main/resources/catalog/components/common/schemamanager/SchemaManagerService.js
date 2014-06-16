@@ -3,6 +3,9 @@
 
   var module = angular.module('gn_schema_manager_service', []);
 
+	// FIXME: This should be populated from the list of namespaces 
+	// associated with schemas registered in GeoNetwork. These can be
+	// returned by asking the server
   module.value('gnNamespaces', {
     gmd: 'http://www.isotc211.org/2005/gmd',
     gco: 'http://www.isotc211.org/2005/gco',
@@ -14,7 +17,8 @@
     gts: 'http://www.isotc211.org/2005/gts',
     srv: 'http://www.isotc211.org/2005/srv',
     xlink: 'http://www.w3.org/1999/xlink',
-    mri: 'http://www.isotc211.org/2005/mri/1.0/2013-06-24'
+    mri: 'http://www.isotc211.org/2005/mri/1.0/2013-06-24',
+		mcp: 'http://bluenet3.antcrc.utas.edu.au/mcp'
   });
 
   /**

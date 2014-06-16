@@ -129,6 +129,7 @@
     "schematron-rules-iso": "Règles ISO",
     "searchACRS": " ou rechercher un système de coordonnées ...",
     "searchAContact": "Rechercher un contact ...",
+    "searchAnOrganisation": "Search for an organisation ...",
     "setAndReplaceExtent": "Remplacer les étendues existantes",
     "setCRS": "Définir le système de coordonnées",
     "setDynamicGraphicOverview": "Définir l'aperçu de la fiche à partir d'une requête GetMap sur le service associé",
