@@ -98,7 +98,9 @@
      * Run a search with the actual $scope.params
      * merged with the params from facets state.
      * Update the paginationInfo object with the total
-     * count of metadata found.
+     * count of metadata found. Note that this search
+		 * is for subtemplates with _root element provided as function
+		 * param and wildcard char appended
      */
     this.triggerWildSubtemplateSearch = function(element) {
 
@@ -118,7 +120,11 @@
 			params._isTemplate = 's';
 			params._root = element;
 
-      gnSearchManagerService.gnSearch(params).then(
+			// if they've typed in at least 2 letters then 
+			// do the typeahead search - otherwise too many
+			// results come back and may get out of sync
+			if (params.any.length > 2) {
+      	gnSearchManagerService.gnSearch(params).then(
           function(data) {
             $scope.searchResults.records = data.metadata;
             $scope.searchResults.count = data.count;
@@ -132,6 +138,7 @@
                       $scope.paginationInfo.hitsPerPage, 0);
             }
           });
+			}
     };
 
     /**
