@@ -120,10 +120,10 @@
 			params._isTemplate = 's';
 			params._root = element;
 
-			// if they've typed in at least 2 letters then 
+			// if they've typed in at least 3 letters then 
 			// do the typeahead search - otherwise too many
 			// results come back and may get out of sync
-			if (params.any.length > 2) {
+			if (params.any.length > 3) {
       	gnSearchManagerService.gnSearch(params).then(
           function(data) {
             $scope.searchResults.records = data.metadata;
