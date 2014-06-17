@@ -387,6 +387,9 @@
             <jsSource webappPath="apps/html5ui/js/state/PermalinkProvider.js"/>
             <jsSource webappPath="apps/html5ui/js/state/History.js"/>
             <jsSource webappPath="apps/html5ui/js/BreadCrumb.js"/>
+						<jsSource webappPath="apps/html5ui/js/MarLIN/app.SearchField.js"/>
+						<jsSource webappPath="apps/html5ui/js/MarLIN/KeywordSelectionPanel.js"/>
+						<jsSource webappPath="apps/html5ui/js/MarLIN/SearchFormTools.js"/>
             <jsSource webappPath="apps/html5ui/js/App.js"/>
     </declarative>
     <!-- search/css/style.css
