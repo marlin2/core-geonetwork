@@ -298,10 +298,15 @@ public class Resources {
 		File file = new File(resourcesDir, filename);
 
 		if (!file.exists()) {
-			File webappCopy;
+			File webappCopy = null;
 			if (context != null) {
-				webappCopy = new File(context.getRealPath(filename));
-			} else {
+				final String realPath = context.getRealPath(filename);
+				if (realPath != null) {
+					webappCopy = new File(context.getRealPath(filename));
+				}
+			}
+
+			if (webappCopy == null) {
 				webappCopy = new File(appPath, filename);
 			}
 			if (webappCopy.exists()) {

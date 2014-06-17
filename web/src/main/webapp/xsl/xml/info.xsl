@@ -12,28 +12,196 @@
 		</info>
 	</xsl:template>
 
-	<!-- ============================================================================================= -->
-
-	<xsl:template match="system">
-		<site>
-			<name><xsl:value-of select="children/site/children/name/value"/></name>
-			<organization><xsl:value-of select="children/site/children/organization/value"/></organization>
-			<siteId><xsl:value-of select="children/site/children/siteId/value"/></siteId>
-			<platform>
-				<name>geonetwork</name>
-				<version><xsl:value-of select="children/platform/children/version/value"/></version>
-				<subVersion><xsl:value-of select="children/platform/children/subVersion/value"/></subVersion>
-			</platform>
-		</site>
+	<xsl:template match="config">
+		<xsl:for-each select="root/*[name()!='env']">
+			<xsl:apply-templates mode="config" select="."/>
+		</xsl:for-each>
+		<xsl:copy-of select="root/env"/>
 	</xsl:template>
 
-    <xsl:template match="inspire">
-        <inspire>
-            <enable><xsl:value-of select="children/enable/value"/></enable>
-            <enableSearchPanel><xsl:value-of select="children/enableSearchPanel/value"/></enableSearchPanel>
-        </inspire>
-    </xsl:template>
-	
+	<xsl:template mode="config" match="system">
+		<system.site.name><xsl:value-of select="system/children/site/children/name/value"/></system.site.name>
+		<system.site.organization><xsl:value-of select="system/children/site/children/organization/value"/></system.site.organization>
+		<system.site.siteId><xsl:value-of select="system/children/site/children/siteId/value"/></system.site.siteId>
+		<system.platform.version><xsl:value-of select="system/children/platform/children/version/value"/></system.platform.version>
+		<system.platform.subVersion><xsl:value-of select="system/children/platform/children/subVersion/value"/></system.platform.subVersion>
+		<system.server.host><xsl:value-of select="system/children/server/children/host/value"/></system.server.host>
+		<system.server.protocol><xsl:value-of select="system/children/server/children/protocol/value"/></system.server.protocol>
+		<system.server.port><xsl:value-of select="system/children/server/children/port/value"/></system.server.port>
+		<system.userSelfRegistration.enable><xsl:value-of select="system/children/userSelfRegistration/children/enable/value"/></system.userSelfRegistration.enable>
+		<system.xlinkResolver.enable><xsl:value-of select="system/children/xlinkResolver/children/enable/value"/></system.xlinkResolver.enable>
+		<system.searchStats.enable><xsl:value-of select="system/children/searchStats/children/enable/value"/></system.searchStats.enable>
+		<system.inspire.enableSearchPanel><xsl:value-of select="system/children/inspire/children/enableSearchPanel/value"/></system.inspire.enableSearchPanel>
+		<system.harvester.enableEditing><xsl:value-of select="system/children/harvester/children/enableEditing/value"/></system.harvester.enableEditing>
+		<system.metadata.defaultView><xsl:value-of select="system/children/metadata/children/defaultView/value"/></system.metadata.defaultView>
+		<system.metadataprivs.usergrouponly><xsl:value-of select="system/children/metadataprivs/children/usergrouponly/value"/></system.metadataprivs.usergrouponly>
+		<map.config>{"useOSM":true,"context":"","layer":{"url":"http://www2.demis.nl/mapserver/wms.asp?","layers":"Countries","version":"1.1.1"},"projection":"EPSG:3857","projectionList":[{"code":"EPSG:4326","label":"WGS84 (EPSG:4326)"},{"code":"EPSG:3857","label":"Google mercator (EPSG:3857)"}]}</map.config>
+		<map.proj4js>[{"code":"EPSG:2154","value":"+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"}]</map.proj4js>
+		<metadata.editor.schemaConfig>{
+			"iso19110":
+			{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{	
+						"display":true,
+						"readonly":true,
+						"categories":["dataset"]
+				},
+				"validation": 
+				{
+					"display":true
+				}
+			},
+			"iso19139":{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":true
+				},
+				"validation":
+				{
+					"display":true
+				}
+			},
+			"dublin-core":
+			{
+				"defaultTab":"default",
+				"related":
+				{
+					"display":true,
+					"readonly":false,
+					"categories":["parent","onlinesrc"]
+				}
+			},
+			"iso19139.mcp":
+			{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":true
+				},
+				"validation": 
+				{
+					"display":true
+				}
+			},
+			"iso19139.mcp-1.4":
+			{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":true
+				},
+				"validation": 
+				{
+					"display":true
+				}
+			},
+			"iso19139.anzlic":
+			{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":true
+				},
+				"validation":
+				{
+					"display":true
+				}
+			}
+			}</metadata.editor.schemaConfig>
+	</xsl:template>
+
+	<!-- ============================================================================================= -->
+
+	<xsl:template mode="allprocessor" match="*">
+		<xsl:variable name="qname" select="name()"/>
+		<xsl:element name="{$qname}">
+			<xsl:choose>
+				<xsl:when test="children">
+					<xsl:apply-templates mode="allprocessor" select="children/*"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="value"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>	
+	</xsl:template>
+
+	<!-- ============================================================================================= -->
+
+	<xsl:template match="all">
+		<system>
+			<xsl:for-each select="root/system/system/children/*">
+				<xsl:apply-templates mode="allprocessor" select="."/>
+			</xsl:for-each>
+		</system>
+	</xsl:template>
+
+	<!-- ============================================================================================= -->
+
+	<xsl:template match="settings">
+		<xsl:choose>
+			<xsl:when test="setting[@name='system/site/name']">
+				<site>
+					<name><xsl:value-of select="setting[@name='system/site/name']/@value"/></name>
+					<organization><xsl:value-of select="setting[@name='system/site/organization']/@value"/></organization>
+					<siteId><xsl:value-of select="setting[@name='system/site/siteId']/@value"/></siteId>
+					<platform>
+						<name>geonetwork</name>
+						<version><xsl:value-of select="setting[@name='system/platform/version']/@value"/></version>
+						<subVersion><xsl:value-of select="setting[@name='system/platform/subVersion']/@value"/></subVersion>
+					</platform>
+				</site>
+			</xsl:when>
+			<!-- Only INSPIRE -->
+			<xsl:when test="not(setting[@name='system/site/name']) and setting[@name='system/inspire/enable']">
+				<inspire>
+					<enable><xsl:value-of select="setting[@name='system/inspire/enable']/@value"/></enable>
+					<enableSearchPanel><xsl:value-of select="setting[@name='system/inspire/enableSearchPanel']/@value"/></enableSearchPanel>
+				</inspire>
+			</xsl:when>
+			<xsl:when test="not(setting[@name='system/site/name']) and setting[@name='system/harvester/enableEditing']">
+				<harvester>
+					<enable><xsl:value-of select="setting[@name='system/harvester/enableEditing']/@value"/></enable>
+				</harvester>
+			</xsl:when>
+		    <xsl:when test="not(setting[@name='system/site/name']) and setting[@name='system/metadataprivs/usergrouponly']">
+		        <metadataprivs>
+		            <userGroupOnly><xsl:value-of select="setting[@name='system/metadataprivs/usergrouponly']/@value"/></userGroupOnly>
+		        </metadataprivs>
+		    </xsl:when>
+			<xsl:otherwise>
+				
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<!-- ============================================================================================= -->
 
     <xsl:template match="isolanguages">
@@ -169,7 +337,7 @@
 
 	<!-- ============================================================================================= -->
 
-	<xsl:template match="me">
+	<xsl:template match="me|env">
 		<xsl:copy-of select="."/>
 	</xsl:template>
 	<!-- ============================================================================================= -->
@@ -183,10 +351,6 @@
     <xsl:template match="readonly|index">
         <xsl:copy-of select="."/>
     </xsl:template>
-
-	<!-- ============================================================================================= -->
-
-	<xsl:template match="env"/>
 
 	<!-- ============================================================================================= -->
 

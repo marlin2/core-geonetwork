@@ -1,18 +1,23 @@
 package org.fao.geonet.util;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import jeeves.server.ProfileManager;
-import jeeves.utils.Log;
 
+import jeeves.server.context.ServiceContext;
+import jeeves.utils.Xml;
+import jeeves.utils.Log;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.kernel.search.LuceneSearcher;
 import org.fao.geonet.languages.IsoLanguagesMapper;
+
+import javax.annotation.Nonnull;
+
 /**
  * These are all extension methods for calling from xsl docs.  Note:  All
  * params are objects because it is hard to determine what is passed in from XSLT.
@@ -101,6 +106,21 @@ public final class XslUtil
     }
 
     /**
+     * Convert a serialized XML node in JSON
+     * 
+     * @param xml
+     * @return
+     */
+    public static String xmlToJson(Object xml) {
+        try {
+            return Xml.getJSON(xml.toString());
+        } catch (IOException e) {
+            Log.error(Geonet.GEONETWORK, "XMLtoJSON conversion I/O error. Error is " + e.getMessage() + ". XML is " + xml.toString());
+        }
+        return "";
+    }
+
+    /**
      * Converts the seperators of the coords to the WKT from ts and cs
      *
      * @param coords the coords string to convert
@@ -171,7 +191,7 @@ public final class XslUtil
     /**
      * Get field value for metadata identified by uuid.
      * 
-     * @param appPath 	Web application name to access Lucene index from environment variable
+     * @param appName 	Web application name to access Lucene index from environment variable
      * @param uuid 		Metadata uuid
      * @param field 	Lucene field name
      * @param lang 		Language of the index to search in
@@ -186,8 +206,9 @@ public final class XslUtil
             String fieldValue = LuceneSearcher.getMetadataFromIndex(language, id, fieldname);
             if(fieldValue == null) {
                 return getIndexFieldById(appName,uuid,field,lang);
+            } else {
+                return fieldValue;
             }
-            return fieldValue == null ? "" : fieldValue;
         } catch (Exception e) {
             Log.error(Geonet.GEONETWORK, "Failed to get index field value caused by " + e.getMessage());
             return "";
@@ -214,25 +235,24 @@ public final class XslUtil
     public static String twoCharLangCode(String iso3LangCode) {
     	if(iso3LangCode==null || iso3LangCode.length() == 0) {
     		return Geonet.DEFAULT_LANGUAGE;
-    	}
-        String iso2LangCode = "";
+    	} 
+      String iso2LangCode = null;
 
-        try {
-            if (iso3LangCode.length() == 2){
-                iso2LangCode = iso3LangCode;
-            } else {
-                iso2LangCode = IsoLanguagesMapper.getInstance().iso639_2_to_iso639_1(iso3LangCode);
-            }
-        } catch (Exception ex) {
-            Log.error(Geonet.GEONETWORK, "Failed to get iso 2 language code for " + iso3LangCode + " caused by " + ex.getMessage());
-            
-        }
-
-        if(iso2LangCode == null) {
-        	return iso3LangCode.substring(0,2);
+      try {
+        if (iso3LangCode.length() == 2){
+          iso2LangCode = iso3LangCode;
         } else {
-        	return iso2LangCode;
+					iso2LangCode = IsoLanguagesMapper.getInstance().iso639_2_to_iso639_1(iso3LangCode);
         }
+      } catch (Exception ex) {
+        Log.error(Geonet.GEONETWORK, "Failed to get iso 2 language code for " + iso3LangCode + " caused by " + ex.getMessage());
+      }
+
+      if(iso2LangCode == null) {
+        return iso3LangCode.substring(0,2);
+      } else {
+        return iso2LangCode;
+      }
     }
     /**
      * Return '' or error message if error occurs during URL connection.
@@ -266,21 +286,22 @@ public final class XslUtil
                    return "Status: " + code;
                } 
             } // TODO : Other type of URLConnection
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return e.toString();
         }
         
         return "";
     }
-    
+   
 	public static String threeCharLangCode(String langCode) {
-	    if(langCode == null || langCode.length() < 2) return Geonet.DEFAULT_LANGUAGE;
+	    if (langCode == null || langCode.length() < 2) return Geonet.DEFAULT_LANGUAGE;
 
-		if(langCode.length() == 3) return langCode;
+		if (langCode.length() == 3) return langCode;
 
 		return IsoLanguagesMapper.getInstance().iso639_1_to_iso639_2(langCode);
-	}
+
+  }
 
 	public static boolean match(Object src, Object pattern) {
 		if (src == null || src.toString().trim().isEmpty()) {
@@ -289,4 +310,11 @@ public final class XslUtil
 		return src.toString().matches(pattern.toString());
 	}
 
+    private static ThreadLocal<Boolean> allowScripting = new InheritableThreadLocal<Boolean>();
+    public static void setNoScript() {
+        allowScripting.set(false);
+    }
+    public static boolean allowScripting() {
+        return allowScripting.get() == null || allowScripting.get();
+    }
 }
