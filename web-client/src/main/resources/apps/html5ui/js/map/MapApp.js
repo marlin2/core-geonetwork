@@ -779,8 +779,8 @@ GeoNetwork.mapApp = function() {
         action = new GeoExt.Action({
             iconCls : 'zoomlayer',
             id : 'btnZoomToExtent',
-            // tooltip: {title: OpenLayers.i18n("zoomlayerTooltipTitle"), text:
-            // OpenLayers.i18n("zoomlayerTooltipText")},
+            tooltip: {title: OpenLayers.i18n("zoomlayerTooltipTitle"), text:
+            OpenLayers.i18n("zoomlayerTooltipText")},
             handler : function() {
                 var node = activeNode;
                 var layer;
@@ -931,9 +931,9 @@ GeoNetwork.mapApp = function() {
             allowDepress : false,
             pressed : false,
             map : map,
-            iconCls : 'query'
-        // tooltip: {title: OpenLayers.i18n('featureInfoTooltipTitle'), text:
-        // OpenLayers.i18n('featureInfoTooltipText') }
+            iconCls : 'query',
+        		tooltip: {title: OpenLayers.i18n('featureInfoTooltipTitle'), text:
+        		OpenLayers.i18n('featureInfoTooltipText') }
         });
 
         toolbar.push(action);
