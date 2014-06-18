@@ -1433,9 +1433,9 @@ GeoNetwork.mapApp = function() {
                 collapseMode : "mini",
                 split : true,
                 border : false,
-                width : 205,
-                minSize : 205,
-                maxSize : 400,
+                width : 360,
+                minSize : 360,
+                maxSize : 460,
                 layout : 'border',
                 items : [ accordion ]
             }, {
