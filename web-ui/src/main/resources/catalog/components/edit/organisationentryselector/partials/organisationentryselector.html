@@ -18,12 +18,14 @@
         <div class="tt-suggestion"
             data-ng-repeat="r in searchResults.records"> {{r.title}}
           <span class="pull-right">
+						<!-- Not for MarLIN2 - only allow xlink 
             <div class="btn-group"
                  title="{{'addContactAsText-help' | translate}}">
               <button type="button" class="btn btn-default" data-ng-click="addOrganisation(r)">
                 <i class="fa fa-plus"></i>
               </button>
             </div>
+						-->
             <div data-ng-show="gnConfig[gnConfig.key.isXLinkEnabled]"
                  title="{{'addContactAsLink-help' | translate}}"
                  class="btn-group">
