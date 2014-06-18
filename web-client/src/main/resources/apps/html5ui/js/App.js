@@ -318,6 +318,15 @@ GeoNetwork.app = function() {
 						scrapViewSimple: (GeoNetwork.defaultViewMode !== 'view-simple')
         });
 
+				aResTab.on({
+					'beforedestroy': function() {
+						hide("permalink-div");
+					},
+					'beforehide': function() {
+						hide("permalink-div");
+					}
+				});
+
         // aResTab.on("afterrender", function() {
         // // Initialize map and links
         // loadMetadataMap({
