@@ -139,8 +139,6 @@
       var init = function() {
         gnConfigService.load().then(function(c) {
           // Config loaded
-        });
-
         if ($routeParams.id) {
           // Check requested metadata exists
           gnSearchManagerService.gnSearch({
@@ -170,6 +168,7 @@
                 displayToolTip: false
               };
             }
+
             // Get the schema configuration for the current record
             gnCurrentEdit.schemaConfig = $scope.gnSchemaConfig = config;
 
@@ -210,6 +209,7 @@
             }
           });
         }
+        });
       };
 
       /**
