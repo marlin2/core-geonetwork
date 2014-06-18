@@ -97,6 +97,6 @@
     </profiles>
     <properties>
         <rootProjectDir>${basedir}/..</rootProjectDir>
-				<wro.version>1.7.1</wro.version>
+				<wro.version>1.7.5</wro.version>
     </properties>
 </project>

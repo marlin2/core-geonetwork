@@ -1020,6 +1020,6 @@
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH'\:'mm'\:'ssZ</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
     <rootProjectDir>..</rootProjectDir>
-		<wro.version>1.7.1</wro.version>
+		<wro.version>1.7.5</wro.version>
   </properties>
 </project>

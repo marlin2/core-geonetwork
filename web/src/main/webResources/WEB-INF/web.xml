@@ -359,7 +359,7 @@
     </welcome-file-list>
 
     <session-config>
-        <!-- 3 hours -->
-        <session-timeout>180</session-timeout>
+        <!-- 12 hours -->
+        <session-timeout>720</session-timeout>
     </session-config>
 </web-app>
