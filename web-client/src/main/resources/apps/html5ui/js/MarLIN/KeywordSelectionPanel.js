@@ -225,7 +225,7 @@ MarLIN.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
             drawDownIcon: false,
             drawTopIcon: false,
             drawBotIcon: false,
-            imagePath: '../js/ext-ux/MultiselectItemSelector-3.0/icons',
+            imagePath: '../../apps/js/ext-ux/images',
             listeners: {
 								afterRender: function() {
 									MarLIN.keyword.keywordStore.reload();
