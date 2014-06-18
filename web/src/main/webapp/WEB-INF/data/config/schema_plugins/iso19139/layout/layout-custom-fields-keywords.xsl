@@ -101,14 +101,17 @@
         <xsl:variable name="keywords" select="string-join(gmd:keyword/*[1], ',')"/>
 
         <!-- Define the list of transformation mode available. -->
-        <xsl:variable name="transformations">to-iso19139-keyword,to-iso19139-keyword-with-anchor,to-iso19139-keyword-as-xlink</xsl:variable>
+        <!-- <xsl:variable name="transformations">to-iso19139-keyword,to-iso19139-keyword-with-anchor,to-iso19139-keyword-as-xlink</xsl:variable> -->
+        <xsl:variable name="transformations">to-iso19139-keyword-with-anchor,to-iso19139-keyword,to-iso19139-keyword-as-xlink</xsl:variable>
 
-        <!-- Get current transformation mode based on XML fragement analysis -->
+        <!-- Get current transformation mode based on XML fragment analysis -->
+				<!-- default if no keywords (ie. new block) is anchor mode -->
         <xsl:variable name="transformation"
           select="if (count(gmd:keyword/gmx:Anchor) > 0) 
           then 'to-iso19139-keyword-with-anchor' 
           else if (@xlink:href) then 'to-iso19139-keyword-as-xlink' 
-          else 'to-iso19139-keyword'"/>
+          else if (count(gmd:keyword) > 0) then 'to-iso19139-keyword'
+					else 'to-iso19139-keyword-with-anchor'"/> 
 
         <xsl:variable name="parentName" select="name(..)"/>
 
