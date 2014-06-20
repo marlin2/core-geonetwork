@@ -667,6 +667,7 @@ GeoNetwork.Lang.nl = {
 		'bigMap': 'Open kaart en verberg zoekresultaten',
     'createThesaurus': 'Create Thesaurus',
 	'Online data': 'Web Services',
+    'Login.error.message': 'Username or password incorrect, please try again',
 	'Data for download': 'Data Available'
 };
 

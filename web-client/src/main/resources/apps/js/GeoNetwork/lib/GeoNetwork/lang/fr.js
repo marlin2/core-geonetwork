@@ -677,6 +677,7 @@ GeoNetwork.Lang.fr = {
 		'bigMap': 'Open Map and hide search results',
     'createThesaurus': 'Create Thesaurus',
 	'Online data': 'Web Services',
+    'Login.error.message': 'Username or password incorrect, please try again',
 	'Data for download': 'Data Available'
 };
 OpenLayers.Util.extend(OpenLayers.Lang.fr, GeoNetwork.Lang.fr);

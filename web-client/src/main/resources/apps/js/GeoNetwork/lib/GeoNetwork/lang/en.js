@@ -272,6 +272,7 @@ GeoNetwork.Lang.en = {
     'password': 'password',
     'login': 'Sign in',
     'logout': 'Sign out',
+    'Login.error.message': 'Username or password incorrect, please try again',
     'administration': 'Administration',
     'validationReport': 'Validation report',
     'setStatus': 'Metadata status',
