@@ -558,7 +558,6 @@
                 <exclude>iso19139.nap*/**</exclude>
                 <exclude>iso19139.ngmp/**</exclude>
                 <exclude>iso19115-1-2013/**</exclude>
-                <exclude>iso19115-3/**</exclude>
                 <exclude>dist/**</exclude>
                 <exclude>.build/**</exclude>
                 <exclude>build.xml</exclude>

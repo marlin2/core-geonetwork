@@ -19,24 +19,22 @@
 
 	<xsl:template mode="script" match="/" priority="2">
 
-		<script type="text/javascript" src="{$widgetPath}/js/proj4js-compressed.js"/>
 		<script type="text/javascript" src="{$widgetPath}/js/ext/adapter/ext/ext-base.js"/>
-		<xsl:choose>
-			<xsl:when test="/root/request/debug">
-				<script type="text/javascript" src="{$widgetPath}/js/ext/ext-all-debug.js"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<script type="text/javascript" src="{$widgetPath}/js/ext/ext-all.js"/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<script type="text/javascript" src="{$widgetPath}/js/GeoNetwork-mini.js"/>
-		
-		<xsl:if test="/root/request/debug">
-            <script type="text/javascript" src="{$widgetPath}/js/GeoNetwork/lib/GeoNetwork/data/ThesaurusFeedStore.js" />
-            <script type="text/javascript" src="{$widgetPath}/js/GeoNetwork/lib/GeoNetwork/data/ThesaurusStore.js" />
-            <script type="text/javascript" src="{$widgetPath}/js/GeoNetwork/lib/GeoNetwork/widgets/admin/ThesaurusManagerPanel.js" />
+		<script type="text/javascript" src="{$widgetPath}/js/ext/ext-all.js"/>
 
-		</xsl:if>
+		<xsl:variable name="minimize">
+           <xsl:choose>
+             <xsl:when test="/root/request/debug">?minimize=false</xsl:when>
+             <xsl:otherwise></xsl:otherwise>
+          </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="baseUrl" select="/root/gui/url" />
+
+    <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
+    <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini.js', $minimize)}"></script>
+    <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-html5ui-app.js', $minimize)}"></script>
+
 		<script type="text/javascript" language="JavaScript">
 			var catalogue;
 
