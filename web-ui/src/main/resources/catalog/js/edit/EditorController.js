@@ -44,7 +44,9 @@
        'gn_import_controller',
        'gn_editorboard_controller', 'gn_share',
        'gn_directory_controller', 'gn_utility_directive',
-       'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker']);
+       'gn_scroll_spy', 'gn_thesaurus', 
+			 'ui.bootstrap.datetimepicker'
+			 ]);
 
   var tplFolder = '../../catalog/templates/editor/';
 
@@ -91,7 +93,7 @@
    */
   module.controller('GnEditorController', [
     '$scope', '$routeParams', '$http', '$rootScope',
-    '$translate', '$compile', '$timeout',
+    '$translate', '$compile', '$timeout', 
     'gnEditor',
     'gnSearchManagerService',
     'gnConfigService',
@@ -369,13 +371,31 @@
         $scope.savedStatus = gnCurrentEdit.savedStatus;
         return false;
       };
-
+			var destroyIt = function() {
+				/*
+				 * Iterate through the child scopes and kill 'em
+				 * all, because Angular 1.2 won't let us $destroy()
+				 * the $rootScope. But do we really need to do
+				 * this as the window will be destroyed anyway? 
+				 */
+				var scope = $rootScope.$$childHead;
+				while (scope) {
+				  var nextScope = scope.$$nextSibling;
+				  scope.$destroy();
+				  scope = nextScope;
+				}
+        window.onbeforeunload = null;
+        window.close();
+			};
+      $scope.closeAndForget = function() {
+        // TODO: Should redirect to main page at some point ?
+				destroyIt();
+			};
       $scope.close = function() {
         gnEditor.save(false)
           .then(function(form) {
-              // TODO: Should redirect to main page at some point ?
-              window.onbeforeunload = null;
-              window.close();
+        			// TODO: Should redirect to main page at some point ?
+							destroyIt();
             }, function(error) {
               $rootScope.$broadcast('StatusUpdated', {
                 title: $translate('saveMetadataError'),

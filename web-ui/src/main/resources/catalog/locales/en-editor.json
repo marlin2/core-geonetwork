@@ -121,6 +121,7 @@
     "recommendedValues": "Recommended values",
     "recursive": "Also search in subfolders",
     "resetKeywordsAnyway": "Remove keywords",
+    "revert": "Revert",
     "saveAtimeAgo": "Last edit was {{timeAgo}}.",
     "saveMetadataError": "Error while saving metadata. You should reload the editor.",
     "saveMetadataSuccess": "All changes saved.",

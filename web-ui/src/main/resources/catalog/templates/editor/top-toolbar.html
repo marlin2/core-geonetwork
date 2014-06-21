@@ -40,6 +40,11 @@
       <i class="fa fa-lock"/>
       <span data-translate="">share</span>
     </button>-->
+    <button type="button" class="btn btn-danger navbar-btn gn-tooltip" data-ng-click="cancel()" 
+      data-ng-mouseover="getCancelStatus()" title="{{cancelStatus}}">
+      <i class="fa fa-undo"/>
+      <span data-translate="">revert</span>
+    </button>
 
     <div data-gn-metadata-group-updater="groupOwner"/>
 
@@ -52,15 +57,24 @@
       <span data-translate=""
             title="{{'validate-help' | translate}}">validate</span>
     </button>
-    <!-- TODO: automatic save status -->
-    <button type="button" class="btn btn-danger navbar-btn gn-tooltip" data-ng-click="cancel()" 
-      data-ng-mouseover="getCancelStatus()" title="{{cancelStatus}}">
-      <i class="fa fa-undo"/>
+    <a href="" class="btn btn-danger navbar-btn gn-tooltip" data-toggle="modal" data-target="#confirmforget-popup">
+      <i class="fa fa-sign-out"/>
       <span data-translate="">cancel</span>
-    </button>
+    </a>
     <button type="button" class="btn btn-danger navbar-btn gn-tooltip" data-ng-click="close()">
       <i class="fa fa-sign-out"/>
       <span data-translate="">closeEditor</span>
     </button>
   </div>
+
 </nav>
+
+<div data-gn-modal="" class="onlinesrc-popup gn-popup"
+	data-gn-popup-options="{title:'cancel'}"
+	id="confirmforget-popup">
+       <p>Are you sure you want to cancel this editor session?</p>
+			 <div class="modal-footer">
+       	<a class="btn" data-dismiss="modal">No</a>
+       	<a class="btn btn-warning" ng-click="closeAndForget()">Yes</a>
+			</div>
+</div>
