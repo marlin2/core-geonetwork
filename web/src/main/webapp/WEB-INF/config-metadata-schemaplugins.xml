@@ -9,10 +9,27 @@
 	<!-- search services.                                                  -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+		<service name="creativecommons.jurisdictions">
+			<output sheet="creativecommons-jurisdictions.xsl" contentType="text/xml; charset=UTF-8">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="creativecommons.licenses">
+			<output sheet="creativecommons-licenses.xsl" contentType="text/xml; charset=UTF-8">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 		<service name="metadata.creativecommons.form">
 			<class name=".services.creativecommons.Get"/>
-
-			<output sheet="metadata-creativecommons.xsl">
+			<output sheet="metadata-creativecommons.xsl" contentType="text/xml; charset=UTF-8">
 				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
 				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
 			</output>

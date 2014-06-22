@@ -63,6 +63,8 @@
 			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/xml_iso19139.mcp-1.4Torifcs!?.*" access="permitAll"/>
 			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/xml_iso19139.mcp-1.4Tooai_dc!?.*" access="permitAll"/>
 			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/xml_iso19139Torifcs!?.*" access="permitAll"/>
+			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/creativecommons.licenses!?.*" access="permitAll"/>
+			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/creativecommons.jurisdictions!?.*" access="permitAll"/>
 	</spring>
 	<!-- add rif-cs prefix to config-oai-prefixes.xml -->
 	<file name=".*WEB-INF/config-oai-prefixes\.xml">
