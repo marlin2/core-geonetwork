@@ -11,6 +11,7 @@
 			<head>
 				<title><xsl:apply-templates select="/" mode="title"/></title>
 				<link rel="stylesheet" type="text/css" href="{/root/gui/url}/geonetwork.css"/>
+				<script type="text/javascript" src="{/root/gui/url}/static/gn.js"/>
 			</head>
 			<body>
 				<table width="100%" height="100%">

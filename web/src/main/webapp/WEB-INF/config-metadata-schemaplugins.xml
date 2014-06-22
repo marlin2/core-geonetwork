@@ -29,7 +29,7 @@
 
 		<service name="metadata.creativecommons.form">
 			<class name=".services.creativecommons.Get"/>
-			<output sheet="metadata-creativecommons.xsl" contentType="text/xml; charset=UTF-8">
+			<output sheet="metadata-creativecommons.xsl">
 				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
 				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
 			</output>
