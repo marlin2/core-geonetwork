@@ -22,7 +22,16 @@
 			<xsl:for-each select="/root/gui/static/jurisdiction[@name=$juris]/select/option">
 				<xsl:variable name="url" select="normalize-space(@value)"/>
 				<xsl:variable name="licName" select="normalize-space(.)"/>
-				<xsl:variable name="imUrl" select="concat($iccurl,'/l',substring-after($url,concat($ccurl,'/licenses')),'88x31.png')"/>
+				<xsl:variable name="imUrl">
+					<xsl:choose>
+						<xsl:when test="contains($url,'publicdomain')">
+							<xsl:value-of select="concat($iccurl,'/p',substring-after($url,'publicdomain'),'88x31.png')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($iccurl,'/l',substring-after($url,concat($ccurl,'/licenses')),'88x31.png')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<license>
 					<url><xsl:value-of select="$url"/></url>
 					<imageUrl><xsl:value-of select="$imUrl"/></imageUrl>
