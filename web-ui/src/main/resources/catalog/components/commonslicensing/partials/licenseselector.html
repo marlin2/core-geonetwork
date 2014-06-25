@@ -1,0 +1,32 @@
+<div>
+	<div class="row" style="margin-bottom: 4px;">
+  	<div class="col-md-2 btn-group">
+    	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        	<i class="fa fa-book"/>
+        	<span data-translate="">jurisdiction</span>
+        	<span class="caret"/>
+    	</button>
+    	<ul class="dropdown-menu">
+        	<li data-ng-repeat="j in jurisdiction | orderBy:'props.name'">
+          	<a href="" data-ng-click="layoutCommons(j.getKey(), j.getName())">{{j.getName()}}</a>
+        	</li>
+    	</ul>
+  	</div>
+		<div class="col-md-2">
+			{{currentJurisdictionName || 'None'}}
+		</div>
+  </div>
+  <!-- The licenses are displayed here once the jurisdiction is chosen -->
+	<div data-ng-if="license">
+		<div class="list-group">
+			<a class="list-group-item" data-ng-repeat="l in license" data-ng-class="{active: currentLicenseName==l.getName()}" data-ng-click="addCommons(l);">
+					<IMG align="middle" src="{{l.getImageUrl()}}" alt="{{l.getName()}}"></IMG>
+					<span class="pull-right badge">{{l.getName()}}</span>
+			</a>
+		</div>
+	</div>
+  <!-- The commons snippet to insert once received -->
+  <div data-ng-if="snippet">
+    <input name="{{snippetRef}}" type="hidden" value="{{snippet}}"/>
+  </div>
+</div>

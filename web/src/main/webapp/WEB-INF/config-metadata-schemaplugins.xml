@@ -9,6 +9,15 @@
 	<!-- search services.                                                  -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+		<service name="creativecommons.get">
+			<output sheet="creativecommons-snippet.xsl" contentType="text/xml; charset=UTF-8">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 		<service name="creativecommons.jurisdictions">
 			<output sheet="creativecommons-jurisdictions.xsl" contentType="text/xml; charset=UTF-8">
 				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>

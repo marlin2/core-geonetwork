@@ -37,6 +37,7 @@
   goog.require('gn_scroll_spy');
   goog.require('gn_share');
   goog.require('gn_thesaurus');
+  goog.require('gn_commons');
   goog.require('gn_utility_directive');
 
   var module = angular.module('gn_editor_controller',
@@ -44,7 +45,7 @@
        'gn_import_controller',
        'gn_editorboard_controller', 'gn_share',
        'gn_directory_controller', 'gn_utility_directive',
-       'gn_scroll_spy', 'gn_thesaurus', 
+       'gn_scroll_spy', 'gn_thesaurus', 'gn_commons',
 			 'ui.bootstrap.datetimepicker'
 			 ]);
 

@@ -19,6 +19,7 @@
 				<jurisdiction>
 					<shortname><xsl:value-of select="substring-before(substring-after(@value,'http://creativecommons.org/international/'),'/')"/></shortname>
 					<name><xsl:value-of select="."/></name>
+					<url><xsl:value-of select="@value"/></url>
 				</jurisdiction>			
 			</xsl:for-each>
 		</jurisdictions>

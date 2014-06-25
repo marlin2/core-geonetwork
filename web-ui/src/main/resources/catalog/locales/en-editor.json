@@ -77,6 +77,7 @@
     "importReport": "Import report",
     "inGroup": "Owned by Group",
     "initiativeType": "Initiative type",
+		"jurisdiction": "Jurisdiction",
     "keywordInsertMode": "Insert keywords as",
     "linkService": "Link service to metadata",
     "linkToDataset": "Link to a dataset",
