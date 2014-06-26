@@ -158,7 +158,10 @@
                 data.metadata[0].defaultTitle;
 
             if ($scope.mdSchema === 'fgdc-std' ||
-                $scope.mdSchema === 'iso19115') {
+                $scope.mdSchema === 'iso19115' ||
+								$scope.mdSchema === 'eml-gbif' ||
+								$scope.mdSchema === 'sensorML' ||
+								$scope.mdSchema === 'anzmeta') {
               $scope.unsupportedSchema = true;
               return;
             }
