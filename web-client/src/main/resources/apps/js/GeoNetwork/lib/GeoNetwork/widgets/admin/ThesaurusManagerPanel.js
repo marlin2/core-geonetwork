@@ -952,7 +952,10 @@ GeoNetwork.admin.ThesaurusManagerPanel = Ext.extend(Ext.Panel, {
                               {name : 'Place',  value: 'place'},
                               {name : 'Stratum',  value: 'stratum'},
                               {name : 'Temporal',   value: 'temporal'},
-                              {name : 'Theme',   value: 'theme'}
+                              {name : 'Theme',   value: 'theme'},
+                              {name : 'Taxon',   value: 'taxon'},
+                              {name : 'Equipment',   value: 'equipment'},
+                              {name : 'Data Source',   value: 'dataSource'}
                     ]
                 })
             });
