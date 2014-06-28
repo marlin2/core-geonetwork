@@ -729,7 +729,7 @@ div#resultsPanel .x-toolbar-right {
 	line-height: 1.4em;
 	color: #393939;
 	padding-right: 10px;
-	text-transform: capitalize;
+	/* text-transform: capitalize; */
 }
 /* search result --- list items --- full */
 #resultsPanel .md-full {

@@ -115,6 +115,19 @@ GeoNetwork.HTML5UI.Templates = Ext.extend(Ext.XTemplate, {
     }
 });
 
+GeoNetwork.HTML5UI.Templates.processSubject = function(subjects) {
+				var maxKeywords = 30,
+						output = "",
+				    nrItems = Math.min(subjects.length,maxKeywords),
+				    small = (subjects.length < maxKeywords);
+				for (var i = 0;i < nrItems;i++) {
+					output += subjects[i].value;
+					if (i < nrItems-1) output += ", ";
+				}
+				if (!small) output += "....";
+				return output;
+};
+
 /**
  * Common templates
  */
@@ -309,9 +322,7 @@ GeoNetwork.HTML5UI.Templates.CONTACT_INFO_TOOLTIP =
 GeoNetwork.HTML5UI.Templates.SUBJECT =
     '<tpl if="subject">\
         <span class="subject">\
-        <tpl for="subject">\
-            {value}{[xindex==xcount?"":", "]}\
-        </tpl>\
+					{[this.processSubject(values.subject)]}\
         </span>\
     </tpl>';
 
@@ -385,7 +396,11 @@ GeoNetwork.HTML5UI.Templates.SIMPLE = new Ext.XTemplate(
     </table>',
     '</li>',
     '</tpl>',
-    '</ul>'
+    '</ul>', {
+			processSubject: function(subjects) {
+				return GeoNetwork.HTML5UI.Templates.processSubject(subjects);
+			}
+		}
 );
 
 
@@ -501,6 +516,9 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
     '</tpl>',
     '</ul>',
     {
+				processSubject: function(subjects) {
+					return GeoNetwork.HTML5UI.Templates.processSubject(subjects);
+				},
         hasDownloadLinks: function(values) {
             var i;
             for (i = 0; i < values.length; i ++) {
