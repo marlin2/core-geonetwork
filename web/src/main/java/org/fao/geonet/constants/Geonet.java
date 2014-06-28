@@ -603,5 +603,6 @@ public final class Geonet {
 		public static final Namespace GML32 = Namespace.getNamespace("gml", "http://www.opengis.net/gml/3.2");
 		public static final Namespace XSD = Namespace.getNamespace("xsd", XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		public static final Namespace XSI = Namespace.getNamespace("xsi", XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
+		public static final Namespace SVRL = Namespace.getNamespace("svrl", "http://purl.oclc.org/dsdl/svrl");
 	}
 }
