@@ -63,7 +63,7 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.source.urn:marlin.csiro.au:sourceregister',
+		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marlin.csiro.au:sourceregister',
 		thesaurusShortName: 'register.source.urn:marlin.csiro.au:sourceregister',
 		luceneFieldName:	'E_keywordId',
 		label:						'Source',
@@ -73,7 +73,7 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:standardDataType',
+		thesaurus: 'geonetwork.thesaurus.register.discipline.urn:marlin.csiro.au:keywords:standardDataType',
 		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:standardDataType',
 		luceneFieldName:	'E_keywordId',
 		label:						'Data Type',
@@ -83,30 +83,10 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:cmarAOI',
+		thesaurus: 'geonetwork.thesaurus.register.discipline.urn:marlin.csiro.au:keywords:cmarAOI',
 		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:cmarAOI',
 		luceneFieldName:	'E_keywordId',
 		label:						'Areas of Interest',
-		valueField:				'uri',
-		displayField:			'value',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marlin.csiro.au:keywords:dataSource',
-		thesaurusShortName: 'register.dataSource.urn:marlin.csiro.au:keywords:dataSource',
-		luceneFieldName:	'E_keywordId',
-		label:						'Data Source',
-		valueField:				'uri',
-		displayField:			'value',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.register.theme.urn:marlin.csiro.au:keywords:anzlicSearch',
-		thesaurusShortName: 'register.theme.urn:marlin.csiro.au:keywords:anzlicSearch',
-		luceneFieldName:	'E_keywordId',
-		label:						'ANZLIC',
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
