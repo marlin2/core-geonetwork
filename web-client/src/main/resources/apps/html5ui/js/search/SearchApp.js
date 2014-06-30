@@ -238,6 +238,8 @@ GeoNetwork.searchApp = function() {
                 		catalogue.services.getSources, catalogue.services.logoUrl, true);
         		var groupField = GeoNetwork.util.SearchFormTools.getGroupField(
                 		catalogue.services.getGroups, true);
+        		var statusField = GeoNetwork.util.SearchFormTools.getStatusField(
+                		catalogue.services.getStatus, true);
         		var metadataTypeField = GeoNetwork.util.SearchFormTools
                 		.getMetadataTypeField(true);
         		var categoryField = GeoNetwork.util.SearchFormTools.getCategoryField(
@@ -267,7 +269,7 @@ GeoNetwork.searchApp = function() {
 
 						// Leave out themekeyField and orgNameField - handled elsewhere
             advancedCriteria.push(
-										catalogueField, groupField, metadataTypeField, 
+										catalogueField, groupField, statusField, metadataTypeField, 
 										categoryField, validField, spatialTypes, denominatorField,
                     ownerField, isHarvestedField, siteId);
 
