@@ -120,11 +120,8 @@
              scope.elementRefBackup = scope.elementRef;
              scope.invalidKeywordMatch = false;
              scope.selected = [];
-             scope.initialKeywords = scope.keywords ?
-             scope.keywords.split(',') : [];
-             scope.transformationLists =
-             scope.transformations.indexOf(',') !== -1 ?
-             scope.transformations.split(',') : [scope.transformations];
+             scope.initialKeywords = scope.keywords ?  scope.keywords.split('`') : [];
+             scope.transformationLists = scope.transformations.indexOf(',') !== -1 ?  scope.transformations.split(',') : [scope.transformations];
 
 
 
