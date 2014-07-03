@@ -156,7 +156,7 @@ body {
 #header {
   border-bottom:10px solid #F6D4B1;
   padding:17px 0 0;
-  background-image:url('../images/map_header.png');
+/*  background-image:url('../images/map_header.png'); */
   box-shadow:none;
   height: 90px;
 }
