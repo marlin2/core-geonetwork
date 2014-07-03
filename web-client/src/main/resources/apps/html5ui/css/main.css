@@ -162,7 +162,7 @@ body {
 }
 
 #logo {
-  background-position: center top;
+  background-position: left top;
   background-repeat: no-repeat;
   background-image:url('../images/banner_logo.png');
   width: 100%;
