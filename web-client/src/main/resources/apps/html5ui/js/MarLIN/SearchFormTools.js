@@ -91,6 +91,46 @@ MarLIN.Thesauri = [
 		displayField:			'value',
 		thesaurusField:		'uri',
 		multi:						true
+	},
+	{ 
+		thesaurus: 'geonetwork.thesaurus.external.theme.mcp_collection_methods',
+		thesaurusShortName: 'external.theme.mcp_collection_methods',
+		luceneFieldName:	'E_keywordId',
+		label:						'MCP Collection Methods',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
+		multi:						true
+	},
+	{ 
+		thesaurus: 'geonetwork.thesaurus.external.place.mcp_regions',
+		thesaurusShortName: 'external.place.mcp_regions',
+		luceneFieldName:	'E_keywordId',
+		label:						'MCP Geographic Extent Names',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
+		multi:						true
+	},
+	{ 
+		thesaurus: 'geonetwork.thesaurus.external.taxon.nsl_species_all',
+		thesaurusShortName: 'external.taxon.nsl_species_all',
+		luceneFieldName:	'E_keywordId',
+		label:						'Aust. National Species List',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
+		multi:						true
+	},
+	{ 
+		thesaurus: 'geonetwork.thesaurus.external.taxon.worms_algae_au',
+		thesaurusShortName: 'external.taxon.worms_algae_au',
+		luceneFieldName:	'E_keywordId',
+		label:						'World Register of Marine Species - Algae',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
+		multi:						true
 	}
 ]
 
@@ -368,7 +408,7 @@ MarLIN.SearchFormTools = {
 										*/
 											var r = keyStore.getRange();
 											for (var j = 0, l = r.length;j < l;j++) {
-												//console.log('Checking '+r[j].get(theField));
+												//console.log("Comparing urn:lsid:marinespecies.org:taxname:149118 to "+r[j].get(theField)+", result: "+(r[j].get(theField)==='urn:lsid:marinespecies.org:taxname:149118'));
 												if (lStore.findExact('value',r[j].get(theField)) < 0) {
 													keyStore.remove(r[j]);
 												}
