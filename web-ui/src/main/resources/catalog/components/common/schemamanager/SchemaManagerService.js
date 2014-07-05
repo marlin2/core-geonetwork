@@ -28,18 +28,30 @@
   module.value('gnElementsMap', {
     protocol: {
       'iso19139': 'gmd:protocol',
+      'iso19139.anzlic': 'gmd:protocol',
+      'iso19139.mcp': 'gmd:protocol',
+      'iso19139.mcp-1.4': 'gmd:protocol',
       'iso19115-3': 'cit:protocol'
     },
     roleCode: {
       'iso19139': 'gmd:CI_RoleCode',
+      'iso19139.anzlic': 'gmd:CI_RoleCode',
+      'iso19139.mcp': 'gmd:CI_RoleCode',
+      'iso19139.mcp-1.4': 'gmd:CI_RoleCode',
       'iso19115-3': 'cit:CI_RoleCode'
     },
     associationType: {
       'iso19139': 'gmd:DS_AssociationTypeCode',
+      'iso19139.anzlic': 'gmd:DS_AssociationTypeCode',
+      'iso19139.mcp': 'gmd:DS_AssociationTypeCode',
+      'iso19139.mcp-1.4': 'gmd:DS_AssociationTypeCode',
       'iso19115-3': 'mri:DS_AssociationTypeCode'
     },
     initiativeType: {
       'iso19139': 'gmd:DS_InitiativeTypeCode',
+      'iso19139.anzlic': 'gmd:DS_InitiativeTypeCode',
+      'iso19139.mcp': 'gmd:DS_InitiativeTypeCode',
+      'iso19139.mcp-1.4': 'gmd:DS_InitiativeTypeCode',
       'iso19115-3': 'mri:DS_InitiativeTypeCode'
     }
   });
