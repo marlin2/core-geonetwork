@@ -132,8 +132,6 @@
       <error sheet="../xslt/common/error.xsl"/>
     </service>
 
-		<!-- Broken - form doesn't get updated so future saves don't
-		     work - so use md.edit.save and refresh the form
     <service name="md.edit.saveonly">
       <documentation><![CDATA[
         Save the metadata record currently edited. 
@@ -152,7 +150,6 @@
       <class name=".services.metadata.Update"/>
       <error sheet="../xslt/common/error.xsl"/>
     </service>
-		-->
 
     <service name="md.edit.save">
       <documentation>
