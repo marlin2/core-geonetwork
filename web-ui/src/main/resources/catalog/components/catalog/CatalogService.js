@@ -215,7 +215,7 @@
     mdDelete: 'md.delete@json',
     mdEdit: 'md.edit@json',
     mdEditSave: 'md.edit.save@json',
-    mdEditSaveonly: 'md.edit.saveonly@json',
+    //mdEditSaveonly: 'md.edit.saveonly@json', Disable - it is broken
     mdEditSaveandclose: 'md.edit.save.and.close@json',
     mdEditCancel: 'md.edit.cancel@json',
     getRelations: 'md.relations@json',

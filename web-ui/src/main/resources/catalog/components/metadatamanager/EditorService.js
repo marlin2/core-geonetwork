@@ -100,7 +100,9 @@
              }
 
              $http.post(
-                 refreshForm ? 'md.edit.save' : 'md.edit.saveonly',
+                 //refreshForm ? 'md.edit.save' : 'md.edit.saveonly',
+								 // Always refresh form - otherwise future saves broken
+								 'md.edit.save',
                  $(gnCurrentEdit.formId).serialize(),
                  {
                    headers: {'Content-Type':
@@ -108,9 +110,9 @@
                  }).success(function(data) {
 
                var snippet = $(data);
-               if (refreshForm) {
+               //if (refreshForm) {
                  scope.refreshEditorForm(snippet);
-               }
+               //}
                if (!silent) {
                  setStatus({msg: 'allChangesSaved', saving: false});
                }
