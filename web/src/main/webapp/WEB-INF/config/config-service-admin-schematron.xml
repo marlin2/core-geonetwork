@@ -2,6 +2,8 @@
 <geonet>
   <services package="org.fao.geonet">
 
+			
+		<!-- Not in 2.10.x+angular editor
       <service name="admin.schematrontype">
           <documentation>
               <![CDATA[
@@ -12,10 +14,12 @@
           </documentation>
           <class name=".services.metadata.schema.SchematronCriteriaTypeService"/>
       </service>
+		-->
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- SchematronC Admin services                             -->
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- Not in 2.10.x+angular editor
       <service name="admin.schematron.list">
           <documentation>
               <![CDATA[
@@ -56,10 +60,12 @@
               <param name="action" value="EDIT"/>
           </class>
       </service>
+			-->
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- SchematronCriteria Admin services                             -->
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- Not in 2.10.x+angular editor
       <service name="admin.schematroncriteria.list">
           <documentation>
               <![CDATA[
@@ -75,7 +81,7 @@
                 <schematroncriteria>
                   <record>
                     <group>
-                    <!-- if includeGroup is true then the required attribute is also present in group -->
+                    <!- - if includeGroup is true then the required attribute is also present in group - ->
                       <id>
                         <name>*Generated*</name>
                         <schematronid>100</schematronid>
@@ -159,10 +165,14 @@
           </class>
       </service>
 
+			-->
+
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
       <!-- SchematronCriteriaGroup Admin services                        -->
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<!-- Not in 2.10.x+angular editor
       <service name="admin.schematroncriteriagroup.list">
           <documentation>
               <![CDATA[
@@ -179,7 +189,7 @@
   <schematroncriteriagroup>
       <record>
         <criteria>
-          <!-- if includeCriteria is false then only the criteria id is present -->
+          <!- - if includeCriteria is false then only the criteria id is present - ->
           <criteria>
             <group />
             <id>101</id>
@@ -192,7 +202,7 @@
           <schematronid>100</schematronid>
         </id>
         <requirement>REQUIRED</requirement>
-        <!-- Schematron only present when includeSchematron is true -->
+        <!- - Schematron only present when includeSchematron is true - ->
         <schematron>
           <defaultrequirement>REQUIRED</defaultrequirement>
           <file>schematron-rules-geonetwork.xsl</file>
@@ -270,5 +280,6 @@
           </class>
       </service>
 
+		-->
   </services>
 </geonet>

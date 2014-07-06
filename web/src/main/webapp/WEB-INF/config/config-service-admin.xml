@@ -37,7 +37,8 @@
       ]]></documentation>
       <class name=".services.config.SetSystemProperties" />
     </service>
-    
+
+		<!-- Not in 2.10.x+angular editor
     <service name="versioning.logdata">
       <documentation><![CDATA[
       Return versionning history.
@@ -47,6 +48,7 @@
       ]]></documentation>
       <class name=".guiservices.versioning.Get"/>
     </service>
+		-->
     
     <service name="contact.send">
       <class name=".services.feedback.Insert" />

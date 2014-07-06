@@ -74,6 +74,7 @@
       <class name=".services.metadata.BatchUpdatePrivileges" />
     </service>
 
+	<!--
     <service name="md.group.update">
       <documentation><![CDATA[
           Change the group the metadata is in. Groupowner database column.
@@ -85,6 +86,7 @@
       <class name=".services.metadata.UpdateGroupOwner"/>
       <error sheet="../xslt/common/error.xsl"/>
     </service>
+	-->
 
     <service name="md.insert">
       <documentation><![CDATA[
@@ -290,6 +292,8 @@
       <class name=".services.thumbnail.Unset"/>
     </service>
 
+	
+		<!-- Not in 2.10.x+angular editor
     <service name="md.thumbnail.generate">
       <documentation><![CDATA[
         Generate a thumbnail. Metadata must be on
@@ -303,6 +307,7 @@
         ]]></documentation>
       <class name=".services.thumbnail.Generate"/>
     </service>
+		-->
 
     <service name="md.relations">
       <documentation>Return a list of all relation of the given metadata. Relations are mainly online resources

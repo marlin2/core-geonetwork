@@ -3,6 +3,7 @@
 <geonet>
   <services package="org.fao.geonet">
 
+		<!-- Not in 2.10.x+angulareditor
     <service name="recordsupdated.csv">
       <documentation><![CDATA[
        CSV service for records updated during a period report.
@@ -82,6 +83,7 @@
         <xml name="reports" file="xml/reports.xml" />
       </output>
     </service>
+		-->
   </services>
 </geonet>
 

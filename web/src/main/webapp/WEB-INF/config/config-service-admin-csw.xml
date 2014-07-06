@@ -9,6 +9,7 @@
             <error sheet="../xslt/error/error-json.xsl"/>
         </service>
 
+		<!-- Not in 2.10.x+angular editor
         <service name="admin.config.csw.save">
             <documentation><![CDATA[
           Save CSW configuration for capabilities properties such as
@@ -18,7 +19,7 @@
             <class name=".guiservices.csw.Set2"/>
             <error sheet="../xslt/error/error-json.xsl"/>
         </service>
-
+		-->
 
         <service name="admin.config.virtualcsw.list">
             <documentation><![CDATA[

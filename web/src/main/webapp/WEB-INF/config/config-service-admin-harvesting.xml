@@ -30,12 +30,14 @@
           <class name=".services.harvesting.CreateClone" />
       </service>
       
+		<!-- Not in 2.10.x+angular editor
       <service name="admin.harvester.clear">
           <documentation><![CDATA[
               Remove all records attached to an harvester.
               ]]></documentation>
           <class name=".services.harvesting.Clear" />
       </service>
+		-->
       
       <service name="admin.harvester.remove">
           <documentation><![CDATA[
@@ -100,10 +102,12 @@
           <class name=".services.harvesting.HistoryDelete" />
       </service>
       
+		<!-- Not in 2.10.x+angular editor
       <service name="admin.harvester.log">
           <class name=".services.harvesting.Log" />
           <output file="true" contentType="text/plain"/>
       </service>
+		-->
       
   </services>
 </geonet>

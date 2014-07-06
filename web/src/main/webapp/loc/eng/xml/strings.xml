@@ -1412,7 +1412,7 @@
       <p>
       You can change this short text describing your site by adding your own configuration overrides xml file to <code>WEB-INF/configuration-overrides-prod.xml</code> - see example <code>WEB-INF/anzmest-example-site-config-overrides.xml</code>.
       </p>
-      <p>You can change the GeoNetwork OpenSource logo shown above by copying your own logo to apps/html5ui/images/banner_logo.png.
+      <p>You can change the GeoNetwork OpenSource logo shown above by copying your own logo to <code>apps/html5ui/images/banner_logo.png</code>.
       </p>
 	</about.text>
   <signIn>Sign In</signIn>

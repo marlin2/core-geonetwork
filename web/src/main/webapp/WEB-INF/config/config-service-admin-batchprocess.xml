@@ -23,6 +23,7 @@
       </service>
     
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!--
     <service name="md.processing.batch.report">
       <documentation><![CDATA[
 Return the current or last batch process report in the user session.
@@ -73,14 +74,14 @@ javax.xml.transform.TransformerConfigurationException: Failed to compile stylesh
     <documentation>Upload online resource</documentation>
       <class name=".services.resources.UploadAndProcess"/>
       
-      <!-- FIXME : this is a default success response XSL -->
+      <!- - FIXME : this is a default success response XSL - ->
       <output sheet="admin-logo-add.xsl"/>
       
       <error sheet="error-modal.xsl">
         <xml name="error" file="xml/file-upload-unsuccessful.xml"/>
       </error>
     </service>
-
+-->
 
   </services>
 </geonet>

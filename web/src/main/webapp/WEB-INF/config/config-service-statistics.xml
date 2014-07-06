@@ -23,6 +23,7 @@
       </output>
     </service>
 
+		<!-- Not in 2.10.x+angular editor
     <service name="statistics-search">
       <documentation><![CDATA[
             Return main metrics for the catalog and search service. Metrics are:
@@ -57,6 +58,7 @@
             ]]></documentation>
       <class name=".services.statistics.SearchStatistics"/>
     </service>
+		-->
 
 
     <service name="statistics-search-ip">
@@ -147,6 +149,8 @@
     </service>
 
     <!-- Search term statistcs -->
+
+		<!-- Not in 2.10.x+angular editor
     <service name="statistics-search-terms">
       <documentation><![CDATA[
             Return information about which search terms are used for a field.
@@ -178,8 +182,10 @@
             ]]></documentation>
       <class name=".services.statistics.RequestsByDateStatistics"/>
     </service>
+		-->
 
     <!-- Content statistcs -->
+		<!-- Not in 2.10.x+angular editor
     <service name="statistics-content">
       <documentation><![CDATA[
             Return information about the number of metadata records in the catalog:
@@ -249,5 +255,6 @@
             ]]></documentation>
       <class name=".services.statistics.MetadataStatistics"/>
     </service>
+		-->
   </services>
 </geonet>
