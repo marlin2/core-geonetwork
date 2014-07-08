@@ -56,8 +56,8 @@
                any: '',
                _root: 'gmd:CI_ResponsibleParty',
                sortBy: 'title',
-               sortOrder: 'reverse',
-               resultType: 'subtemplates'
+               //resultType: 'subtemplates',
+               sortOrder: 'reverse'
              };
 
              scope.snippet = null;
