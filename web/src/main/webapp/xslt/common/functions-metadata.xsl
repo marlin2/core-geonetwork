@@ -294,6 +294,21 @@
   </xsl:function>
 
 
+  <!-- Return the directive attributes to use for a field.  -->
+  <xsl:function name="gn-fn-metadata:getFieldDirectiveAttributes" as="node()">
+    <xsl:param name="configuration" as="node()"/>
+    <xsl:param name="name" as="xs:string"/>
+ 
+		<xsl:choose>
+			<xsl:when test="$configuration/editor/fields/for[@name = $name]/directiveAttributes">
+				<xsl:copy-of select="$configuration/editor/fields/for[@name = $name]/directiveAttributes"/>
+			</xsl:when>
+			<xsl:otherwise>
+	 			<directiveAttributes/>
+			</xsl:otherwise>
+		</xsl:choose>
+  </xsl:function>
+
   <!-- Return if a flat mode exception has been defined in the current view for a field. -->
   <xsl:function name="gn-fn-metadata:getFieldFlatModeException" as="xs:boolean">
     <xsl:param name="configuration" as="node()"/>

@@ -556,6 +556,9 @@
   <xsl:template name="render-element-to-add">
     <xsl:param name="label" as="xs:string?"/>
     <xsl:param name="directive" as="xs:string?"/>
+    <xsl:param name="directiveAttributes" as="node()" required="no">
+			<directiveAttributes/>
+		</xsl:param>
     <xsl:param name="childEditInfo"/>
     <xsl:param name="parentEditInfo"/>
     <!-- Hide add element if child of an XLink section. -->
@@ -632,6 +635,12 @@
                     <xsl:attribute name="data-dom-id" select="$id"/>
                     <xsl:attribute name="data-element-name" select="$qualifiedName"/>
                     <xsl:attribute name="data-element-ref" select="$parentEditInfo/@ref"/>
+                    <xsl:for-each select="$directiveAttributes/attribute::*">
+                      <xsl:variable name="directiveAttributeName" select="name()"/>
+                      <xsl:attribute name="{$directiveAttributeName}">
+												<xsl:value-of select="."/>
+											</xsl:attribute>
+										</xsl:for-each>
                   </div>
                 </xsl:when>
                 <xsl:otherwise>

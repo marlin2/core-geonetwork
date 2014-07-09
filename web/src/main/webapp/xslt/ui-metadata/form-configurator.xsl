@@ -177,12 +177,14 @@
               <xsl:variable name="name" select="concat(@prefix, ':', @name)"/>
               
               <xsl:variable name="directive" select="gn-fn-metadata:getFieldAddDirective($editorConfig, $name)"/>
+              <xsl:variable name="directiveAttributes" select="gn-fn-metadata:getFieldDirectiveAttributes($editorConfig, $name)"/>
               <xsl:call-template name="render-element-to-add">
                 <xsl:with-param name="label"
                   select="if ($configName != '') 
                           then $strings/*[name() = $configName] 
                           else gn-fn-metadata:getLabel($schema, $name, $labels)/label"/>
                 <xsl:with-param name="directive" select="$directive"/>
+                <xsl:with-param name="directiveAttributes" select="$directiveAttributes"/>
                 <xsl:with-param name="childEditInfo" select="."/>
                 <xsl:with-param name="parentEditInfo" select="../gn:element"/>
               </xsl:call-template>
