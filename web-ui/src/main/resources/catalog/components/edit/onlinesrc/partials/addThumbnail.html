@@ -16,7 +16,9 @@
             data-ng-class="{'btn-primary': mode == 'upload'}"
             data-ng-click="mode = 'upload'">
             {{'upload' | translate}}</button>
-          <button type="button" class="btn btn-default"
+						<!-- NOTE: Hide the generate button in 2.10.x as we don't have
+						     mapfish-print 2.x.x and services to do this -->
+          <button type="button" class="btn btn-default hidden"
             data-ng-class="{'btn-primary': mode == 'thumbnailMaker'}"
             data-ng-click="mode = 'thumbnailMaker'">
             {{'thumbnailMaker' | translate}}</button>
