@@ -312,7 +312,7 @@
 
     <xsl:call-template name="render-element">
       <xsl:with-param name="label"
-        select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', '')/label"/>
+        select="gn-fn-metadata:getLabel($schema, name(..), $labels, name(../..), '', '')/label"/>
       <xsl:with-param name="value" select="text()"/>
       <xsl:with-param name="cls" select="local-name()"/>
       <xsl:with-param name="type" select="gn-fn-iso19139:getCodeListType(name())"/>
