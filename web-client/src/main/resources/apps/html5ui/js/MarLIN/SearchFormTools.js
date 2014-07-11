@@ -354,6 +354,86 @@ MarLIN.SearchFormTools = {
 				});
         return orgNameField;
     },
+    /** api:method[getCreditField] 
+     * 
+     *  :param services: Catalogue service URLs (eg. catalogue.services).
+     *  
+     *  :return: A multi-select field with autocompletion (based on Lucene field content - not a thesaurus)
+     */
+    getCreditField : function (services) {
+        var credNameStore = new GeoNetwork.data.OpenSearchSuggestionStore({
+            url: services.opensearchSuggest,
+            rootId: 1,
+						sortInfo: {
+							field: 'value',
+							direction: 'ASC'
+						},
+            baseParams: {
+                field: 'credit'
+            }
+        });
+
+        var credNameField = new Ext.ux.form.SuperBoxSelect({
+            hideLabel: false,
+						anchor: '95%',
+            minChars: 0,
+            queryParam: 'q',
+            hideTrigger: false,
+            id: 'credit',
+            name: 'E_credit',
+            store: credNameStore,
+            valueField: 'value',
+            displayField: 'value',
+            valueDelimiter: ' or ',
+            mode : 'local',
+            fieldLabel: OpenLayers.i18n('Credit')
+        });
+
+				credNameField.on('beforerender', function() {
+							credNameStore.load();
+				});
+        return credNameField;
+    },
+    /** api:method[getDataParamField] 
+     * 
+     *  :param services: Catalogue service URLs (eg. catalogue.services).
+     *  
+     *  :return: A multi-select field with autocompletion (based on Lucene field content - not a thesaurus)
+     */
+    getDataParamField : function (services) {
+        var dataParamStore = new GeoNetwork.data.OpenSearchSuggestionStore({
+            url: services.opensearchSuggest,
+            rootId: 1,
+						sortInfo: {
+							field: 'value',
+							direction: 'ASC'
+						},
+            baseParams: {
+                field: 'dataparam'
+            }
+        });
+
+        var dataParamField = new Ext.ux.form.SuperBoxSelect({
+            hideLabel: false,
+						anchor: '95%',
+            minChars: 0,
+            queryParam: 'q',
+            hideTrigger: false,
+            id: 'dataparam',
+            name: 'E_dataparam',
+            store: dataParamStore,
+            valueField: 'value',
+            displayField: 'value',
+            valueDelimiter: ' or ',
+            mode : 'local',
+            fieldLabel: OpenLayers.i18n('Data Parameters')
+        });
+
+				dataParamField.on('beforerender', function() {
+							dataParamStore.load();
+				});
+        return dataParamField;
+    },
     /** method[getThesaurusField] 
      *  :param thesaurus: Name of thesaurus to build combox box for.
      *  :param thesaurusInfo: Information on thesaurus to build combox box for.
@@ -467,7 +547,7 @@ MarLIN.SearchFormTools = {
 				anchor: '100%', // parent is a form panel
 				autoHeight: true,
 				id: 'marlin-keywords',
-				items: [this.getResourceTypeField(multi), this.getOrganisationField(services)]
+				items: [this.getResourceTypeField(multi), this.getOrganisationField(services), this.getCreditField(services), this.getDataParamField(services)]
 			});
 
 			// now get all thesauri in use from Lucene index field thesaurusName
