@@ -112,7 +112,7 @@ MarLIN.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
             id: 'keywordSearchValidateButton',
             iconCls: 'addIcon',
             disabled: true,
-            text: translate('add'),
+            text: translate('Add'),
             handler: function() {
               this.buildKeywordXmlList(this.services);
               // The event will be fired on requests response completed for
@@ -202,7 +202,7 @@ MarLIN.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
         } else {
             tpl+=' x-unselectable"';
         }
-        tpl+='>{definition}</span></div></tpl>';
+        tpl+='>{value} {definition}</span></div></tpl>';
         //tpl+='>{definition} <span class="ux-mselect-item-thesaurus">({value}) ({thesaurus})</span></div></tpl>';
         
         this.itemSelector = new Ext.ux.ItemSelector({
@@ -212,7 +212,6 @@ MarLIN.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
             toData:[],
             msWidth:320,
             msHeight:240,
-            valueField:"value",
             fromTpl: tpl,
             toTpl: tpl,
             toLegend: 'Selected Keywords',
@@ -232,7 +231,7 @@ MarLIN.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
 								}
 							},
             toTBar:[{
-                text:translate('clear'),
+                text:translate('Clear'),
                 handler:function(){
                     var i = this.getForm().findField("itemselector");
                     i.reset.call(i);
@@ -265,16 +264,17 @@ MarLIN.KeywordSelectionPanel = Ext.extend(Ext.FormPanel, {
     
       var store = this.itemSelector.toMultiselect.store;
       var uris = store.collect('uri');
+			var encodedUris = [];
         
-      // Encode "#" as "%23"?
+      // Encode "#" as "%23"? and keep the original as well
       Ext.each(uris, function(item, index) {
-        uris[index] = item.replace("#","%23");
+        encodedUris.push(item.replace("#","%23"));
       });
         
-      var multiple = (uris.length > 1) ? true : false;
+      var multiple = (encodedUris.length > 1) ? true : false;
       var inputValue = serviceUrl.getKeyword +
           '?thesaurus=' + this.filterThesaurus.get('thesaurusShortName') +
-          '&id=' + uris.join(',')+
+          '&id=' + encodedUris.join(',')+
           '&multiple=' + multiple;
         
       self.retrieveKeywordData(inputValue, uris);

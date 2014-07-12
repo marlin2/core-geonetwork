@@ -29,7 +29,9 @@
         service: 'fa-cog',
         map: 'fa-globe',
         staticMap: 'fa-globe',
-        dataset: 'fa-file'
+        dataset: 'fa-file',
+        project: 'fa-clipboard',
+				datasetAgreement: 'fa-check-square-o'
       };
 
       $scope.$watchCollection('groups', function() {

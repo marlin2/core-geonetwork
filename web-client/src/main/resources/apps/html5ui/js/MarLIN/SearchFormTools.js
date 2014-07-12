@@ -103,6 +103,16 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
+		thesaurus: 'geonetwork.thesaurus.external.theme.gcmd_keywords',
+		thesaurusShortName: 'external.theme.gcmd_keywords',
+		luceneFieldName:	'E_keywordId',
+		label:						'GCMD Keywords',
+		valueField:				'uri',
+		displayField:			'value',
+		thesaurusField:		'uri',
+		multi:						true
+	},
+	{ 
 		thesaurus: 'geonetwork.thesaurus.external.place.mcp_regions',
 		thesaurusShortName: 'external.place.mcp_regions',
 		luceneFieldName:	'E_keywordId',
