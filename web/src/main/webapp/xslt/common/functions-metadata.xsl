@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gn="http://www.fao.org/geonetwork"
+	xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
   xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
   xmlns:saxon="http://saxon.sf.net/" extension-element-prefixes="saxon"
   exclude-result-prefixes="#all">
@@ -365,9 +366,14 @@
     <xsl:param name="nodeRef" as="xs:string"/>
     <xsl:param name="md" as="node()"/>
     <xsl:param name="withPosition" as="xs:boolean"/>
-    
-    <xsl:variable name="node" select="$md/descendant::node()[gn:element/@ref = $nodeRef]"/>
-    
+  
+		<!-- exclude some xpaths that might appear in schematron reports -
+		     this is the function of the not(ancestor::svrl:*) condition
+		     FIXME: this is probably caused by a problem with the code that 
+				 creates the schematron reports because elements are being copied 
+				 in as opposed to a text value -->
+    <xsl:variable name="node" select="$md/descendant::node()[gn:element/@ref = $nodeRef and not(ancestor::svrl:*)]"/>
+   
     <xsl:value-of select="gn-fn-metadata:getXPath($node, $withPosition)"/>
   </xsl:function>
   
