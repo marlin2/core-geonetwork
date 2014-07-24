@@ -120,20 +120,37 @@ public class AddDefault implements Service {
 
 					if (templateName.startsWith("sub-")) {
 						isTemplate = "s";
-						title = templateName.substring(4,
+						String tryUuid = xml.getAttributeValue("uuid");
+						if (tryUuid != null && tryUuid.length() > 0) uuid = tryUuid;
+						title = xml.getAttributeValue("title");
+						if (title == null || title.length() == 0) {
+							title = templateName.substring(4,
 								templateName.length() - 4);
+						}
+						
+						// throw away the uuid and title attributes if present as they
+						// cause problems for validation
+						xml.removeAttribute("uuid");
+						xml.removeAttribute("title");
 					}
-                    //
-                    // insert metadata
-                    //
-                    String groupOwner = "1";
-                    String docType = null, category = null, createDate = null, changeDate = null;
-                    boolean ufo = true, indexImmediate = true;
-					dataMan.insertMetadata(context, dbms, schemaName, xml, context.getSerialFactory().getSerial(dbms, "Metadata"), uuid, owner, groupOwner, siteId,
-                                           isTemplate, docType, title, category, createDate, changeDate, ufo, indexImmediate);
 
-					dbms.commit();
-					status = "loaded";
+					// Check and see whether the metadata is already present, if it is
+					// then don't try and insert as some dbs (postgres) will abort
+					// the transaction....
+					if (dataMan.existsMetadataUuid(dbms, uuid)) {
+						status = "skipped, already loaded";
+					} else {
+          	//
+          	// insert metadata
+          	//
+          	String groupOwner = "1";
+          	String docType = null, category = null, createDate = null, changeDate = null; boolean ufo = true, indexImmediate = true;
+						dataMan.insertMetadata(context, dbms, schemaName, xml, context.getSerialFactory().getSerial(dbms, "Metadata"), uuid, owner, groupOwner, siteId,
+                                           	isTemplate, docType, title, category, createDate, changeDate, ufo, indexImmediate);
+	
+						dbms.commit();
+						status = "loaded";
+					}
 				} catch (Exception e) {
 					serviceStatus = "false";
 					Log.error(Geonet.DATA_MANAGER, "Error loading template: "
