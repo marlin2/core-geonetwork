@@ -364,6 +364,46 @@ MarLIN.SearchFormTools = {
 				});
         return orgNameField;
     },
+    /** api:method[getTitleField] 
+     * 
+     *  :param services: Catalogue service URLs (eg. catalogue.services).
+     *  
+     *  :return: A multi-select field with autocompletion (based on Lucene field content - not a thesaurus)
+     */
+    getTitleField : function (services) {
+        var titNameStore = new GeoNetwork.data.OpenSearchSuggestionStore({
+            url: services.opensearchSuggest,
+            rootId: 1,
+						sortInfo: {
+							field: 'value',
+							direction: 'ASC'
+						},
+            baseParams: {
+                field: 'title'
+            }
+        });
+
+        var titNameField = new Ext.ux.form.SuperBoxSelect({
+            hideLabel: false,
+						anchor: '95%',
+            minChars: 0,
+            queryParam: 'q',
+            hideTrigger: false,
+            id: 'title',
+            name: 'E_title',
+            store: titNameStore,
+            valueField: 'value',
+            displayField: 'value',
+            valueDelimiter: ' or ',
+            mode : 'local',
+            fieldLabel: OpenLayers.i18n('Title')
+        });
+
+				titNameField.on('beforerender', function() {
+							titNameStore.load();
+				});
+        return titNameField;
+    },
     /** api:method[getCreditField] 
      * 
      *  :param services: Catalogue service URLs (eg. catalogue.services).
@@ -557,7 +597,7 @@ MarLIN.SearchFormTools = {
 				anchor: '100%', // parent is a form panel
 				autoHeight: true,
 				id: 'marlin-keywords',
-				items: [this.getResourceTypeField(multi), this.getOrganisationField(services), this.getCreditField(services), this.getDataParamField(services)]
+				items: [this.getResourceTypeField(multi), this.getTitleField(services), this.getOrganisationField(services), this.getCreditField(services), this.getDataParamField(services)]
 			});
 
 			// now get all thesauri in use from Lucene index field thesaurusName
