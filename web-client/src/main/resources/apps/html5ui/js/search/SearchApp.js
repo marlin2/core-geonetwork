@@ -425,6 +425,9 @@ GeoNetwork.searchApp = function() {
                     showSearch();
 										hideAdvancedSearch();
                 },
+								resetCb: function() {
+            			Ext.getCmp('sortByToolBar').setValue("relevance");
+								},
                 listeners : {
                     onreset : function() {
                         if (Ext.getCmp('facets-panel')) {
