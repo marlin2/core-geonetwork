@@ -57,8 +57,8 @@
 
              scope.extent = {
                md: null,
-               map: [],
-               form: []
+               map: [ null, null, null, null ],
+               form: [ null, null, null, null ]
              };
 
              if (attrs.hleft !== '' && attrs.hbottom !== '' &&
@@ -70,10 +70,12 @@
              }
 
              var reprojExtent = function(from, to) {
-               scope.extent[to] = gnMap.reprojExtent(
+							 if (scope.extent[from]) {
+              	 	scope.extent[to] = gnMap.reprojExtent(
                    scope.extent[from],
                    scope.projs[from], scope.projs[to]
-               );
+               		);
+							 }
              };
 
              // Init extent from md for map and form
@@ -202,7 +204,6 @@
               * the bbox from the map extent.
               */
              scope.updateBbox = function() {
-
                reprojExtent('form', 'map');
                reprojExtent('form', 'md');
                setDcOutput();
