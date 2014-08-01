@@ -28,6 +28,11 @@
 		<replaceXML xpath="welcome.text">
      <!--Marlin Home Text-->
 <h4>Welcome to Marlin - The metadata system for the CSIRO Oceans and Atmosphere Flagship</h4>
+<p>Marlin is the central, searchable repository for dataset descriptions (metadata) relating to data held by the CSIRO Oceans and Atmosphere Flagship in Australia.</p>
+		</replaceXML>
+    <replaceXML xpath="about.text">
+        <!--About MarLIN Text-->
+        <h4>About Marlin</h4>
 <p>Marlin is the central, searchable repository for dataset descriptions (metadata) relating to data held by the CSIRO Oceans and Atmosphere Flagship in Australia. Marlin currently contains descriptions of several thousand datasets held by this CSIRO Flagship, many of which are available online via hyperlinks to data files, OGC web services, or our "Data Trawler" application.</p>
 <p>The following links are supplied for Marlin users:             
 <ul>
@@ -43,11 +48,6 @@
 </li>                               
 </ul>                
 </p>
-		</replaceXML>
-    <replaceXML xpath="about.text">
-        <!--About MarLIN Text-->
-        <h4>About Marlin</h4>
-
         <p>This is a new (May 2014) release of the Marlin software based on the open source <a href="http://geonetwork-opensource.org/">GeoNetwork</a> product, with enhanced metadata elements and functionality compared with the previous MarLIN system which was in use 1998-2014. Significant advances include:
         <ul>
         <li>New, internationally-compliant metadata format based on ISO 19115 (and the Australian Marine Community Profile of the same)</li>
