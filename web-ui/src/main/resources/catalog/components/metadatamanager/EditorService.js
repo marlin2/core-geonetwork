@@ -296,7 +296,9 @@
                  if (target.hasClass('gn-add-field')) {
                    target.addClass('gn-extra-field');
                  }
-                 snippet.css('display', 'none');   // Hide
+                 //snippet.css('display', 'none');   // Hide
+								 // Why hide? If this line is left in then the red
+								 // cross on the element being added is made invisible!
                  target[position || 'after'](snippet); // Insert
                  snippet.slideDown(duration, function() {});   // Slide
 
