@@ -281,7 +281,7 @@
   <xsl:template name="render-boxed-element-control">
     <xsl:param name="editInfo"/>
 
-    <i class="btn fa fa-times text-danger pull-right"
+    <i class="btn fa fa-times text-danger pull-right" style="font-size: 1.1em;"
       data-ng-click="remove({$editInfo/@ref}, {$editInfo/@parent})"
       data-ng-mouseenter="highlightRemove({$editInfo/@ref})"
       data-ng-mouseleave="unhighlightRemove({$editInfo/@ref})"/>

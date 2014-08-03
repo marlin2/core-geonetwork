@@ -1039,6 +1039,14 @@
             extent.geographicElement.EX_GeographicBoundingBox or
             extent.geographicElement.EX_GeographicDescription is required</_condition>
 	</element>
+	<element name="gmd:extent" id="45.0">
+		<label>Extent</label>
+		<description>Extent information including the bounding polygon, vertical, and temporal
+            extent of the dataset</description>
+		<_condition>Conditional / if hierarchyLevel equals "dataset"? Either
+            extent.geographicElement.EX_GeographicBoundingBox or
+            extent.geographicElement.EX_GeographicDescription is required</_condition>
+	</element>
 	<element name="gmd:extent" id="140.0" context="gmd:DQ_Scope">
 		<label>Extent</label>
 		<description>Information about the horizontal, vertical and temporal extent of the data
@@ -1250,6 +1258,11 @@
             subject</description>
 	</element>
 	<element name="gmd:language" context="gmd:MD_Metadata" id="3.0">
+		<label>Metadata language</label>
+		<description>Language used for documenting metadata</description>
+		<condition>conditional</condition>
+	</element>
+	<element name="gmd:language" id="3.0">
 		<label>Metadata language</label>
 		<description>Language used for documenting metadata</description>
 		<condition>conditional</condition>
