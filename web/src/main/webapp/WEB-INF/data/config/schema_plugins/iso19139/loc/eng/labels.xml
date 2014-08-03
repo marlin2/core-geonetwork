@@ -1263,8 +1263,8 @@
 		<condition>conditional</condition>
 	</element>
 	<element name="gmd:language" id="3.0">
-		<label>Metadata language</label>
-		<description>Language used for documenting metadata</description>
+		<label>Language</label>
+		<description>Language used for documenting metadata or resource</description>
 		<condition>conditional</condition>
 	</element>
 	<element name="gmd:language" context="gmd:MD_DataIdentification"
