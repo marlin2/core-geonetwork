@@ -108,7 +108,10 @@
                          element.offset().left -
                          element.outerWidth()) * .95;
                      element.popover({
-                       title: info.description,
+                       title: function() {
+											 	return info.description +
+											 		'<button class="close">&times</button>';
+											 },
                        content: html,
                        html: true,
                        placement: placement,

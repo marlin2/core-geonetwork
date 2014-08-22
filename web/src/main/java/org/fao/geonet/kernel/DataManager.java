@@ -577,6 +577,10 @@ public class DataManager {
                 }
                 moreFields.add(SearchManager.makeField("_valid", isValid, true, true));
             }
+
+						if (isTemplate.equals("s") && title.trim().equals("")) {
+							title = createSubtemplateTitle(schema, md);
+						}
             searchMan.index(schemaMan.getSchemaDir(schema), md, id, moreFields, isTemplate, title);
         }
         catch (Exception x) {
@@ -1031,6 +1035,30 @@ public class DataManager {
         return uuid;
     }
 
+    /**
+     * Create Title from a subtemplate using the schema
+     * XSL for subtemplate title ({@link Geonet.File.EXTRACT_SUBTEMPLATE_TITLE})
+     *
+     * @param schema
+     * @param md
+     * @return
+     * @throws Exception
+     */
+    public String createSubtemplateTitle(String schema, Element md) throws Exception {
+        String styleSheet = getSchemaDir(schema) + Geonet.File.EXTRACT_SUBTEMPLATETITLE;
+
+				String title = "";
+				if (new File(styleSheet).exists()) {
+        	title       = Xml.transform(md, styleSheet).getText().trim();
+	        //--- needed to detach md from the document
+ 	       	md.detach();
+				}
+
+				if(Log.isDebugEnabled(Geonet.DATA_MANAGER))
+				            Log.debug(Geonet.DATA_MANAGER, "Extracted Subtemplate title '"+ title +"' for schema '"+ schema +"'");
+        return title;
+    }
+
 
     /**
      *
@@ -1475,6 +1503,7 @@ public class DataManager {
         String schema = el.getChildText("schemaid");
         String data   = el.getChildText("data");
         String uuid   = UUID.randomUUID().toString();
+				String title  = null;
 
         //--- generate a new metadata id
         int serial = sf.getSerial(dbms, "Metadata");
@@ -1488,10 +1517,12 @@ public class DataManager {
             if (schemaMan.getSchema(schema).isReadwriteUUID()) {
                 uuid = extractUUID(schema, xml);
             }
-        }
+        } else { // extract a title for subtemplates
+					title = createSubtemplateTitle(schema, xml);
+				}
 
         //--- store metadata
-        String id = xmlSerializer.insert(dbms, schema, xml, serial, source, uuid, null, null, isTemplate, null, owner, groupOwner, "", context);
+        String id = xmlSerializer.insert(dbms, schema, xml, serial, source, uuid, null, null, isTemplate, title, owner, groupOwner, "", context);
         copyDefaultPrivForGroup(context, dbms, id, groupOwner, fullRightsForGroup);
 
         //--- store metadata categories copying them from the template
@@ -1553,6 +1584,9 @@ public class DataManager {
             isTemplate = "n";
         }
 
+        if (isTemplate.equals("s")) { // extract a title for subtemplates
+					title = createSubtemplateTitle(schema, metadata);
+				}
         //--- store metadata
         xmlSerializer.insert(dbms, schema, metadata, id, source, uuid, createDate, changeDate, isTemplate, title, owner, group, docType, context);
 
@@ -1825,7 +1859,11 @@ public class DataManager {
         if (isTemplate.equals("n")) {
             // Notifies the metadata change to metatada notifier service
             notifyMetadataChange(dbms, md, id);
-        }
+        } else if (isTemplate.equals("s")) { 
+					// extract a title for subtemplates
+					String title = createSubtemplateTitle(schema, md);
+					setTemplateExt(dbms, Integer.parseInt(id), isTemplate, title);
+				}
 
         try {
             //--- do the validation last - it throws exceptions
@@ -2109,7 +2147,7 @@ public class DataManager {
         xmlSerializer.delete(dbms, "Metadata", id, context);
 
         // Notifies the metadata change to metatada notifier service
-        if (isTemplate.equals("n")) {
+        if (isTemplate != null && isTemplate.equals("n")) {
             notifyMetadataDelete(dbms, id, uuid);
         }
 
@@ -2311,6 +2349,13 @@ public class DataManager {
         }
 
         xmlSerializer.update(dbms, id, md, changeDate, true, uuid, context);
+        String isTemplate = getMetadataTemplate(dbms, id);
+        if (isTemplate.equals("s")) { 
+					// extract a title for subtemplates
+					String title = createSubtemplateTitle(schema, md);
+					setTemplateExt(dbms, Integer.parseInt(id), isTemplate, title);
+				}
+
 
         if (indexAfterChange) {
             // Notifies the metadata change to metatada notifier service

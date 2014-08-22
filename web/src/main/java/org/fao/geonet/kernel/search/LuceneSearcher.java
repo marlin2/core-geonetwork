@@ -1377,6 +1377,7 @@ public class LuceneSearcher extends MetaSearcher {
         String schema     = doc.get("_schema");
         String source     = doc.get("_source");
         String uuid       = doc.get("_uuid");
+        String title      = doc.get("_title");
         
         String createDate = doc.get("_createDate");
         if (createDate != null) createDate = createDate.toUpperCase();
@@ -1395,6 +1396,7 @@ public class LuceneSearcher extends MetaSearcher {
         addElement(info, Edit.Info.Elem.CREATE_DATE, createDate);
         addElement(info, Edit.Info.Elem.CHANGE_DATE, changeDate);
         addElement(info, Edit.Info.Elem.SOURCE,      source);
+        addElement(info, Edit.Info.Elem.TITLE,       title);
 
         HashSet<String> addedTranslation = new HashSet<String>();
         if ((dumpAllField || dumpFields != null) && searchLang != null && multiLangSearchTerm != null) {

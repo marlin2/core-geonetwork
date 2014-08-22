@@ -69,6 +69,8 @@ GeoNetwork.data.MetadataResultsStore = function(){
             return record.title[0].value;
         } else if (record.defaultTitle && record.defaultTitle[0]) {
             return record.defaultTitle[0].value;
+        } else if (record.geonet_info && record.geonet_info.title) {
+            return record.geonet_info.title[0].value;
         } else {
             return '';
         }

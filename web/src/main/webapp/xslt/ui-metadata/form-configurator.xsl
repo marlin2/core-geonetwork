@@ -123,8 +123,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      
-      <!--
+     
+		 	<!--
       <xsl:message> Field: <xsl:value-of select="@name"/></xsl:message>
       <xsl:message>Xpath: <xsl:copy-of select="@xpath"/></xsl:message>
       <xsl:message>TemplateModeOnly: <xsl:value-of select="@templateModeOnly"/></xsl:message>
@@ -133,8 +133,7 @@
       <xsl:message>Matching nodes: <xsl:copy-of select="$nodes"/></xsl:message>
       <xsl:message>Non existing child path: <xsl:value-of select="concat(@in, '/gn:child[@name = ''', @or, ''']')"/></xsl:message>
       <xsl:message>Non existing child: <xsl:copy-of select="$nonExistingChildParent"/></xsl:message>
-      -->
-
+			-->
 
 
 
@@ -193,6 +192,7 @@
 
         </xsl:when>
         <xsl:when test="$isDisplayed = 'true' and (@templateModeOnly or template)">
+
           <!-- 
               templateModeOnly 
               
@@ -387,12 +387,50 @@
               </template>
             </xsl:variable>
 
+            <xsl:variable name="keyValues">
+              <xsl:for-each select="$template/values/key">
+                <field name="{@label}">
+                  <!-- If an helper element defined the path to an helper list to 
+                  get from the loc files -->
+                  <xsl:if test="helper">
+                    <!-- Get them, it may contains multiple helpers with context (eg. different for service and dataset) -->
+                    <xsl:variable name="helper" select="gn-fn-metadata:getHelper($schema, helper/@name, helper/@context, helper/@xpath)"/>
+                   
+									 <!--
+                    <xsl:choose>
+                      <xsl:when test="count($helper) > 1">
+                        <!- - If more than one, get the one matching the context of the matching element. - ->
+                        <xsl:variable name="chooseHelperBasedOnElement" 
+                          select="gn-fn-metadata:getHelper($helper, 
+                          $metadata/descendant::*[gn:element/@ref = $matchingNodeValue/*/gn:element/@parent])"/>
+                        <xsl:copy-of select="$chooseHelperBasedOnElement"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+											-->
+                        <xsl:copy-of select="$helper"/>
+												<!--
+                      </xsl:otherwise>
+                    </xsl:choose>
+										-->
+                  </xsl:if>
+                  
+                  <xsl:if test="codelist">
+                    <xsl:variable name="listOfValues" 
+                      select="gn-fn-metadata:getCodeListValues($schema, codelist/@name, $codelists)"/>
+                    <xsl:copy-of select="$listOfValues"/>
+                  </xsl:if>
+                  
+								</field>
+							</xsl:for-each>
+						</xsl:variable>
+
             <xsl:call-template name="render-element-template-field">
               <xsl:with-param name="name" select="$strings/*[name() = $name]"/>
               <xsl:with-param name="id" select="$id"/>
               <xsl:with-param name="xpathFieldId" select="$xpathFieldId"/>
               <xsl:with-param name="isExisting" select="false()"/>
               <xsl:with-param name="template" select="$templateWithoutGnCopyElement"/>
+              <xsl:with-param name="keyValues" select="$keyValues"/>
               <xsl:with-param name="isMissingLabel" select="$strings/*[name() = $isMissingLabel]"/>
             </xsl:call-template>
           </xsl:if>

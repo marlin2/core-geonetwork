@@ -91,7 +91,7 @@
 				},
 				"suggestion":
 				{
-					"display":true
+					"display":false
 				},
 				"validation": 
 				{
@@ -109,7 +109,7 @@
 				},
 				"suggestion":
 				{
-					"display":true
+					"display":false
 				},
 				"validation": 
 				{
@@ -127,7 +127,7 @@
 				},
 				"suggestion":
 				{
-					"display":true
+					"display":false
 				},
 				"validation":
 				{

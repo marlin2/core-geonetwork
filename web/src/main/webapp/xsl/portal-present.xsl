@@ -20,7 +20,7 @@
 	
 	<!-- ============================================================== -->
 
-	<xsl:template match="geonet:info/title" mode="strip"/>
+	<!-- <xsl:template match="geonet:info/title" mode="strip"/> -->
 
 	<xsl:template match="@*|node()" mode="strip">
 		 <xsl:copy>
