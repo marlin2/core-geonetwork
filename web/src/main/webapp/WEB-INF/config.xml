@@ -1564,6 +1564,7 @@
   <include>config/config-service-monitoring.xml</include>
 
   <include>config/config-service-reports.xml</include>	
+  <include>config-xml-metadata-services.xml</include>	
 	<!-- ====================================================================== -->
 
 </geonet>
