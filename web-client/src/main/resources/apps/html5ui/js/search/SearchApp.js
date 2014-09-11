@@ -399,7 +399,7 @@ GeoNetwork.searchApp = function() {
                    }]
             });
 
-            this.setAdminFieldsCallback([ metadataTypeField, groupField ]);
+            this.setAdminFieldsCallback([ groupField ]);
 
             return new GeoNetwork.SearchFormPanel({
                 id : 'advanced-search-options-content-form',
