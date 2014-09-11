@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gml="http://www.opengis.net/gml#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <skos:ConceptScheme rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2">
+      <dc:identifier>b920278d-fafa-4d75-898f-cd55bce8f04f</dc:identifier>
+      <dc:title>Search words register from Australia New-Zealand Land Information Council - ANZLIC</dc:title>
+      <dc:description>Codelists for thematic classification of resources, as defined by ANZLIC (Australia New Zealand Land Information Council)</dc:description>
+      <dc:URI>http://asdd.ga.gov.au/asdd/profileinfo/anzlic-theme.xml</dc:URI>
+      <dct:modified>2011-07-06</dct:modified>
+      <dc:creator>
+         <foaf:Organization>
+            <foaf:name>ANZLIC</foaf:name>
+         </foaf:Organization>
+      </dc:creator>
+      <dc:publisher>
+         <foaf:Organization>
+            <foaf:name>ANZLIC - Australia/New-Zealand Spatial Information Council</foaf:name>
+         </foaf:Organization>
+      </dc:publisher>
+      <dct:issued>2014-09-05T15:15:02</dct:issued>
+   </skos:ConceptScheme>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1">
+      <skos:prefLabel xml:lang="en">AGRICULTURE non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#3"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#4"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#5"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2">
+      <skos:prefLabel xml:lang="en">AGRICULTURE Crops</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#3">
+      <skos:prefLabel xml:lang="en">AGRICULTURE Horticulture</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#4">
+      <skos:prefLabel xml:lang="en">AGRICULTURE Irrigation</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#5">
+      <skos:prefLabel xml:lang="en">AGRICULTURE Livestock</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#6">
+      <skos:prefLabel xml:lang="en">ATMOSPHERE non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#7"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#8"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#9"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#10"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#7">
+      <skos:prefLabel xml:lang="en">ATMOSPHERE Air Quality</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#6"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#8">
+      <skos:prefLabel xml:lang="en">ATMOSPHERE Greenhouse</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#6"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#9">
+      <skos:prefLabel xml:lang="en">ATMOSPHERE Ozone</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#6"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#10">
+      <skos:prefLabel xml:lang="en">ATMOSPHERE Pressure</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#6"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#11">
+      <skos:prefLabel xml:lang="en">BOUNDARIES non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#12"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#13"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#14"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#12">
+      <skos:prefLabel xml:lang="en">BOUNDARIES Administrative</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#11"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#13">
+      <skos:prefLabel xml:lang="en">BOUNDARIES Biophysical</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#11"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#14">
+      <skos:prefLabel xml:lang="en">BOUNDARIES Cultural</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#11"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#16"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#17"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#18"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#19"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#20"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#21"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#22"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#23"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#16">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Climate change</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#17">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Drought</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#18">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER El Nino</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#19">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Extreme weather events</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#20">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Meteorology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#21">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Radiation</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#22">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Rainfall</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#23">
+      <skos:prefLabel xml:lang="en">CLIMATE AND WEATHER Temperature</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#24">
+      <skos:prefLabel xml:lang="en">DEMOGRAPHY non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#25">
+      <skos:prefLabel xml:lang="en">DISEASE non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#26">
+      <skos:prefLabel xml:lang="en">ECOLOGY non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#27"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#28"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#29"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#30"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#27">
+      <skos:prefLabel xml:lang="en">ECOLOGY Community</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#26"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#28">
+      <skos:prefLabel xml:lang="en">ECOLOGY Ecosystem</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#26"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#29">
+      <skos:prefLabel xml:lang="en">ECOLOGY Habitat</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#26"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#30">
+      <skos:prefLabel xml:lang="en">ECOLOGY Landscape</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#26"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31">
+      <skos:prefLabel xml:lang="en">ENERGY non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#32"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#33"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#34"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#35"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#36"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#32">
+      <skos:prefLabel xml:lang="en">ENERGY Coal</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#33">
+      <skos:prefLabel xml:lang="en">ENERGY Electricity</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#34">
+      <skos:prefLabel xml:lang="en">ENERGY Petroleum</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#35">
+      <skos:prefLabel xml:lang="en">ENERGY Renewable</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#36">
+      <skos:prefLabel xml:lang="en">ENERGY Use</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37">
+      <skos:prefLabel xml:lang="en">FAUNA non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#38"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#39"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#40"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#41"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#42"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#38">
+      <skos:prefLabel xml:lang="en">FAUNA Exotic</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#39">
+      <skos:prefLabel xml:lang="en">FAUNA Insects</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#40">
+      <skos:prefLabel xml:lang="en">FAUNA Invertebrates</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#41">
+      <skos:prefLabel xml:lang="en">FAUNA Native</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#42">
+      <skos:prefLabel xml:lang="en">FAUNA Vertebrates</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#43">
+      <skos:prefLabel xml:lang="en">FISHERIES non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#44"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#45"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#46"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#47"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#44">
+      <skos:prefLabel xml:lang="en">FISHERIES Aquaculture</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#43"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#45">
+      <skos:prefLabel xml:lang="en">FISHERIES Freshwater</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#43"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#46">
+      <skos:prefLabel xml:lang="en">FISHERIES Marine</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#43"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#47">
+      <skos:prefLabel xml:lang="en">FISHERIES Recreational</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#43"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#48">
+      <skos:prefLabel xml:lang="en">FLORA non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#49"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#50"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#49">
+      <skos:prefLabel xml:lang="en">FLORA Exotic</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#48"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#50">
+      <skos:prefLabel xml:lang="en">FLORA Native</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#48"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#51">
+      <skos:prefLabel xml:lang="en">FORESTS non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#52"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#53"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#54"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#52">
+      <skos:prefLabel xml:lang="en">FORESTS Agriforestry</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#51"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#53">
+      <skos:prefLabel xml:lang="en">FORESTS Natural</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#51"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#54">
+      <skos:prefLabel xml:lang="en">FORESTS Plantation</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#51"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55">
+      <skos:prefLabel xml:lang="en">GEOSCIENCES non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#56"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#57"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#58"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#59"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#60"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#56">
+      <skos:prefLabel xml:lang="en">GEOSCIENCES Geochemistry</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#57">
+      <skos:prefLabel xml:lang="en">GEOSCIENCES Geology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#58">
+      <skos:prefLabel xml:lang="en">GEOSCIENCES Geomorphology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#59">
+      <skos:prefLabel xml:lang="en">GEOSCIENCES Geophysics</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#60">
+      <skos:prefLabel xml:lang="en">GEOSCIENCES Hydrogeology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61">
+      <skos:prefLabel xml:lang="en">HAZARDS non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#62"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#63"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#64"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#65"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#66"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#67"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#68"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#69"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#70"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#71"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#62">
+      <skos:prefLabel xml:lang="en">HAZARDS Cyclones</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#63">
+      <skos:prefLabel xml:lang="en">HAZARDS Drought</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#64">
+      <skos:prefLabel xml:lang="en">HAZARDS Earthquake</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#65">
+      <skos:prefLabel xml:lang="en">HAZARDS Fire</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#66">
+      <skos:prefLabel xml:lang="en">HAZARDS Flood</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#67">
+      <skos:prefLabel xml:lang="en">HAZARDS Landslip</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#68">
+      <skos:prefLabel xml:lang="en">HAZARDS Manmade</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#69">
+      <skos:prefLabel xml:lang="en">HAZARDS Pests</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#70">
+      <skos:prefLabel xml:lang="en">HAZARDS Severe local storms</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#71">
+      <skos:prefLabel xml:lang="en">HAZARDS Tsunamis</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#72">
+      <skos:prefLabel xml:lang="en">HEALTH non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#73">
+      <skos:prefLabel xml:lang="en">HERITAGE non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#74"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#75"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#76"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#77"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#74">
+      <skos:prefLabel xml:lang="en">HERITAGE Aboriginal</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#73"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#75">
+      <skos:prefLabel xml:lang="en">HERITAGE Architectural</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#73"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#76">
+      <skos:prefLabel xml:lang="en">HERITAGE Natural</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#73"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#77">
+      <skos:prefLabel xml:lang="en">HERITAGE World</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#73"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#79"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#80"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#81"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#82"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#83"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#84"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#79">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT Economics</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#80">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT Housing</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#81">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT Livability</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#82">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT Planning</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#83">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT Structures and Facilities</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#84">
+      <skos:prefLabel xml:lang="en">HUMAN ENVIRONMENT Urban Design</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85">
+      <skos:prefLabel xml:lang="en">INDUSTRY non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#86"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#87"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#88"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#89"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#90"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#86">
+      <skos:prefLabel xml:lang="en">INDUSTRY Manufacturing</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#87">
+      <skos:prefLabel xml:lang="en">INDUSTRY Mining</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#88">
+      <skos:prefLabel xml:lang="en">INDUSTRY Other</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#89">
+      <skos:prefLabel xml:lang="en">INDUSTRY Primary</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#90">
+      <skos:prefLabel xml:lang="en">INDUSTRY Service</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91">
+      <skos:prefLabel xml:lang="en">LAND non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#92"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#93"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#94"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#95"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#96"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#97"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#98"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#99"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#92">
+      <skos:prefLabel xml:lang="en">LAND Cadastre</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#93">
+      <skos:prefLabel xml:lang="en">LAND Cover</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#94">
+      <skos:prefLabel xml:lang="en">LAND Geodesy</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#95">
+      <skos:prefLabel xml:lang="en">LAND Geography</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#96">
+      <skos:prefLabel xml:lang="en">LAND Ownership</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#97">
+      <skos:prefLabel xml:lang="en">LAND Topography</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#98">
+      <skos:prefLabel xml:lang="en">LAND Use</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#99">
+      <skos:prefLabel xml:lang="en">LAND Valuation</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100">
+      <skos:prefLabel xml:lang="en">MARINE non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#101"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#102"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#103"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#104"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#105"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#106"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#107"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#101">
+      <skos:prefLabel xml:lang="en">MARINE Biology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#102">
+      <skos:prefLabel xml:lang="en">MARINE Coasts</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#103">
+      <skos:prefLabel xml:lang="en">MARINE Estuaries</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#104">
+      <skos:prefLabel xml:lang="en">MARINE Geology and Geophysics</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#105">
+      <skos:prefLabel xml:lang="en">MARINE Human Impacts</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#106">
+      <skos:prefLabel xml:lang="en">MARINE Meteorology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#107">
+      <skos:prefLabel xml:lang="en">MARINE Reefs</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#108">
+      <skos:prefLabel xml:lang="en">MINERALS non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#109">
+      <skos:prefLabel xml:lang="en">MOLECULAR BIOLOGY</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#110"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#110">
+      <skos:prefLabel xml:lang="en">MOLECULAR BIOLOGY Genetics</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#109"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#111">
+      <skos:prefLabel xml:lang="en">OCEANOGRAPHY non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#112"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#113"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#112">
+      <skos:prefLabel xml:lang="en">OCEANOGRAPHY Chemical</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#111"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#113">
+      <skos:prefLabel xml:lang="en">OCEANOGRAPHY Physical</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#111"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#114">
+      <skos:prefLabel xml:lang="en">PHOTOGRAPHY AND IMAGERY</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#115"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#116"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#117"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#115">
+      <skos:prefLabel xml:lang="en">PHOTOGRAPHY AND IMAGERY Aerial</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#114"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#116">
+      <skos:prefLabel xml:lang="en">PHOTOGRAPHY AND IMAGERY Remote Sensing</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#114"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#117">
+      <skos:prefLabel xml:lang="en">PHOTOGRAPHY AND IMAGERY Satellite</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#114"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#118">
+      <skos:prefLabel xml:lang="en">POLLUTION non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#119"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#120"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#121"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#122"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#119">
+      <skos:prefLabel xml:lang="en">POLLUTION Air</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#118"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#120">
+      <skos:prefLabel xml:lang="en">POLLUTION Noise</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#118"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#121">
+      <skos:prefLabel xml:lang="en">POLLUTION Soil</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#118"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#122">
+      <skos:prefLabel xml:lang="en">POLLUTION Water</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#118"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#123">
+      <skos:prefLabel xml:lang="en">SOIL non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#124"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#125"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#126"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#127"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#124">
+      <skos:prefLabel xml:lang="en">SOIL Biology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#123"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#125">
+      <skos:prefLabel xml:lang="en">SOIL Chemistry</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#123"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#126">
+      <skos:prefLabel xml:lang="en">SOIL Erosion</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#123"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#127">
+      <skos:prefLabel xml:lang="en">SOIL Physics</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#123"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#128">
+      <skos:prefLabel xml:lang="en">TRANSPORTATION non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#129"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#130"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#131"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#129">
+      <skos:prefLabel xml:lang="en">TRANSPORTATION Air</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#128"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#130">
+      <skos:prefLabel xml:lang="en">TRANSPORTATION Land</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#128"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#131">
+      <skos:prefLabel xml:lang="en">TRANSPORTATION Marine</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#128"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#132">
+      <skos:prefLabel xml:lang="en">UTILITIES non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#133">
+      <skos:prefLabel xml:lang="en">VEGETATION non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#134"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#135"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#134">
+      <skos:prefLabel xml:lang="en">VEGETATION Floristic</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#133"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#135">
+      <skos:prefLabel xml:lang="en">VEGETATION Structural</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#133"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136">
+      <skos:prefLabel xml:lang="en">WASTE non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#137"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#138"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#139"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#140"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#141"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#142"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#137">
+      <skos:prefLabel xml:lang="en">WASTE Greenhouse gas</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#138">
+      <skos:prefLabel xml:lang="en">WASTE Heat</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#139">
+      <skos:prefLabel xml:lang="en">WASTE Liquid</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#140">
+      <skos:prefLabel xml:lang="en">WASTE Sewage</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#141">
+      <skos:prefLabel xml:lang="en">WASTE Solid</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#142">
+      <skos:prefLabel xml:lang="en">WASTE Toxic</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143">
+      <skos:prefLabel xml:lang="en">WATER non-specific</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#144"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#145"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#146"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#147"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#148"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#149"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#150"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#151"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#152"/>
+      <skos:narrower rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#153"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#144">
+      <skos:prefLabel xml:lang="en">WATER Groundwater</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#145">
+      <skos:prefLabel xml:lang="en">WATER Hydrochemistry</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#146">
+      <skos:prefLabel xml:lang="en">WATER Hydrology</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#147">
+      <skos:prefLabel xml:lang="en">WATER Lakes</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#148">
+      <skos:prefLabel xml:lang="en">WATER Quality</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#149">
+      <skos:prefLabel xml:lang="en">WATER Rivers</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#150">
+      <skos:prefLabel xml:lang="en">WATER Salinity</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#151">
+      <skos:prefLabel xml:lang="en">WATER Supply</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#152">
+      <skos:prefLabel xml:lang="en">WATER Surface</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+   <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#153">
+      <skos:prefLabel xml:lang="en">WATER Wetlands</skos:prefLabel>
+      <skos:inScheme rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2"/>
+      <skos:broader rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
+   </skos:Concept>
+</rdf:RDF>
