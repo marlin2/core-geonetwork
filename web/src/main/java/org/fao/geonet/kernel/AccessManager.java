@@ -576,14 +576,23 @@ public class AccessManager {
 	private long getAddress(String ip) {
 		if(ip.trim().equals("?")) {
 			return 0;
+		// comma separated eg. via a redirect, check the last one
+		} else if (ip.contains(",")) { 
+			String[] ips = ip.split(",");
+			return doSubnet(ips[ips.length-1].trim());
 		} else {
-			StringTokenizer st = new StringTokenizer(ip, ".");
-			long a1 = Integer.parseInt(st.nextToken());
-			long a2 = Integer.parseInt(st.nextToken());
-			long a3 = Integer.parseInt(st.nextToken());
-			long a4 = Integer.parseInt(st.nextToken());
-			return a1<<24 | a2<<16 | a3<<8 | a4;
+			return doSubnet(ip);
 		}
+
+	}
+
+	private long doSubnet(String ip) {
+		StringTokenizer st = new StringTokenizer(ip, ".");
+		long a1 = Integer.parseInt(st.nextToken());
+		long a2 = Integer.parseInt(st.nextToken());
+		long a3 = Integer.parseInt(st.nextToken());
+		long a4 = Integer.parseInt(st.nextToken());
+		return a1<<24 | a2<<16 | a3<<8 | a4;
 	}
 
 	//--------------------------------------------------------------------------
