@@ -7,6 +7,7 @@
     function Keyword(k) {
       this.props = $.extend(true, {}, k);
       this.label = this.getLabel();
+			this.tagClass = 'label label-info gn-line-height';
     };
     Keyword.prototype = {
       getId: function() {

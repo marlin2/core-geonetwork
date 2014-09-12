@@ -191,6 +191,7 @@
                  $(id).tagsinput({
                    itemValue: 'label',
                    itemText: 'label',
+									 tagClass: 'tagClass',
                    maxTags: scope.maxTags
                  });
 
