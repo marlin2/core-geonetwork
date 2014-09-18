@@ -252,7 +252,7 @@
                            </div>
                        </div>
                        <div id="permalink-div" style="display:none"></div>
-                        <div id="bread-crumb-app"></div>
+                        <div id="bread-crumb-app" style="display:none;"></div>
                         <div id="search-form" style="display:none;">
                             <fieldset id="search-form-fieldset">
                                 <legend id="legend-search">

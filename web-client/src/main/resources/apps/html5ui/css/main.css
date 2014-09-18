@@ -25,6 +25,7 @@ html,body,button,input,select,textarea {
 #main {
 	padding: 3px;
 	padding-bottom: 150px; /* height of the footer */
+	padding-top: 20px;
 }
 
 #footer {
