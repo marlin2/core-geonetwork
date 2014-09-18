@@ -673,7 +673,7 @@
             organization(s) with responsability for maintaining the metadata</description>
 	</element>
 	<element name="gmd:contact" id="8.0">
-		<label>Metadata author</label>
+		<label>Contact</label>
 		<description>Party responsible for the metadata information</description>
 		<condition>mandatory</condition>
 	</element>
