@@ -591,13 +591,28 @@ MarLIN.SearchFormTools = {
 
 			MarLIN.ThesauriStore.loadData(MarLIN.Thesauri);
 
-			MarLIN.ThesaurusPanel = new Ext.Panel({
+			MarLIN.SelectorPanel = new Ext.Panel({
+				title: 'Field Selectors',
 				layout: 'form',
 				border: false,
 				anchor: '100%', // parent is a form panel
 				autoHeight: true,
-				id: 'marlin-keywords',
+				collapsed: true,
+				collapsible: true,
+				id: 'marlin-selectors',
 				items: [this.getResourceTypeField(multi), this.getTitleField(services), this.getOrganisationField(services), this.getCreditField(services), this.getDataParamField(services)]
+			});
+
+			MarLIN.ThesaurusPanel = new Ext.Panel({
+        title:'Thesaurus Selectors',
+				layout: 'form',
+				border: false,
+				anchor: '100%', // parent is a form panel
+				autoHeight: true,
+				collapsed: true,
+				collapsible: true,
+				id: 'marlin-keywords',
+				items: []
 			});
 
 			// now get all thesauri in use from Lucene index field thesaurusName
@@ -629,7 +644,7 @@ MarLIN.SearchFormTools = {
 			theStore.load();
 
 			// push form panel into the list of form items returned
-			f.push(MarLIN.ThesaurusPanel);
+			f.push(MarLIN.SelectorPanel, MarLIN.ThesaurusPanel);
 
       return f;
     }

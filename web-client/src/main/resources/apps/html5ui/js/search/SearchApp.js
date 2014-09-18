@@ -370,7 +370,6 @@ GeoNetwork.searchApp = function() {
                 items:[
                    // MarLIN panel
                    {
-                      title:'Keyword Selectors',
                       margins:'5 5 5 5',
                       layout:'form',
                       autoHeight: true,
