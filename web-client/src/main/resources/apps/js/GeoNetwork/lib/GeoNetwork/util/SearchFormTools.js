@@ -398,13 +398,15 @@ GeoNetwork.util.SearchFormTools = {
         return new Ext.data.ArrayStore({
             id: 0,
             fields: ['id', 'name'],
-            data: [['relevance#', OpenLayers.i18n('relevance')], 
-                    ['title#reverse', OpenLayers.i18n('title')], 
-                    ['changeDate#', OpenLayers.i18n('changeDate')], 
-                    ['rating#', OpenLayers.i18n('rating')], 
-                    ['popularity#', OpenLayers.i18n('popularity')], 
-                    ['denominator#', OpenLayers.i18n('scaleDesc')], 
-                    ['denominator#reverse', OpenLayers.i18n('scaleAsc')]]
+            data: [ 
+										['relevance#', OpenLayers.i18n('relevance')] 
+                   ,['title#reverse', OpenLayers.i18n('title')] 
+                   ,['changeDate#', OpenLayers.i18n('changeDate')] 
+            //     ,['rating#', OpenLayers.i18n('rating')]
+                   ,['popularity#', OpenLayers.i18n('popularity')]
+						//		 ,['denominator#', OpenLayers.i18n('scaleDesc')], 
+            //     ,['denominator#reverse', OpenLayers.i18n('scaleAsc')]
+						      ]
         });
     },
     /** api:method[getFullTextField]
