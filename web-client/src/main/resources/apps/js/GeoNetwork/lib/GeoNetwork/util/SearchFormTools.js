@@ -402,10 +402,10 @@ GeoNetwork.util.SearchFormTools = {
 										['relevance#', OpenLayers.i18n('relevance')] 
                    ,['title#reverse', OpenLayers.i18n('title')] 
                    ,['changeDate#', OpenLayers.i18n('changeDate')] 
-            //     ,['rating#', OpenLayers.i18n('rating')]
+                   ,['rating#', OpenLayers.i18n('rating')]
                    ,['popularity#', OpenLayers.i18n('popularity')]
-						//		 ,['denominator#', OpenLayers.i18n('scaleDesc')], 
-            //     ,['denominator#reverse', OpenLayers.i18n('scaleAsc')]
+              		 ,['denominator#', OpenLayers.i18n('scaleDesc')] 
+                   ,['denominator#reverse', OpenLayers.i18n('scaleAsc')]
 						      ]
         });
     },

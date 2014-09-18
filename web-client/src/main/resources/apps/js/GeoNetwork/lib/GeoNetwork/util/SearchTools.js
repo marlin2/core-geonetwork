@@ -341,12 +341,10 @@ GeoNetwork.util.SearchTools = {
             name: 'relevance',
             order: ''
         },
-				/*
         rating: {
             name: 'changeDate',
             order: ''
         },
-				*/
         popularity: {
             name: 'popularity',
             order: ''
