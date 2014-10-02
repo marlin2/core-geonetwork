@@ -25,6 +25,7 @@
              mode: '@gnCommonsJurisdictionSelector',
              elementRef: '@',
              currentJurisdictionUrl: '@jurisdictionUrl',
+						 namespace: '@namespace',
              currentLicenseName: '@licenseName',
              currentLicenseUrl: '@licenseUrl',
              currentLicenseImageUrl: '@licenseImageUrl'
@@ -65,6 +66,7 @@
 									} 
                		gnCommonsService
                 		.getXML(scope.currentJurisdiction, 
+														scope.namespace,
 														scope.currentLicenseName,
 														scope.currentLicenseImageUrl,
 														scope.currentLicenseUrl).then(
@@ -82,7 +84,7 @@
              scope.addCommons = function(l) {
 						 	 scope.currentLicenseName = l.getName();
                gnCommonsService
-               	.getXML(scope.currentJurisdiction, l.getName(), l.getImageUrl(), l.getUrl()).then(
+               	.getXML(scope.currentJurisdiction, scope.namespace, l.getName(), l.getImageUrl(), l.getUrl()).then(
                	function(data) {
                		// Add the fragment to the form, ready for saving later on
                   var xmlDeclaration =

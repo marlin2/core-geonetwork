@@ -19,12 +19,11 @@
        '$translate',
        '$compile',
        'gnUrlUtils',
-       'gnNamespaces',
        'gnXmlTemplates',
        'gnHttp',
        'gnCurrentEdit',
        function($q, $http, $translate, $compile, 
-       gnUrlUtils, gnNamespaces, gnXmlTemplates, gnHttp, gnCurrentEdit) {
+       gnUrlUtils, gnXmlTemplates, gnHttp, gnCurrentEdit) {
 
          /**
          * Animation duration for slide up/down

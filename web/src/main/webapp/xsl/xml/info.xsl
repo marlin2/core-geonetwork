@@ -116,6 +116,24 @@
 					"display":true
 				}
 			},
+			"iso19139.mcp-2.0":
+			{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":false
+				},
+				"validation": 
+				{
+					"display":true
+				}
+			},
 			"iso19139.anzlic":
 			{
 				"defaultTab":"default",

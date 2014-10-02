@@ -30,6 +30,7 @@
            replace: false,
            scope: {
              mode: '@gnOrganisationEntrySelector',
+             schema: '@',
              elementName: '@',
              elementRef: '@',
              domId: '@',
@@ -105,11 +106,11 @@
                      'subtemplate', params).success(function(xml) {
                    if (usingXlink) {
                      snippets.push(gnEditorXMLService.
-                     buildXMLForXlink(scope.elementName,
+                     buildXMLForXlink(scope.schema, scope.elementName,
                          url + '?uuid=' + uuid + '&process=' + params.process));
                    } else {
                      snippets.push(gnEditorXMLService.
-                     buildXML(scope.elementName, xml));
+                     buildXML(scope.schema, scope.elementName, xml));
                    }
                    checkState();
                  });

@@ -54,13 +54,14 @@
               /**
                * Request the XML for the mcp:MD_Commons element. 
                */
-              getXML: function(juris, name, imageurl, url) {
+              getXML: function(juris, namespace, name, imageurl, url) {
                 // http://localhost:8080/geonetwork/srv/eng/
                 // creativecommons.get?type=creative_commons&jurisdiction=au&...
                 var defer = $q.defer();
                 var url = gnUrlUtils.append('creativecommons.get',
                     gnUrlUtils.toKeyValue({
 											jurisdiction: juris,
+											ns: namespace,
 											licensename: name ? name : '',
 											licenseurl: url ? url : '',
 											licenseimageurl: imageurl ? imageurl : ''

@@ -3,8 +3,8 @@
 
 	<xsl:include href="res.xsl"/>
 
-	<xsl:variable name="ccurl" select="/root/gui/schemas/iso19139.mcp/strings/creativeCommonsUrl"/>
-	<xsl:variable name="iccurl" select="/root/gui/schemas/iso19139.mcp/strings/iCreativeCommonsUrl"/>
+	<xsl:variable name="ccurl" select="//strings/creativeCommonsUrl[1]"/>
+	<xsl:variable name="iccurl" select="//strings/iCreativeCommonsUrl[1]"/>
 
 	<!--
 	page content

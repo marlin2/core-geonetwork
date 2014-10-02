@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:variable name="ccurl" select="/root/gui/schemas/iso19139.mcp/strings/creativeCommonsUrl"/>
-	<xsl:variable name="iccurl" select="/root/gui/schemas/iso19139.mcp/strings/iCreativeCommonsUrl"/>
+	<xsl:variable name="ccurl" select="//strings/creativeCommonsUrl/text()"/>
+	<xsl:variable name="iccurl" select="//strings/iCreativeCommonsUrl/text()"/>
 
 	<xsl:output method="xml"/>
 
@@ -25,10 +25,10 @@
 				<xsl:variable name="imUrl">
 					<xsl:choose>
 						<xsl:when test="contains($url,'publicdomain')">
-							<xsl:value-of select="concat($iccurl,'/p',substring-after($url,'publicdomain'),'88x31.png')"/>
+							<xsl:value-of select="concat($iccurl[1],'/p',substring-after($url,'publicdomain'),'88x31.png')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="concat($iccurl,'/l',substring-after($url,concat($ccurl,'/licenses')),'88x31.png')"/>
+							<xsl:value-of select="concat($iccurl[1],'/l',substring-after($url,concat($ccurl[1],'/licenses')),'88x31.png')"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

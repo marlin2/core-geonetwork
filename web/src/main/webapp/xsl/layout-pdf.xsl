@@ -25,11 +25,11 @@
  
   <xsl:template mode="schema" match="*">
     <xsl:choose>
-      <xsl:when test="starts-with(//geonet:info/schema, 'iso19139')">
-        <xsl:value-of select="'iso19139'"/>
-      </xsl:when>
       <xsl:when test="string(//geonet:info/schema)!=''">
         <xsl:value-of select="//geonet:info/schema"/>
+      </xsl:when>
+      <xsl:when test="starts-with(//geonet:info/schema, 'iso19139')">
+        <xsl:value-of select="'iso19139'"/>
       </xsl:when>
       <xsl:when test="local-name(.)='MD_Metadata' or local-name(..)='MD_Metadata'"
         >iso19139</xsl:when>

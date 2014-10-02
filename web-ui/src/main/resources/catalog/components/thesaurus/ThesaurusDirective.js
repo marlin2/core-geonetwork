@@ -26,6 +26,7 @@
              mode: '@gnThesaurusSelector',
              elementName: '@',
              elementRef: '@',
+						 schema: '@',
              domId: '@'
            },
            templateUrl: '../../catalog/components/thesaurus/' +
@@ -54,7 +55,7 @@
                function(data) {
                  // Add the fragment to the form
                  scope.snippet = gnEditorXMLService.
-                 buildXML(scope.elementName, data);
+                 buildXML(scope.schema, scope.elementName, data);
                  scope.snippetRef = gnEditor.
                  buildXMLFieldName(scope.elementRef, scope.elementName);
 

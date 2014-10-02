@@ -97,6 +97,7 @@
     '$translate', '$compile', '$timeout', 
     'gnEditor',
     'gnSearchManagerService',
+    'gnSchemaManagerService',
     'gnConfigService',
     'gnUtilityService',
     'gnCurrentEdit',
@@ -105,6 +106,7 @@
         $translate, $compile, $timeout, 
         gnEditor, 
         gnSearchManagerService, 
+        gnSchemaManagerService, 
         gnConfigService,
             gnUtilityService, 
             gnCurrentEdit,
@@ -140,8 +142,9 @@
       };
       // Controller initialization
       var init = function() {
-        gnConfigService.load().then(function(c) {
-          // Config loaded
+				// Load the namespaces for the schemas
+				$.when(gnSchemaManagerService.getNamespaces(), 
+						gnConfigService.load()).done(function(n, c) {
         if ($routeParams.id) {
           // Check requested metadata exists
           gnSearchManagerService.gnSearch({
@@ -177,8 +180,6 @@
 
             // Get the schema configuration for the current record
             gnCurrentEdit.schemaConfig = $scope.gnSchemaConfig = config;
-
-
 
             var defaultTab = 'default';
             if (gnCurrentEdit.schemaConfig &&
