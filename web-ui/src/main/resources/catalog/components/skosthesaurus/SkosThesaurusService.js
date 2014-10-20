@@ -78,11 +78,16 @@
         				);
         				$http.get(url, { cache: true }).
            				success(function(data, status) {
-             				defer.resolve(data);
+										if (data.narrower) {
+											defer.resolve(data);
+										} else {
+											// not a top concept
+											defer.reject();
+										}
            				}).
            				error(function(data, status) {
              				//                TODO handle error
-             				//                defer.reject(error);
+             				defer.reject();
            				});
         				return defer.promise;
     				};
