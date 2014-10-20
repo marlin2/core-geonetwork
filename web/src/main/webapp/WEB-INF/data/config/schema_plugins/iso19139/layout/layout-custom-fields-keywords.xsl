@@ -138,7 +138,7 @@
             * transformations: list of transformations
             * transformation: current transformation
           -->
-        <div data-gn-keyword-selector="{$widgetMode}"
+        <div data-gn-skos-keyword-selector="{$widgetMode}"
           data-metadata-id="{$metadataId}"
           data-element-ref="{concat('_X', ../gn:element/@ref)}"
           data-thesaurus-title="{$thesaurusTitle}"
