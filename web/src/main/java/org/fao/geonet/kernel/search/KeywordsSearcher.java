@@ -23,6 +23,7 @@
 
 package org.fao.geonet.kernel.search;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -97,6 +98,14 @@ public class KeywordsSearcher {
         } else {
             return kws.get(0);
         }
+	}
+
+	public List<KeywordBean> searchTopConcepts(String sThesaurusName, String... languages) throws Exception {
+        Query<KeywordBean> query = QueryBuilder.keywordQueryBuilder(_isoLanguageMapper, new ArrayList<String>(Arrays.asList(languages))).select(Selectors.TOPCONCEPTS, true).build();
+
+
+        Thesaurus thesaurus = _thesaurusFinder.getThesaurusByName(sThesaurusName);
+        return query.execute(thesaurus); 
 	}
 
 	   public void search(KeywordSearchParams params) throws Exception {

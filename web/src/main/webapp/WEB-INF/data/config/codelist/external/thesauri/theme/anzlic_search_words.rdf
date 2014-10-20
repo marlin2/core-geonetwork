@@ -6,7 +6,7 @@
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <skos:ConceptScheme rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#2.2">
       <dc:identifier>b920278d-fafa-4d75-898f-cd55bce8f04f</dc:identifier>
-      <dc:title>Search words register from Australia New-Zealand Land Information Council - ANZLIC</dc:title>
+      <dc:title>ANZLIC Thematic Search Words Register</dc:title>
       <dc:description>Codelists for thematic classification of resources, as defined by ANZLIC (Australia New Zealand Land Information Council)</dc:description>
       <dc:URI>http://asdd.ga.gov.au/asdd/profileinfo/anzlic-theme.xml</dc:URI>
       <dct:modified>2011-07-06</dct:modified>
@@ -21,6 +21,37 @@
          </foaf:Organization>
       </dc:publisher>
       <dct:issued>2014-09-05T15:15:02</dct:issued>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#6"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#11"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#15"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#24"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#25"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#26"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#31"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#37"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#43"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#48"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#51"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#55"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#61"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#72"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#73"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#78"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#85"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#91"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#100"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#108"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#110"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#111"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#114"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#118"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#123"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#128"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#132"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#133"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#136"/>
+			<skos:hasTopConcept rdf:resource="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#143"/>
    </skos:ConceptScheme>
    <skos:Concept rdf:about="http://asdd.ga.gov.au/asdd/profileinfo/anzlic-keywords.xml#1">
       <skos:prefLabel xml:lang="en">AGRICULTURE non-specific</skos:prefLabel>

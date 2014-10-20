@@ -20,6 +20,8 @@
     <xsl:if test="$withD3">
       <link href="{/root/gui/url}/static/nv.d3.css{$minimizedParam}" rel="stylesheet" media="screen" />
     </xsl:if>
+
+    <link href="{/root/gui/url}/static/ng-skos.css{$minimizedParam}" rel="stylesheet" media="screen" />
     
     <link rel="shortcut icon" type="image/x-icon" href="../../images/logos/favicon.ico" />
     

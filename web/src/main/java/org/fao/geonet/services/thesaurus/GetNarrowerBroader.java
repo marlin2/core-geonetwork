@@ -31,6 +31,7 @@ import jeeves.utils.Log;
 import jeeves.utils.Util;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.kernel.KeywordBean;
 import org.fao.geonet.kernel.ThesaurusManager;
 import org.fao.geonet.kernel.search.KeywordsSearcher;
 import org.fao.geonet.kernel.search.keyword.KeywordRelation;
@@ -83,11 +84,13 @@ public class GetNarrowerBroader implements Service {
 			
 			searcher.searchForRelated(params, reqType, context.getLanguage());
 		
-			searcher.sortResults(KeywordSort.defaultLabelSorter(SortDirection.DESC));
+			//searcher.sortResults(KeywordSort.defaultLabelSorter(SortDirection.DESC));
 			
 			// Build response
 			Element keywordType = new Element(reqType.name);
-			keywordType.addContent(searcher.getResults());
+			for (KeywordBean kb : searcher.getResults()) {
+				keywordType.addContent(kb.toElement(context.getLanguage()));
+			}
 			response.addContent(keywordType);
 		}else  
 			throw new Exception("unknown request type: " + request);

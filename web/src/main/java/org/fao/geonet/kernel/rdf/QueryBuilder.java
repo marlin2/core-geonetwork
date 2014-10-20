@@ -95,6 +95,20 @@ public class QueryBuilder<Q> {
         }
         return builder;
     }
+
+    public static QueryBuilder<KeywordBean> topConceptQueryBuilder(IsoLanguagesMapper mapper, Collection<String> languages) {
+        QueryBuilder<KeywordBean> builder = builder()
+                .distinct(false)
+                .selectTopConcepts()
+                .interpreter(new KeywordResultInterpreter(languages));
+           
+        for (String lang : languages) {
+            builder.select(Selectors.prefLabel(lang, mapper), false);
+            builder.select(Selectors.note(lang, mapper), false);
+        }
+        return builder;
+    }
+
     /**
      * Create a query builder that is configured to read keywords with translations in the provided languages
      * 
@@ -229,6 +243,16 @@ public class QueryBuilder<Q> {
      */
     public QueryBuilder<Q> selectId() {
         return select(Selectors.ID, true);
+    }
+
+    /**
+     * Select the top concept element
+     * 
+     * @param optional
+     * @return a query builder to use for the next configuration option.
+     */
+    public QueryBuilder<Q> selectTopConcepts() {
+        return select(Selectors.TOPCONCEPTS, true);
     }
 
     /**

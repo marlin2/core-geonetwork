@@ -10,7 +10,26 @@
     </dc:creator>
     <dc:rights>Free to all for non commercial use.</dc:rights>
     <dcterms:issued>2014-04-29T14:25:37</dcterms:issued>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/a956d045-3b12-441c-8a18-fac7d33b2b4e"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/c47f6052-634e-40ef-a5ac-13f69f6f4c2a"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/fbec5145-79e6-4ed0-a804-6228aa6daba5"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/91c64c46-d040-4daa-b26c-61952fdfaf50"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/23703b6b-ee15-4512-b5b2-f441547e2edf"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/fa0a36c3-2503-4662-98cd-7f3e74ce9f80"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/fb93d937-c17c-45d0-a9e3-ca5c8a800ca8"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/6a426480-c58f-4b6b-8e35-0975b7f6edb5"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/91697b7d-8f2b-4954-850e-61d5f61c867d"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/c7245882-84a1-4192-acfa-a758b5b9c151"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/2b9ad978-d986-4d63-b477-0f5efc8ace72"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/83150c54-5da8-4ee8-9579-19b95a8dc10c"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/57383ac5-614c-4b84-9202-e137b000422b"/>
+		<skos:hasTopConcept rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concept/885735f3-121e-4ca0-ac8b-f37dbc972f03"/>
   </skos:ConceptScheme>
+  <skos:Concept rdf:about="e9f67a66-e9fc-435c-b720-ae32a2c3d8f5" xml:base="http://gcmdservices.gsfc.nasa.gov/kms/concept/">
+    <skos:inScheme rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concepts/concept_scheme/sciencekeywords" />
+    <skos:prefLabel xml:lang="en">Earth Science</skos:prefLabel>
+  </skos:Concept>
+	<!-- End SPPigot Additions -->
   <skos:Concept rdf:about="1eb0ea0a-312c-4d74-8d42-6f1ad758f999" xml:base="http://gcmdservices.gsfc.nasa.gov/kms/concept/">
     <skos:inScheme rdf:resource="http://gcmdservices.gsfc.nasa.gov/kms/concepts/concept_scheme/sciencekeywords" />
     <skos:prefLabel xml:lang="en">Science Keywords</skos:prefLabel>
