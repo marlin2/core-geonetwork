@@ -30,6 +30,7 @@ import jeeves.resources.dbms.Dbms;
 import jeeves.server.context.ServiceContext;
 import jeeves.utils.Xml;
 import jeeves.utils.XmlRequest;
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.csw.common.ConstraintLanguage;
@@ -399,7 +400,7 @@ class Harvester
 
 	//---------------------------------------------------------------------------
 	private void buildFilterQueryable(List<Element> queryables, String name, String value) {
-		if (value.contains("%")) { 
+		if (value.contains("%") || StringUtils.containsIgnoreCase(name, "AnyText")) { 
 			buildFilterQueryable(queryables, name, value, "PropertyIsLike");
 		} else {
 			buildFilterQueryable(queryables, name, value, "PropertyIsEqualTo");
