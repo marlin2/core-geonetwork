@@ -67,6 +67,7 @@ public class UploadAndProcess implements Service {
         String id = Utils.getIdentifierFromParameters(params, context);
         String filename = Util.getParam(params, Params.FILENAME);
         String access = Util.getParam(params, Params.ACCESS, "private");
+        String desc = Util.getParam(params, Params.DESCRIPTION, "");
         String overwrite = Util.getParam(params, Params.OVERWRITE, "no");
 
         Lib.resource.checkEditPrivilege(context, id);
@@ -92,6 +93,7 @@ public class UploadAndProcess implements Service {
         // Set parameter and process metadata to reference the uploaded file
         params.addContent(new Element("url").setText(filename));
         params.addContent(new Element("name").setText(filename));
+        params.addContent(new Element("desc").setText(desc));
         params.addContent(new Element("protocol")
                 .setText("WWW:DOWNLOAD-1.0-http--download"));
 
