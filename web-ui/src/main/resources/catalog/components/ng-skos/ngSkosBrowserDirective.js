@@ -53,13 +53,13 @@
 
 (function() {
   goog.provide('ngSkos_browser_directive');
-  goog.require('gn_skos_thesaurus_service');
+  goog.require('gn_thesaurus_service');
 
 	var module = angular.module('ngSkos_browser_directive', []);
 
 	module.directive('skosBrowser', 
-		[ '$compile', 'gnSkosThesaurusService', 
-			function($compile, gnSkosThesaurusService) {
+		[ '$compile', 'gnThesaurusService', 
+			function($compile, gnThesaurusService) {
 
 		var previous = [];
 
@@ -77,7 +77,7 @@
 						                                     // directive with compiler
 
             angular.forEach(['URI','Notation','Label'],function(value){
-                var lookup = gnSkosThesaurusService['lookup'+value];
+                var lookup = gnThesaurusService['lookup'+value];
                 if (lookup) {
                     scope['select'+value] = function(thes, query) {
                         lookup(thes, query).then(
@@ -104,7 +104,7 @@
 
 						// Refresh current concept with top concept from thesaurus
 						scope.topConcept = function(thesaurus) {
-							gnSkosThesaurusService.getTopConcept(thesaurus).then(
+							gnThesaurusService.getTopConcept(thesaurus).then(
 								function(c) {
 									angular.copy(c, scope.concept);
 								});

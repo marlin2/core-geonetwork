@@ -11,10 +11,10 @@
    *
    */
   module.directive('gnThesaurusSelector',
-      ['$timeout',
+      ['$compile', '$timeout',
        'gnThesaurusService', 'gnEditor',
        'gnEditorXMLService', 'gnCurrentEdit',
-       function($timeout,
+       function($compile, $timeout,
                gnThesaurusService, gnEditor,
                gnEditorXMLService, gnCurrentEdit) {
 
@@ -27,7 +27,8 @@
              elementName: '@',
              elementRef: '@',
 						 schema: '@',
-             domId: '@'
+             domId: '@',
+						 transformation: '@'
            },
            templateUrl: '../../catalog/components/thesaurus/' +
            'partials/thesaurusselector.html',
@@ -51,7 +52,7 @@
 
              scope.addThesaurus = function(thesaurusIdentifier) {
                gnThesaurusService
-                .getXML(thesaurusIdentifier).then(
+                .getXML(thesaurusIdentifier, '', scope.transformation).then(
                function(data) {
                  // Add the fragment to the form
                  scope.snippet = gnEditorXMLService.
@@ -88,10 +89,10 @@
    * TODO: explain transformation
    */
   module.directive('gnKeywordSelector',
-      ['$timeout',
+      ['$compile', '$timeout',
        'gnThesaurusService', 'gnEditor',
        'Keyword',
-       function($timeout,
+       function($compile, $timeout,
                gnThesaurusService, gnEditor, Keyword) {
 
          return {
@@ -112,6 +113,8 @@
            templateUrl: '../../catalog/components/thesaurus/' +
            'partials/keywordselector.html',
            link: function(scope, element, attrs) {
+					 	 $compile(element.contents())(scope); // pick up skos browser
+						                                      // directive with compiler
 
              scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
              scope.filter = null;
@@ -184,9 +187,32 @@
                scope.$watch('filter', search);
              };
 
+						 // Used by skos-browser to add keywords from the 
+						 // skos hierarchy to the current list of tags
+						 scope.addThesaurusConcept = function(uri, text) {
+								var textArr = [];
+								textArr['#text'] = text;
+								var k = {
+									uri: uri,
+									value: textArr
+								};
+								var keyword = new Keyword(k);
+
+                var thisId = '#tagsinput_' + scope.elementRef;
+                // Add to tags
+                $(thisId).tagsinput('add', keyword);
+
+                // Update selection and snippet
+                scope.selected = $(thisId).tagsinput('items');
+                getSnippet(); // FIXME: should not be necessary
+                              // as there is a watch on it ?
+
+                // Clear typeahead
+                $(thisId).tagsinput('input').typeahead('setQuery', '');
+						 };
 
              // Init typeahead and tag input
-             var initTagsInput = function() {
+             var initTagsInput = function() {;
                var id = '#tagsinput_' + scope.elementRef;
                $timeout(function() {
                  $(id).tagsinput({
@@ -355,6 +381,10 @@
 
              if (scope.thesaurusKey) {
                init();
+						 	 gnThesaurusService.getTopConcept(scope.thesaurusKey).then(
+							 		function(c) {
+						 	 			scope.concept = c;
+									});
              }
            }
          };
