@@ -100,7 +100,7 @@
              var tokens = [
                '<', elementName,
                ' ', nsDeclaration,
-               ' xmlns:xlink="', findNamespaceUri(xlink), '"',
+               ' xmlns:xlink="', gnSchemaManagerService.findNamespaceUri(xlink), '"',
                ' xlink:href="',
                xlink, '"/>'];
              return tokens.join('');
