@@ -34,6 +34,8 @@ import jeeves.utils.Xml;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
+import org.fao.geonet.exceptions.NoSchemaMatchesException;
+import org.fao.geonet.exceptions.SchemaMatchConflictException;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.jdom.Element;
@@ -117,6 +119,7 @@ public class AddDefault implements Service {
 					String uuid = UUID.randomUUID().toString();
 					String isTemplate = "y";
 					String title = null;
+					boolean skip = false;
 
 					if (templateName.startsWith("sub-")) {
 						isTemplate = "s";
@@ -132,6 +135,26 @@ public class AddDefault implements Service {
 						// cause problems for validation
 						xml.removeAttribute("uuid");
 						xml.removeAttribute("title");
+					} else {
+						try {
+							String trySchemaName = schemaMan.autodetectSchema(xml); // fail if we can't find a schema
+							if (!trySchemaName.equals(schemaName)) {
+								status = "Template "+templateName+" identifies as schema "+trySchemaName+", but should be "+schemaName;
+								skip = true;
+							} else {
+								String tryUuid = dataMan.extractUUID(schemaName, xml);
+								if (tryUuid != null && tryUuid.length() > 0) uuid = tryUuid;
+						  }
+					  } catch (SchemaMatchConflictException smce) {
+							status = "Schema match conflict for template "+templateName;
+							skip = true;
+						} catch (NoSchemaMatchesException nsme) {
+							status = "Unable to match schema for template "+templateName;
+							skip = true;
+						} catch (Exception e) {
+							status = "Problem processing schema/uuid for template "+templateName+": "+e.getMessage();
+							skip = true;
+						}
 					}
 
 					// Check and see whether the metadata is already present, if it is
@@ -139,7 +162,7 @@ public class AddDefault implements Service {
 					// the transaction....
 					if (dataMan.existsMetadataUuid(dbms, uuid)) {
 						status = "skipped, already loaded";
-					} else {
+					} else if (!skip) {
           	//
           	// insert metadata
           	//
