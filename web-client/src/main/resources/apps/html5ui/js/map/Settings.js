@@ -58,6 +58,9 @@ if (useOSMLayers) {
     //GeoNetwork.map.OWS = "../../maps/demis.xml";
 }
 
+// Add nationalmap layers from nationalmap json config as base layers
+GeoNetwork.map.NATIONALMAP = "../../maps/init_nm.json";
+
 //GeoNetwork.map.RESOLUTIONS = [];
 
 

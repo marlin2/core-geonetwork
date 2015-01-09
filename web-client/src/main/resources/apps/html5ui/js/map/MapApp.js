@@ -81,6 +81,34 @@ GeoNetwork.mapApp = function() {
             app.showBigMap();
         });
 
+				if (GeoNetwork.map.NATIONALMAP) { // Australian Nationalmap layer list
+					// read national map json config file from server
+          var request = OpenLayers.Request.GET({
+              url: GeoNetwork.map.NATIONALMAP,
+              async: false
+          });
+
+					// read response in JSON
+          if (request.responseText) {
+              var parser = new OpenLayers.Format.OWSContext();
+              var json = JSON.parse(request.responseText);
+
+							// filter each WMS layer from response and key by url for getcapab lookup
+							var layersByUrl = [];
+							filterNMLayers(json['catalog'][0]['items'], undefined, map, layersByUrl);
+
+							// now add each layer using the info from getcapab 
+							for (var url in layersByUrl) {
+								if (OpenLayers.String.startsWith(url, "http://")) {
+									//console.log('Processing layerList for url '+url);
+									var gfx = false; // don't display any warnings/errors
+									var visible = false; // don't display the layer when added
+									addWMSLayerList(layersByUrl[url], url, gfx, visible);
+								}
+							}
+          }
+				}
+
         var showBigMapButton = new OpenLayers.Control.Button({
             trigger : showBigMap,
             title : OpenLayers.i18n('bigMap')
@@ -362,6 +390,39 @@ GeoNetwork.mapApp = function() {
         createViewport(panel2);
         registerWindows(map2, map);
     };
+
+    /**
+     * Filter WMS layers from nationalmap json and add to our map as background layers
+     * 
+     */
+    var filterNMLayers = function(layerList, parentLayer, map, layersByUrl) {
+			Ext.each(layerList, function(layer) {
+				//if (layer['type'] === 'group') console.log("Found descriptive layer "+layer['name']);
+				if (layer['items']) filterNMLayers(layer['items'], layer, map, layersByUrl);
+				else {
+					// processing a layer that we add to layersByUrl keyed by url for later capab lookup
+					var baseUrl = layer['url'], layers = layer['layers'], title = layer['name'], 
+							group = parentLayer['name'];
+					if (!layersByUrl[baseUrl]) layersByUrl[baseUrl] = [];
+					layersByUrl[baseUrl].push([ title, baseUrl, layers, undefined, group ]);
+					/* Don't add it here because there isn't enough info in the init_nm.json file for the layer 
+					   to display correctly in OpenLayers (we need dimensions etc)
+					   instead group layers by url, then lookup the capabilities for the extra info needed to
+					   add the layer correctly 
+					var extras;
+					var maxExtent = layer['rectangle'], params = layer['parameters'];
+					if (params && params['tiled']) {
+						extras = { isBaseLayer: false, visibility: false, maxExtent: maxExtent, projection: 'EPSG:4326' };
+					} else {
+						extras = { isBaseLayer: false, visibility: false, singleTile: true, ratio: 1, buffer: 0, transitionEffect: 'resize' };
+					}
+					console.log('Adding layer '+layers+' with '+baseUrl+' options '+JSON.stringify(extras));
+
+					map.addLayer(new OpenLayers.Layer.WMS(title, baseUrl, { layers: layers, transparent: true, format: 'image/png', version: '1.3.0' }, extras));
+					*/
+				}
+			});
+		};
 
     /**
      * Configure the map controls
@@ -1240,7 +1301,7 @@ GeoNetwork.mapApp = function() {
                     uiProvider : "layernodeui"
                 }
             }
-        } ], true);
+				} ], true);
 
         var LayerNodeUI = Ext.extend(GeoExt.tree.LayerNodeUI,
                 new GeoExt.tree.TreeNodeUIEventMixin());
@@ -1323,7 +1384,7 @@ GeoNetwork.mapApp = function() {
                                 c.showAt(e.getXY());
                             } else {
 
-                                if (node.attributes.nodeType === "gx_overlaylayercontainer") {
+                                if (node.attributes.nodeType === "gx_overlaylayercontainer") { 
 
                                     node.select();
                                     var c = node.getOwnerTree().contextMenu;
@@ -1502,8 +1563,16 @@ GeoNetwork.mapApp = function() {
      * 
      * Parameters: response - {Object} The response object
      */
-    var processLayersSuccess = function(response) {
-        layerLoadingMask.hide();
+    var processLayersSuccess = function(response, layerList, visible) {
+				processLayersSuccessReal(response, true, layerList, visible);
+		};
+
+		var processLayersSuccessQuiet = function(response, layerList, visible) {
+				processLayersSuccessReal(response, false, layerList, visible);
+		};
+
+    var processLayersSuccessReal = function(response, gfx, layerList, visible) {
+        if (gfx) layerLoadingMask.hide();
 
         var parser = new OpenLayers.Format.WMSCapabilities();
         var caps = parser.read(response.responseXML || response.responseText);
@@ -1513,7 +1582,8 @@ GeoNetwork.mapApp = function() {
 
             if ((accessContraints)
                     && (accessContraints.toLowerCase() !== "none")
-                    && (accessContraints !== "-")) {
+                    && (accessContraints !== "-") 
+										&& gfx) {
                 var disclaimerWindow = new GeoNetwork.DisclaimerWindow({
                     disclaimer : accessContraints
                 });
@@ -1522,11 +1592,13 @@ GeoNetwork.mapApp = function() {
             }
 
             var map = app.mapApp.maps[1];
-            for ( var i = 0, len = layers.length; i < len; i++) {
-                var name = layers[i][0];
-                var url = layers[i][1];
-                var layer = layers[i][2];
-                var metadata_id = layers[i][3];
+            for ( var i = 0, len = layerList.length; i < len; i++) {
+                var name = layerList[i][0];
+                var url = layerList[i][1];
+                var layer = layerList[i][2];
+                var metadata_id = layerList[i][3];
+
+								//console.log("OL creating wms layer "+name+" at "+url);
 
                 var ol_layer = new OpenLayers.Layer.WMS(name, url, {
                     layers : layer,
@@ -1535,6 +1607,7 @@ GeoNetwork.mapApp = function() {
                     version : caps.version,
                     language : GeoNetwork.OGCUtil.getLanguage()
                 }, {
+										visibility : visible,
                     queryable : true,
                     singleTile : true,
                     ratio : 1,
@@ -1561,7 +1634,8 @@ GeoNetwork.mapApp = function() {
                             ol_layer);
                     if (layerCap) {
                         ol_layer.queryable = layerCap.queryable;
-                        ol_layer.name = layerCap.title || ol_layer.name;
+												if (name !== "") ol_layer.name = name;
+												else ol_layer.name = layerCap.title || ol_layer.name;
                         ol_layer.llbbox = layerCap.llbbox;
                         ol_layer.styles = layerCap.styles;
                         ol_layer.dimensions = layerCap.dimensions;
@@ -1569,13 +1643,15 @@ GeoNetwork.mapApp = function() {
                         ol_layer.abstractInfo = layerCap['abstract'];
                         map.addLayer(ol_layer);
                     } else {
-                        //Someone used the wrong layername. doh!
-                        //let them correct it
-                        //show wms layer selection
-                        GeoNetwork.WindowManager.showWindow("addwms");
-                        var panel = Ext.getCmp(GeoNetwork.WindowManager
-                                .getWindow("addwms").browserPanel.id);
-                        panel.setURL(caps.capability.request.getcapabilities.href);
+												if (gfx) {
+                        	//Someone used the wrong layername. doh!
+                        	//let them correct it
+                        	//show wms layer selection
+                        	GeoNetwork.WindowManager.showWindow("addwms");
+                        	var panel = Ext.getCmp(GeoNetwork.WindowManager
+                                	.getWindow("addwms").browserPanel.id);
+                        	panel.setURL(caps.capability.request.getcapabilities.href);
+												}
                     }
 
                 }
@@ -1678,6 +1754,46 @@ GeoNetwork.mapApp = function() {
                 });
 
     };
+
+    /**
+     * Add a list of WMS layers to the map
+     * 
+     * @param layers
+     *            List of layers to load [[name, url, layer, metadata_id],
+     *            [name, url, layer, metadata_id], ....]
+     * @param onlineResource
+     *            URL to query for getcapab and getmap requests etc
+     * @param gfx
+     *            Display warnings using widgets etc if true, otherwise don't do that
+     * @param visible
+     *            Display layer when added if true, otherwise make it invisible
+     */
+		var addWMSLayerList = function(layerList, onlineResource, gfx, visible) {
+            var params = {
+                'service' : 'WMS',
+                'request' : 'GetCapabilities',
+                'version' : '1.1.1'
+            };
+            var paramString = OpenLayers.Util.getParameterString(params);
+            var separator = (onlineResource.indexOf('?') > -1) ? '&' : '?';
+            onlineResource += separator + paramString;
+
+            OpenLayers.Request.GET({
+                url : onlineResource, // OpenLayers.Util.removeTail(OpenLayers.ProxyHostURL),
+                // method: 'GET',
+                // params: {url: onlineResource},
+                success : function(response) {
+									if (gfx) processLayersSuccess(response, layerList, visible);
+									else processLayersSuccessQuiet(response, layerList, visible);
+								},
+                failure : function(response) {
+									if (gfx) processLayersFailure;
+									//else console.log("Processing layer list "+JSON.stringify(layerList)+" failed");
+								},
+                timeout : 10000
+            });
+    };
+
     // public space:
     return {
         initialize : false,
@@ -1689,6 +1805,7 @@ GeoNetwork.mapApp = function() {
          *            [name, url, layer, metadata_id], ....]
          */
         addWMSLayer : function(layerList) {
+
             if (layerList.length === 0) {
                 return;
             }
@@ -1709,27 +1826,10 @@ GeoNetwork.mapApp = function() {
                 panel.setURL(onlineResource);
                 return;
             }
-
-            layers = layerList;
-
-            var params = {
-                'service' : 'WMS',
-                'request' : 'GetCapabilities',
-                'version' : '1.1.1'
-            };
-            var paramString = OpenLayers.Util.getParameterString(params);
-            var separator = (onlineResource.indexOf('?') > -1) ? '&' : '?';
-            onlineResource += separator + paramString;
-
-            OpenLayers.Request.GET({
-                url : onlineResource, // OpenLayers.Util.removeTail(OpenLayers.ProxyHostURL),
-                // method: 'GET',
-                // params: {url: onlineResource},
-                success : processLayersSuccess,
-                failure : processLayersFailure,
-                timeout : 10000
-            });
-        },
+						var gfx = true; // display warnings/errors using widgets
+						var visible = true; // display layer as soon as its added
+						addWMSLayerList(layerList, onlineResource, gfx, visible);
+				},
 
         /**
          * Add a list of WMTS layers to the map
