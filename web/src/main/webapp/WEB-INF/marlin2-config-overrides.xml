@@ -69,5 +69,48 @@
 		<replaceAtt xpath="mapViewer/layers/layer" attName="server" value="http://marlin2-dev.its.csiro.au/geoserver/wms" />
 		<!-- switch off OSM in html5ui etc -->
 		<replaceXML xpath="map/osm_map"/>
+		<addXML xpath="">
+			<!-- NICTA National Map config
+			     proxyDomains: means use nationalmap corsProxy on these domains 
+			     corsProxyHost: URL of corsProxy host - best if it runs on localhost 
+					 disableCorsProxy: set to false on platforms that can use nationalmap server.js + varnish,
+					               true means everything will go through proxyHost (GeoNetwork)
+			     proxyHost: URL of GeoNetwork proxy - used for all domains not handled by corsProxyHost 
+					 baseLayer: imagery to display as base layer in national map, types accepted are
+					            wms and bingmaps
+
+											eg. for bing maps:
+
+											"type": "bingmaps"
+											"options": {
+											   "url" : "//dev.virtualearth.net",
+											},
+			 -->
+			<nationalmap>
+			{
+			    "proxyDomains" : [
+						"nicta.com.au",
+						"gov.au",
+						"arcgis.com"
+					],
+					"corsProxyHost"    :  "http://localhost:3001",
+					"disableCorsProxy" :  "false",
+					"proxyHost"        :  "../../proxy/",
+					"baseLayer"        : {
+						     "type" : "wms",
+						     "options" : {
+								 			
+							        "layers" : "ea-be:World_Bright-Earth-e-Atlas-basemap_No-Labels",
+							        "url"    : "http://www.cmar.csiro.au/geoserver/gwc/service/wms"
+						     }
+					},
+					"terrainProvider" : {
+						"options" : {
+							"url"    : "//cesiumjs.org/stk-terrain/tilesets/world/tiles"
+						}
+					}
+			}
+			</nationalmap>
+		</addXML>
 	</file>
 </overrides>

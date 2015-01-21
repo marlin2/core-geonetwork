@@ -116,6 +116,7 @@
 											   "url" : "//dev.virtualearth.net",
 											},
 			 -->
+			 <!--
 			<nationalmap>
 			{
 			    "proxyDomains" : [
@@ -140,6 +141,7 @@
 					}
 			}
 			</nationalmap>
+			-->
 		</addXML>
 	</file>
 	<!-- add summary items to config-summary.xml -->
