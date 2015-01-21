@@ -529,6 +529,14 @@
                 <directory>${project.basedir}/../web-client/src/main/resources</directory>
             </resource>	
 						<resource>
+                <directory>${project.basedir}/../nationalmap/</directory>
+              	<excludes>
+                	<exclude>target/**</exclude>
+                	<exclude>pom.xml</exclude>
+								</excludes>
+                <targetPath>apps/nationalmap</targetPath>
+            </resource>	
+						<resource>
 						  <directory>${project.basedir}/../web-ui/src/main/resources</directory>
 						</resource>
             <resource>

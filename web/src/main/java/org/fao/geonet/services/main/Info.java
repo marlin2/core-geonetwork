@@ -31,6 +31,7 @@ import jeeves.server.ProfileManager;
 import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+import jeeves.server.overrides.ConfigurationOverrides;
 import jeeves.utils.Xml;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Edit;
@@ -57,7 +58,9 @@ public class Info implements Service {
     private static final String INDEX = "index";
     
     private String xslPath;
+	private String appPath;
 	private String xmlPath;
+	private String webInfPath;
 	private String otherSheets;
 	private ServiceConfig _config;
 
@@ -69,9 +72,11 @@ public class Info implements Service {
 
 	public void init(String appPath, ServiceConfig config) throws Exception
 	{
+		this.appPath = appPath;
 		xslPath = appPath + Geonet.Path.STYLESHEETS+ "/xml";
 		otherSheets = appPath + Geonet.Path.STYLESHEETS;
 		xmlPath = appPath + Geonet.Path.XML;
+		webInfPath = appPath + "/WEB-INF";
 		_config = config;
 	}
 
@@ -125,6 +130,18 @@ public class Info implements Service {
 				Element configEl = new Element("config");
 				configEl.addContent(gc.getSettingManager().getAll());
 			  result.addContent(configEl);
+				Element natmap = null;
+				try {
+					String configPath = webInfPath+"/config-gui.xml";
+					Element gui = Xml.loadFile(configPath);	
+					ConfigurationOverrides.DEFAULT.updateWithOverrides(configPath, null, appPath, gui);
+					natmap = Xml.selectElement(gui, "nationalmap");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (natmap != null) {
+					result.addContent(natmap.detach());
+				}
 			} else if (type.equals("inspire")) {
 				result.addContent(gc.getSettingManager().getValues(
 				   new String[]{
@@ -192,7 +209,9 @@ public class Info implements Service {
 		}
 		
 		result.addContent(getEnv(context));
+		System.out.println("Before "+Xml.getString(result));
 		Element response = Xml.transform(result, xslPath +"/info.xsl");
+		System.out.println("After "+Xml.getString(response));
 
         return response;
 	}

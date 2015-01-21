@@ -954,6 +954,7 @@
     <module>oaipmh</module>
     <module>sde</module>
     <module>web-client</module>
+    <module>nationalmap</module>
     <module>wro4j</module>
     <module>web-ui</module>
     <module>web</module>

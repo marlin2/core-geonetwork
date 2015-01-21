@@ -111,7 +111,7 @@ function showBigMap() {
     // show map
     show("big-map-container");
     // Resize the map, to cover all space available:
-    resizeMap();
+    //resizeMap();
 
     app.breadcrumb.setCurrent({
         text : OpenLayers.i18n("Map"),
@@ -122,7 +122,7 @@ function showBigMap() {
     // Trigger the print panel init only when the big map is displayed
     // the first time. It will check if the print panel is already initiliazed
     // or not
-    app.mapApp.initPrint();
+    //app.mapApp.initPrint();
     
 
     Ext.each(Ext.query('a', Ext.get("main-navigation").dom), function(a) {

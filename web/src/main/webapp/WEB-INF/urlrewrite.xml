@@ -19,6 +19,10 @@
 <urlrewrite use-query-string="true" use-context="false">
     
     <rule>
+        <from>^(.*)/proxy/(.*)$</from>
+        <to type="permanent-redirect" last="true">%{context-path}$1/proxy?url=$2</to>
+    </rule>
+    <rule>
         <from>^(.*)/ar/(.*)$</from>
         <to type="permanent-redirect" last="true">%{context-path}$1/ara/$2</to>
     </rule>

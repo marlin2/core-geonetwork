@@ -315,7 +315,11 @@
                         </div>
                       </div>
 	                    
-						<div id="big-map-container" style="display:none;"/>
+						<div id="big-map-container" style="display:none;background: #000;">
+							<div id="nationalmapContainer" class="nationalmap-container">
+								<div id="cesiumContainer" class="cesium-container"></div>
+							</div>
+						</div>
                        <div id="metadata-info" style="display:none;"/>
 						<div id="search-container" class="main wrapper clearfix">
 							<div id="bread-crumb-div"></div>
@@ -405,6 +409,31 @@
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini.js', $minimize)}"></script>
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-html5ui-app.js', $minimize)}"></script>
 
+				<script type="text/javascript" src="../../apps/nationalmap/public/third_party/jquery-1.11.1.min.js"></script>
+				<script type="text/javascript" src="../../apps/nationalmap/public/third_party/jquery.csv-0.71.min.js"></script>
+    		<script type="text/javascript" src="../../apps/nationalmap/public/third_party/jquery.xml2json.js"></script>
+
+    		<!-- Utility -->
+    		<!-- <link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"> -->
+    		<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.2/proj4.js"></script> -->
+    		<script src="../../apps/nationalmap/public/third_party/proj4_epsg.js"></script>
+    		<script src="../../apps/nationalmap/public/third_party/togeojson.js"></script>
+    		<script src="../../apps/nationalmap/public/third_party/URI.js"></script>
+    		 
+    		<!-- Leaflet -->
+    		<script>L_PREFER_CANVAS = true;</script>
+    		<script src="../../apps/nationalmap/public/third_party/leaflet/leaflet.js"></script>
+    		<script src="../../apps/nationalmap/public/third_party/Bing.js"></script>
+    		<script src="../../apps/nationalmap/public/third_party/esri-leaflet.js"></script>
+    		<script src="../../apps/nationalmap/public/third_party/html2canvas.js"></script>
+    		<script src="../../apps/nationalmap/public/third_party/TileLayer.Filter.min.js"></script>
+
+    		<link rel="stylesheet" href="../../apps/nationalmap/public/third_party/leaflet/leaflet.css"></link> 
+    		<link rel="stylesheet" href="../../apps/nationalmap/public/build/Cesium/Widgets/widgets.css" media="screen"></link>
+    		<link rel="stylesheet" href="../../apps/nationalmap/public/css/AusGlobeViewer.css"></link>
+
+   		 
+    		<script src="../../apps/nationalmap/public/build/ausglobe.js"></script>
         </div>
 		</body>
 	</html>

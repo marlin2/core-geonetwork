@@ -13,3 +13,8 @@
 [submodule "schemaPlugins"]
 	path = schemaPlugins
 	url = git://github.com/marlin2/schema-plugins
+	branch = 2.10.x
+[submodule "nationalmap"]
+	path = nationalmap
+	url = https://github.com/anzmest/nationalmap
+	branch = master

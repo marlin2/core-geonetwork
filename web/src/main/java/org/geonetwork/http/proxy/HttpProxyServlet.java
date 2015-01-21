@@ -19,6 +19,7 @@ import jeeves.utils.Log;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
@@ -106,21 +107,24 @@ public class HttpProxyServlet extends HttpServlet {
             String url = RequestUtil.getParameter(request, PARAM_URL, defaultProxyUrl);
             String host = url.split("/")[2];
 
+
             // Get the proxy parameters
             //TODO: Add dependency injection to set proxy config from GeoNetwork settings, using also the credentials configured
             String proxyHost = System.getProperty("http.proxyHost");
             String proxyPort = System.getProperty("http.proxyPort");
 
             // Get rest of parameters to pass to proxied url
-            HttpMethodParams urlParams = new HttpMethodParams();
+						List<NameValuePair> alSimpleParams = new ArrayList<NameValuePair>();
+
 
             @SuppressWarnings("unchecked")
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
                 String paramName = paramNames.nextElement();
+								//System.out.println("Param "+paramName+" : "+request.getParameter(paramName));
                 if (!paramName.equalsIgnoreCase(PARAM_URL)) {
-                    urlParams.setParameter(paramName, request.getParameter(paramName));
-                }
+										alSimpleParams.add(new NameValuePair(paramName, request.getParameter(paramName)));
+								}
             }
 
             // Checks if allowed host
@@ -130,6 +134,7 @@ public class HttpProxyServlet extends HttpServlet {
                 return;
             }
 
+						//System.out.println("Proxying to host name "+host);
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 HttpClient client = new HttpClient();
 
@@ -139,7 +144,10 @@ public class HttpProxyServlet extends HttpServlet {
                 }
 
                 httpGet = new GetMethod(url);
-                httpGet.setParams(urlParams);
+								if (alSimpleParams.size() > 0) {
+									httpGet.setQueryString(alSimpleParams.toArray(new NameValuePair[alSimpleParams.size()]));
+								}
+								//System.out.println("Proxying to "+url+" with params "+httpGet.getQueryString());
                 client.executeMethod(httpGet);
 
                 if (httpGet.getStatusCode() == HttpStatus.SC_OK) {
@@ -148,7 +156,7 @@ public class HttpProxyServlet extends HttpServlet {
                     if (!isValidContentType(contentTypesReturned[0])) {
                         contentTypesReturned = contentType.getValue().split(" ");
                         if (!isValidContentType(contentTypesReturned[0])) {
-                            throw new ServletException("Status: 415 Unsupported media type");
+                            throw new ServletException("Status: 415 Unsupported media type "+contentTypesReturned[0]);
                         }
                     }
 
