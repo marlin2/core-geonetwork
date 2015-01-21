@@ -209,9 +209,7 @@ public class Info implements Service {
 		}
 		
 		result.addContent(getEnv(context));
-		System.out.println("Before "+Xml.getString(result));
 		Element response = Xml.transform(result, xslPath +"/info.xsl");
-		System.out.println("After "+Xml.getString(response));
 
         return response;
 	}

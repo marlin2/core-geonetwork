@@ -130,7 +130,7 @@
 						     "type" : "wms",
 						     "options" : {
 							        "layers" : "gn:world,gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline",
-							        "url"    : "//localhost:8080/geoserver/ows"
+							        "url"    : "http://localhost:8080/geoserver/ows"
 						     }
 					},
 					"terrainProvider" : {
