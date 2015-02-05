@@ -88,13 +88,13 @@
 			 -->
 			<nationalmap>
 			{
-			    "proxyDomains" : [
+			    "corsDomains" : [
 						"nicta.com.au",
 						"gov.au",
 						"arcgis.com"
 					],
 					"corsProxyHost"    :  "http://localhost:3001",
-					"disableCorsProxy" :  "false",
+					"disableCorsProxy" :  "true",
 					"proxyHost"        :  "../../proxy/",
 					"baseLayer"        : {
 						     "type" : "wms",
