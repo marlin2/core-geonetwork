@@ -329,11 +329,13 @@
 								<div id="facets-panel-div"></div>
 							</aside>
 							<article>
-								<aside id="secondary-aside" class="secondary-aside" style="display:none;">
-									<header><xsl:value-of select="/root/gui/strings/recentlyViewed" /></header>
-                  <div id="recent-viewed-div"></div>
-                  <div id="mini-map"></div>
-								</aside>
+								<div style="display:none;">
+									<aside id="secondary-aside" class="secondary-aside" style="display:none;">
+										<header><xsl:value-of select="/root/gui/strings/recentlyViewed" /></header>
+                  	<div id="recent-viewed-div"></div>
+                  	<div id="mini-map"></div>
+									</aside>
+								</div>
 								<header>
 								</header>
 								<section>
