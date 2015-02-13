@@ -145,7 +145,7 @@
                   <maxIdleTime>60000</maxIdleTime>
                 </connector>
               </connectors>
-              <webApp>${geonetworkWar}/geonetwork-main.war</webApp>
+              <war>${geonetworkWar}/geonetwork-main.war</war>
               <webAppConfig>
                 <contextPath>/geonetwork</contextPath>
               </webAppConfig>
