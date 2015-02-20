@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import jeeves.utils.Log;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -116,10 +117,6 @@ public class HttpProxyServlet extends HttpServlet {
             String proxyHost = System.getProperty("http.proxyHost");
             String proxyPort = System.getProperty("http.proxyPort");
 
-            // Get rest of parameters to pass to proxied url
-						List<NameValuePair> alSimpleParams = new ArrayList<NameValuePair>();
-
-
             // Checks if allowed host
             if (!isAllowedHost(host)) {
                 //throw new ServletException("This proxy does not allow you to access that location.");
@@ -175,7 +172,7 @@ public class HttpProxyServlet extends HttpServlet {
                 //throw new ServletException("only HTTP(S) protocol supported");
                 returnExceptionMessage(response, "only HTTP(S) protocol supported");
             }
-        } catch (Exception e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
             //throw new ServletException("Some unexpected error occurred. Error text was: " + e.getMessage());
             returnExceptionMessage(response, "Some unexpected error occurred. Error text was: " + e.getMessage());

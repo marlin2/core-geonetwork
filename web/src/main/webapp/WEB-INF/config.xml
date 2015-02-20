@@ -943,7 +943,29 @@
 
 		<service name="xml.group.update">
 			<class name=".services.group.XmlUpdate" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
 		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="xml.group.list">
+			<class name=".services.group.List" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.group.get">
+      <class name=".services.group.Get" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.group.remove">
+      <class name=".services.group.Remove" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- Category services                                             -->
@@ -982,7 +1004,29 @@
 
 		<service name="xml.category.update">
 			<class name=".services.category.XmlUpdate" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
 		</service>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.category.create.update">
+      <class name=".services.category.Update" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.category.get">
+      <class name=".services.category.Get" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.category.remove">
+      <class name=".services.category.Remove" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- Notifications services                                        -->
@@ -1251,20 +1295,51 @@
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- GeoNetwork Mapping Application XML services  -->
 
+    <service name="xml.user.update">
+      <class name=".services.user.Update" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.user.remove">
+      <class name=".services.user.Remove" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.user.pwupdate">
+      <class name=".services.user.PwUpdate" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.user.infoupdate">
+      <class name=".services.user.InfoUpdate" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 		<service name="xml.user.list">
 			<class name=".services.user.List" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
 		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <service name="xml.user.get">
+      <class name=".services.user.Get" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
+    </service>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 		<service name="xml.usergroups.list">
 			<class name=".services.user.UserGroups" />
-		</service>
-
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-		<service name="xml.group.list">
-			<class name=".services.group.List" />
+      <error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8" />
 		</service>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
