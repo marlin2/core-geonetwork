@@ -220,12 +220,11 @@ GeoNetwork.HTML5UI.Templates.DOWNLOAD =
      onclick="catalogue.metadataPrint(\'{uuid}\');">\
           <img src="{[catalogue.URL]}/apps/html5ui/images/default/page_white_acrobat.png"/>\
       </button>\
-      <button class="bookmark-icon" title="{[OpenLayers.i18n(""getMEF")]}"\
+      <button class="bookmark-icon" title="{[OpenLayers.i18n("getMEF")]}"\
      onclick="catalogue.metadataMEF(\'{uuid}\');">\
                 <img src="{[catalogue.URL]}/apps/html5ui/images/default/page_white_zip.png"/>\
             </button>\
-            <div class="md-links" id="md-links-{id}"/>\
-        </div>';
+            ';
 
 
 /**
@@ -502,21 +501,8 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
             GeoNetwork.HTML5UI.Templates.COPYTOCLIPBOARD,
             '</td>',
             '<td class="icon" colspan="2">',
-
-            GeoNetwork.HTML5UI.Templates.WMS_VALID,
-            GeoNetwork.HTML5UI.Templates.WFS_VALID,
             GeoNetwork.HTML5UI.Templates.LINKCONTAINER,
             GeoNetwork.HTML5UI.Templates.VALID,
-            GeoNetwork.HTML5UI.Templates.RATING,
-
-        //    GeoNetwork.HTML5UI.Templates.SHOW_ON_MAP,
-        //    GeoNetwork.HTML5UI.Templates.DOWNLOAD,
-            '</td>',
-        '</tr>',
-        '<tr>',
-            '<td>',
-            GeoNetwork.HTML5UI.Templates.RELATED_DATASETS,
-            GeoNetwork.HTML5UI.Templates.DETAILED_METADATA,
             '</td>',
         '</tr>',
     '</table>',

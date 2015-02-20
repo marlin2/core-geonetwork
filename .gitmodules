@@ -1,15 +1,19 @@
 [submodule "gast"]
 	path = gast
 	url = https://github.com/geonetwork/core-gast.git
+	branch = 2.10.x
 [submodule "maven_repo"]
 	path = maven_repo
 	url = https://github.com/geonetwork/core-maven-repo.git
+	branch = master
 [submodule "web-itest/webspecs"]
 	path = web-itest/webspecs
 	url = https://github.com/camptocamp/webspecs.git
+	branch = 2.10.x
 [submodule "geoserver"]
 	path = geoserver
 	url = https://github.com/geonetwork/core-geoserver.git
+	branch = 2.10.x
 [submodule "schemaPlugins"]
 	path = schemaPlugins
 	url = git://github.com/marlin2/schema-plugins
