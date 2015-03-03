@@ -1584,7 +1584,7 @@ public class DataManager {
             isTemplate = "n";
         }
 
-        if (isTemplate.equals("s")) { // extract a title for subtemplates
+        if (isTemplate.equals("s") && title == null) { // extract a title for subtemplates
 					title = createSubtemplateTitle(schema, metadata);
 				}
         //--- store metadata

@@ -7,7 +7,7 @@
       ['gn_schema_manager_service']);
 
   module.value('gnXmlTemplates', {
-    CRS: '<gmd:referenceSystemInfo ' +
+    'CRS': '<gmd:referenceSystemInfo ' +
         "xmlns:gmd='http://www.isotc211.org/2005/gmd' " +
         "xmlns:gco='http://www.isotc211.org/2005/gco'>" +
         '<gmd:MD_ReferenceSystem>' +
@@ -26,7 +26,30 @@
         '</gmd:RS_Identifier>' +
         '</gmd:referenceSystemIdentifier>' +
         '</gmd:MD_ReferenceSystem>' +
-        '</gmd:referenceSystemInfo>'
+        '</gmd:referenceSystemInfo>',
+		'iso19115-3': '<mdb:referenceSystemInfo ' +
+        "xmlns:mdb='http://standards.iso.org/19115/-3/mdb/1.0/2014-12-25' " +
+        "xmlns:mcc='http://standards.iso.org/19115/-3/mcc/1.0/2014-12-25' " +
+        "xmlns:mrs='http://standards.iso.org/19115/-3/mrs/1.0/2014-12-25' " +
+        "xmlns:gco='http://standards.iso.org/19139/gco/1.0/2014-12-25'>" +
+        '<mrs:MD_ReferenceSystem>' +
+        '<mrs:referenceSystemIdentifier>' +
+        '<mcc:MD_Identifier>' +
+        '<mcc:code>' +
+        '<gco:CharacterString>{{description}}' +
+        '</gco:CharacterString>' +
+        '</mcc:code>' +
+        '<mcc:codeSpace>' +
+        '<gco:CharacterString>{{codeSpace}}' +
+        '</gco:CharacterString>' +
+        '</mcc:codeSpace>' +
+        '<mcc:version>' +
+        '<gco:CharacterString>{{version}}</gco:CharacterString>' +
+        '</mcc:version>' +
+        '</mcc:MD_Identifier>' +
+        '</mrs:referenceSystemIdentifier>' +
+        '</mrs:MD_ReferenceSystem>' +
+        '</mdb:referenceSystemInfo>'
   });
 
   module.factory('gnEditorXMLService',
@@ -54,11 +77,17 @@
            /**
             * Create a referenceSystemInfo XML snippet replacing
             * description, codeSpace and version properties of
-            * the CRS.
+            * the CRS defined for a schema or the default one for
+						* iso19139 based stuff if no schema specified.
             */
-           buildCRSXML: function(crs) {
+           buildCRSXML: function(crs, schema) {
              var replacement = ['description', 'codeSpace', 'version'];
-             var xml = gnXmlTemplates.CRS;
+						 var xml;
+						 if (schema) {
+						 	 xml = gnXmlTemplates[schema];
+						 } else {
+             	 xml = gnXmlTemplates['CRS'];
+						 }
              angular.forEach(replacement, function(key) {
                xml = xml.replace('{{' + key + '}}', crs[key]);
              });

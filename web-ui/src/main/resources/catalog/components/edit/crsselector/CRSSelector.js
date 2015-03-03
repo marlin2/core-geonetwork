@@ -19,6 +19,7 @@
            transclude: true,
            scope: {
              mode: '@gnCrsSelector',
+					 	 schema: '@',
              elementName: '@',
              elementRef: '@',
              domId: '@'
@@ -52,7 +53,7 @@
              scope.$watch('filter', scope.search);
 
              scope.addCRS = function(crs) {
-               scope.snippet = gnEditorXMLService.buildCRSXML(crs);
+               scope.snippet = gnEditorXMLService.buildCRSXML(crs, scope.schema);
                scope.crsResults = [];
 
                $timeout(function() {

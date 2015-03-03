@@ -24,7 +24,8 @@
           elementRef: '@',
           id: '@',
           tagName: '@',
-          indeterminatePosition: '@'
+          indeterminatePosition: '@',
+					namespaces: '@'
         },
         templateUrl: '../../catalog/components/edit/datepicker/partials/' +
             'datepicker.html',
@@ -35,10 +36,14 @@
           // support year or month only mode in this case)
           scope.dateTypeSupported = Modernizr.inputtypes.date;
 
-          var namespaces = {
-            gco: 'http://www.isotc211.org/2005/gco',
-            gml: 'http://www.opengis.net/gml'
-          };
+					var namespaces = {
+					 	  gco: 'http://www.isotc211.org/2005/gco',
+					  	gml: 'http://www.opengis.net/gml'
+					};
+					if (scope.namespaces) {
+						namespaces = JSON.parse(scope.namespaces);
+					}
+
           // Format date when datetimepicker is used.
           scope.formatFromDatePicker = function(date) {
             var format = 'YYYY-MM-DDTHH:mm:ss';

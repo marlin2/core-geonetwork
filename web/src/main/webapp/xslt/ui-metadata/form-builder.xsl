@@ -590,6 +590,12 @@
                   
                   If only one choice, make a simple button
             -->
+						<xsl:when test="(count($childEditInfo/gn:choose) > 0) and 
+						                ($directive = '')">
+
+
+
+				<xsl:choose>
             <xsl:when test="count($childEditInfo/gn:choose) = 1">
                   <xsl:for-each select="$childEditInfo/gn:choose">
                     <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
@@ -622,7 +628,16 @@
                 </ul>
               </div>
             </xsl:when>
+				</xsl:choose>
+
+            </xsl:when>
             <xsl:otherwise>
+								<xsl:if test="(count($childEditInfo/gn:choose) > 0)">
+									<xsl:message>WWARNING Overriding choose on element <xsl:value-of select="@name"/> with directive <xsl:value-of select="$directive"/> that has attributes: <xsl:copy-of select="$directiveAttributes"/></xsl:message>
+						<!--
+									<xsl:message><xsl:value-of select="saxon:print-stack()"/></xsl:message>
+						-->
+								</xsl:if>
               <!-- Add custom widget to add element.
                 This could be a subtemplate (if one available), or a helper
                 like for projection.

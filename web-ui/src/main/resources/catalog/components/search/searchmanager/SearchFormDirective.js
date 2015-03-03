@@ -116,15 +116,15 @@
 
 			// Add wildcard char to search, limit to subtemplates and the _root
 			// element of the subtemplate we want
-			params.any = params.any+'*';
+			if (params.any) params.any = params.any+'*';
+			else params.any = '*';
+
 			params._isTemplate = 's';
 			params._root = element;
+			params.from = "1";
+			params.to = "20";
 
-			// if they've typed in at least 3 letters then 
-			// do the typeahead search - otherwise too many
-			// results come back and may get out of sync
-			if (params.any.length > 3) {
-      	gnSearchManagerService.gnSearch(params).then(
+      gnSearchManagerService.gnSearch(params).then(
           function(data) {
             $scope.searchResults.records = data.metadata;
             $scope.searchResults.count = data.count;
@@ -137,8 +137,7 @@
                   $scope.searchResults.count /
                       $scope.paginationInfo.hitsPerPage, 0);
             }
-          });
-			}
+       });
     };
 
     /**

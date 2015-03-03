@@ -14,6 +14,35 @@ When you clone ANZMEST select the 2.10.x branch eg:
 
 git clone https://github.com/anzmest/core-geonetwork.git -b 2.10.x --recursive
 
+To build after you have cloned:
+
+```
+cd gast
+git checkout 2.10.x
+git pull
+cd ..
+
+cd geoserver
+git checkout 2.10.x
+git pull
+cd ..
+
+cd nationalmap
+git checkout master
+git pull
+cd ..
+
+cd nationalmap/third_party/cesium
+git checkout nm
+git pull
+cd ../../..
+
+cd schemaPlugins
+git checkout 2.10.x
+git pull
+cd ..
+```
+
 With ANZMEST you get GeoNetwork (2.10.x) plus:
 
 * ISO19115/19139 ANZLIC Profile version 1.1
@@ -21,7 +50,7 @@ With ANZMEST you get GeoNetwork (2.10.x) plus:
 * SensorML OGC Discovery Profile for sensor platform metadata
 * EML GBIF profile
 * ANZMETA (the old ANZLIC metadata profile) version 1.3 (view only - no editing)
-* ISO19115:1 2013 FDIS (for testing and exploration only)
+* ISO19115-1 2014 FDIS (for testing and exploration only)
 
 You can view the config overrides that ANZMEST applies to GeoNetwork at:
 

@@ -581,7 +581,7 @@ public class EditLib {
                         element.addContent(child);
                         
                         if (childHasOnlyCharacterStringSuggestion) {
-                            child.addContent(new Element("CharacterString", Namespaces.GCO));
+                            child.addContent(new Element("CharacterString", Namespace.getNamespace("gco",schema.getNS("gco"))));
                         }
                         
                         // Continue ....
@@ -608,7 +608,7 @@ public class EditLib {
             if(Log.isDebugEnabled(Geonet.EDITORFILLELEMENT)) {
                 Log.debug(Geonet.EDITORFILLELEMENT, "####   - Requested expansion of an OR element having gco:CharacterString substitute and no suggestion: " + element.getName());
             }
-            Element child = new Element("CharacterString", Namespaces.GCO);
+            Element child = new Element("CharacterString", Namespace.getNamespace("gco",schema.getNS("gco")));
             element.addContent(child);
         } else {
             // TODO: this could be supported if only one suggestion defined for an or element ?
@@ -1319,8 +1319,7 @@ public class EditLib {
                         Log.debug(Geonet.EDITOR,"OR element having gco:CharacterString substitute and no suggestion: " + qname);
 
 					Element newElem = createElement(schema, qname,
-							"gco:CharacterString",
-                            "http://www.isotc211.org/2005/gco", 1, 1);
+							"gco:CharacterString", schema.getNS("gco"), 1, 1);
 					child.addContent(newElem);
 				} else {
 					action = "before"; // js adds new elements before this child
