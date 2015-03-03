@@ -41,9 +41,14 @@
 
 											<!-- some status values are not available to Editors -->
 											<xsl:if test="not($isReviewer) and not(contains($profile,'Admin'))">
-												<xsl:if test="name='approved' or name='retired' or name='rejected'">
+												<xsl:if test="name='approved' or name='retired' or name='rejected' or name='draft'">
 													<xsl:attribute name="style">display:none;</xsl:attribute>
 												</xsl:if>
+											</xsl:if>
+
+											<!-- unknown is not useful so hide it completely -->
+											<xsl:if test="name='unknown'">
+												<xsl:attribute name="style">display:none;</xsl:attribute>
 											</xsl:if>
 
 											<input type="radio" name="status" value="{id}" id="st{id}">

@@ -35,8 +35,10 @@ import jeeves.utils.Util;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
+import org.fao.geonet.constants.Params;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.services.NotInReadOnlyModeService;
+import org.fao.geonet.util.ISODate;
 import org.jdom.Element;
 
 /**
@@ -101,9 +103,12 @@ public class Create extends NotInReadOnlyModeService {
 												  gc.getSiteId(), context.getUserSession().getUserIdAsInt(), 
 												  (child.equals("n")?null:uuid), isTemplate, haveAllRights);
 
-        Element response = new Element(Jeeves.Elem.RESPONSE);
-        response.addContent(new Element(Geonet.Elem.JUSTCREATED).setText("true"));
-        response.addContent(new Element(Geonet.Elem.ID).setText(newId));
+		//--- set status to DRAFT, indexing result immediately
+		dm.setStatus(context, dbms, new Integer(newId), Integer.valueOf(Params.Status.DRAFT), new ISODate().toString(), "Created");
+
+    Element response = new Element(Jeeves.Elem.RESPONSE);
+    response.addContent(new Element(Geonet.Elem.JUSTCREATED).setText("true"));
+    response.addContent(new Element(Geonet.Elem.ID).setText(newId));
 		return response;
 	}
 }
