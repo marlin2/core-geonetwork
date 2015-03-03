@@ -1523,7 +1523,11 @@ public class DataManager {
 
         //--- store metadata
         String id = xmlSerializer.insert(dbms, schema, xml, serial, source, uuid, null, null, isTemplate, title, owner, groupOwner, "", context);
-        copyDefaultPrivForGroup(context, dbms, id, groupOwner, fullRightsForGroup);
+
+				// For MarLIN - newly created records should only be visible to the
+				// owner - the group should not see the record unless the owner
+				// explicitly sets the permissions for them
+        //copyDefaultPrivForGroup(context, dbms, id, groupOwner, fullRightsForGroup);
 
         //--- store metadata categories copying them from the template
         List categList = dbms.select("SELECT categoryId FROM MetadataCateg WHERE metadataId = ?",iTemplateId).getChildren();
