@@ -39,10 +39,14 @@
 												</xsl:if>
 											</xsl:if>
 
-											<!-- some status values are not available to Editors -->
+											<!-- all status values are not available to Editors, they
+											     can only submit and that option will be checked by default -->
 											<xsl:if test="not($isReviewer) and not(contains($profile,'Admin'))">
 												<xsl:if test="name='approved' or name='retired' or name='rejected' or name='draft'">
 													<xsl:attribute name="style">display:none;</xsl:attribute>
+												</xsl:if>
+												<xsl:if test="name='submitted'">
+													<xsl:attribute name="checked"/>
 												</xsl:if>
 											</xsl:if>
 

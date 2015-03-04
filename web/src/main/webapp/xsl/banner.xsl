@@ -34,8 +34,8 @@
                 </td>
             </tr>
 
-            <!-- buttons -->
-            <tr class="banner">
+            <!-- buttons - hidden for marlin2 -->
+            <tr class="banner" style="display:none;">
                 <td class="banner-menu" width="380px">
                     <a class="banner" href="{/root/gui/locService}/home"><xsl:value-of select="/root/gui/strings/home"/></a>
                     |
@@ -136,8 +136,8 @@
 
             <!-- FIXME: should also contain links to last results and metadata -->
 
-            <!-- login -->
-            <tr class="banner">
+            <!-- login - hidden for marlin2 -->
+            <tr class="banner" style="display:none;">
                 <td class="banner-login" align="right" width="380px">
                     <!-- FIXME
                     <button class="banner" onclick="goSubmit('{/root/gui/service}/es/main.present')">Last search results (11-20 of 73)</button>
