@@ -81,7 +81,7 @@ GeoNetwork.form.OpenSearchSuggestionTextField = Ext.extend(Ext.form.ComboBox, {
          *  ``String`` Optional, GeoNetwork Lucene field to query.
          *  Default any (ie. full text search).
          */
-        field: 'any',
+        field: 'any_suggest',
         /** api: config[fieldName] 
          *  ``String`` Optional, Field name.
          */

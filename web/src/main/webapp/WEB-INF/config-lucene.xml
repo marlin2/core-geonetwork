@@ -274,6 +274,7 @@
    -->
   <tokenized>
     <Field name="any"/>
+    <Field name="any_suggest"/>
     <Field name="abstract"/>
     <Field name="title"/>
     <Field name="altTitle"/>

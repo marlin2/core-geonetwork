@@ -658,6 +658,21 @@
 			</xsl:for-each>
 		</xsl:for-each>
 
+		<!-- === Suggestion search === -->		
+		<Field name="any_suggest" store="false" index="true">
+			<xsl:attribute name="string">
+				<xsl:for-each select="//gmd:abstract">
+					<xsl:value-of select="concat(normalize-space(),' ')"/>
+				</xsl:for-each>
+				<xsl:for-each select="//gmd:title">
+					<xsl:value-of select="concat(normalize-space(),' ')"/>
+				</xsl:for-each>
+				<xsl:for-each select="//@codeListValue">
+					<xsl:value-of select="concat(., ' ')"/>
+				</xsl:for-each>
+			</xsl:attribute>
+		</Field>
+
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
 		<!-- === Free text search === -->		
 
