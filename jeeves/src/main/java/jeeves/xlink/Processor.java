@@ -367,11 +367,13 @@ public final class Processor {
 					// Should work in XPath v2. Failed with JDOM : 
 					// localFragment = Xml.selectElement(md, "*//*[@id='" + idSearch + "' " 
 					//  		+ "and count(descendant::*[@xlink:href='#" + idSearch + "'])=0]");
-					List<Attribute> subXlinks = getXLinksWithXPath(localFragment, "//@xlink:href[.='#" + idSearch + "']");
-					if (subXlinks.size()!=0) {
-						Log.warning(Log.XLINK_PROCESSOR, "found a fragment " + Xml.getString(localFragment) + " containing " 
-								+ subXlinks.size() + " reference(s) to itself. Id: " + idSearch);
-						continue;
+					if (localFragment != null) {
+						List<Attribute> subXlinks = getXLinksWithXPath(localFragment, "//@xlink:href[.='#" + idSearch + "']");
+						if (subXlinks.size()!=0) {
+							Log.warning(Log.XLINK_PROCESSOR, "found a fragment " + Xml.getString(localFragment) + " containing " 
+									+ subXlinks.size() + " reference(s) to itself. Id: " + idSearch);
+							continue;
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -435,7 +437,7 @@ public final class Processor {
 							}
 							Element parent = element.getParentElement();
 							int index = parent.indexOf(element);
-							parent.setContent(index,remoteFragment);
+							parent.setContent(index,remoteFragment.detach());
 						} else { // show = XLink.SHOW_EMBED
 							// replace children of this element with the fragment
 							element.removeContent(); 
