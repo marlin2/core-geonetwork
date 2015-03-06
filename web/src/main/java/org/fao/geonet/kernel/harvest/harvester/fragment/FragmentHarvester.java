@@ -412,6 +412,7 @@ public class FragmentHarvester extends BaseAligner{
 			Object ob = iter.next();
 			if (ob instanceof Element) {
 				Element elem = (Element)ob;
+				log.debug("Processing element "+Xml.getString(elem));
 
 	 	    if (fragment.getName().equals(REPLACEMENT_GROUP)) {
  					Element parent = elem.getParentElement();

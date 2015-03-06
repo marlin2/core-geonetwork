@@ -286,6 +286,9 @@ public class ThesaurusManager implements ThesaurusFinder {
 			dbms = (Dbms) rm.openDirect(Geonet.Res.MAIN_DB);
 
 			String id = dm.getMetadataId(dbms, uuid);
+
+					if (id != null) {
+
 			Element md;
 			if (startUp) {
 				// if startup then don't worry about permissions
@@ -304,6 +307,11 @@ public class ThesaurusManager implements ThesaurusFinder {
 	
 			String styleSheet = dm.getSchemaDir("iso19135") + "convert/" + Geonet.File.EXTRACT_SKOS_FROM_ISO19135;
 			Xml.transform(root, styleSheet, os);
+
+					} else {
+			Log.error(Geonet.THESAURUS_MAN, "Register thesaurus "+uuid+" could not be found as an ISO19135 record in catalog - skipping");
+					}
+
 		} finally {
 			if (dbms != null) rm.close(Geonet.Res.MAIN_DB, dbms);
 		}
