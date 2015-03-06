@@ -88,6 +88,7 @@ public final class Processor {
 	public static Element processXLink(Element xml, ServiceContext srvContext) {
 		searchXLink(xml, ACTION_RESOLVE, srvContext);
 		searchLocalXLink(xml, ACTION_RESOLVE);
+		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -97,6 +98,7 @@ public final class Processor {
     */
 	public static Element uncacheXLink(Element xml) {
 		searchXLink(xml, ACTION_UNCACHE, null);
+		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -107,6 +109,7 @@ public final class Processor {
 	public static Element removeXLink(Element xml) {
 		searchXLink(xml, ACTION_REMOVE, null);
 		searchLocalXLink(xml, ACTION_REMOVE);
+		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -117,6 +120,7 @@ public final class Processor {
 	public static Element detachXLink(Element xml, ServiceContext srvContext) {
 		searchXLink(xml, ACTION_DETACH, srvContext);
 		searchLocalXLink(xml, ACTION_DETACH);
+		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -125,7 +129,9 @@ public final class Processor {
     * Return all XLinks child of the input XML document.
     */
 	public static List<Attribute> getXLinks(Element md) {
-		return getXLinksWithXPath(md, "//@xlink:href");
+		List<Attribute> attrs = getXLinksWithXPath(md, "//@xlink:href");
+		md = (Element)md.detach();
+		return attrs;
 	}
 
 	//--------------------------------------------------------------------------
