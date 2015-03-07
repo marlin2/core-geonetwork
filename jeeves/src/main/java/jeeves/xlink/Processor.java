@@ -20,21 +20,10 @@ import jeeves.utils.Xml;
 
 import org.apache.jcs.access.exception.CacheException;
 import org.jdom.Attribute;
-import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
-
-import net.sf.saxon.s9api.XdmItem;
-import net.sf.saxon.s9api.XdmNode;
-import net.sf.saxon.s9api.XdmValue;
-import net.sf.saxon.s9api.DocumentBuilder;
-import net.sf.saxon.s9api.QName;
-import net.sf.saxon.s9api.XPathCompiler;
-import net.sf.saxon.s9api.XPathSelector;
-
-import javax.xml.transform.stream.StreamSource;
-import java.io.StringReader;
+import org.jdom.filter.Filter;
 
 /**
  * Process XML document having XLinks to resolve, remove and detach fragments.
@@ -88,7 +77,6 @@ public final class Processor {
 	public static Element processXLink(Element xml, ServiceContext srvContext) {
 		searchXLink(xml, ACTION_RESOLVE, srvContext);
 		searchLocalXLink(xml, ACTION_RESOLVE);
-		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -98,7 +86,6 @@ public final class Processor {
     */
 	public static Element uncacheXLink(Element xml) {
 		searchXLink(xml, ACTION_UNCACHE, null);
-		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -109,7 +96,6 @@ public final class Processor {
 	public static Element removeXLink(Element xml) {
 		searchXLink(xml, ACTION_REMOVE, null);
 		searchLocalXLink(xml, ACTION_REMOVE);
-		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -120,7 +106,6 @@ public final class Processor {
 	public static Element detachXLink(Element xml, ServiceContext srvContext) {
 		searchXLink(xml, ACTION_DETACH, srvContext);
 		searchLocalXLink(xml, ACTION_DETACH);
-		xml = (Element)xml.detach();
 		return xml;
 	}
 
@@ -129,9 +114,7 @@ public final class Processor {
     * Return all XLinks child of the input XML document.
     */
 	public static List<Attribute> getXLinks(Element md) {
-		List<Attribute> attrs = getXLinksWithXPath(md, "//@xlink:href");
-		md = (Element)md.detach();
-		return attrs;
+		return getAllXLinks(md); // all xlink:href attributes
 	}
 
 	//--------------------------------------------------------------------------
@@ -284,19 +267,46 @@ public final class Processor {
 	//--------------------------------------------------------------------------
 
   /**
-    * Utility to return all XLinks child of the input XML document that match
-		* specified XPath.
+    * Utility to return all XLinks child of the input XML document that have 
+		* name xlink:href.
     */
-	@SuppressWarnings("unchecked")
-	private static List<Attribute> getXLinksWithXPath(Element md, String xpath) {
+	private static List<Attribute> getAllXLinks(Element md) {
 		List<Attribute> xlinks = new ArrayList<Attribute>();
-		try {
-			xlinks = selectXLinks(md, xpath, XLink.NAMESPACE_XLINK, xlinks);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.error(Log.XLINK_PROCESSOR, e.getMessage());
+		Iterator<?> xlinkElements = md.getDescendants(ALL_XLINKS);	
+		while (xlinkElements.hasNext()) {
+			Element next = (Element) xlinkElements.next();
+			xlinks.add(next.getAttribute(XLink.HREF, XLink.NAMESPACE_XLINK));
 		}
 		return xlinks;
+	}
+				
+  /**
+    * Utility to return all XLinks child of the input XML document that have 
+		* name xlink:href and value that starts with "#".
+    */
+	private static List<Attribute> getAllLocalXLinks(Element md) {
+		List<Attribute> xlinks = new ArrayList<Attribute>();
+		Iterator<?> xlinkElements = md.getDescendants(ALL_LOCAL_XLINKS);	
+		while (xlinkElements.hasNext()) {
+			Element next = (Element) xlinkElements.next();
+			xlinks.add(next.getAttribute(XLink.HREF, XLink.NAMESPACE_XLINK));
+		}
+		return xlinks;
+	}
+
+  /**
+    * Utility to return all XLinks child of the input XML document that have 
+		* name xlink:href and value that matches the parameter value.
+    */
+	private static List<Attribute> getAllLocalXLinksWithValue(Element md, String value) {
+		List<Attribute> xlinks = getAllLocalXLinks(md);
+		List<Attribute> xlinksResult = new ArrayList<Attribute>();
+		for (Attribute xlink : xlinks) {
+			if (xlink.getValue().equals(value)) {
+				xlinksResult.add(xlink);
+			}	
+		}
+		return xlinksResult;
 	}
 				
 	//--------------------------------------------------------------------------
@@ -313,7 +323,7 @@ public final class Processor {
     *
     */
 	private static void searchXLink(Element md, String action, ServiceContext srvContext) {
-		List<Attribute> xlinks = getXLinksWithXPath(md, "//@xlink:href");
+		List<Attribute> xlinks = getAllXLinks(md); // all xlink:href attributes
 
         if(Log.isDebugEnabled(Log.XLINK_PROCESSOR)) Log.debug(Log.XLINK_PROCESSOR, "returned "+xlinks.size()+" elements");
 
@@ -346,7 +356,7 @@ public final class Processor {
      *
      */
 	private static void searchLocalXLink(Element md, String action) {
-		List<Attribute> xlinks = getXLinksWithXPath(md, "//@xlink:href[starts-with(.,'#')]");
+		List<Attribute> xlinks = getAllLocalXLinks(md); // ie. xlink:href[starts-with(.,'#')]
 
         if(Log.isDebugEnabled(Log.XLINK_PROCESSOR))
             Log.debug(Log.XLINK_PROCESSOR, "local xlink search returned "+xlinks.size()+" elements");
@@ -366,16 +376,11 @@ public final class Processor {
 					if (localFragment == null) {  
 						localFragment = Xml.selectElement(md, "*//*[@id='" + idSearch + "']");
 						localIds.put(idSearch,localFragment);
-					}
+					} else {
 					
-					// -- avoid recursivity if an xlink:href #ID is a descendant of the localFragment
-					
-					// Should work in XPath v2. Failed with JDOM : 
-					// localFragment = Xml.selectElement(md, "*//*[@id='" + idSearch + "' " 
-					//  		+ "and count(descendant::*[@xlink:href='#" + idSearch + "'])=0]");
-					if (localFragment != null) {
-						List<Attribute> subXlinks = getXLinksWithXPath(localFragment, "//@xlink:href[.='#" + idSearch + "']");
-						if (subXlinks.size()!=0) {
+						// -- TODO: avoid recursivity if an xlink:href #ID is a descendant of the localFragment
+						List<Attribute> subXlinks = getAllLocalXLinksWithValue(localFragment, "#" + idSearch);
+						if (subXlinks.size() != 0) {
 							Log.warning(Log.XLINK_PROCESSOR, "found a fragment " + Xml.getString(localFragment) + " containing " 
 									+ subXlinks.size() + " reference(s) to itself. Id: " + idSearch);
 							continue;
@@ -443,11 +448,11 @@ public final class Processor {
 							}
 							Element parent = element.getParentElement();
 							int index = parent.indexOf(element);
-							parent.setContent(index,remoteFragment.detach());
+							parent.setContent(index,remoteFragment);
 						} else { // show = XLink.SHOW_EMBED
 							// replace children of this element with the fragment
 							element.removeContent(); 
-							element.addContent(remoteFragment.detach());
+							element.addContent(remoteFragment);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -485,48 +490,38 @@ public final class Processor {
 		}
 	}
 
-	//---------------------------------------------------------------------------
-  // Saxon s9api xpath code - jdom 1.1.3 xpath code is too slow, in fact stalls
-  // http://www.saxonica.com/documentation/xpath-api/s9api-xpath.xml
-	//---------------------------------------------------------------------------
-	private static List<Attribute> selectXLinks(Element md, String xpath, Namespace xlinkNss, List<Attribute> result) {
+	//--------------------------------------------------------------------------
+  // Filters
+	//--------------------------------------------------------------------------
 
-		// XPath objs:
-		// import net.sf.saxon.s9api.Processor;
-    net.sf.saxon.s9api.Processor proc = new net.sf.saxon.s9api.Processor(false);
-    XPathCompiler xpathComp = proc.newXPathCompiler();
-		xpathComp.declareNamespace(xlinkNss.getPrefix(), xlinkNss.getURI());
+	private static final Filter ALL_XLINKS = new Filter() {
 
-    DocumentBuilder builder = proc.newDocumentBuilder();
- 
-    // Load the XML document.
-		try {
-    	XdmNode doc = builder.wrap(new Document((Element)md.detach()));
- 
-    	// Select all xlink nodes.
-    	// XPath syntax: http://www.w3schools.com/xpath/xpath_syntax.asp
-    	XPathSelector selector = xpathComp.compile(xpath).load();
-    	selector.setContextItem(doc);
- 
-    	// Evaluate the expression.
-    	XdmValue children = selector.evaluate();
- 
-    	for (XdmItem item : children) {
-       	XdmNode xlinkNode = (XdmNode) item;
-       	System.out.println("Found node "+xlinkNode.toString());
-       	//String value = xlinkNode.getAttributeValue(new QName("xlink",xlinkNss.getURI(),"href"));
-       	String value = xlinkNode.getStringValue();
-       	System.out.println("Found value "+value);
-			 	//Attribute attr = new Attribute("href",value,xlinkNss);
-				Attribute attr = (Attribute)xlinkNode.getExternalNode();
-       	result.add(attr); 
-    	}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+    @Override
+    public boolean matches(Object obj) {
+      if (obj instanceof Element) {
+        Element elem = (Element) obj;
+        if (elem.getAttribute(XLink.HREF, XLink.NAMESPACE_XLINK) != null) {
+          return true;
+        }
+      }
+      return false;
+    }
+  };
 
-		return result;
+	private static final Filter ALL_LOCAL_XLINKS = new Filter() {
 
-	}
-
+    @Override
+    public boolean matches(Object obj) {
+      if (obj instanceof Element) {
+        Element elem = (Element) obj;
+				Attribute xlink = elem.getAttribute(XLink.HREF, XLink.NAMESPACE_XLINK);
+        if (xlink != null) {
+					if (xlink.getValue().startsWith("#")) {	
+          	return true;
+					}
+        }
+      }
+      return false;
+    }
+  };
 }
