@@ -214,7 +214,7 @@ public class Geonetwork implements ApplicationHandler {
 		SettingManager settingMan = new SettingManager(dbms, context.getProviderManager());
 
 		// --- Migrate database if an old one is found
-		migrateDatabase(servletContext, dbms, settingMan, version, subVersion, context.getAppPath());
+		//migrateDatabase(servletContext, dbms, settingMan, version, subVersion, context.getAppPath());
 		
 		//--- initialize ThreadUtils with setting manager and rm props
 		ThreadUtils.init(context.getResourceManager().getProps(Geonet.Res.MAIN_DB),
