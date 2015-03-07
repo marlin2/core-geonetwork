@@ -31,6 +31,7 @@ import jeeves.utils.Xml;
 
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.exceptions.MetadataNotFoundEx;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.BaseAligner;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
@@ -123,6 +124,10 @@ public class FragmentHarvester extends BaseAligner{
 	public HarvestSummary harvest(Element fragments, String harvestUri) throws Exception {
 		this.harvestUri = harvestUri;
 		harvestSummary = new HarvestSummary();
+
+		if (params.templateId != null && !params.templateId.equals("0") && metadataTemplate == null) {
+			throw new MetadataNotFoundEx("Template metadata record not found - check harvester definition");
+		}
  
 		if (fragments == null || !fragments.getName().equals("records")) { 
 			throw new BadXmlResponseEx("<records> not found in response: \n"+Xml.getString(fragments));
@@ -150,6 +155,7 @@ public class FragmentHarvester extends BaseAligner{
 		try {
 			//--- Load template to be used to create metadata from fragments
 			metadataTemplate = dataMan.getMetadata(dbms, params.templateId);
+      if (metadataTemplate == null) throw new MetadataNotFoundEx("Cannot find template record for harvester");
 			
 			//--- Build a list of all Namespaces in the metadata document
 			Namespace ns = metadataTemplate.getNamespace();
@@ -227,10 +233,10 @@ public class FragmentHarvester extends BaseAligner{
 			
 			String id = dataMan.getMetadataId(dbms, recUuid);
 			if (id == null) {
-				log.debug("Adding metadata "+recUuid);
+				log.debug("Adding metadata record "+recUuid);
 				createMetadata(recUuid, recordMetadata);
 			} else {
-				log.debug("Updating metadata "+recUuid+" with id : " + id);
+				log.debug("Updating metadata record "+recUuid+" with id : " + id);
 				updateMetadata(recUuid, id, recordMetadata);
 			}
 		}
@@ -404,7 +410,7 @@ public class FragmentHarvester extends BaseAligner{
 
 		// find all elements that have an attribute id with the matchId
         if(log.isDebugEnabled())
-            log.debug("Attempting to search metadata for "+matchId);
+            log.debug("Attempting to search metadata template for "+matchId);
 		List elems = Xml.selectNodes(template,"//*[@id='"+matchId+"']", metadataTemplateNamespaces);
 
 		// for each of these elements...
@@ -412,7 +418,7 @@ public class FragmentHarvester extends BaseAligner{
 			Object ob = iter.next();
 			if (ob instanceof Element) {
 				Element elem = (Element)ob;
-				log.debug("Processing element "+Xml.getString(elem));
+				log.debug("Processing element "+Xml.getString(elem)+" with fragment "+Xml.getString(fragment));
 
 	 	    if (fragment.getName().equals(REPLACEMENT_GROUP)) {
  					Element parent = elem.getParentElement();

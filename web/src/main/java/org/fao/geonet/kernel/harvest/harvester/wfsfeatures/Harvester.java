@@ -240,10 +240,12 @@ class Harvester
 			//--- 2.2)
 			stylesheetDirectory = schemaMan.getSchemaDir(params.outputSchema) + Geonet.Path.WFS_STYLESHEETS;
 	    if (!params.stylesheet.trim().equals("")) {
+		 		log.info("Applying "+stylesheetDirectory + "/" + params.stylesheet);
+				log.debug("Input: "+Xml.getString(xml));
 	    	xml = Xml.transform(xml, stylesheetDirectory + "/" + params.stylesheet, ssParams);
+				log.debug("Output: "+Xml.getString(xml));
 	    }
 	   
-		 	log.info("Applying "+stylesheetDirectory + "/" + params.stylesheet);
 	    harvest(xml, fragmentHarvester);
     }
 
