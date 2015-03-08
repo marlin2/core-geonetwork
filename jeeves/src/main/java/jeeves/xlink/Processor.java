@@ -255,10 +255,12 @@ public final class Processor {
 		JeevesJCS xlinkCache = JeevesJCS.getInstance(XLINK_JCS);
 		Element theXLink = (Element)xlinkCache.get(uri.toLowerCase());
 		if (theXLink == null) {
-			Log.error(Log.XLINK_PROCESSOR,"Uri "+uri+" wasn't there");
+	    if(Log.isDebugEnabled(Log.XLINK_PROCESSOR))
+				Log.debug(Log.XLINK_PROCESSOR,"Uri "+uri+" wasn't there");
 		} else {
 			xlinkCache.remove(uri);
-			Log.error(Log.XLINK_PROCESSOR,"Uri "+uri+" was removed from cache");
+	    if(Log.isDebugEnabled(Log.XLINK_PROCESSOR))
+				Log.debug(Log.XLINK_PROCESSOR,"Uri "+uri+" was removed from cache");
 		}
 	}
 
