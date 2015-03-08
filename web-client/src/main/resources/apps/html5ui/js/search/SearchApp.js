@@ -482,7 +482,7 @@ GeoNetwork.searchApp = function() {
                 id : 'previousBtFooter',
                 text : '&lt;&lt;',
                 handler : function() {
-                    var from = catalogue.startRecord - 50;
+                    var from = catalogue.startRecord - GeoNetwork.Settings.HITSPERPAGE;
                     if (from > 0) {
                         catalogue.startRecord = from;
                         catalogue.search(
@@ -498,7 +498,7 @@ GeoNetwork.searchApp = function() {
                 id : 'nextBtFooter',
                 text : '&gt;&gt;',
                 handler : function() {
-                    catalogue.startRecord += 50;
+                    catalogue.startRecord += GeoNetwork.Settings.HITSPERPAGE;
                     catalogue.search('advanced-search-options-content-form',
                             app.searchApp.loadResults, null,
                             catalogue.startRecord, true);
@@ -561,7 +561,7 @@ GeoNetwork.searchApp = function() {
 
             // Add handlers for the pagination buttons in the top bar
             Ext.getCmp('previousBt').on('click', function() {
-                var from = catalogue.startRecord - 50;
+                var from = catalogue.startRecord - GeoNetwork.Settings.HITSPERPAGE;
                 if (from > 0) {
                     catalogue.startRecord = from;
                     catalogue.search(
@@ -572,7 +572,7 @@ GeoNetwork.searchApp = function() {
             });
 
             Ext.getCmp('nextBt').on('click', function() {
-                catalogue.startRecord += 50;
+                catalogue.startRecord += GeoNetwork.Settings.HITSPERPAGE;
                 catalogue.search('advanced-search-options-content-form',
                     app.searchApp.loadResults, null,
                     catalogue.startRecord, true);
@@ -606,12 +606,12 @@ GeoNetwork.searchApp = function() {
             Ext.getCmp('previousBt').setDisabled(catalogue.startRecord === 1);
             Ext.getCmp('nextBt')
                     .setDisabled(
-                            catalogue.startRecord + 50 > catalogue.metadataStore.totalLength);
+                            catalogue.startRecord + GeoNetwork.Settings.HITSPERPAGE > catalogue.metadataStore.totalLength);
 
             Ext.getCmp('previousBtFooter').setDisabled(catalogue.startRecord === 1);
             Ext.getCmp('nextBtFooter')
                 .setDisabled(
-                    catalogue.startRecord + 50 > catalogue.metadataStore.totalLength);
+                    catalogue.startRecord + GeoNetwork.Settings.HITSPERPAGE > catalogue.metadataStore.totalLength);
 
             Ext.getCmp("infoFooter").update(Ext.getCmp("info").el.dom.textContent
                 || Ext.getCmp("info").el.dom.innerText);
