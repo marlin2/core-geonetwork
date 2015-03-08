@@ -336,7 +336,7 @@ public class FragmentHarvester extends BaseAligner{
 			createSubtemplate(schema, md, uuid, title);
 		} else {
 			updateSubtemplate(id, uuid, md, title);
-			Processor.removeFromCache(reference);
+			Processor.uncacheXLinkUri(reference);
 		}
 
     // Now shove the subtemplate into the xlink cache so it is ready for use

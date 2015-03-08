@@ -124,8 +124,8 @@ public final class Processor {
 	public static void removeFromCache(String xlinkUri) throws CacheException {
 
 		JeevesJCS xlinkCache = JeevesJCS.getInstance(XLINK_JCS);
-		if (xlinkCache.get(xlinkUri)!=null) {
-			xlinkCache.remove(xlinkUri);
+		if (xlinkCache.get(xlinkUri.toLowerCase())!=null) {
+			xlinkCache.remove(xlinkUri.toLowerCase());
 		}
 	}
 
@@ -217,7 +217,7 @@ public final class Processor {
 			if (remoteFragment != null) {
 				xlinkCache.put(uri.toLowerCase(), remoteFragment);
                 if(Log.isDebugEnabled(Log.XLINK_PROCESSOR))
-                    Log.debug(Log.XLINK_PROCESSOR,"cache miss for "+uri);
+                    Log.debug(Log.XLINK_PROCESSOR,"cache FILL for "+uri);
 			} else {
 				return null;
 			}	
