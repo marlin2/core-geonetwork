@@ -64,6 +64,8 @@ GeoNetwork.Settings.facetListConfig = [{name: 'orgNames'},
                                     {name: 'createDateYears'}];
 GeoNetwork.Settings.facetMaxItems = 7;
 
+GeoNetwork.Settings.HITSPERPAGE = 30;
+
 GeoNetwork.MapModule = true;
 GeoNetwork.ProjectionList = [['EPSG:4326', 'WGS84 (lat/lon)']];
 GeoNetwork.WMSList = [];

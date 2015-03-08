@@ -54,7 +54,7 @@ GeoNetwork.util.SearchTools = {
     fast: 'false',
     output: 'full',
     sortBy: 'relevance',
-    hitsPerPage: '50',
+    hitsPerPage: '30',
     
     
     /** api:method[doQuery]
