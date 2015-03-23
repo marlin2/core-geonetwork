@@ -103,7 +103,7 @@
               gmd:portrayalCatalogueInfo|gmd:portrayalCatalogueCitation|
               gmd:descriptiveKeywords|gmd:thesaurusName|
               *[name(..)='gmd:resourceConstraints']|gmd:spatialRepresentationInfo|gmd:pointOfContact|
-              gmd:dataQualityInfo|gmd:contentInfo|gmd:distributionFormat|
+              gmd:dataQualityInfo|gmd:contentInfo|
               gmd:referenceSystemInfo|gmd:spatialResolution|gmd:offLine|gmd:projection|gmd:ellipsoid|gmd:extent[name(..)!='gmd:EX_TemporalExtent']|gmd:attributes|gmd:verticalCRS|
               gmd:geographicBox|gmd:EX_TemporalExtent|gmd:MD_Distributor|
               srv:containsOperations|srv:SV_CoupledResource|
