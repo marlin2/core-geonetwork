@@ -54,16 +54,18 @@ public class LDAPUtils {
 	 * @throws Exception 
 	 */
 	static void saveUser(LDAPUser user, Dbms dbms, SerialFactory serialFactory, boolean importPrivilegesFromLdap, boolean createNonExistingLdapGroup) throws Exception {
-		Element selectRequest = dbms.select("SELECT * FROM Users WHERE username=?", user.getUsername());
+		String lowerCaseUser = user.getUsername().toLowerCase(); // LDAP users can authenticate with upper or lower, so always
+		                                                         // use lower case
+		Element selectRequest = dbms.select("SELECT * FROM Users WHERE username=?", lowerCaseUser);
 		Element userXml = selectRequest.getChild("record");
 		String id;
 		if (Log.isDebugEnabled(Geonet.LDAP)){
-			Log.debug(Geonet.LDAP, "LDAP user sync for " + user.getUsername() + " ...");
+			Log.debug(Geonet.LDAP, "LDAP user sync for " + lowerCaseUser + " ...");
 		}
 		// FIXME : this part of the code is a bit redundant with update user code.
 		if (userXml == null) {
 			if (Log.isDebugEnabled(Geonet.LDAP)){
-				Log.debug(Geonet.LDAP, "  - Create LDAP user " + user.getUsername() + " in local database.");
+				Log.debug(Geonet.LDAP, "  - Create LDAP user " + lowerCaseUser + " in local database.");
 			}
 			 
 			id = serialFactory.getSerial(dbms, "Users") + "";
@@ -71,24 +73,24 @@ public class LDAPUtils {
 			String query = "INSERT INTO Users (id, username, password, surname, name, profile, "+
 						"address, city, state, zip, country, email, organisation, kind, authtype) "+
 						"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			dbms.execute(query, Integer.valueOf(id), user.getUsername(), "LDAP_PASSWORD", user.getSurname(), user.getName(), 
+			dbms.execute(query, Integer.valueOf(id), lowerCaseUser, "LDAP_PASSWORD", user.getSurname(), user.getName(), 
 					user.getProfile(), user.getAddress(), user.getCity(), user.getState(), user.getZip(), 
 					user.getCountry(), user.getEmail(), user.getOrganisation(), user.getKind(), LDAPConstants.LDAP_FLAG);
 		} else {
 			// Update existing LDAP user
 			
 			// Retrieve user id
-			Element nextIdRequest = dbms.select("SELECT id FROM Users WHERE username = ?", user.getUsername());
+			Element nextIdRequest = dbms.select("SELECT id FROM Users WHERE username = ?", lowerCaseUser);
 			id = nextIdRequest.getChild("record").getChildText("id");
 
 			if (Log.isDebugEnabled(Geonet.LDAP)){
-				Log.debug(Geonet.LDAP, "  - Update LDAP user " + user.getUsername() + " (" + id + ") in local database.");
+				Log.debug(Geonet.LDAP, "  - Update LDAP user " + lowerCaseUser + " (" + id + ") in local database.");
 			}
 			
 			// User update
 			String query = "UPDATE Users SET username=?, password=?, surname=?, name=?, profile=?, address=?,"+
 						" city=?, state=?, zip=?, country=?, email=?, organisation=?, kind=? WHERE id=?";
-			dbms.execute (query, user.getUsername(), "LDAP_PASSWORD", user.getSurname(), user.getName(), 
+			dbms.execute (query, lowerCaseUser, "LDAP_PASSWORD", user.getSurname(), user.getName(), 
 					user.getProfile(), user.getAddress(), user.getCity(), user.getState(), user.getZip(), 
 					user.getCountry(), user.getEmail(), user.getOrganisation(), user.getKind(), Integer.valueOf(id));
 			
