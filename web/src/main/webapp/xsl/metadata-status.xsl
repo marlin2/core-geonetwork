@@ -40,13 +40,10 @@
 											</xsl:if>
 
 											<!-- all status values are not available to Editors, they
-											     can only submit and that option will be checked by default -->
+											     can only submit -->
 											<xsl:if test="not($isReviewer) and not(contains($profile,'Admin'))">
 												<xsl:if test="name='approved' or name='retired' or name='rejected' or name='draft'">
 													<xsl:attribute name="style">display:none;</xsl:attribute>
-												</xsl:if>
-												<xsl:if test="name='submitted'">
-													<xsl:attribute name="checked"/>
 												</xsl:if>
 											</xsl:if>
 
@@ -56,13 +53,23 @@
 											</xsl:if>
 
 											<input type="radio" name="status" value="{id}" id="st{id}">
-												<xsl:if test="on">
-													<xsl:attribute name="checked"/>
-												</xsl:if>
-												<label for="st{id}">
-													<xsl:value-of select="label/child::*[name() = $lang]"/>
-												</label>
+												<xsl:choose>
+													<xsl:when test="not($isReviewer) and not(contains($profile,'Admin'))">
+														<xsl:if test="name='submitted'">
+															<xsl:attribute name="checked"/>
+															<xsl:attribute name="disabled"/>
+														</xsl:if>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:if test="on">
+															<xsl:attribute name="checked"/>
+														</xsl:if>
+													</xsl:otherwise>
+												</xsl:choose>
 											</input>
+											<label for="st{id}">
+												<xsl:value-of select="label/child::*[name() = $lang]"/>
+											</label>
 										</td>
 									</tr>
 								</xsl:for-each>				
