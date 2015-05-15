@@ -169,6 +169,24 @@
 				{
 					"display":true
 				}
+			},
+			"iso19115-2":
+			{
+				"defaultTab":"default",
+				"displayToolTip":false,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":false
+				},
+				"validation":
+				{
+					"display":true
+				}
 			}
 			}</metadata.editor.schemaConfig>
 	</xsl:template>

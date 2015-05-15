@@ -59,6 +59,10 @@
             <xsl:copy-of select="gn-fn-metadata:getLabel('iso19139', $name, $iso19139labels,
               $parent, $parentIsoType, $xpath)"/>
           </xsl:when>
+          <xsl:when test="starts-with($schema, 'iso19115-2')">
+            <xsl:copy-of select="gn-fn-metadata:getLabel('iso19139', $name, $iso19139labels,
+              $parent, $parentIsoType, $xpath)"/>
+          </xsl:when>
           <xsl:otherwise>
             <element>
               <label>

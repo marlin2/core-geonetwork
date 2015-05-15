@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="2.0" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+										xmlns:gmi="http://www.isotc211.org/2005/gmi"
 										xmlns:gco="http://www.isotc211.org/2005/gco"
 										xmlns:gml="http://www.opengis.net/gml"
+										xmlns:gml32="http://www.opengis.net/gml/3.2"
 										xmlns:srv="http://www.isotc211.org/2005/srv"
 										xmlns:geonet="http://www.fao.org/geonetwork"
 										xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -60,9 +62,9 @@
 			<!-- not tokenized title for sorting, needed for multilingual sorting -->
             <Field name="_title" string="{string($_defaultTitle)}" store="true" index="true" />
 
-			<xsl:apply-templates select="*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']" mode="metadata"/>
+			<xsl:apply-templates select="*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']" mode="metadata"/>
 			
-			<xsl:apply-templates mode="index" select="*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']"/>
+			<xsl:apply-templates mode="index" select="*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']"/>
 			
 		</Document>
 	</xsl:template>
@@ -199,11 +201,11 @@
 				</xsl:for-each>
 
 				<xsl:for-each select="gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent">
-					<xsl:for-each select="gml:TimePeriod">
+					<xsl:for-each select="gml:TimePeriod|gml32:TimePeriod">
 						<xsl:variable name="times">
 							<xsl:call-template name="newGmlTime">
-								<xsl:with-param name="begin" select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
-								<xsl:with-param name="end" select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
+								<xsl:with-param name="begin" select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition|gml32:beginPosition|gml32:begin/gml32:TimeInstant/gml32:timePosition"/>
+								<xsl:with-param name="end" select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition|gml32:endPosition|gml32:end/gml32:TimeInstant/gml32:timePosition"/>
 							</xsl:call-template>
 						</xsl:variable>
 
@@ -251,7 +253,7 @@
 			</xsl:for-each>
 	
 			<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-            <xsl:variable name="email" select="/gmd:MD_Metadata/gmd:contact[1]/gmd:CI_ResponsibleParty[1]/gmd:contactInfo[1]/gmd:CI_Contact[1]/gmd:address[1]/gmd:CI_Address[1]/gmd:electronicMailAddress[1]/gco:CharacterString[1]"/>
+            <xsl:variable name="email" select="/*/gmd:contact[1]/gmd:CI_ResponsibleParty[1]/gmd:contactInfo[1]/gmd:CI_Contact[1]/gmd:address[1]/gmd:CI_Address[1]/gmd:electronicMailAddress[1]/gco:CharacterString[1]"/>
             <xsl:for-each select="gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName/gco:CharacterString|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName/gmx:Anchor">
 				<Field name="orgName" string="{string(.)}" store="true" index="true"/>
 				
@@ -481,7 +483,7 @@
 				<xsl:if test="starts-with($protocol,'OGC:WMS-') and contains($protocol,'-get-map') and string($linkage)!='' and string($title)!=''">
 					<!-- FIXME : relative path -->
 					<Field name="link" string="{concat($title, '|', $desc, '|', 
-						'../../srv/en/google.kml?uuid=', /gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString, '&amp;layers=', $title, 
+						'../../srv/en/google.kml?uuid=', /*/gmd:fileIdentifier/gco:CharacterString, '&amp;layers=', $title, 
 						'|application/vnd.google-earth.kml+xml|application/vnd.google-earth.kml+xml')}" store="true" index="false"/>					
 				</xsl:if>
 				

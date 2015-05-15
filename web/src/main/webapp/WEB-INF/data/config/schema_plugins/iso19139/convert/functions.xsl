@@ -125,10 +125,10 @@
     <xsl:template name="langId19139">
         <xsl:variable name="tmp">
             <xsl:choose>
-                <xsl:when test="/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gco:CharacterString|
-                                /*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gmd:LanguageCode/@codeListValue">
-                    <xsl:value-of select="/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gco:CharacterString|
-                                /*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gmd:LanguageCode/@codeListValue"/>
+                <xsl:when test="/*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gco:CharacterString|
+                                /*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gmd:LanguageCode/@codeListValue">
+                    <xsl:value-of select="/*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gco:CharacterString|
+                                /*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:language/gmd:LanguageCode/@codeListValue"/>
                 </xsl:when>
                 <xsl:otherwise><xsl:value-of select="$defaultLang"/></xsl:otherwise>
             </xsl:choose>
@@ -142,7 +142,7 @@
         
         <xsl:variable name="poundLangId" select="concat('#',upper-case(java:twoCharLangCode($isoDocLangId)))" />
 
-        <xsl:variable name="identification" select="/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:identificationInfo/*"></xsl:variable>
+        <xsl:variable name="identification" select="/*[name(.)='gmd:MD_Metadata' or name(.)='gmi:MI_Metadata' or @gco:isoType='gmd:MD_Metadata']/gmd:identificationInfo/*"></xsl:variable>
         <xsl:variable name="docLangTitle" select="$identification/gmd:citation/*/gmd:title//gmd:LocalisedCharacterString[@locale=$poundLangId]"/>
         <xsl:variable name="charStringTitle" select="$identification/gmd:citation/*/gmd:title/gco:CharacterString"/>
         <xsl:variable name="locStringTitles" select="$identification/gmd:citation/*/gmd:title//gmd:LocalisedCharacterString"/>
