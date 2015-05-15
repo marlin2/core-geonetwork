@@ -397,7 +397,7 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
 				}
 
         this.deleteAction.setDisabled((!isOwner && !isHarvested) || isReadOnly);
-        this.duplicateAction.setDisabled(!isEditable || isReadOnly);
+        this.duplicateAction.setDisabled(isReadOnly);
         this.createChildAction.setDisabled(!isEditable || isReadOnly);
 
         if (this.ratingWidget) {
