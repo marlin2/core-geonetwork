@@ -1,15 +1,5 @@
-<span data-ng-search-form="">
-  <div data-ng-class="templateAddAction == 'true' ? 'input-group' : ''">
-    <div class="input-group-btn"
-         data-ng-show="templateAddAction">
-      <button class="btn btn-default" type="button" title="{{'add' | translate}}"
-        data-ng-click="add();">
-        <i class="fa fa-plus"/>
-        <span>&nbsp;</span>
-      </button>
-    </div>
-
-    <!-- TODO: could be nice to filter by organisation -->
+<span data-ng-search-form="" class="input-group" style="width:100%;">
+		<!-- TODO: could be nice to filter by organisation -->
     <input type="text" class="form-control"
            placeholder="{{('searchA' + templateType) | translate}}"
            data-ng-model="subtemplateFilter.any"
@@ -85,6 +75,4 @@
     <div data-ng-if="snippet">
       <input name="{{snippetRef}}" type="hidden" value="{{snippet}}"/>
     </div>
-  </div>
-
 </span>

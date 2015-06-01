@@ -34,6 +34,11 @@
              elementName: '@',
              elementRef: '@',
              domId: '@',
+						 // If elementChoice is set to 'true' then we are displaying 
+						 // this directory selector next to a choice button which has been
+						 // constructed by the form-builder so templateAddAction is ignored
+						 // and we use a different template - see getTemplateUrl below
+						 elementChoice: '@',
              // Contact subtemplates allows definition
              // of the contact role. For other cases
              // only add action is provided
@@ -49,9 +54,7 @@
              // into the metadata records.
              variables: '@'
            },
-           templateUrl: '../../catalog/components/edit/' +
-           'directoryentryselector/partials/' +
-           'directoryentryselector.html',
+					 template: '<div ng-include="getTemplateUrl()"></div>',
            link: function(scope, element, attrs) {
              // Separator between each contact XML
              // snippet
@@ -65,6 +68,15 @@
              scope.hasDynamicVariable = scope.variables &&
              scope.variables.match('{.*}') !== null;
              scope.subtemplateFilter = '';
+
+						 // return template according to choice setting
+						 scope.getTemplateUrl = function() {
+						 		if (scope.elementChoice == 'true') {
+           				return '../../catalog/components/edit/directoryentryselector/partials/directoryentryselectorchoice.html';
+								} else {
+							    return '../../catalog/components/edit/directoryentryselector/partials/directoryentryselector.html';
+							  }
+						 },
 
              // Search only for contact subtemplate
              // by default.

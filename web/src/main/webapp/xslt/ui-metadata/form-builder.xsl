@@ -590,13 +590,12 @@
                   
                   If only one choice, make a simple button
             -->
-						<xsl:when test="(count($childEditInfo/gn:choose) > 0) and 
-						                ($directive = '')">
+						<xsl:when test="(count($childEditInfo/gn:choose) > 0) and ($directive = '')">
 
 
 
-				<xsl:choose>
-            <xsl:when test="count($childEditInfo/gn:choose) = 1">
+							<xsl:choose>
+            		<xsl:when test="count($childEditInfo/gn:choose) = 1">
                   <xsl:for-each select="$childEditInfo/gn:choose">
                     <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
                     
@@ -605,65 +604,104 @@
                     data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'replaceWith');">
                     </i>
                   </xsl:for-each>
-            </xsl:when>
-            <!-- 
-                  If many choices, make a dropdown button -->
-            <xsl:when test="count($childEditInfo/gn:choose) > 1">
-              <div class="btn-group">
-                <button type="button" class="btn dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown">
-                  <span/>
-                  <span class="caret"/>
-                </button>
-                <ul class="dropdown-menu">
-                  <xsl:for-each select="$childEditInfo/gn:choose">
-                    <xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
-                    
-                    <li title="{$label/description}">
-                      <a
-                        data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
-                        <xsl:value-of select="$label/label"/>
-                      </a>
-                    </li>
-                  </xsl:for-each>
-                </ul>
-              </div>
-            </xsl:when>
-				</xsl:choose>
+            		</xsl:when>
+
+            		<!-- If many choices, make a dropdown button -->
+            		<xsl:when test="count($childEditInfo/gn:choose) > 1">
+              		<div class="btn-group">
+                		<button type="button" class="btn dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown">
+                  		<span/>
+                  		<span class="caret"/>
+                		</button>
+                		<ul class="dropdown-menu">
+                  		<xsl:for-each select="$childEditInfo/gn:choose">
+                    		<xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
+                   		 
+                    		<li title="{$label/description}">
+                      		<a
+                        		data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
+                        		<xsl:value-of select="$label/label"/>
+                      		</a>
+                    		</li>
+                  		</xsl:for-each>
+                		</ul>
+              		</div>
+            		</xsl:when>
+							</xsl:choose>
 
             </xsl:when>
             <xsl:otherwise>
-								<xsl:if test="(count($childEditInfo/gn:choose) > 0)">
-									<xsl:message>WWARNING Overriding choose on element <xsl:value-of select="@name"/> with directive <xsl:value-of select="$directive"/> that has attributes: <xsl:copy-of select="$directiveAttributes"/></xsl:message>
-						<!--
-									<xsl:message><xsl:value-of select="saxon:print-stack()"/></xsl:message>
-						-->
-								</xsl:if>
-              <!-- Add custom widget to add element.
-                This could be a subtemplate (if one available), or a helper
-                like for projection.
-                The directive is in charge of displaying the default add button if needed.
-              -->
-              <xsl:choose>
-                <xsl:when test="$directive != ''">
-                  <div>
-                    <xsl:attribute name="{$directive}"/>
-                    <xsl:attribute name="data-dom-id" select="$id"/>
-                    <xsl:attribute name="data-element-name" select="$qualifiedName"/>
-                    <xsl:attribute name="data-element-ref" select="$parentEditInfo/@ref"/>
-                    <xsl:for-each select="$directiveAttributes/attribute::*">
-                      <xsl:variable name="directiveAttributeName" select="name()"/>
-                      <xsl:attribute name="{$directiveAttributeName}">
-												<xsl:value-of select="."/>
-											</xsl:attribute>
-										</xsl:for-each>
-                  </div>
-                </xsl:when>
-                <xsl:otherwise>
-                  <i class="btn fa fa-plus gn-add"
-                    data-ng-click="add({$parentEditInfo/@ref}, '{concat(@prefix, ':', @name)}', '{$id}', 'before');"
-                  />
-                </xsl:otherwise>
-              </xsl:choose>
+
+							<xsl:choose>
+								<xsl:when test="(count($childEditInfo/gn:choose) > 0)">
+
+									<!--
+												<xsl:message><xsl:value-of select="saxon:print-stack()"/></xsl:message>
+
+              			  Add custom widget to add element.
+                			This could be a subtemplate (if one available), or a helper
+                			like for projection.
+                			The directive is in charge of displaying the default add button if needed although
+											in this case the add button will be a drop down of choices
+              		-->
+									<span>
+										<div class="input-group">
+              				<div class="input-group-btn">
+                				<button type="button" class="btn dropdown-toggle fa fa-plus gn-add" data-toggle="dropdown">
+                  				<span/>
+                  				<span class="caret"/>
+                				</button>
+                				<ul class="dropdown-menu">
+                  				<xsl:for-each select="$childEditInfo/gn:choose">
+                    				<xsl:variable name="label" select="gn-fn-metadata:getLabel($schema, @name, $labels)"/>
+                   				 
+                    				<li title="{$label/description}">
+                      				<a
+                        				data-ng-click="addChoice({$parentEditInfo/@ref}, '{$qualifiedName}', '{@name}', '{$id}', 'before');">
+                        				<xsl:value-of select="$label/label"/>
+                      				</a>
+                    				</li>
+                  				</xsl:for-each>
+                				</ul>
+              				</div>
+              				<div>
+                    			<xsl:attribute name="{$directive}"/>
+                    			<xsl:attribute name="data-dom-id" select="$id"/>
+                    			<xsl:attribute name="data-element-name" select="$qualifiedName"/>
+                    			<xsl:attribute name="data-element-ref" select="$parentEditInfo/@ref"/>
+													<xsl:attribute name="data-element-choice" select="'true'"/>
+                    			<xsl:for-each select="$directiveAttributes/attribute::*">
+                      			<xsl:variable name="directiveAttributeName" select="name()"/>
+                      			<xsl:attribute name="{$directiveAttributeName}">
+															<xsl:value-of select="."/>
+														</xsl:attribute>
+													</xsl:for-each>
+              				</div>
+										</div>
+									</span>
+
+								</xsl:when>
+								<xsl:when test="$directive != ''">
+              			<div>
+                    			<xsl:attribute name="{$directive}"/>
+                    			<xsl:attribute name="data-dom-id" select="$id"/>
+                    			<xsl:attribute name="data-element-name" select="$qualifiedName"/>
+                    			<xsl:attribute name="data-element-ref" select="$parentEditInfo/@ref"/>
+													<xsl:attribute name="data-element-choice" select="'false'"/>
+                    			<xsl:for-each select="$directiveAttributes/attribute::*">
+                      			<xsl:variable name="directiveAttributeName" select="name()"/>
+                      			<xsl:attribute name="{$directiveAttributeName}">
+															<xsl:value-of select="."/>
+														</xsl:attribute>
+													</xsl:for-each>
+              			</div>
+								</xsl:when>
+								<xsl:otherwise>
+								  <i class="btn fa fa-plus gn-add"
+									  data-ng-click="add({$parentEditInfo/@ref}, '{concat(@prefix, ':', @name)}', '{$id}', 'before');"
+									/>
+								</xsl:otherwise>
+							</xsl:choose>
             </xsl:otherwise>
           </xsl:choose>
         </div>
