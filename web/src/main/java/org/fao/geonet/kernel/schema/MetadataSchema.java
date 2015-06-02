@@ -59,6 +59,7 @@ public class MetadataSchema
 	private String	schemaName;
 	private String	schemaDir;
 	private String	primeNS;
+	private String  oasisCatalogFile;
 	private String[] schematronRules;
 	private boolean canEdit = false;
 	private boolean readwriteUUID = false;
@@ -132,6 +133,13 @@ public class MetadataSchema
 	public void setPrimeNS(String theNS)
 	{
 		primeNS = theNS;
+	}
+
+	//---------------------------------------------------------------------------
+	
+	public void setOasisCatalog(String theOasisCatalogFile)
+	{
+		oasisCatalogFile = theOasisCatalogFile;
 	}
 
 	//---------------------------------------------------------------------------

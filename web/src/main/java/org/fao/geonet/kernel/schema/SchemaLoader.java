@@ -714,6 +714,7 @@ public class SchemaLoader
                   scFile = path + schemaLoc;
                 }
                 if (!loadedFiles.contains(new File(scFile).getCanonicalPath())) {
+								    Log.debug(Geonet.SCHEMA_MANAGER, "Adding schema file "+scFile+" from "+Xml.getString(elChild));
                     alElementFiles.addAll(loadFile(scFile, loadedFiles));
                 }
             }
