@@ -34,14 +34,17 @@
              elementName: '@',
              elementRef: '@',
              domId: '@',
+						 // If elementChoice is set to 'true' then we are displaying 
+						 // this directory selector next to a choice button which has been
+						 // constructed by the form-builder so templateAddAction is ignored
+						 // and we use a different template - see getTemplateUrl below
+						 elementChoice: '@',
              tagName: '@',
              paramName: '@',
              templateAddAction: '@',
 						 root: '@'
            },
-           templateUrl: '../../catalog/components/edit/' +
-           'organisationentryselector/partials/' +
-           'organisationentryselector.html',
+           template: '<div ng-include="getTemplateUrl()"></div>',
            link: function(scope, element, attrs) {
              // Separator between each org XML
              // snippet
@@ -60,6 +63,15 @@
                _isTemplate: 's',
                fast: 'false'
              };
+
+						 // return template according to choice setting
+						 scope.getTemplateUrl = function() {
+								if (scope.elementChoice == 'true') {
+					 				return '../../catalog/components/edit/organisationentryselector/partials/organisationentryselectorchoice.html';
+								} else {
+					 				return '../../catalog/components/edit/organisationentryselector/partials/organisationentryselector.html';
+								}
+						 };
 
              scope.snippet = null;
              scope.snippetRef = gnEditor.
