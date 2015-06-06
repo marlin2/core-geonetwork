@@ -32,6 +32,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1120,27 +1121,28 @@ public class EditLib {
 		List list = md.getChildren();
 
 		Vector<Element> v = new Vector<Element>();
+		Set<String> hs = new HashSet<String>();
 
 		for(int i=0; i<list.size(); i++)
 		{
 			Element el = (Element) list.get(i);
 
-			v.add(el);
+			addElToVector(el, v, hs);
 
 			if (equal(childName, childNS, el) && !added)
 			{
 				if (i == list.size() -1)
 				{
-					v.add(child);
+					addElToVector(child, v, hs);
 					added = true;
 				}
 				else
 				{
 					Element elNext = (Element) list.get(i+1);
 
-					if (!equal(el, elNext))
+					if (!equal(el, elNext)) 
 					{
-						v.add(child);
+						addElToVector(child, v, hs);
 						added = true;
 					}
 				}
@@ -1152,6 +1154,15 @@ public class EditLib {
         for (Element aV : v) {
             md.addContent(aV);
         }
+	}
+
+	private void addElToVector(Element el, Vector<Element> v, Set<String> hs) {
+		if (Edit.NAMESPACE.getURI().equals(el.getNamespaceURI()) && Edit.RootChild.CHILD.equals(el.getName())) {
+			String childName = el.getAttributeValue(Edit.ChildElem.Attr.NAME);
+			if (hs.contains(childName)) return;
+			hs.add(childName);
+		} 
+		v.add(el);
 	}
 
     /**
@@ -1167,9 +1178,9 @@ public class EditLib {
             return Edit.RootChild.CHILD.equals(el.getName())
                     && childName.equals(el.getAttributeValue(Edit.ChildElem.Attr.NAME))
                     && childNS.equals(el.getAttributeValue(Edit.ChildElem.Attr.NAMESPACE));
-		}
-		else
+		} else {
 			return childName.equals(el.getName()) && childNS.equals(el.getNamespaceURI());
+		}
 	}
 
     /**

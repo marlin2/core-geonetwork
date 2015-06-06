@@ -187,6 +187,25 @@
 				{
 					"display":true
 				}
+			},
+			"prov-xml":
+			{
+				"defaultTab":"default",
+				"displayToolTip":true,
+				"displayAttribute":true,
+				"related":
+				{
+					"display":true,
+					"categories":[]
+				},
+				"suggestion":
+				{
+					"display":false
+				},
+				"validation":
+				{
+					"display":true
+				}
 			}
 			}</metadata.editor.schemaConfig>
 	</xsl:template>

@@ -31,7 +31,8 @@
         staticMap: 'fa-globe',
         dataset: 'fa-file',
         project: 'fa-clipboard',
-				datasetAgreement: 'fa-check-square-o'
+				datasetAgreement: 'fa-check-square-o',
+				provenanceDocument: 'fa-file'
       };
 
       $scope.$watchCollection('groups', function() {
