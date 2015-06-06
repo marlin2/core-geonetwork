@@ -161,12 +161,12 @@
 						</a>
 						<label id="username_label">
 							<xsl:if test="string(/root/gui/session/userId)!=''">
-								<xsl:value-of select="concat(/root/gui/session/name,' ')"/>
+								<xsl:value-of select="concat(/root/gui/session/username,' ')"/>
 							</xsl:if>
 						</label>
 						<label id="name_label">
 							<xsl:if test="string(/root/gui/session/userId)!=''">
-								<xsl:value-of select="concat(/root/gui/session/surname,' ')"/>
+								<xsl:value-of select="concat(/root/gui/session/name,' ',/root/gui/session/surname,' ')"/>
 							</xsl:if>
 						</label>
 						<label id="profile_label">

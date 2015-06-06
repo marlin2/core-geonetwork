@@ -51,17 +51,14 @@ GeoNetwork.loginApp = function() {
                                     Ext.get("user-button_label").dom.innerText = OpenLayers
                                             .i18n("logout");
                                     Ext.get("username_label").dom.innerText = user.username;
-                                    Ext.get("name_label").dom.innerText = " "
-                                            + user.surname + " ";
+                                    Ext.get("name_label").dom.innerText = " " + user.name + " " +user.surname + " ";
                                     Ext.get("profile_label").dom.innerText = "("
                                             + user.role + ")";
                                 } else {
                                     Ext.get("user-button_label").update(
                                             OpenLayers.i18n("logout"));
-                                    Ext.get("username_label").update(
-                                            user.username);
-                                    Ext.get("name_label").update(
-                                            " " + user.surname + " ");
+                                    Ext.get("username_label").update(user.username);
+                                    Ext.get("name_label").update(" " + user.name + " " + user.surname + " ");
                                     Ext.get("profile_label").update(
                                             "(" + user.role + ")");
                                 }
