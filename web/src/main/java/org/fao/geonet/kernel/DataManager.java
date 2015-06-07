@@ -1052,6 +1052,9 @@ public class DataManager {
         	title       = Xml.transform(md, styleSheet).getText().trim();
 	        //--- needed to detach md from the document
  	       	md.detach();
+				} else {
+					title = md.getAttributeValue("title");
+					md.removeAttribute("title");
 				}
 
 				if(Log.isDebugEnabled(Geonet.DATA_MANAGER))

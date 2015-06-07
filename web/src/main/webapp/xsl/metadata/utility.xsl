@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
   xmlns:exslt="http://exslt.org/common" xmlns:gco="http://www.isotc211.org/2005/gco"
+	xmlns:newgco="http://standards.iso.org/19139/gco/1.0/2014-12-25"
   xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gmx="http://www.isotc211.org/2005/gmx"
   xmlns:srv="http://www.isotc211.org/2005/srv"
   xmlns:geonet="http://www.fao.org/geonetwork" xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -89,6 +90,37 @@
               <xsl:otherwise><null/></xsl:otherwise>
             </xsl:choose>
           </xsl:when>
+          <xsl:when
+            test="starts-with($schema,'iso19115-3')">
+            <xsl:choose>
+              <!-- Exact schema, name and full context match --> 
+              <xsl:when test="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and @context=$xpath]/helper">
+                <xsl:copy-of select="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and (@context=$xpath or @context=$context)]/helper"/>
+              </xsl:when>
+              <!-- ISO19115-3, name and full context match --> 
+              <xsl:when test="$labels/schemas/iso19115-3/labels/element[@name = $name and @context=$xpath]/helper">
+                <xsl:copy-of select="$labels/schemas/iso19115-3/labels/element[@name = $name and (@context=$xpath or @context=$context)]/helper"/>
+              </xsl:when>
+              <!-- Exact schema, name and parent-only match --> 
+              <xsl:when test="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and @context=$context]/helper">
+                <xsl:copy-of select="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and (@context=$xpath or @context=$context)]/helper"/>
+              </xsl:when>
+              <!-- ISO19115-3, name and parent-only match --> 
+              <xsl:when test="$labels/schemas/iso19115-3/labels/element[@name = $name and @context=$context]/helper">
+                <xsl:copy-of select="$labels/schemas/iso19115-3/labels/element[@name = $name and (@context=$xpath or @context=$context)]/helper"/>
+              </xsl:when>
+              <!-- Exact schema, name match --> 
+              <xsl:when test="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and not(@context)]/helper">
+                <xsl:copy-of select="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and not(@context)]/helper"/>
+              </xsl:when>
+              <!-- ISO19115-3 schema, name match --> 
+              <xsl:when test="$labels/schemas/iso19115-3/labels/element[@name = $name and not(@context)]/helper">
+                <xsl:copy-of
+                  select="$labels/schemas/iso19115-3/labels/element[@name = $name and not(@context)]/helper"/>
+              </xsl:when>
+              <xsl:otherwise><null/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
           <xsl:otherwise>
             
             <xsl:variable name="result"
@@ -152,11 +184,11 @@
     </xsl:variable>
 
     <xsl:variable name="context" select="name(parent::node())"/>
-    <xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
 
     <xsl:variable name="color">
       <xsl:choose>
         <xsl:when test="starts-with($schema,'iso19139')">
+    			<xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
 
           <!-- Name with context in current schema -->
           <xsl:variable name="colorTitleWithContext"
@@ -223,6 +255,7 @@
 
     <xsl:variable name="context" select="name(parent::node())"/>
     <xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
+		<xsl:message>Searching for label <xsl:value-of select="$name"/> in schema <xsl:value-of select="$schema"/> with context <xsl:value-of select="$context"/></xsl:message>
     
     <xsl:variable name="title">
       <xsl:choose>
@@ -256,12 +289,43 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
+        <xsl:when test="starts-with($schema,'iso19115-3')">
+
+          <!-- Name with context in current schema -->
+          <xsl:variable name="schematitleWithContext"
+            select="string(/root/gui/schemas/*[name(.)=$schema]/labels/element[@name=$name and (@context=$fullContext or @context=$context)]/label)"/>
+
+          <!-- Name with context in base schema -->
+          <xsl:variable name="schematitleWithContextIso"
+            select="string(/root/gui/schemas/iso19115-3/labels/element[@name=$name and (@context=$fullContext or @context=$context)]/label)"/>
+
+          <!-- Name in current schema -->
+          <xsl:variable name="schematitle"
+            select="/root/gui/schemas/*[name(.)=$schema]/labels/element[@name=$name and not(@context)]/label/text()"/>
+          
+          <xsl:choose>
+            <xsl:when
+              test="normalize-space($schematitleWithContext)!=''"><xsl:value-of select="$schematitleWithContext"/>
+            </xsl:when>
+            <xsl:when
+              test="normalize-space($schematitleWithContextIso)!=''"><xsl:value-of select="$schematitleWithContextIso"/>
+            </xsl:when>
+            <xsl:when
+              test="normalize-space($schematitle)!=''"><xsl:value-of select="$schematitle"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of
+                select="/root/gui/schemas/iso19139/labels/element[@name=$name and not(@context)]/label/string()"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+
 
         <!-- otherwise just get the title out of the approriate schema help file -->
 
         <xsl:otherwise>
           <xsl:value-of
-            select="string(/root/gui/schemas/*[name(.)=$schema]/labels/element[@name=$name and not(@context)]/label)"
+            select="string(/root/gui/schemas/*[name(.)=$schema]/labels/element[@name=$name and @context='']/label)"
           />
         </xsl:otherwise>
       </xsl:choose>

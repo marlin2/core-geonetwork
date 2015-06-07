@@ -177,7 +177,15 @@
                 <xsl:value-of select="@location" />
             </details>
             <msg>
-                <xsl:value-of select="normalize-space(svrl:text)" />
+							<xsl:variable name="text" select="normalize-space(svrl:text)"/>
+        			<xsl:choose>
+          			<xsl:when test="$text!=''">
+            			<xsl:value-of select="$text"/>
+          			</xsl:when>
+          			<xsl:otherwise>
+            			<xsl:value-of select="svrl:diagnostic-reference"/>
+          			</xsl:otherwise>
+        			</xsl:choose>	
             </msg>
         </rule>
     </xsl:template>
