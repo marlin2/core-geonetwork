@@ -357,6 +357,8 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
 
 				var isAdmin = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role === 'Administrator';
 
+				var isReviewer = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role == 'Reviewer' && this.record.get('edit') == 'true';
+
 				var isOwner = identified && (ownername === (this.catalogue.identifiedUser.name+" "+this.catalogue.identifiedUser.surname));
 				if (isAdmin) isOwner = true;
 
@@ -384,10 +386,10 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
         this.adminMenuSeparator.setVisible(identified);
         
         /* Actions status depend on records */
-        this.adminAction.setDisabled((!isOwner && !isHarvested) || isReadOnly);
-        this.statusAction.setDisabled((!isOwner && !isHarvested) || isReadOnly);
-        this.versioningAction.setDisabled((!isOwner && !isHarvested) || isReadOnly);
-        this.categoryAction.setDisabled((!isOwner && !isHarvested) || isReadOnly);
+        this.adminAction.setDisabled((!isOwner && !isHarvested && !isReviewer) || isReadOnly);
+        this.statusAction.setDisabled((!isOwner && !isHarvested && !isReviewer) || isReadOnly);
+        this.versioningAction.setDisabled((!isOwner && !isHarvested && !isReviewer) || isReadOnly);
+        this.categoryAction.setDisabled((!isOwner && !isHarvested && !isReviewer) || isReadOnly);
 
 				// action for iso19135 records and Administrator and not read only cat 
 				if (this.record.get('schema') == 'iso19135' && isAdmin && !isReadOnly) {
@@ -396,7 +398,7 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
 					this.createThesaurusAction.hide();
 				}
 
-        this.deleteAction.setDisabled((!isOwner && !isHarvested) || isReadOnly);
+        this.deleteAction.setDisabled((!isOwner && !isHarvested && !isReviewer) || isReadOnly);
         this.duplicateAction.setDisabled(isReadOnly);
         this.createChildAction.setDisabled(!isEditable || isReadOnly);
 

@@ -150,4 +150,45 @@
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
+
+  <!-- Custom rendering of resource constraints section 
+    * mri:resourceConstraints is boxed element and the title 
+    * of the fieldset is the name of the child element
+  -->
+  <xsl:template mode="mode-iso19139" priority="33000" match="gmd:resourceConstraints">
+    <xsl:param name="schema" select="$schema" required="no"/>
+    <xsl:param name="labels" select="$labels" required="no"/>
+
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
+
+    <xsl:variable name="attributes">
+      <xsl:if test="$isEditing">
+        <!-- Create form for all existing attribute (not in gn namespace)
+        and all non existing attributes not already present. -->
+        <xsl:apply-templates mode="render-for-field-for-attribute"
+          select="
+          @*|
+          gn:attribute[not(@name = parent::node()/@*/name())]">
+          <xsl:with-param name="ref" select="gn:element/@ref"/>
+          <xsl:with-param name="insertRef" select="gn:element/@ref"/>
+        </xsl:apply-templates>
+      </xsl:if>
+    </xsl:variable>
+
+    <xsl:call-template name="render-boxed-element">
+      <xsl:with-param name="label"
+        select="gn-fn-metadata:getLabel($schema, name(*[1]), $labels, name(), $isoType, $xpath)/label"/>
+      <xsl:with-param name="editInfo" select="gn:element"/>
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="xpath" select="$xpath"/>
+      <xsl:with-param name="attributesSnippet" select="$attributes"/>
+      <xsl:with-param name="subTreeSnippet">
+        <xsl:apply-templates mode="mode-iso19139" select="*">
+          <xsl:with-param name="schema" select="$schema"/>
+          <xsl:with-param name="labels" select="$labels"/>
+        </xsl:apply-templates>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
 </xsl:stylesheet>

@@ -449,7 +449,7 @@ public class AccessManager {
      */
     public Element getContentReviewers(Dbms dbms, Set<Integer> metadataIds) throws Exception {
 				String query=
-				"SELECT m.id as metadataid, u.id as userid, u.name as name, u.surname as surname, u.email as email from Metadata m "+
+				"SELECT m.id as metadataid, u.id as userid, u.name as name, u.surname as surname, u.email as email,m.groupOwner as groupowner from Metadata m "+
 				"JOIN UserGroups ug on m.groupOwner = ug.groupId "+
 				"JOIN Users u on u.id = ug.userId "+
 				"WHERE m.id IN (" + join(metadataIds,",") + ") "+
