@@ -355,6 +355,9 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
                 (this.catalogue.identifiedUser && this.catalogue.identifiedUser.role !== 'RegisteredUser'),
             isReadOnly = this.catalogue.isReadOnly();
 
+				var statusRecord = this.record.get('status')[0].value;
+				var isEditorAndStatusSubmitted = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role === 'Editor' && statusRecord === "4";
+
 				var isAdmin = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role === 'Administrator';
 
 				var isReviewer = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role == 'Reviewer' && this.record.get('edit') == 'true';
@@ -373,12 +376,12 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
         } else {
 					if (GeoNetwork.Settings.hideExtEditor === false) {
 					  this.extEditorAction.show();
-        		this.extEditorAction.setDisabled(!isEditable || isReadOnly);
+        		this.extEditorAction.setDisabled(!isEditable || isEditorAndStatusSubmitted || isReadOnly);
 					}
 					// Display by default Angular editor
 					if (!GeoNetwork.Settings.hideAngularEditor) {
 						this.angularEditorAction.show();
-						this.angularEditorAction.setDisabled(!isEditable || isReadOnly);
+						this.angularEditorAction.setDisabled(!isEditable || isEditorAndStatusSubmitted || isReadOnly);
 					}
 					this.deleteAction.show();
         }
