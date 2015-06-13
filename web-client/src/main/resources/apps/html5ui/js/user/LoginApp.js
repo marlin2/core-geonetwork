@@ -23,6 +23,9 @@ Ext.namespace('GeoNetwork');
  * Login related stuff. Utility class for App.js.
  */
 GeoNetwork.loginApp = function() {
+
+		var intervalId;
+
     return {
         init : function() {
             Ext.get("login_button").on(
@@ -33,6 +36,8 @@ GeoNetwork.loginApp = function() {
                     });
 
             catalogue.on('afterBadLogin', this.loginAlert, this);
+
+						var that = this;
 
             // Store user info in cookie to be displayed if user reload the page
             // Register events to set cookie values
@@ -71,6 +76,9 @@ GeoNetwork.loginApp = function() {
                                 } else {
                                     user.searchTemplate = 'SIMPLE';
                                 }
+
+																// startup the keep alive function
+																that.keepAlive(true);
                             });
             catalogue.on('afterLogout', function() {
                 cookie.set('user', undefined);
@@ -100,6 +108,9 @@ GeoNetwork.loginApp = function() {
                 catalogue.resultsView.store.removeAll();
 
                 showBrowse();
+
+								// stop the keep alive function
+								that.keepAlive(false);
             });
 
             // Refresh login form if needed
@@ -219,6 +230,46 @@ GeoNetwork.loginApp = function() {
 
                 return false;
             }
-        }
+        },
+
+        checkLoggedIn : function() {
+				    var response, problem = false;
+							
+						try {
+            	response = OpenLayers.Request.GET({
+                url : catalogue.services.rootUrl + 'xml.info?type=me',
+                async : false,
+								error : function(request) { problem = true; }
+            	});
+						} catch (err) {
+							problem = true;
+						}
+					
+						if (problem) return false; // don't care what it is, we just can't log in
+
+						var me, authenticated;
+            me = response.responseXML.getElementsByTagName('me')[0];
+            authenticated = me.getAttribute('authenticated') == 'true';
+
+            if (response.status === 200 && authenticated) return true;
+						else return false;
+				},
+
+				keepAlive: function(startStop) {
+					'use strict';
+					var that = this;
+					if (startStop) {
+						intervalId = setInterval(function() {
+												var ok = that.checkLoggedIn();
+												if (!ok) {
+													that.logout(); 
+													alert("GeoNetwork server seems to have disappeared/died - you've been logged out and any edit sessions you have open will have lost their changes.....");
+												}
+											}, 1800 * 1000);  // in milliseconds, 1800 seconds = half an hour
+					} else {
+						if (intervalId) clearInterval(intervalId); 
+					}
+				}
+
     };
 };
