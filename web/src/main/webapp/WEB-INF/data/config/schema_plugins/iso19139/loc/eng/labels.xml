@@ -459,7 +459,7 @@
             contacted</description>
 	</element>
 	<element name="gmd:administrativeArea" id="383.0">
-		<label>Administrative area</label>
+		<label>State</label>
 		<description>State, province of the location</description>
 	</element>
 	<element name="gmd:aggregateDataSetIdentifier" id="66.3">
