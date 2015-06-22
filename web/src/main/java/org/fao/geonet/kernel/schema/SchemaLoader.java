@@ -1133,7 +1133,11 @@ public class SchemaLoader
 			List values = hmTypeRestr.get(ae.type);
 			if (values != null){
 				for (Object v : values) {
-					ae.alValues.add((String) v);
+					if (!ae.alValues.contains((String) v)) {
+						ae.alValues.add((String) v);
+				  } else {
+            Log.debug(Geonet.SCHEMA_MANAGER, "Already had value "+v+" in list of values for attribute : "+name);
+					}
 				}
 			}
 			

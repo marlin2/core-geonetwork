@@ -355,7 +355,8 @@ GeoNetwork.MetadataMenu = Ext.extend(Ext.menu.Menu, {
                 (this.catalogue.identifiedUser && this.catalogue.identifiedUser.role !== 'RegisteredUser'),
             isReadOnly = this.catalogue.isReadOnly();
 
-				var statusRecord = this.record.get('status')[0].value;
+				var statusValue = this.record.get('status');
+				var statusRecord = (statusValue && typeof statusValue == 'array') ? statusValue[0].value : '1';  // draft
 				var isEditorAndStatusSubmitted = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role === 'Editor' && statusRecord === "4";
 
 				var isAdmin = this.catalogue.identifiedUser && this.catalogue.identifiedUser.role === 'Administrator';
