@@ -721,6 +721,9 @@ public class CatalogSearcher {
 			TermQuery tq = new TermQuery(new Term("_owner", context
 					.getUserSession().getUserId()));
 			query.add(tq, occur);
+		} else { // if no authenticated user then only show approved records ie _status = 2
+			TermQuery tq = new TermQuery(new Term("_status", "2"));
+			query.add(tq, occur);
 		}
 
 		return query;

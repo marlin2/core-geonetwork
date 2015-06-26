@@ -64,6 +64,7 @@ public class SearchParameter {
     public static final String EXTFROM = "extFrom";
     public static final String METADATASTANDARDNAME = "metadataStandardName";
     public static final String _SCHEMA = "_schema";
+    public static final String _STATUS = "_status";
     public static final String PARENTUUID = "parentUuid";
     public static final String OPERATESON = "operatesOn";
     public static final String SERVICETYPE = "serviceType";

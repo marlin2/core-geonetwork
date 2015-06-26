@@ -139,6 +139,7 @@ public class LuceneSearcher extends MetaSearcher {
 	private Set<String>	_tokenizedFieldSet;
 	private LuceneConfig _luceneConfig;
 	private String _boostQueryClass;
+	private String[] okStatus = { "2" }; // for filtering to show only approved records
 
 	
 	/**
@@ -596,7 +597,11 @@ public class LuceneSearcher extends MetaSearcher {
                 }
                 if (owner != null) {
 					request.addContent(new Element(SearchParameter.OWNER).addContent(owner));
-                }
+                } else {
+									for (String status : this.okStatus) {
+					request.addContent(new Element(SearchParameter._STATUS).addContent(status));
+									}
+								}
 			    //--- in case of an admin show all results
                 if (userSession != null) {
                     if (userSession.isAuthenticated()) {
