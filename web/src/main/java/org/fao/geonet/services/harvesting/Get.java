@@ -25,6 +25,7 @@ package org.fao.geonet.services.harvesting;
 
 import jeeves.exceptions.ObjectNotFoundEx;
 import jeeves.interfaces.Service;
+import jeeves.resources.dbms.Dbms;
 import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.GeonetContext;
@@ -58,7 +59,9 @@ public class Get implements Service
 
 		GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-        Element result = gc.getHarvestManager().get(id, context, sortField);
+		Dbms dbms = (Dbms) context.getResourceManager().open(Geonet.Res.MAIN_DB);
+		
+    Element result = gc.getHarvestManager().get(id, context, sortField, dbms);
 
 		if (result != null)
 			return result;

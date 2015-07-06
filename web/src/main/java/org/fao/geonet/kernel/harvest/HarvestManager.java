@@ -142,7 +142,7 @@ public class HarvestManager
      * @return harvest node
      * @throws Exception hmm
      */
-    public Element get(String id, ServiceContext context, String sort) throws Exception {
+    public Element get(String id, ServiceContext context, String sort, Dbms dbms) throws Exception {
 		Element result = (id == null)
 									? settingMan.get("harvesting", -1)
 									: settingMan.get("harvesting/id:"+id, -1);
@@ -162,7 +162,6 @@ public class HarvestManager
             else {
                 GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
                 AccessManager am = gc.getAccessManager();
-                Dbms dbms = (Dbms) context.getResourceManager().open(Geonet.Res.MAIN_DB);
                 Set<String> groups = am.getVisibleGroups(dbms, context.getUserSession().getUserId() );
                 result = transform(result);
                 Element nodeGroup =  result.getChild("ownerGroup");
@@ -191,7 +190,6 @@ public class HarvestManager
                 else {
                     GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
                     AccessManager am = gc.getAccessManager();
-                    Dbms dbms = (Dbms) context.getResourceManager().open(Geonet.Res.MAIN_DB);
                     Set<String> groups = am.getVisibleGroups(dbms, context.getUserSession().getUserId() );
                     for (Object o : nodes.getChildren()) {
                         Element node = transform((Element) o);
@@ -263,7 +261,7 @@ public class HarvestManager
 	public synchronized String createClone(Dbms dbms, String id, String ownerId, ServiceContext context) throws Exception
 	{
 		// get the specified harvester from the settings table
-		Element node = get(id, context, null);
+		Element node = get(id, context, null, dbms);
 		if (node == null) return null;
 
 		// remove info from the harvester we will clone
