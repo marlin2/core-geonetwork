@@ -3,4 +3,5 @@
     <include file="geonetwork-main-wro-sources.xml" />
     <include file="classpath:web-client-wro-sources.xml" />
     <include file="classpath:web-ui-wro-sources.xml" />
+    <include file="classpath:nationalmap-wro-sources.xml" />
 </sources>
