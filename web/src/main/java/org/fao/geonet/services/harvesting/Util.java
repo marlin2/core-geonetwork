@@ -62,26 +62,30 @@ public class Util
 		GeonetContext  gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 		HarvestManager hm = gc.getHarvestManager();
 
-		Dbms dbms = (Dbms) context.getResourceManager().open(Geonet.Res.MAIN_DB);
+		Dbms dbms = null;
+		try {
+			dbms = (Dbms) context.getResourceManager().openDirect(Geonet.Res.MAIN_DB);
 
-		Iterator i = params.getChildren().iterator();
+			Iterator i = params.getChildren().iterator();
 
-		Element response = new Element(Jeeves.Elem.RESPONSE);
+			Element response = new Element(Jeeves.Elem.RESPONSE);
 
-		while (i.hasNext())
-		{
-			Element el  = (Element) i.next();
-			String  id  = el.getText();
-			String  res = job.execute(dbms, hm, id).toString();
-
-			el = new Element("id")
-							.setText(id)
-							.setAttribute(new Attribute("status", res));
-
-			response.addContent(el);
+			while (i.hasNext()) {
+				Element el  = (Element) i.next();
+				String  id  = el.getText();
+				String  res = job.execute(dbms, hm, id).toString();
+	
+				el = new Element("id")
+								.setText(id)
+								.setAttribute(new Attribute("status", res));
+	
+				response.addContent(el);
+			}
+			return response;
+		} finally {
+			if (dbms != null) context.getResourceManager().close(Geonet.Res.MAIN_DB, dbms);
 		}
 
-		return response;
 	}
 }
 
