@@ -59,7 +59,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -87,7 +87,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -105,7 +105,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -123,7 +123,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -141,7 +141,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -159,7 +159,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -177,7 +177,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":[]
+					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
 				},
 				"suggestion":
 				{
@@ -195,7 +195,7 @@
 				"displayAttribute":true,
 				"related":
 				{
-					"display":true,
+					"display":false,
 					"categories":[]
 				},
 				"suggestion":

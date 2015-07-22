@@ -67,7 +67,7 @@
              scope.isContact = scope.templateType === 'contact';
              scope.hasDynamicVariable = scope.variables &&
              scope.variables.match('{.*}') !== null;
-             scope.subtemplateFilter = '';
+             scope.params = '';
 
 						 // return template according to choice setting
 						 scope.getTemplateUrl = function() {
@@ -80,7 +80,7 @@
 
              // Search only for contact subtemplate
              // by default.
-             scope.subtemplateFilter = {
+             scope.params = {
                _isTemplate: 's',
                any: '',
                _root: 'gmd:CI_ResponsibleParty',
@@ -89,7 +89,7 @@
                //resultType: 'subtemplates'
              };
              if (scope.filter) {
-               angular.extend(scope.subtemplateFilter,
+               angular.extend(scope.params,
                angular.fromJson(scope.filter));
              }
 
@@ -98,7 +98,7 @@
              buildXMLFieldName(scope.elementRef, scope.elementName);
 
              scope.getEntries = function() {
-               scope.$broadcast('resetSearch', scope.subtemplateFilter);
+               scope.$broadcast('resetSearch', scope.params);
              };
 
              scope.add = function() {

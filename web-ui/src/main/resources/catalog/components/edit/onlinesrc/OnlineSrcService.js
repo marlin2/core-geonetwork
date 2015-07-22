@@ -252,10 +252,14 @@
          *
          * @param {string} params to send to the batch process
          * @param {string} popupid id of the popup to close after process.
+         * @param {string} processname name of the process to run (if undefined use onlinesrc-add)
          */
-        addOnlinesrc: function(params, popupid) {
+        addOnlinesrc: function(params, popupid, processname) {
+					if (processname == undefined) {
+						processname = 'onlinesrc-add';
+					}
           runProcess(this,
-              setParams('onlinesrc-add', params)).then(function() {
+              setParams(processname, params)).then(function() {
             closePopup(popupid);
           });
         },

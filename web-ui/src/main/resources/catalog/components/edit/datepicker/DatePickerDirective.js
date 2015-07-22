@@ -43,6 +43,10 @@
 					if (scope.namespaces) {
 						namespaces = JSON.parse(scope.namespaces);
 					}
+					var dateTimeFixed = (scope.elementName === 'gco:DateTime'),
+							defaultElement = dateTimeFixed ? 'gco:DateTime' : 'gco:Date';
+
+					
 
           // Format date when datetimepicker is used.
           scope.formatFromDatePicker = function(date) {
@@ -71,7 +75,11 @@
             var isDateTime = scope.value.indexOf('T') !== -1;
             var tokens = scope.value.split('T');
             scope.date = isDateTime ? tokens[0] : scope.value;
-            scope.time = isDateTime ? tokens[1] : '';
+						if (dateTimeFixed) { // force time to 00:00:00
+            	scope.time = isDateTime ? tokens[1] : '00:00:00';
+						} else {
+            	scope.time = isDateTime ? tokens[1] : '';
+						}
           }
           if (scope.dateTypeSupported !== true) {
             scope.dateInput = scope.value;
@@ -99,7 +107,7 @@
           // Build xml snippet based on input date.
           var buildDate = function() {
             var tag = scope.tagName !== undefined ?
-                scope.tagName : 'gco:Date';
+                scope.tagName : defaultElement;
             var namespace = tag.split(':')[0];
 
             if (scope.dateTypeSupported !== true) {
@@ -107,15 +115,32 @@
               if (scope.dateInput === undefined) {
                 return;
               } else {
-                tag = scope.tagName !== undefined ? scope.tagName :
-                    (scope.dateInput.indexOf('T') === -1 ?
-                    'gco:Date' : 'gco:DateTime');
+                if (scope.tagName !== undefined) {
+									tag = scope.tagName;
+								} else {
+									if (scope.dateInput.indexOf('T') === -1) {
+										if (dateTimeFixed) { // force time to 00:00:00
+											scope.dateInput += 'T00:00:00';
+											tag = 'gco:DateTime';
+										} else {
+											tag = 'gco:Date';
+										}
+									} else {
+										tag = 'gco:DateTime';
+									}
+								}
               }
               scope.dateTime = scope.dateInput;
             } else if (scope.mode === 'year') {
               scope.dateTime = scope.year;
+							if (dateTimeFixed) { // force time to 00:00:00
+								scope.dateTime += '-01-01T00:00:00';
+							}
             } else if (scope.mode === 'month') {
               scope.dateTime = scope.month;
+							if (dateTimeFixed) { // force time to 00:00:00
+								scope.dateTime += '-01T00:00:00';
+							}
             } else if (scope.time) {
               tag = scope.tagName !== undefined ?
                   scope.tagName : 'gco:DateTime';
@@ -129,7 +154,11 @@
               }
               scope.dateTime += 'T' + time;
             } else {
-              scope.dateTime = scope.date;
+							if (dateTimeFixed && scope.date !== '') { // force time to 00:00:00
+              	scope.dateTime = scope.date+'T00:00:00';
+							} else {
+              	scope.dateTime = scope.date;
+							}
             }
             if (tag === '') {
               scope.xmlSnippet = scope.dateTime;

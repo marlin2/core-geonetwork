@@ -324,6 +324,20 @@
 
               scope.onlinesrcService = gnOnlinesrc;
 
+              scope.uploadFileDisabled = function() {
+								if (gnCurrentEdit.schemaConfig) {
+                	var config = gnCurrentEdit.schemaConfig.related;
+									return config.uploadFileDisabled; 
+								}
+							};
+
+              scope.displayFormatAndVersion = function() {
+								if (gnCurrentEdit.schemaConfig) {
+                	var config = gnCurrentEdit.schemaConfig.related;
+									return config.displayFormatAndVersion; 
+								}
+							};
+
               /**
                * Onlinesrc uploaded with success, close the popup,
                * refresh the metadata.
@@ -357,7 +371,10 @@
                 if (scope.mode == 'upload') {
                   scope.submit();
                 } else {
-                  gnOnlinesrc.addOnlinesrc(scope.params, scope.popupid);
+                	var config = gnCurrentEdit.schemaConfig.related;
+									var processname = 'onlinesrc-add';
+									if (config.displayFormatAndVersion && scope.params.format !== '') processname = 'onlinesrc-withformat-add';
+                  gnOnlinesrc.addOnlinesrc(scope.params, scope.popupid, processname);
                 }
               };
 

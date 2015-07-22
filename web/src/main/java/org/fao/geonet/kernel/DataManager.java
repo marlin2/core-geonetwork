@@ -1326,6 +1326,7 @@ public class DataManager {
         else {
             dbms.execute("UPDATE Metadata SET isHarvested=?, harvestUuid=? WHERE id=?", value, harvestUuid, id);
         }
+				setStatusHarvestedExt(dbms, id);
     }
 
     /**
@@ -1341,6 +1342,7 @@ public class DataManager {
         String value = (harvestUuid != null) ? "y" : "n";
         String query = "UPDATE Metadata SET isHarvested=?, harvestUuid=?, harvestUri=? WHERE id=?";
         dbms.execute(query, value, harvestUuid, harvestUri, id);
+				setStatusHarvestedExt(dbms, id);
     }
 
     /**
@@ -2728,6 +2730,20 @@ public class DataManager {
             svnManager.setHistory(dbms, id+"", context);
         }
     }
+
+    /**
+     * Set status of harvested metadata to APPROVED
+     *
+     * @param dbms
+     * @param id
+     * @throws Exception
+		 */
+    private void setStatusHarvestedExt(Dbms dbms, int id) throws Exception {
+				int userId = 1; // admin user
+				String changeDate = new ISODate().toString(), changeMessage = "";
+				int status = Integer.valueOf(Params.Status.APPROVED);
+        dbms.execute("INSERT into MetadataStatus(metadataId, statusId, userId, changeDate, changeMessage) VALUES (?,?,?,?,?)", id, status, userId, changeDate, changeMessage);
+		}
 
     //--------------------------------------------------------------------------
     //---
