@@ -36,25 +36,32 @@
                   <ul>
                     <xsl:for-each select="/root/response/exceptions/exception">
                       <li>
-                        <!-- Handle different types of errors -->
-                        <xsl:choose>
-                            <xsl:when test="geonet:schematronerrors">
-                                <xsl:call-template name="metadata-validation-report">
-                                    <xsl:with-param name="report" select="geonet:schematronerrors/geonet:report"/>
-                                </xsl:call-template>
-                            </xsl:when>
-
-                            <xsl:when test="xsderrors">
-                               <xsl:for-each select="xsderrors/error">
-			                        <xsl:value-of select="message"/>
-  		                            <br/><br/>
-		                        </xsl:for-each>
-                            </xsl:when>
-
-                            <xsl:otherwise>
-                                <xsl:value-of select="."/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+												<div style="display:block; text-align:left" class="content">
+													<xsl:if test="geonet:schematronerrors or xsderrors">
+														<xsl:if test="normalize-space(@filename)">
+															<strong><xsl:value-of select="@filename"/></strong>
+														</xsl:if>
+                        		<!-- Handle different types of errors -->
+                        		<xsl:choose>
+                            	<xsl:when test="geonet:schematronerrors">
+                               		<xsl:call-template name="metadata-validation-report">
+                                   		<xsl:with-param name="report" select="geonet:schematronerrors/geonet:report"/>
+                               		</xsl:call-template>
+                            	</xsl:when>
+	
+                           		<xsl:when test="xsderrors">
+                             		<xsl:for-each select="xsderrors/error">
+			                        		<xsl:value-of select="message"/>
+  		                           		<br/><br/>
+		                        		</xsl:for-each>
+                            	</xsl:when>
+		
+                            	<xsl:otherwise>
+                             		<xsl:value-of select="."/>
+                            	</xsl:otherwise>
+                        		</xsl:choose>
+													</xsl:if>
+												</div>
                       </li>
                     </xsl:for-each>
                   </ul>
@@ -98,6 +105,7 @@
 	<!-- templates used by xslts that need to present validation output -->
 	<xsl:template name="metadata-validation-report">
 		<xsl:param name="report"/>
+		<xsl:param name="filename"/>
 
 		<div style="display:block; text-align:left" class="content">
 			<xsl:apply-templates mode="validation-report" select="$report"/>

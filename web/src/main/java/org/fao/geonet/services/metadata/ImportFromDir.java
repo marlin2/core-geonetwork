@@ -102,7 +102,7 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 	//--------------------------------------------------------------------------
 
 	private String stylePath;
-    private List<Exception> exceptions = new ArrayList<Exception>();
+    private List<Pair<Exception,String>> exceptions = new ArrayList<Pair<Exception,String>>();
     private boolean failOnError;
 	private static final String CONFIG_FILE = "import-config.xml";
 
@@ -163,17 +163,21 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 		
 		if (exceptions.size() > 0) {
 			Element ex = new Element("exceptions").setAttribute("count", ""+exceptions.size());
-			for (Exception e : exceptions)
+			for (Pair<Exception,String> ep : exceptions) {
+								Element singleEx = new Element("exception");
+								singleEx.setAttribute("filename", ep.two());
+								Exception e = ep.one();
                 if (e instanceof SchematronValidationErrorEx) {
-                    ex.addContent(new Element("exception").addContent((Element) ((SchematronValidationErrorEx) e).getObject()));
+                    ex.addContent(singleEx.addContent((Element) ((SchematronValidationErrorEx) e).getObject()));
 
                 } else if (e instanceof XSDValidationErrorEx) {
-                        ex.addContent(new Element("exception").addContent((Element) ((XSDValidationErrorEx) e).getObject()));
+                        ex.addContent(singleEx.addContent((Element) ((XSDValidationErrorEx) e).getObject()));
 
                 } else {
-                    ex.addContent(new Element("exception").setText(e.getMessage()));
+                    ex.addContent(singleEx.setText(e.getMessage()));
 
                 }
+			}
 			response.addContent(ex);
 		}
 
@@ -186,7 +190,7 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 	//---
 	//--------------------------------------------------------------------------
 
-	public class ImportCallable implements Callable<Pair<List<String>,List<Exception>>> {
+	public class ImportCallable implements Callable<Pair<List<String>,List<Pair<Exception,String>>>> {
 		private final File files[];
 		private final int beginIndex, count;
 		private final Element params;
@@ -222,9 +226,9 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 		    this.context.setUserSession(session);
 		}
 		
-		public Pair<List<String>,List<Exception>> call() throws Exception {
+		public Pair<List<String>,List<Pair<Exception,String>>> call() throws Exception {
 			List<String> ids = new ArrayList<String>();
-			List<Exception> exceptions = new ArrayList<Exception>();
+			List<Pair<Exception,String>> exceptions = new ArrayList<Pair<Exception,String>>();
 			
 			login();
 			
@@ -236,7 +240,7 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 					if (failOnError) {
 						throw e;
 					}
-					exceptions.add(e);
+					exceptions.add(Pair.read(e, files[i].getPath()));
 				}
 			}
 			return Pair.read(ids,exceptions);
@@ -249,7 +253,7 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 		String stylePath;
 		ServiceContext context;
 		List<String> ids = new ArrayList<String>();
-		List<Exception> exceptions = new ArrayList<Exception>();
+		List<Pair<Exception,String>> exceptions = new ArrayList<Pair<Exception,String>>();
 
 
 		public ImportMetadata(Element params, ServiceContext context, File files[], String stylePath, boolean failOnError) {
@@ -273,29 +277,29 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 			// - we abort the dbms channels if we get an exception otherwise commit
 			List<Dbms> dbmsList = new ArrayList<Dbms>();
 			try {
-				List<Future<Pair<List<String>,List<Exception>>>> sList = new ArrayList<Future<Pair<List<String>,List<Exception>>>>();
+				List<Future<Pair<List<String>,List<Pair<Exception,String>>>>> sList = new ArrayList<Future<Pair<List<String>,List<Pair<Exception,String>>>>>();
 				while(index < files.length) {
 					int start = index;
 					int count = Math.min(perThread,files.length-start);
 					// create threads to process this chunk of files
 					Dbms dbms = (Dbms) context.getResourceManager().openDirect(Geonet.Res.MAIN_DB);
 					dbmsList.add(dbms);
-					Callable<Pair<List<String>,List<Exception>>> worker = new ImportCallable(files, start, count, params, context, stylePath, failOnError, dbms);
-					Future<Pair<List<String>,List<Exception>>> submit = executor.submit(worker);
+					Callable<Pair<List<String>,List<Pair<Exception,String>>>> worker = new ImportCallable(files, start, count, params, context, stylePath, failOnError, dbms);
+					Future<Pair<List<String>,List<Pair<Exception,String>>>> submit = executor.submit(worker);
 					sList.add(submit);
 					index += count;
 				}
 	
-				for (Future<Pair<List<String>,List<Exception>>> future : sList) {
+				for (Future<Pair<List<String>,List<Pair<Exception,String>>>> future : sList) {
 					try {
 						ids.addAll(future.get().one());
 						exceptions.addAll(future.get().two());
 					} catch (InterruptedException e) {
-						exceptions.add(e);
+						exceptions.add(Pair.read((Exception)e,"unknown"));  // don't know the file name here
 						e.printStackTrace();
 					} catch (ExecutionException e) {
 						e.printStackTrace();
-						exceptions.add(e);
+						exceptions.add(Pair.read((Exception)e,"unknown"));  // don't know the file name here
 					}
 				}
 		
@@ -316,7 +320,7 @@ public class ImportFromDir extends NotInReadOnlyModeService{
 			return ids;
 		}
 
-		public List<Exception> getExceptions() {
+		public List<Pair<Exception,String>> getExceptions() {
 			return exceptions;
 		}
 	}
