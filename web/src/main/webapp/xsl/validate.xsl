@@ -72,9 +72,14 @@
       <title><xsl:value-of select="$title"/></title>
       <details><xsl:value-of select="@location"/></details>
       <msg>
-        <!--<xsl:copy-of select="svrl:text/descendant::node()[name(.)='div']"/>
-        <xsl:copy-of select="svrl:text/descendant::node()[contains(name(.), 'report')]/*|svrl:text/descendant::node()[contains(name(.), 'report')]/text()"/>-->
-        <xsl:value-of select="normalize-space(svrl:text)"/>
+			<xsl:choose>
+				<xsl:when test="normalize-space(svrl:text)">
+					<xsl:value-of select="svrl:text"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="svrl:diagnostic-reference"/>
+				</xsl:otherwise>
+			</xsl:choose>
       </msg>
     </rule>
   </xsl:template>

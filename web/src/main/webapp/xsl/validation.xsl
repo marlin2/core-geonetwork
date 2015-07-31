@@ -71,7 +71,14 @@
 			<a href="#" title="{@location}" alt="{@location}">
 				<img src="../../images/schematron.gif" style="border:none;"/>
 			</a><xsl:text> </xsl:text>
-			<xsl:value-of select="svrl:text"/>
+			<xsl:choose>
+				<xsl:when test="normalize-space(svrl:text)">
+					<xsl:value-of select="svrl:text"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="svrl:diagnostic-reference"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</li>
 	</xsl:template>
 
@@ -85,7 +92,8 @@
 
 		<fieldset class="validation-report">
 			<legend class="block-legend">
-				<xsl:value-of select="/root/gui/strings/rules[@name=$rule]"/><xsl:text> </xsl:text>
+				<xsl:value-of select="concat(svrl:schematron-output/@title,' (',@geonet:rule,')')"/>
+				<xsl:text> </xsl:text>
 				(<img src="../../images/schematron.gif" alt="failed" title="failed"/>
 						<xsl:value-of select="$count"/>
 						<xsl:text> </xsl:text>
@@ -114,7 +122,7 @@
 	<xsl:template match="geonet:schematronerrors" mode="validation-report">
 		<fieldset class="validation-report">
 			<legend class="block-legend">
-				<xsl:value-of select="/root/gui/strings/schematronReport"/>
+				<xsl:value-of select="concat(geonet:report/svrl:schematron-output/@title,' (',geonet:report/@geonet:rule,')')"/>
 			</legend>
 			<xsl:apply-templates select="*" mode="validation-report"/>
 		</fieldset>
