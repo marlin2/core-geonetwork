@@ -2740,7 +2740,7 @@ public class DataManager {
 		 */
     private void setStatusHarvestedExt(Dbms dbms, int id) throws Exception {
 				int userId = 1; // admin user
-				String changeDate = new ISODate().toString(), changeMessage = "";
+				String changeDate = new ISODate().toString(), changeMessage = "Harvested";
 				int status = Integer.valueOf(Params.Status.APPROVED);
         dbms.execute("INSERT into MetadataStatus(metadataId, statusId, userId, changeDate, changeMessage) VALUES (?,?,?,?,?)", id, status, userId, changeDate, changeMessage);
 		}
