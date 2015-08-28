@@ -71,6 +71,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.filter.ElementFilter;
 
+import jeeves.server.dispatchers.guiservices.XmlFile;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -2864,14 +2867,40 @@ public class DataManager {
                 }
                 env.addContent(new Element("datadir").setText(Lib.resource.getDir(dataDir, Params.Access.PRIVATE, id)));
 
+
+								// some more stuff to add to env
+                env.addContent(new Element("siteURL")   .setText(getSiteURL()));
+                Element system = settingMan.get("system", -1);
+                env.addContent(Xml.transform(system, appPath + Geonet.Path.STYLESHEETS+ "/xml/config.xsl"));
+
+								// add schema information to env
+								Element schemas = new Element("schemas");
+    						for(String aSchema : schemaMan.getSchemas()) {
+      						try {
+        						Map<String, XmlFile> schemaInfo = schemaMan.getSchemaInfo(aSchema);
+       						 
+        						for (Map.Entry<String, XmlFile> entry : schemaInfo.entrySet()) {
+          						XmlFile xf = entry.getValue(); 
+          						String fname = entry.getKey(); 
+          						Element response = xf.exec(new Element("junk"), context);
+          						response.setName(FilenameUtils.removeExtension(fname));
+          						Element schemaElem = new Element(aSchema);
+          						schemaElem.addContent(response);
+          						schemas.addContent(schemaElem);
+        						}
+      						} catch (Exception e) {
+        						context.error("Failed to load schema info for "+aSchema+": "+e.getMessage());
+        						e.printStackTrace();
+      						}
+    						}
+								env.addContent(schemas);
+
                 // add original metadata to result
                 Element result = new Element("root");
                 result.addContent(md);
                 // add 'environment' to result
-                env.addContent(new Element("siteURL")   .setText(getSiteURL()));
-                Element system = settingMan.get("system", -1);
-                env.addContent(Xml.transform(system, appPath + Geonet.Path.STYLESHEETS+ "/xml/config.xsl"));
                 result.addContent(env);
+
                 // apply update-fixed-info.xsl
                 String styleSheet = getSchemaDir(schema) + Geonet.File.UPDATE_FIXED_INFO;
                 result = Xml.transform(result, styleSheet);

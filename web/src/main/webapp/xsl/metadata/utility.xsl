@@ -59,7 +59,7 @@
     <xsl:variable name="helpers">
         <xsl:choose>
           <xsl:when
-            test="starts-with($schema,'iso19139')">
+            test="starts-with($schema,'iso19139') or starts-with($schema,'iso19115-2')">
             <xsl:choose>
               <!-- Exact schema, name and full context match --> 
               <xsl:when test="$labels/schemas/*[name(.)=$schema]/labels/element[@name = $name and @context=$xpath]/helper">
@@ -186,7 +186,7 @@
 
     <xsl:variable name="color">
       <xsl:choose>
-        <xsl:when test="starts-with($schema,'iso19139')">
+        <xsl:when test="starts-with($schema,'iso19139') or starts-with($schema,'iso19115-2')">
     			<xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
 
           <!-- Name with context in current schema -->
@@ -258,7 +258,7 @@
     
     <xsl:variable name="title">
       <xsl:choose>
-        <xsl:when test="starts-with($schema,'iso19139')">
+        <xsl:when test="starts-with($schema,'iso19139') or starts-with($schema,'iso19115-2')">
 
           <!-- Name with context in current schema -->
           <xsl:variable name="schematitleWithContext"

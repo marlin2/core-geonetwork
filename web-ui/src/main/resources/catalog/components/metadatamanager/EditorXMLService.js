@@ -31,10 +31,47 @@
         "xmlns:mdb='http://standards.iso.org/iso/19115/-3/mdb/1.0' " +
         "xmlns:mcc='http://standards.iso.org/iso/19115/-3/mcc/1.0' " +
         "xmlns:mrs='http://standards.iso.org/iso/19115/-3/mrs/1.0' " +
+        "xmlns:cit='http://standards.iso.org/iso/19115/-3/cit/1.0' " +
         "xmlns:gco='http://standards.iso.org/iso/19115/-3/gco/1.0'>" +
         '<mrs:MD_ReferenceSystem>' +
         '<mrs:referenceSystemIdentifier>' +
         '<mcc:MD_Identifier>' +
+        '<mcc:authority>' +
+        '<cit:CI_Citation>' +
+				'<cit:title>' +
+				'<gco:CharacterString>European Petroleum Survey Group (EPSG) Geodetic Parameter Registry</gco:CharacterString>' +
+        '</cit:title>' +
+        '<cit:date>' +
+        '<cit:CI_Date>' +
+        '<cit:date>' +
+        '<gco:Date>2008-11-12</gco:Date>' +
+        '</cit:date>' +
+        '<cit:dateType>' +
+        '<cit:CI_DateTypeCode codeList="codeListLocation" codeListValue="publication">publication</cit:CI_DateTypeCode>' +
+        '</cit:dateType>' +
+        '</cit:CI_Date>' +
+        '</cit:date>' +
+        '<cit:citedResponsibleParty>' +
+        '<cit:CI_ResponsibleParty>' +
+        '<cit:organisationName>' +
+        '<gco:CharacterString>European Petroleum Survey Group</gco:CharacterString>' +
+        '</cit:organisationName>' +
+        '<cit:contactInfo>' +
+        '<cit:CI_Contact>' +
+        '<cit:onlineResource>' +
+        '<cit:CI_OnlineResource>' +
+        '<cit:linkage>' +
+        '<gco:CharacterString>http://www.epsg-registry.org/</gco:CharacterString>' +
+        '</cit:linkage>' +
+        '</cit:CI_OnlineResource>' +
+        '</cit:onlineResource>' +
+        '</cit:CI_Contact>' +
+        '</cit:contactInfo>' +
+        '<cit:role gco:nilReason="missing"/>' +
+        '</cit:CI_ResponsibleParty>' +
+        '</cit:citedResponsibleParty>' +
+        '</cit:CI_Citation>' +
+        '</mcc:authority>' +
         '<mcc:code>' +
         '<gco:CharacterString>{{description}}' +
         '</gco:CharacterString>' +
