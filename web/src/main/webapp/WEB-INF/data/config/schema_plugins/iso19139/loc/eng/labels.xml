@@ -812,7 +812,7 @@
             A)</description>
 	</element>
 	<element name="gmd:denominator" id="57.0">
-		<label>Denominator</label>
+		<label>Spatial Scale Denominator</label>
 		<description>The number below the line in a vulgar fraction</description>
 		<condition>add either a denominator or a distance</condition>
 		<helper>

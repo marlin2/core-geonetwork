@@ -82,7 +82,7 @@
 			},
 			"iso19139.mcp":
 			{
-				"defaultTab":"default",
+				"defaultTab":"resourceDescription",
 				"displayToolTip":false,
 				"related":
 				{
