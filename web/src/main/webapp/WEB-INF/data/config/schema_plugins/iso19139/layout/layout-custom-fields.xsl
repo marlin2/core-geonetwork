@@ -151,11 +151,11 @@
     </xsl:call-template>
   </xsl:template>
 
-  <!-- Custom rendering of resource constraints section 
-    * mri:resourceConstraints is boxed element and the title 
-    * of the fieldset is the name of the child element
+  <!-- Custom rendering of resource and metadata constraints section 
+    * gmd:resourceConstraints and gmd:metadataConstraints are boxed elements with title 
+    * of fieldset as the name of the child element
   -->
-  <xsl:template mode="mode-iso19139" priority="33000" match="gmd:resourceConstraints">
+  <xsl:template mode="mode-iso19139" priority="33000" match="gmd:resourceConstraints|gmd:metadataConstraints">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
 
