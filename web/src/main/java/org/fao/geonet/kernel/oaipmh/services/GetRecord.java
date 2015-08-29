@@ -25,11 +25,14 @@ package org.fao.geonet.kernel.oaipmh.services;
 
 import jeeves.resources.dbms.Dbms;
 import jeeves.server.context.ServiceContext;
+import jeeves.utils.Log;
 import jeeves.utils.Xml;
+import jeeves.xlink.Processor;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.kernel.oaipmh.Lib;
 import org.fao.geonet.kernel.oaipmh.OaiPmhService;
+import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.oaipmh.OaiPmh;
@@ -86,6 +89,15 @@ public class GetRecord implements OaiPmhService
 		GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 		SchemaManager   sm = gc.getSchemamanager();
 		DataManager     dm = gc.getDataManager();
+		SettingManager  settingManager = gc.getSettingManager();
+
+		boolean isEnabled = false;
+
+		String xlR = settingManager.getValue("system/xlinkResolver/enable");
+		if (xlR != null) {
+			isEnabled = xlR.equals("true");
+			if (isEnabled) Log.info(Geonet.OAI,"XLink Resolver enabled in oaipmh.");
+		}
 
 		String query = "SELECT uuid,id, schemaId, changeDate, data FROM Metadata WHERE "+select+"=?";
 		List list = dbms.select(query, selectVal).getChildren();
@@ -102,6 +114,9 @@ public class GetRecord implements OaiPmhService
 		String data       = rec.getChildText("data");
 
 		Element md = Xml.loadString(data, false);
+		if (isEnabled) {
+			Processor.detachXLink(md, context);
+		}
 
 		//--- try to disseminate format
 
