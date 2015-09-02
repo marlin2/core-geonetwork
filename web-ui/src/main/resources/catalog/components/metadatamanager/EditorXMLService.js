@@ -52,10 +52,13 @@
         '</cit:CI_Date>' +
         '</cit:date>' +
         '<cit:citedResponsibleParty>' +
-        '<cit:CI_ResponsibleParty>' +
-        '<cit:organisationName>' +
+        '<cit:CI_Responsibility>' +
+        '<cit:role gco:nilReason="missing"/>' +
+        '<cit:party>' +
+        '<cit:CI_Organisation>' +
+        '<cit:name>' +
         '<gco:CharacterString>European Petroleum Survey Group</gco:CharacterString>' +
-        '</cit:organisationName>' +
+        '</cit:name>' +
         '<cit:contactInfo>' +
         '<cit:CI_Contact>' +
         '<cit:onlineResource>' +
@@ -67,8 +70,9 @@
         '</cit:onlineResource>' +
         '</cit:CI_Contact>' +
         '</cit:contactInfo>' +
-        '<cit:role gco:nilReason="missing"/>' +
-        '</cit:CI_ResponsibleParty>' +
+        '</cit:CI_Organisation>' +
+        '</cit:party>' +
+        '</cit:CI_Responsibility>' +
         '</cit:citedResponsibleParty>' +
         '</cit:CI_Citation>' +
         '</mcc:authority>' +

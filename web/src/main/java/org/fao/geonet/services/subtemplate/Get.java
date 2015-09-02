@@ -79,6 +79,8 @@ public class Get implements Service {
         Dbms dbms = (Dbms) context.getResourceManager().open (Geonet.Res.MAIN_DB);
         Element rec = dbms.select("SELECT data FROM metadata WHERE isTemplate = 's' AND uuid = ?", uuid);
 
+				if (rec == null) return new Element("error").setText("Unable to retrieve subtemplate with uuid "+uuid);;
+
         String xmlData = rec.getChild(Jeeves.Elem.RECORD).getChildText("data");
         rec = Xml.loadString(xmlData, false);
         Element tpl = (Element) rec.detach();

@@ -1020,6 +1020,10 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
         window.open(url, '_blank');
       }
     },
+    myMetadata: function(){
+      var url = 'catalog.edit';
+      window.open(url, '_blank');
+    },
     /** api: method[metadataDuplicate]
      *  :param uuid: ``String`` Uuid of the metadata to duplicate
      *

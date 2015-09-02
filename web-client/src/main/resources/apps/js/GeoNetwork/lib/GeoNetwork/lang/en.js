@@ -392,6 +392,7 @@ GeoNetwork.Lang.en = {
     'onSelection': 'On selection',
     'adminAction': 'Other',
     'newMetadata': 'New metadata',
+    'myMetadata': 'My metadata',
     'newMetadataTitle': 'Create a metadata by choosing a template and selecting one group',
     'tplTitle': 'Template description',
     'metadatatype': 'Resource type',
