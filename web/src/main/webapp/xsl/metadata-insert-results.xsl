@@ -37,7 +37,6 @@
                     <xsl:for-each select="/root/response/exceptions/exception">
                       <li>
 												<div style="display:block; text-align:left" class="content">
-													<xsl:if test="geonet:schematronerrors or xsderrors">
 														<xsl:if test="normalize-space(@filename)">
 															<strong><xsl:value-of select="@filename"/></strong>
 														</xsl:if>
@@ -57,10 +56,9 @@
                             	</xsl:when>
 		
                             	<xsl:otherwise>
-                             		<xsl:value-of select="."/>
+                             		<br/><br/><xsl:value-of select="."/>
                             	</xsl:otherwise>
                         		</xsl:choose>
-													</xsl:if>
 												</div>
                       </li>
                     </xsl:for-each>
