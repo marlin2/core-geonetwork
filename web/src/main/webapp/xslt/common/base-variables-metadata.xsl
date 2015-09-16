@@ -5,6 +5,7 @@
   xmlns:saxon="http://saxon.sf.net/" extension-element-prefixes="saxon"
   xmlns:gmd="http://www.isotc211.org/2005/gmd"
   xmlns:srv="http://www.isotc211.org/2005/srv"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
   >
   <!-- Global XSL variables about the metadata record. This should be included for
   service dealing with one metadata record (eg. viewing, editing). -->
@@ -72,12 +73,78 @@
     <xsl:call-template name="get-iso19139-configuration"/>
   </xsl:variable>
   
-  
+ 
   <xsl:variable name="tab" select="if (/root/gui/currTab) then /root/gui/currTab else 
     $editorConfig/editor/views/view/tab[@default]/@id"/>
   
-  <xsl:variable name="viewConfig" select="$editorConfig/editor/views/view[tab/@id = $tab]"/>
-  <xsl:variable name="tabConfig" select="$editorConfig/editor/views/view/tab[@id = $tab]"/>
+  <xsl:variable name="currentView" as="node()">
+		
+			<xsl:variable name="views" select="$editorConfig/editor/views/view[tab/@id = $tab]"/>
+
+			<!-- Could be two current views - one could be disabled - so find the one that isn't -->
+
+			<xsl:choose>
+				<xsl:when test="count($views)>1">
+					<xsl:for-each select="$views">
+                <xsl:variable name="isViewDisplayed" as="xs:boolean">
+                  <!-- Evaluate XPath expression to
+                    see if view should be displayed
+                    according to the metadata record or
+                    the session information. -->
+                  <xsl:variable name="isInRecord" as="xs:boolean">
+                    <xsl:choose>
+                      <xsl:when test="@displayIfRecord">
+                        <saxon:call-template name="{concat('evaluate-', $schema, '-boolean')}">
+                          <xsl:with-param name="base" select="$metadata"/>
+                          <xsl:with-param name="in" select="concat('/../', @displayIfRecord)"/>
+                        </saxon:call-template>
+                      </xsl:when>
+                      <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <xsl:variable name="isInServiceInfo" as="xs:boolean">
+                    <xsl:choose>
+                      <xsl:when test="@displayIfServiceInfo">
+                        <saxon:call-template name="{concat('evaluate-', $schema, '-boolean')}">
+                          <xsl:with-param name="base" select="$serviceInfo"/>
+                          <xsl:with-param name="in" select="concat('/', @displayIfServiceInfo)"/>
+                        </saxon:call-template>
+                      </xsl:when>
+                      <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <xsl:choose>
+                    <xsl:when test="@displayIfServiceInfo and @displayIfRecord">
+                      <xsl:value-of select="$isInServiceInfo and $isInRecord"/>
+                    </xsl:when>
+                    <xsl:when test="@displayIfServiceInfo">
+                      <xsl:value-of select="$isInServiceInfo"/>
+                    </xsl:when>
+                    <xsl:when test="@displayIfRecord">
+                      <xsl:value-of select="$isInRecord"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="true()"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+
+                <xsl:if test="$isViewDisplayed">
+									<xsl:copy-of select="."/>
+								</xsl:if>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="$views"/>
+				</xsl:otherwise>
+			</xsl:choose>
+
+	</xsl:variable>
+
+  <xsl:variable name="viewConfig" select="$currentView[tab/@id = $tab]"/>
+  <xsl:variable name="tabConfig" select="$currentView/tab[@id = $tab]"/>
   
   <xsl:variable name="isFlatMode" select="if (/root/request/flat) then /root/request/flat = 'true'
     else $tabConfig/@mode = 'flat'"/>

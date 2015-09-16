@@ -107,7 +107,7 @@ GeoNetwork.loginApp = function() {
                 catalogue.metadataStore.removeAll();
                 catalogue.resultsView.store.removeAll();
 
-                showBrowse();
+                showSearch();
 
 								// stop the keep alive function
 								that.keepAlive(false);

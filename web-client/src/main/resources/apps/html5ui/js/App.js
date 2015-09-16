@@ -39,11 +39,16 @@ GeoNetwork.app = function() {
         latestStore.on('load', function() {
             Ext.ux.Lightbox.register('a[rel^=lightbox]');
         });
+
+				var oldp = Ext.getCmp('latest-md-panel');
+				if (oldp) oldp.removeAll();
+
         var p = new Ext.Panel({
             border : false,
             bodyCssClass : 'md-view',
             items : latestView,
-            renderTo : 'latest-metadata'
+            renderTo : 'latest-metadata',
+						id: 'latest-md-panel'
         });
         latestView.tpl = GeoNetwork.HTML5UI.Templates.THUMBNAIL_SIMPLER;
         catalogue.kvpSearch(
@@ -57,12 +62,16 @@ GeoNetwork.app = function() {
     };
 
     function createMainTagCloud() {
-        var tagCloudView = new GeoNetwork.TagCloudView({
+
+        var tagCloudView = Ext.getCmp('cloud-tag-widget');
+				if (!tagCloudView) {
+					tagCloudView = new GeoNetwork.TagCloudView({
             catalogue : catalogue,
             query : 'fast=true&summaryOnly=true&from=1&to=4',
             renderTo : 'cloud-tag',
             onSuccess : 'app.loadResults',
             itemSelector : 'div.tag-cloud',
+						id: 'cloud-tag-widget',
             tpl: new Ext.XTemplate(
                     '<tpl for=".">', 
                         '<div class="tag-cloud">',
@@ -71,11 +80,14 @@ GeoNetwork.app = function() {
                                 '={value}\', app.loadResults, null, null);app.searchApp.firstSearch=true;showSearch();" alt="{value}">{value} ({count})</a>', 
                         '</div>', 
                     '</tpl>')
-        });
+        	});
+				} else {
+					tagCloudView.initComponent();
+				}
 
         return tagCloudView;
-    }
-    ;
+    };
+
     var createPopularUpdate = function() {
         var latestView = new GeoNetwork.MetadataResultsView({
             catalogue : catalogue,
@@ -87,11 +99,16 @@ GeoNetwork.app = function() {
         latestStore.on('load', function() {
             Ext.ux.Lightbox.register('a[rel^=lightbox]');
         });
+
+				var oldp = Ext.getCmp('popular-md-panel');
+				if (oldp) oldp.removeAll();
+
         var p = new Ext.Panel({
             border : false,
             bodyCssClass : 'md-view',
             items : latestView,
-            renderTo : 'popular-metadata'
+            renderTo : 'popular-metadata',
+						id: 'popular-md-panel'
         });
         latestView.tpl = GeoNetwork.HTML5UI.Templates.THUMBNAIL_SIMPLER;
         catalogue.kvpSearch(
@@ -557,6 +574,11 @@ GeoNetwork.app = function() {
         searchApp : null,
         loginApp : null,
         breadcrumb : null,
+				rebuildBrowse: function() {
+            createLatestUpdate();
+            createPopularUpdate();
+            createMainTagCloud();
+				},
         switchMode : function(i, j) {
         },
         /**
@@ -825,6 +847,13 @@ Ext.onReady(function() {
                 Ext.getCmp('advanced-search-options-content-form').fireEvent(
                         'search');
             };
+
+						var mdPanel = Ext.getCmp('metadata-panel');
+						if (mdPanel && mdPanel.isVisible()) {
+							console.log("Will show metadata view");
+						} else {
+							showSearch();
+						}
 });
 
 /**

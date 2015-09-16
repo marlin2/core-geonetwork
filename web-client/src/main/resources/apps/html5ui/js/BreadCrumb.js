@@ -31,10 +31,11 @@ GeoNetwork.BreadCrumb = function() {
         current : '',
         separator : "  >>  ",
         div : "bread-crumb-app",
-        defaultSteps : [ {
-            text : OpenLayers.i18n("HOME"),
+        defaultSteps : [ 
+				{
+            text : OpenLayers.i18n("BROWSE"),
             func : "showBrowse()"
-        }, {
+        },{
             text : OpenLayers.i18n("SEARCH RESULTS"),
             func : "showSearch()"
         }, {

@@ -217,18 +217,18 @@
 								<nav id="nav">
 									<ul id="main-navigation">
 										<li>
-											<a id="browse-tab" class="selected" href="javascript:showBrowse();">
-												<xsl:value-of select="/root/gui/strings/home" />
-											</a>
-										</li>
-										<li>
-											<a id="catalog-tab" href="javascript:showSearch();">
+											<a id="catalog-tab" class="selected" href="javascript:showSearch();">
 												<xsl:value-of select="/root/gui/strings/porCatInfoTab" />
 											</a>
 										</li>
 										<li>
 											<a id="map-tab" href="javascript:showBigMap();">
 												<xsl:value-of select="/root/gui/strings/map_label" />
+											</a>
+										</li>
+										<li>
+											<a id="browse-tab" href="javascript:showBrowse();">
+												<xsl:value-of select="'Browse'" />
 											</a>
 										</li>
 										<li>
@@ -253,7 +253,7 @@
                        </div>
                        <div id="permalink-div" style="display:none"></div>
                         <div id="bread-crumb-app"></div>
-                        <div id="search-form" style="display:none;">
+                        <div id="search-form" style="display:none">
                             <fieldset id="search-form-fieldset">
                                 <legend id="legend-search">
                                     <xsl:value-of select="/root/gui/strings/search" />
@@ -285,11 +285,8 @@
                         </div>
 					
 
-	                    <div id="browser">
+	                    <div id="browser" style="display:none">
                         <aside class="tag-aside">
-	                    	  <div id="welcome-text">
-	                      	  <xsl:copy-of select="/root/gui/strings/welcome.text"/>
-												  </div>
                           <div id="tags">
                             <header><h1><span><xsl:value-of select="/root/gui/strings/tag_label" /></span></h1></header>
                             <div id="cloud-tag"></div>
@@ -310,6 +307,9 @@
                       </div>
 
 	                    <div id="about" style="display:none;">
+	                    	<div id="welcome-text">
+	                     	  <xsl:copy-of select="/root/gui/strings/welcome.text"/>
+											  </div>
 	                    	<div id="about-text">
 	                      	<xsl:copy-of select="/root/gui/strings/about.text"/>
                         </div>
