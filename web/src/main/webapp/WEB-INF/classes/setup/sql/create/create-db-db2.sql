@@ -350,6 +350,8 @@ CREATE TABLE OperationAllowed
   );
 
 CREATE INDEX OperationAllowedNDX1 ON OperationAllowed(metadataId);
+CREATE INDEX OperationAllowedNDX2 ON OperationAllowed(groupId);
+CREATE INDEX OperationAllowedNDX3 ON OperationAllowed(operationId);
 
 -- ======================================================================
 
