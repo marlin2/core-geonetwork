@@ -298,11 +298,13 @@ GeoNetwork.MetadataResultsToolbar = Ext.extend(Ext.Toolbar, {
             id: 'previousBt',
             text: '&lt;&lt;',
             handler: function () {
+							if (self.searchCb) {
                 var from = catalogue.startRecord - parseInt(Ext.getCmp('E_hitsperpage').getValue(), 10);
                 if (from > 0) {
                     catalogue.startRecord = from;
                     self.searchCb();
                 }
+							}
             }
         });
         
@@ -310,8 +312,10 @@ GeoNetwork.MetadataResultsToolbar = Ext.extend(Ext.Toolbar, {
             id: 'nextBt',
             text: '&gt;&gt;',
             handler: function () {
+							if (self.searchCb) {
                 catalogue.startRecord += parseInt(Ext.getCmp('E_hitsperpage').getValue(), 10);
                 self.searchCb();
+							}
             }
         });
         
