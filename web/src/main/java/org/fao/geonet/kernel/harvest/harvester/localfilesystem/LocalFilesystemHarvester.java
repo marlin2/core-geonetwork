@@ -179,8 +179,9 @@ public class LocalFilesystemHarvester extends AbstractHarvester {
 	private void align(List<String> results, ResourceManager rm) throws Exception {
 		System.out.println("Start of alignment for : "+ params.name);
 		this.result = new LocalFilesystemResult();
-		Dbms dbms = (Dbms) rm.open(Geonet.Res.MAIN_DB);
+		Dbms dbms = (Dbms) rm.openDirect(Geonet.Res.MAIN_DB);
 
+	try {
 		boolean transformIt = false;
 		String thisXslt = context.getAppPath() + Geonet.Path.IMPORT_STYLESHEETS + "/";
 		if (!params.importXslt.equals("none")) {
@@ -279,6 +280,10 @@ public class LocalFilesystemHarvester extends AbstractHarvester {
 			}			
 		}
 		System.out.println("End of alignment for : "+ params.name);
+	} finally {
+		rm.close(Geonet.Res.MAIN_DB, dbms);
+	}
+	
 	}
 
 	private void updateMetadata(Element xml, String id, Dbms dbms, GroupMapper localGroups, CategoryMapper localCateg) throws Exception {

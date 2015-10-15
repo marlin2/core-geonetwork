@@ -505,8 +505,9 @@ public class AccessManager {
                                 "WHERE ug.groupId = oa.groupId AND operationId = ? AND " + 
                                 "userId = ? AND profile = ? AND metadataId = ?";
         
-        Dbms dbms = (Dbms) context.getResourceManager().open(Geonet.Res.MAIN_DB);
-        
+        Dbms dbms = (Dbms) context.getResourceManager().openDirect(Geonet.Res.MAIN_DB);
+       
+			try {
         Element isEditorRes = dbms.select(isEditorQuery, 
                                 Integer.parseInt(OPER_EDITING), 
                                 Integer.parseInt(us.getUserId()), 
@@ -517,6 +518,9 @@ public class AccessManager {
             return true;
         }
         return false;
+			} finally {
+				context.getResourceManager().close(Geonet.Res.MAIN_DB, dbms);
+			}
     }
 
     /**
