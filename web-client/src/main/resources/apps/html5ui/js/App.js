@@ -122,116 +122,6 @@ GeoNetwork.app = function() {
     };
 
     /**
-     * 
-     * Given a metadata, load a map on the metadata associated map and creates
-     * the checkbox for downloading or adding layers to the big map
-     * 
-     */
-    var loadMetadataMap = function(metadata) {
-
-        var checkboxes = [];
-        var layers = [];
-
-        // add data to map
-        Ext.each(metadata.record.get("links"), function(link) {
-            if (link.protocol === 'application/vnd.ogc.wms_xml'
-                    || link.protocol.toUpperCase().indexOf("OGC:WMS") >= 0) {
-                var layers = app.mapApp.getCapabilitiesWMS(link.href);
-                Ext.each(layers, function(layer) {
-                    var wms = new OpenLayers.Layer.WMS(link.name, link.href, {
-                        layers : layer,
-                        transparent : true
-                    });
-
-                    wms.setVisibility(true);
-
-                    checkboxes.push(new Ext.form.Checkbox({
-                        boxLabel : layer,
-                        layer : wms
-                    }));
-
-                    layers.push(wms);
-                });
-            } else if (link.protocol === 'application/vnd.ogc.wfs_xml'
-                    || link.protocol.toUpperCase().indexOf("OGC:WFS") >= 0) {
-                var layers = [];
-                try {
-                    layers = app.mapApp.getCapabilitiesWFS(link.href);
-                } catch (ex) {
-                    layers = [];
-                }
-                var styleMap = new OpenLayers.StyleMap({
-                    strokeWidth : 3,
-                    strokeColor : "#333333"
-                });
-                var strategies = [ new OpenLayers.Strategy.BBOX() ];
-
-                Ext.each(layers, function(layer) {
-                    var wfs = new OpenLayers.Layer.Vector(link.name, {
-                        strategies : strategies,
-                        protocol : layer,
-                        styleMap : styleMap
-                    });
-                    wfs.setVisibility(true);
-
-                    checkboxes.push(new Ext.form.Checkbox({
-                        boxLabel : layer.featurePrefix + ":"
-                                + layer.geometryName,
-                        layer : wfs
-                    }));
-
-                    layers.push(wfs);
-                });
-            }
-        });
-
-        var wfs_href = metadata.record.get("href");
-
-        // var form = new Ext.form.FormPanel(
-        // {
-        // renderTo : "download_" + metadata.title,
-        // defaultType : 'checkboxgroup',
-        // buttonAlign : 'left',
-        // width : 200,
-        // layout : 'column',
-        // items : [ checkboxes ],
-        // fbar : {
-        // xtype : 'toolbar',
-        // items : [
-        // {
-        // text : OpenLayers.i18n('Add to map'),
-        // handler : function() {
-        // form.items
-        // .each(function(c) {
-        // if (c.checked && !c.added) {
-        // c.added = true;
-        // app.mapApp
-        // .createLayer(c.layer);
-        // }
-        // });
-        // }
-        // },
-        // {
-        // text : OpenLayers.i18n('prepareDownload'),
-        // handler : function() {
-        // // FIXME : this call require the
-        // // catalogue to be named
-        // // catalogue
-        // catalogue
-        // .metadataPrepareDownload(metadata.record
-        // .get('id'));
-        // }
-        // } ]
-        // }
-        // });
-        var map = app.mapApp.generateAuxiliaryMap("map_" + metadata.title);
-        Ext.each(layers, function(layer) {
-            map.addLayer(layer);
-        });
-
-    };
-
-    /**
      * Create a language switcher menu.
      * 
      */
@@ -343,14 +233,6 @@ GeoNetwork.app = function() {
 						hide("permalink-div");
 					}
 				});
-
-        // aResTab.on("afterrender", function() {
-        // // Initialize map and links
-        // loadMetadataMap({
-        // record : record,
-        // title : record.get('title')
-        // });
-        // });
 
         showMetadata();
         app.breadcrumb.setDefaultPrevious(2);
@@ -860,7 +742,6 @@ Ext.onReady(function() {
  * Resize maps and panels on window resize to acomodate content
  */
 Ext.fly(window).on('resize', function(e, w) {
-    resizeMap();
     resizeResultsPanel();
 
     var doLayout_children = function(obj) {

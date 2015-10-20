@@ -181,7 +181,7 @@ GeoNetwork.mapApp = function() {
         },
         maps : [],
         init : function(options, layers, fixedScales) {
-            generateMaps(options, layers, fixedScales);
+            // generateMaps(options, layers, fixedScales);
         },
         /**
          * Used by other functions that need to create and initialize a map
@@ -191,6 +191,7 @@ GeoNetwork.mapApp = function() {
          * @returns
          */
         generateAuxiliaryMap : function(id) {
+						return null; // *********DISABLED
 
             var map = new OpenLayers.Map({
                 maxExtent : GeoNetwork.map.MAP_OPTIONS.maxExtent.clone(),

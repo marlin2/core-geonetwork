@@ -111,20 +111,6 @@ function showBigMap() {
 
     // show map
     show("big-map-container");
-    // Resize the map, to cover all space available:
-    //resizeMap();
-
-    /*app.breadcrumb.setCurrent({
-        text : OpenLayers.i18n("Map"),
-        func : "showBigMap()"
-    });*/
-
-    // Printpanel can be only initiazed once the map is rendered
-    // Trigger the print panel init only when the big map is displayed
-    // the first time. It will check if the print panel is already initiliazed
-    // or not
-    //app.mapApp.initPrint();
-    
 
     Ext.each(Ext.query('a', Ext.get("main-navigation").dom), function(a) {
         Ext.get(a).removeClass("selected");
@@ -221,49 +207,6 @@ function resizeResultsPanel() {
             });
         });
     });
-}
-
-function resizeMap() {
-
-    if (Ext.getCmp("big-map")) {
-        Ext.getCmp("big-map").doLayout(false, true);
-
-        var div = Ext.get("big-map");
-
-        var setChildrens = function(children) {
-            Ext.each(children, function(child) {
-                child = Ext.get(child);
-                var classN = child.dom.className;
-                if (classN
-                        && classN.indexOf
-                        && (classN.indexOf("tbar") < 0 && classN
-                                .indexOf("x-panel-header") < 0)) {
-                    child.setHeight("100%");
-                    if (child.id
-                            && (child.id.indexOf("ViewPort") < 0 && child.id
-                                    .indexOf("layerManager") < 0)) {
-                        setChildrens(child.dom.children);
-                    }
-                }
-            });
-        };
-        var height = Ext.getBody().getHeight() - Ext.get("footer").getHeight()
-                - Ext.get("header").getHeight()
-                - Ext.get("search-form").getHeight() - 20;
-
-        setChildrens(div);
-        div.setHeight(height);
-    }
-
-    if (Ext.getCmp("layerManager")) {
-        Ext.getCmp("layerManager").collapse(false);
-        Ext.getCmp("layerManager").expand(false);
-    }
-    app.mapApp.getMap().updateSize();
-
-    if (app.mapApp.getMap().getZoom() < 4) {
-        app.mapApp.getMap().zoomTo(4);
-    }
 }
 
 function showAdvancedSearch() {
