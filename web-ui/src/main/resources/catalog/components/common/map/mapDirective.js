@@ -73,8 +73,7 @@
 							 if (scope.extent[from]) {
               	 	scope.extent[to] = gnMap.reprojExtent(
                    scope.extent[from],
-                   scope.projs[from], scope.projs[to]
-               		);
+                   scope.projs[from], scope.projs[to], to);
 							 }
              };
 
@@ -164,13 +163,11 @@
                }
 
                if (gnMap.isPoint(scope.extent.map)) {
-                 coordinates = [scope.extent.map[0],
-                   scope.extent.map[1]];
+                 coordinates = [scope.extent.map[0], scope.extent.map[1]];
                  geom = new ol.geom.Point(coordinates);
                }
                else {
-                 coordinates = gnMap.getPolygonFromExtent(
-                     scope.extent.map);
+                 coordinates = gnMap.getPolygonFromExtent(scope.extent.map);
                  geom = new ol.geom.Polygon(coordinates);
                }
                feature.setGeometry(geom);
@@ -203,10 +200,11 @@
               * Set map and md extent from form reprojection, and draw
               * the bbox from the map extent.
               */
-             scope.updateBbox = function() {
+             scope.updateBbox = function(which) {
                reprojExtent('form', 'map');
                reprojExtent('form', 'md');
                setDcOutput();
+						 	 gnMap.saneBbox(which, scope.extent.map);
                drawBbox();
                map.getView().fitExtent(scope.extent.map, map.getSize());
              };

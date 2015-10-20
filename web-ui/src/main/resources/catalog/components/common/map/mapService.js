@@ -40,12 +40,17 @@
            * {left,bottom,right,top}
            *
            */
-          reprojExtent: function(extent, src, dest) {
+          reprojExtent: function(extent, src, dest, destName) {
             if (src == dest || extent === null) {
               return extent;
             }
             else {
-              return ol.proj.transform(extent,
+							var te = angular.copy(extent);
+							if (src === 'EPSG:4326' && destName && destName === 'map') {
+								if (Math.round(te[1]) == -90) te[1] = -89.9;
+								if (Math.round(te[3]) == 90) te[3] = 89.9;
+							}
+              return ol.proj.transform(te,
                   src, dest);
             }
           },
@@ -53,6 +58,18 @@
           isPoint: function(extent) {
             return (extent[0] == extent[2] &&
                 extent[1]) == extent[3];
+          },
+
+          saneBbox: function(which, extent) {
+						if (which === 'east') {
+							if (extent[2] < extent[0]) extent[2] = extent[0];
+						} else if (which === 'west') {
+							if (extent[0] > extent[2]) extent[0] = extent[2];
+						} else if (which === 'south') {
+							if (extent[1] > extent[3]) extent[1] = extent[3];
+						} else if (which === 'north') {
+							if (extent[3] < extent[1]) extent[3] = extent[1];
+						}
           },
 
           getPolygonFromExtent: function(extent) {
