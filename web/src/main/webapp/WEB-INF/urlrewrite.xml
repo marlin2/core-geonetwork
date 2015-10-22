@@ -17,7 +17,12 @@
     
 -->
 <urlrewrite use-query-string="true" use-context="false">
-    
+   
+	 	<rule>
+		    <condition type="parameter" name="uuid" operator="notequal">^$</condition>
+				<from>^(.*)/search(.*)$</from>
+        <to type="permanent-redirect" last="true">%{context-path}$1/search#!%{parameter:uuid}</to>
+		</rule>
     <rule>
         <from>^(.*)/proxy/(.*)$</from>
         <to type="permanent-redirect" last="true">%{context-path}$1/proxy?url=$2</to>

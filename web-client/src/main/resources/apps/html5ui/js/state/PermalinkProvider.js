@@ -55,7 +55,7 @@ Ext
                 {
                     restoring : false,
                     lastSearch : '',
-                    metadata_separator : '|',
+                    metadata_separator : '!',
                     /**
                      * Update the last search to show it on the url
                      * 
@@ -89,15 +89,13 @@ Ext
                         if (i < 0) {
                             i = window.location.href.length;
                         }
-                        this
-                                .restoreFields(window.location.href.substring(
-                                        0, i));
+                        this.restoreFields(window.location.href.substring(0, i));
 
                         var end = location.hash.indexOf("?");
                         if (end <= 0) {
                             end = location.hash.length;
                         }
-                        var from = location.hash.indexOf("|");
+                        var from = location.hash.indexOf("!");
                         if (from < 0) {
                             from = end;
                         }
@@ -167,13 +165,13 @@ Ext
                             }
 
                         }
-                        from = location.hash.indexOf("|");
+                        from = location.hash.indexOf("!");
                         if (from < 0) {
                             from = 0;
                         } else {
                             restoreSearch = false;
                         }
-                        Ext.each(location.hash.substring(from, end).split("|"),
+                        Ext.each(location.hash.substring(from, end).split("!"),
                                 function(uuid) {
                                     if (app && app.searchApp
                                             && uuid.indexOf("#") < 0
@@ -292,13 +290,13 @@ Ext
                             link = link.substring(0, link.indexOf("?"));
                         }
 
-                        link = link.substring(link.indexOf("|") + 1);
+                        link = link.substring(link.indexOf("!") + 1);
 
                         // Get base url and language
                         var urlParts = window.location.href.match(/(http.*\/.*)\/srv\/(.*)\/.*/, '');
 
                         return urlParts[1]
-                          + '/srv/' + urlParts[2] + '/search' + "?uuid=" + link;
+                          + '/srv/' + urlParts[2] + '/search' + "#!" + link;
                     },
                     /**
                      * api: method[getLink] :param base: ``String`` The base

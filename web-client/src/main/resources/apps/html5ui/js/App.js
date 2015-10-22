@@ -264,7 +264,7 @@ GeoNetwork.app = function() {
             }
         });
 
-        token = "|" + uuid;
+        token = "!" + uuid;
 
         if (!GeoNetwork.state.History.getToken()
                 || GeoNetwork.state.History.getToken().indexOf("edit=") != 0) {
@@ -362,91 +362,6 @@ GeoNetwork.app = function() {
         });
 
         Ext.getCmp("metadata-panel").doLayout();
-        // Add to recent viewed
-        addToRecentViewed(record);
-
-    }
-
-    function addToRecentViewed(record) {
-        var div = Ext.getCmp("recent-viewed");
-
-        if (!div) {
-            var store = new Ext.data.ArrayStore({
-                autoDestroy : true,
-                autoSave : true,
-                storeId : 'recent-viewed-store',
-                idIndex : 0,
-                fields : [ 'thumbnail', 'description', 'uuid', 'title' ]
-            });
-
-            var tpl = new Ext.XTemplate(
-                  '<tpl for=".">',
-                    '<div class="thumb-wrap" id="recent-viewed_{uuid}">',
-                      '<a href="javascript:app.searchApp.addMetadata(\'{uuid}\', true);">',
-                        //'<div class="thumb">',
-                          '<h1>{title}</h1>',
-                          //'<span>{description}</span>', 
-                        //'</div>',
-                      '</a>', 
-                    '</div>',
-                  '</tpl>');
-
-            div = new Ext.DataView({
-                store : store,
-                tpl : tpl,
-                autoHeight : true,
-                overClass : 'x-view-over',
-                id : "recent-viewed",
-								emptyText: 'No metadata viewed/edited recently'
-            });
-
-						var p = new Ext.Panel({
-            	border : false,
-            	bodyCssClass : 'md-view',
-            	items : div,
-							renderTo: "recent-viewed-div",
-							id: "recent-items-panel"
-        		});
-
-            catalogue.on('afterLogout', function() {
-              store.removeAll(); // empty store underlying dataview
-            });
-        }
-
-        var description = record.get('abstract');
-        if (description.length > 140) {
-            description = description.substring(0, 140) + "...";
-        }
-
-        var alreadyThere = false;
-
-        Ext.each(div.store.data.items, function(e) {
-            if (e.data.uuid === record.get('uuid')) {
-								// just in case any info changed, then update
-								e.beginEdit();
-								e.data.title = record.get('title'); 
-                e.data.thumbnail = record.get('thumbnail'),
-								e.data.description = description; 
-                alreadyThere = true;
-								e.endEdit();
-								e.commit(true);
-            }
-        });
-
-        if (!alreadyThere) {
-            div.store.insert(0, new div.store.recordType({
-                title : record.get('title'),
-                uuid : record.get('uuid'),
-                thumbnail : record.get('thumbnail'),
-                description : description
-            }));
-        } else {
-					div.refresh(); // store may have been updated above
-				}
-
-        while (div.store.data.length > 5) {
-            div.store.remove(div.store.data.items[div.store.data.length - 1]);
-        }
 
     }
 

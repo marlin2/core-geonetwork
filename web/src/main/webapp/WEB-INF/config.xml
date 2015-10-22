@@ -1566,7 +1566,7 @@
 		
         <!-- HTML5UI -->
         <service name="search">
-            <class name=".services.main.Home" />
+            <!-- <class name=".services.main.Home" /> -->
             <output sheet="search.xsl">
                 <call name="currTab" class=".guiservices.util.GetCurrentMDTab" />
                 <call name="isoLang" class=".guiservices.isolanguages.Get" />

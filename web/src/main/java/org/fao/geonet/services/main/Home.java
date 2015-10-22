@@ -32,6 +32,13 @@ import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.services.metadata.View;
 import org.jdom.Element;
 
+				// ALARM ___________________________________________________________________________________
+				// NOTE NOTE NOTE NOTE This stuff has been disabled in config.xml
+				// by commenting out the jeeves call to this object and going straight to search.xsl
+				// We don't care about spiders frankly and this code makes any call with uuid= parameter 
+				// far too slow.. a urlrewrite from uuid= to #!<uuid> has been added to urlrewrite.xml 
+				// to handle the forwarding done here.... - see Simon Pigot for more details
+				// ALARM ___________________________________________________________________________________
 /**
  * main.search service. Perform a search and show metadata (if uuid on
  * parameters)
@@ -64,6 +71,14 @@ public class Home implements Service {
         String tabs = "#";
 
         Element result = params;
+				// ALARM ___________________________________________________________________________________
+				// NOTE NOTE NOTE NOTE This stuff has been disabled in config.xml
+				// by commenting out the jeeves call to this object and going straight to search.xsl
+				// We don't care about spiders frankly and this code makes any call with uuid= parameter 
+				// far too slow.. a urlrewrite from uuid= to #!<uuid> has been added to urlrewrite.xml 
+				// to handle the forwarding done here.... - see Simon Pigot for more details
+				// ALARM ___________________________________________________________________________________
+
         // Should we forward to a cleaner url?
         boolean forward = false;
 
@@ -73,7 +88,7 @@ public class Home implements Service {
             String uuid = ((Element) e).getText();
             if (((Element) e).getName().equalsIgnoreCase("uuid")) {
                 forward = true;
-                tabs = tabs + "|" + uuid;
+                tabs = tabs + "!" + uuid;
                 addNewUUID(tmp, uuid);
             } else {
                 parameters.append(((Element) e).getName() + "=" + uuid

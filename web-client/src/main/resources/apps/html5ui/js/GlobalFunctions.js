@@ -326,7 +326,7 @@ function copyToClipboard(text) {
  * @return {String}
  */
 function metadataViewURL(uuid) {
-    return window.location.href.match(/(http.*\/.*)\/srv\.*/, '')[1] + '?uuid='
+    return window.location.href.match(/(http.*\/.*)\/srv\.*/, '')[1] + '#!'
             + uuid;
 }
 
