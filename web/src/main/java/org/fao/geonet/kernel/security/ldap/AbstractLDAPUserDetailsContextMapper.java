@@ -64,6 +64,8 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
 
     protected boolean importPrivilegesFromLdap;
 
+    protected boolean keepExistingUserGroups = false;
+
     private boolean createNonExistingLdapGroup = true;
 
     private ApplicationContext applicationContext;
@@ -212,7 +214,7 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
         try {
             dbms = (Dbms) resourceManager.openDirect(Geonet.Res.MAIN_DB);
             LDAPUtils.saveUser(userDetails, dbms, serialFactory,
-                    importPrivilegesFromLdap, createNonExistingLdapGroup);
+                    importPrivilegesFromLdap, createNonExistingLdapGroup, keepExistingUserGroups);
         } catch (Exception e) {
             try {
                 resourceManager.abort(Geonet.Res.MAIN_DB, dbms);
@@ -327,6 +329,14 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
 
     public void setImportPrivilegesFromLdap(boolean importPrivilegesFromLdap) {
         this.importPrivilegesFromLdap = importPrivilegesFromLdap;
+    }
+
+    public boolean keepExistingUserGroups() {
+        return keepExistingUserGroups;
+    }
+
+    public void setKeepExistingUserGroups(boolean keepExistingUserGroups) {
+        this.keepExistingUserGroups = keepExistingUserGroups;
     }
 
     public DefaultSpringSecurityContextSource getContextSource() {

@@ -53,7 +53,7 @@ public class LDAPUtils {
 	 * @param serialFactory 
 	 * @throws Exception 
 	 */
-	static void saveUser(LDAPUser user, Dbms dbms, SerialFactory serialFactory, boolean importPrivilegesFromLdap, boolean createNonExistingLdapGroup) throws Exception {
+	static void saveUser(LDAPUser user, Dbms dbms, SerialFactory serialFactory, boolean importPrivilegesFromLdap, boolean createNonExistingLdapGroup, boolean keepExistingGroups) throws Exception {
 		String lowerCaseUser = user.getUsername().toLowerCase(); // LDAP users can authenticate with upper or lower, so always
 		                                                         // use lower case
 		Element selectRequest = dbms.select("SELECT * FROM Users WHERE username=?", lowerCaseUser);
@@ -94,15 +94,16 @@ public class LDAPUtils {
 					user.getProfile(), user.getAddress(), user.getCity(), user.getState(), user.getZip(), 
 					user.getCountry(), user.getEmail(), user.getOrganisation(), user.getKind(), Integer.valueOf(id));
 			
-			// Delete user groups
-			if (importPrivilegesFromLdap) {
+			if (importPrivilegesFromLdap && !keepExistingGroups) {
 				dbms.execute("DELETE FROM UserGroups WHERE userId=?", Integer.valueOf(id));
 			}
 		}
 
 		// Add user groups
 		if (importPrivilegesFromLdap && !Profile.ADMINISTRATOR.equals(user.getProfile())) {
-			dbms.execute("DELETE FROM UserGroups WHERE userId=?", Integer.valueOf(id));
+			if (!keepExistingGroups) {
+				dbms.execute("DELETE FROM UserGroups WHERE userId=?", Integer.valueOf(id));
+			}
 			for(Map.Entry<String, String> privilege : user.getPrivileges().entries()) {
 				// Add group privileges for each groups
 				
@@ -132,7 +133,11 @@ public class LDAPUtils {
 					if (Log.isDebugEnabled(Geonet.LDAP)){
 						Log.debug(Geonet.LDAP, "  - Add LDAP group " + groupName + " for user.");
 					}
-					
+				
+					if (keepExistingGroups) {  // remove user from group in case they are already assigned to it
+						Log.debug(Geonet.LDAP, "  - Remove user "+id+" from existing group '" + groupName);
+						dbms.execute("DELETE FROM UserGroups WHERE userId=? and groupId=?", Integer.valueOf(id), Integer.valueOf(groupId));
+					}
 					Update.addGroup(dbms, Integer.valueOf(id), Integer.valueOf(groupId), profile);
 					
 					try {
