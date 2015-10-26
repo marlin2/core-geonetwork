@@ -31,7 +31,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     
     <bean id="ldapAuthProvider"
         class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
-        <constructor-arg>
+        <constructor-arg ref="bindAuthenticator">
             <!--
                 A PasswordComparisonAuthenticator
             <bean class="org.springframework.security.ldap.authentication.PasswordComparisonAuthenticator">
@@ -46,16 +46,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </property>
             </bean>
         -->
-        <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
-                <constructor-arg ref="contextSource"/>
-                <property name="userDnPatterns">
-                    <list><value>${ldap.base.dn.pattern}</value></list>
-                </property>
-        </bean>
         </constructor-arg>
         <property name="userDetailsContextMapper" ref="ldapUserContextMapper" />
     </bean>
     
+    <bean class="org.springframework.security.ldap.authentication.BindAuthenticator" id="bindAuthenticator">
+       <constructor-arg ref="contextSource"/>
+       <property name="userDnPatterns">
+       		<list><value>${ldap.base.dn.pattern}</value></list>
+       </property>
+    </bean>
     
     
     
@@ -71,7 +71,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="profileMapping">
             <map/>
         </property>
-        <property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
+	<property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
         <property name="importPrivilegesFromLdap" value="${ldap.privilege.import}"/>
         <property name="createNonExistingLdapGroup" value="${ldap.privilege.create.nonexisting.groups}" />
         <property name="contextSource" ref="contextSource" />
@@ -88,7 +88,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="profileMapping">
             <map/>
         </property>
-        <property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
+	<property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
         <property name="importPrivilegesFromLdap" value="${ldap.privilege.import}"/>
         <property name="createNonExistingLdapGroup" value="${ldap.privilege.create.nonexisting.groups}" />
         
@@ -109,7 +109,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="profileMapping">
             <map/>
         </property>
-        <property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
+	<property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
         <property name="importPrivilegesFromLdap" value="${ldap.privilege.import}"/>
         <property name="createNonExistingLdapGroup" value="${ldap.privilege.create.nonexisting.groups}" />
         
