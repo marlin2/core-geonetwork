@@ -158,7 +158,7 @@ public class DefaultStatusActions implements StatusActions {
 
 			if (status.equals(Params.Status.APPROVED)) {
 				// setAllOperations(mid); - this is a short cut that could be enabled
-			} else if (status.equals(Params.Status.DRAFT) || status.equals(Params.Status.REJECTED)) {
+			} else if (status.equals(Params.Status.DRAFT) || status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
 				unsetAllOperations(mid);
 			}
 
@@ -173,8 +173,8 @@ public class DefaultStatusActions implements StatusActions {
     //--- inform owners if status is approved
     } else if (status.equals(Params.Status.APPROVED)) {
       informOwnersApprovedOrRejected(metadataIds, changeDate, changeMessage, true);
-    //--- inform owners if status is rejected
-    } else if (status.equals(Params.Status.REJECTED)) {
+    //--- inform owners if status is rejected or retired
+    } else if (status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
       informOwnersApprovedOrRejected(metadataIds, changeDate, changeMessage, false);
     }	
 
