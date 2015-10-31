@@ -32,7 +32,7 @@
 
     		<link rel="stylesheet" href="{concat($baseUrl, '/static/geonetwork-client_css.css')}"></link> 
     		<link rel="stylesheet" href="../../nationalmap/public/third_party/leaflet/leaflet.css"></link> 
-    		<link rel="stylesheet" href="../../nationalmap/public/build/Cesium/Widgets/widgets.css" media="screen"></link>
+    		<link rel="stylesheet" href="../../nationalmap/public/build/Cesium/Widgets/cesiumwidgetsbundle.css" media="screen"></link>
     		<link rel="stylesheet" href="../../nationalmap/public/css/AusGlobeViewer.css"></link>
 				
 
