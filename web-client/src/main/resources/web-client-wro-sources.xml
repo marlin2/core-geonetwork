@@ -2,21 +2,31 @@
          xsi:noNamespaceSchemaLocation="../../../../web/src/main/webResources/WEB-INF/wro-sources.xsd">
     <!-- geonetwork.css -->
     <declarative name="geonetwork-client_css" pathOnDisk="${project.basedir}/src/main/resources">
+			<!--
         <cssSource webappPath="apps/css/gndefault.css"/>
         <cssSource webappPath="apps/css/gnmapdefault.css"/>
         <cssSource webappPath="apps/css/gnmetadatadefault.css"/>
         <cssSource webappPath="apps/css/metadata-view.css"/>
-    </declarative>
-    <!-- ext-ux.css -->
-    <declarative name="geonetwork-client-ext-ux_css" pathOnDisk="${project.basedir}/src/main/resources">
-        <cssSource webappPath="apps/js/ext-ux/Rating/rating.css"/>
-        <cssSource webappPath="apps/js/ext-ux/SuperBoxSelect/superboxselect.css"/>
-        <cssSource webappPath="apps/js/ext-ux/LightBox/lightbox.css"/>
-        <cssSource webappPath="apps/js/ext-ux/MultiselectItemSelector-3.0/Multiselect.css"/>
-        <cssSource webappPath="apps/js/ext-ux/FileUploadField/file-upload.css"/>
+			-->
+        <cssSource webappPath="apps/html5ui/css/gnmetadatadefault.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/html5ui/css/gnmetadataview.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/OpenLayers/theme/default/style.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext/resources/css/ext-all.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext/resources/css/xtheme-gray.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/html5ui/css/normalize.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/html5ui/css/main.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/html5ui/css/colors.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext-ux/Rating/rating.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext-ux/SuperBoxSelect/superboxselect.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext-ux/LightBox/lightbox.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext-ux/MultiselectItemSelector-3.0/Multiselect.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="apps/js/ext-ux/FileUploadField/file-upload.css" pathOnDisk="${project.basedir}/../web-client/src/main/resources"/>
+        <cssSource webappPath="catalog/lib/style/font-awesome-4.1.0/css/font-awesome.css" pathOnDisk="${project.basedir}/../web-ui/src/main/resources"/>
     </declarative>
     <!-- GeoNetwork-mini-nomap.js -->
     <declarative name="geonetwork-client-mini-nomap" pathOnDisk="${project.basedir}/src/main/resources">
+            <jsSource webappPath="apps/js/ext/adapter/ext/ext-base.js" minimize="false"/>
+            <jsSource webappPath="apps/js/ext/ext-all.js" minimize="false"/>
             <jsSource webappPath="apps/js/ext-ux/TwinTriggerComboBox/TwinTriggerComboBox.js"/>
             <jsSource webappPath="apps/js/ext-ux/Rating/RatingItem.js"/>
             <jsSource webappPath="apps/js/ext-ux/FileUploadField/FileUploadField.js"/>
@@ -354,29 +364,11 @@
             <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/LayerStyles.js"/>
             <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/WmsLayerMetadata.js"/>
             <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/WMSTime.js"/>
-        </declarative>
-    <!-- search/js/App-mini.js + geonetwork-client-mini-nomap_js + geonetwork-client-mini_js -->
-    <declarative name="geonetwork-client-search-app" pathOnDisk="${project.basedir}/src/main/resources">
-            <jsSource webappPath="apps/search/js/Settings.js"/>
-            <jsSource webappPath="apps/search/js/map/Settings.js"/>
-            <jsSource webappPath="apps/search/js/map/MapApp.js"/>
-            <jsSource webappPath="apps/search/js/Shortcuts.js"/>
-            <jsSource webappPath="apps/search/js/App.js"/>
     </declarative>
-    <!-- tabsearch/js/App-mini.js + geonetwork-client-mini-nomap_js + geonetwork-client-mini_js -->
-    <declarative name="geonetwork-client-tabsearch-app" pathOnDisk="${project.basedir}/src/main/resources">
-            <jsSource webappPath="apps/tabsearch/js/Settings.js"/>
-            <jsSource webappPath="apps/tabsearch/js/map/Settings.js"/>
-            <jsSource webappPath="apps/tabsearch/js/map/MapApp.js"/>
-            <jsSource webappPath="apps/tabsearch/js/Shortcuts.js"/>
-            <jsSource webappPath="apps/tabsearch/js/App.js"/>
-    </declarative>
-
     <!-- html5ui/js/App-mini.js + geonetwork-client-mini-nomap_js + geonetwork-client-mini_js -->
     <declarative name="geonetwork-client-html5ui-app" pathOnDisk="${project.basedir}/src/main/resources">
             <jsSource webappPath="apps/js/OpenLayers/lib/OpenLayers/Control/Panel.js"/>
-            <!--                <jsSource webappPath="apps/html5ui/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js" />
-            -->
+            <jsSource webappPath="apps/html5ui/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"  minimize="false"/>
             <jsSource webappPath="apps/html5ui/js/GlobalFunctions.js"/>
             <jsSource webappPath="apps/html5ui/js/Settings.js"/>
             <jsSource webappPath="apps/html5ui/js/Templates.js"/>
@@ -393,16 +385,4 @@
 						<jsSource webappPath="apps/html5ui/js/MarLIN/SearchFormTools.js"/>
             <jsSource webappPath="apps/html5ui/js/App.js"/>
     </declarative>
-    <!-- search/css/style.css
-    <declarative name="geonetwork-client-style_css" pathOnDisk="${project.basedir}/src/main/resources">
-         <cssSource webappPath="apps/js/OpenLayers/theme/dark/style.css" />
-         <cssSource webappPath="apps/js/ext/resources/css/ext-all.css" />
-         <cssSource webappPath="apps/js/ext/resources/css/xtheme-gray.css" />
-         <cssSource webappPath="apps/js/ext-ux/FileUploadField/file-upload.css" />
-         <cssSource webappPath="apps/js/ext-ux/MultiselectItemSelector-3.0/Multiselect.css" />
-         <cssSource webappPath="apps/css/gndefault.css" />
-         <cssSource webappPath="apps/css/gnmapdefault.css" />
-         <cssSource webappPath="apps/css/gnmetadatadefault.css" />
-         <cssSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/resources/css/metadata-view.css" />
-     </declarative>-->
 </sources>

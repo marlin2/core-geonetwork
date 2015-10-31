@@ -338,6 +338,7 @@ GeoNetwork.searchApp = function() {
                 items : GeoNetwork.util.SearchFormTools.getWhen()
             };
 
+						/*
             var inspireFields = GeoNetwork.util.INSPIRESearchFormTools
                     .getINSPIREFields(catalogue.services, true, {
                         withAnnex : true,
@@ -359,6 +360,7 @@ GeoNetwork.searchApp = function() {
                 hidden: true // NOTE: Added to anzmest to prevent INSPIRE from
                              // appearing
             };
+						*/
 
             var formItems = [];
 
@@ -393,7 +395,7 @@ GeoNetwork.searchApp = function() {
                               anchor : '100%'
                           },
                           border : false,
-                          items : [ what, inspire ]
+                          items : [ what /*, inspire */ ]
                       }, where, when ]
                    }]
             });

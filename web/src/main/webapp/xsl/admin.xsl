@@ -21,8 +21,10 @@
 
         <script type="text/javascript" src="{/root/gui/url}/static/gn.search.js{$minimize}"/><xsl:text>&#10;</xsl:text>
         <!-- Editor JS is still required here at least for batch operation -->
+				<!--
         <script type="text/javascript" src="{/root/gui/url}/static/gn.editor.js{$minimize}"/><xsl:text>&#10;</xsl:text>
         <script type="text/javascript" src="{/root/gui/url}/static/gn.libs.map.js{$minimize}"/><xsl:text>&#10;</xsl:text>
+				-->
         <script type="text/javascript" src="{/root/gui/url}/static/kernel.js{$minimize}"/><xsl:text>&#10;</xsl:text>
 		</xsl:template>
 

@@ -101,14 +101,14 @@ div.olControlMousePosition {
 
 .olControlOverviewMapExtentRectangle {
     overflow: hidden;
-    background-image: url("img/blank.gif");
+    background-image: url("apps/js/OpenLayers/theme/default/img/blank.gif");
     cursor: move;
     border: 2px dotted red;
 }
 .olControlOverviewMapRectReplacement {
     overflow: hidden;
     cursor: move;
-    background-image: url("img/overview_replacement.gif");
+    background-image: url("apps/js/OpenLayers/theme/default/img/overview_replacement.gif");
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -136,7 +136,7 @@ div.olControlMousePosition {
 }
 
 .olControlNavigationHistory {
-   background-image: url("img/navigation_history.png");
+   background-image: url("apps/js/OpenLayers/theme/default/img/navigation_history.png");
    background-repeat: no-repeat;
    width:  24px;
    height: 24px;
@@ -258,7 +258,7 @@ div.olControlSaveFeaturesItemInactive {
 }
 
 .olPopupCloseBox {
-  background: url("img/close.gif") no-repeat;
+  background: url("apps/js/OpenLayers/theme/default/img/close.gif") no-repeat;
   cursor: pointer;
 }
 
@@ -375,7 +375,7 @@ span.olGoogleAttribution.hybrid a, span.olGoogleAttribution.satellite a {
 }
 .olControlNavToolbar div,
 .olControlEditingToolbar div {
-    background-image: url("img/editing_tool_bar.png");
+    background-image: url("apps/js/OpenLayers/theme/default/img/editing_tool_bar.png");
     background-repeat: no-repeat;
     margin: 0 0 5px 5px;
     width: 24px;

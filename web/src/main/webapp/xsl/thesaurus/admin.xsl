@@ -6,21 +6,29 @@
 	<xsl:include href="../header.xsl"/>
 	<xsl:include href="../banner.xsl"/>
 
-	<xsl:variable name="widgetPath">../../apps</xsl:variable>
 	<xsl:variable name="indent" select="100"/>
+  <xsl:variable name="baseUrl" select="/root/gui/url" />
+	<xsl:variable name="widgetPath">../../apps</xsl:variable>
+
 
 	<xsl:template mode="css" match="/" priority="2">
-		<link rel="stylesheet" type="text/css" href="{$widgetPath}/js/ext/resources/css/ext-all.css"/>
-		<link rel="stylesheet" type="text/css" href="{$widgetPath}/js/ext-ux/FileUploadField/file-upload.css"/>
-		<link rel="stylesheet" type="text/css" href="{$widgetPath}/css/gnmapdefault.css"/>
-		<link rel="stylesheet" type="text/css" href="{$widgetPath}/css/gnmetadatadefault.css"/>
-		<link rel="stylesheet" type="text/css" href="{$widgetPath}/css/metadata-view.css"/>
+		<link rel="stylesheet" href="{concat($baseUrl, '/static/geonetwork-client_css.css')}"></link>
 	</xsl:template>
 
 	<xsl:template mode="script" match="/" priority="2">
+								<xsl:choose>
+                     <xsl:when test="/root/gui/config/map/osm_map = 'true'">
+                         <script>
+                             var useOSMLayers = true;
+                         </script>
+                     </xsl:when>
 
-		<script type="text/javascript" src="{$widgetPath}/js/ext/adapter/ext/ext-base.js"/>
-		<script type="text/javascript" src="{$widgetPath}/js/ext/ext-all.js"/>
+                     <xsl:otherwise>
+                         <script>
+                             var useOSMLayers = false;
+                         </script>
+                     </xsl:otherwise>
+                 </xsl:choose>
 
 		<xsl:variable name="minimize">
            <xsl:choose>
@@ -29,9 +37,7 @@
           </xsl:choose>
     </xsl:variable>
 
-    <xsl:variable name="baseUrl" select="/root/gui/url" />
-
-    <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
+		<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
     <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini.js', $minimize)}"></script>
     <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-html5ui-app.js', $minimize)}"></script>
 
@@ -54,7 +60,7 @@
 				}
 			};
 			Ext.onReady(function(){
-				GeoNetwork.Util.setLang('<xsl:value-of select="/root/gui/language"/>');
+				GeoNetwork.Util.setLang('<xsl:value-of select="/root/gui/language"/>', '<xsl:value-of select="$widgetPath"/>');
 
 				catalogue = new GeoNetwork.Catalogue({
 					statusBarId : 'info',

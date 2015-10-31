@@ -278,7 +278,7 @@ function hideAdvancedSearch(updateSearch) {
     hide('advanced-search-options');
     hide('legend-search');
     hide('hide-advanced');
-    Ext.get("search-form-fieldset").dom.style.border = "none";
+		if (Ext.get("search-form-fieldset")) Ext.get("search-form-fieldset").dom.style.border = "none";
     show('show-advanced');
     if (updateSearch) {
         if (cookie && cookie.get('user')) {

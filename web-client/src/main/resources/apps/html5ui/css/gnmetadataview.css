@@ -36,7 +36,7 @@
 }
 
 .md-view div.relation span {
-	background-image: url(../images/default/chart_organisation.png)
+	background-image: url(../apps/images/default/chart_organisation.png)
 		!important;
 	background-repeat: no-repeat;
 	width: 16px;
@@ -45,7 +45,7 @@
 }
 
 .md-view div.more {
-	background-image: url(../images/default/three_dots.png) !important;
+	background-image: url(../apps/images/default/three_dots.png) !important;
 	background-repeat: no-repeat;
 	background-position: 95% 80%;
 }
@@ -265,93 +265,93 @@ Display hyperlink as text next to element
 }
 
 .md-mn-view {
-	background-image: url(../images/default/page_go.png) !important;
+	background-image: url(../apps/images/default/page_go.png) !important;
 }
 
 .md-mn-edit {
-	background-image: url(../images/default/page_edit.png) !important;
+	background-image: url(../apps/images/default/page_edit.png) !important;
 }
 
 .md-mn-del {
-	background-image: url(../images/default/page_delete.png) !important;
+	background-image: url(../apps/images/default/page_delete.png) !important;
 }
 
 .md-mn-copy {
-	background-image: url(../images/default/page_copy.png) !important;
+	background-image: url(../apps/images/default/page_copy.png) !important;
 }
 
 .md-mn-find {
-	background-image: url(../images/default/find.png) !important;
+	background-image: url(../apps/images/default/find.png) !important;
 }
 
 .md-mn-go {
-	background-image: url(../images/default/bullet_go.png) !important;
+	background-image: url(../apps/images/default/bullet_go.png) !important;
 }
 
 .md-mn-advanced {
-	background-image: url(../images/default/cog.png) !important;
+	background-image: url(../apps/images/default/cog.png) !important;
 }
 
 .md-mn-user {
-	background-image: url(../images/default/user.png) !important;
+	background-image: url(../apps/images/default/user.png) !important;
 }
 
 .md-mn-badd {
-	background-image: url(../images/default/brick_add.png) !important;
+	background-image: url(../apps/images/default/brick_add.png) !important;
 }
 
 /* overriden by main.css
 .md-mn-pdf {
-	background-image: url(../images/default/page_white_acrobat.png)
+	background-image: url(../apps/images/default/page_white_acrobat.png)
 		!important;
 }
 
 .md-mn-zip {
-	background-image: url(../images/default/page_white_zip.png) !important;
+	background-image: url(../apps/images/default/page_white_zip.png) !important;
 }
 
 .md-mn-ftp {
-	background-image: url(../images/default/folder.png) !important;
+	background-image: url(../apps/images/default/folder.png) !important;
 }
 
 .md-mn-ftps {
-	background-image: url(../images/default/folder_key.png) !important;
+	background-image: url(../apps/images/default/folder_key.png) !important;
 }
 
 .md-mn-download {
-	background-image: url(../images/default/download.png) !important;
+	background-image: url(../apps/images/default/download.png) !important;
 }
 */
 
 .mn-user-location {
-	background-image: url(../images/default/user_location.png) !important;
+	background-image: url(../apps/images/default/user_location.png) !important;
 }
 
 .mn-view-simple {
-	background-image: url(../images/default/mv-simple.png) !important;
+	background-image: url(../apps/images/default/mv-simple.png) !important;
 	background-repeat: no-repeat;
 }
 
 .mn-view-full {
-	background-image: url(../images/default/mv-full.png) !important;
+	background-image: url(../apps/images/default/mv-full.png) !important;
 	background-repeat: no-repeat;
 }
 
 .mn-view-thumbnail {
-	background-image: url(../images/default/mv-thumbnail.png) !important;
+	background-image: url(../apps/images/default/mv-thumbnail.png) !important;
 	background-repeat: no-repeat;
 }
 
 .mn-login {
-	background-image: url(../images/default/user_go.png) !important;
+	background-image: url(../apps/images/default/user_go.png) !important;
 }
 
 .mn-logout {
-	background-image: url(../images/default/door_out.png) !important;
+	background-image: url(../apps/images/default/door_out.png) !important;
 }
 
 .mn-clear {
-	background-image: url(../images/default/cross.png) !important;
+	background-image: url(../apps/images/default/cross.png) !important;
 }
 
 .search-item {
@@ -423,29 +423,29 @@ li.tag-cloud-7 {
 }
 
 .connectIcon {
-	background-image: url(../images/default/connect.png) !important;
+	background-image: url(../apps/images/default/connect.png) !important;
 }
 
 .zoomin {
-	background-image: url(../images/default/icon_zoomin.png) !important;
+	background-image: url(../apps/images/default/icon_zoomin.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .zoomout {
-	background-image: url(../images/default/icon_zoomout.png) !important;
+	background-image: url(../apps/images/default/icon_zoomout.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .zoomfull {
-	background-image: url(../images/default/icon_zoomfull.png) !important;
+	background-image: url(../apps/images/default/icon_zoomfull.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .pan {
-	background-image: url(../images/default/icon_pan.png) !important;
+	background-image: url(../apps/images/default/icon_pan.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
@@ -621,7 +621,7 @@ div.help ul li {
 
 #latest-metadata .md-thumbnail.md-over {
 	border: 1px solid #e5e5e5;
-	background: url(../images/default/bg_stripe.png) !important;
+	background: url(../apps/html5ui/images/default/bg_stripe.png) !important;
 }
 /* second thumbnial container */
 #popular-metadata .md-thumbnail {
@@ -641,7 +641,7 @@ div.help ul li {
 
 #popular-metadata .md-thumbnail.md-over {
 	border: 1px solid #e5e5e5;
-	background: url(../images/default/bg_stripe.png) !important;
+	background: url(../apps/html5ui/images/default/bg_stripe.png) !important;
 }
 
 /* search result --- right sidebar */
@@ -706,7 +706,7 @@ div#resultsPanel .x-toolbar-right {
 }
 
 #resultsPanel .md-over {
-	background: url(../images/default/bg_stripe.png) !important;
+	background: url(../apps/html5ui/images/default/bg_stripe.png) !important;
 }
 
 #resultsPanel .md-simple input[type="checkbox"],#resultsPanel .md-full input[type="checkbox"],#resultsPanel .md-thumbnail input[type="checkbox"]
@@ -857,7 +857,7 @@ div#resultsPanel .x-toolbar-right {
 
 /* opener is assuming the minimap is 200px wide */
 div.showBigMapItemInactive {
-	background: url("../images/sprites/sprite_resize_map.gif") 0px 0px
+	background: url(../apps/html5ui/images/sprites/sprite_resize_map.gif) 0px 0px
 		no-repeat;
 	height: 26px;
 	margin-left: 166px;
@@ -867,7 +867,7 @@ div.showBigMapItemInactive {
 }
 
 div.showBigMapItemInactive:hover {
-	background: url("../images/sprites/sprite_resize_map.gif") 0px -26px
+	background: url(../apps/html5ui/images/sprites/sprite_resize_map.gif) 0px -26px
 		no-repeat;
 }
 
@@ -1070,11 +1070,11 @@ div.showBigMapItemInactive:hover {
 }
 
 #metadata-info #editorPanel .buttons a.del span {
-	background-image: url("../../images/default/cross.png");
+	background-image: url(../apps/images/default/cross.png);
 }
 
 #metadata-info #editorPanel .buttons a.add span {
-	background-image: url("../../images/default/add.png");
+	background-image: url(../apps/images/default/add.png);
 }
 
 #metadata-info #editorPanel span.buttons a.small span {

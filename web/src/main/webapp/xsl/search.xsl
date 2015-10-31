@@ -28,92 +28,13 @@
 				
 				<link rel="icon" type="image/gif" href="../../images/logos/favicon.gif" />
 				<link rel="alternate" type="application/rss+xml" title="{$siteName} - RSS" href="{$rssUrl}"/>
-				<link rel="search" href="{$serviceUrl}/portal.opensearch" type="application/opensearchdescription+xml" 
-					title="{$siteName}"/>
+				<link rel="search" href="{$serviceUrl}/portal.opensearch" type="application/opensearchdescription+xml" title="{$siteName}"/>
+
+    		<link rel="stylesheet" href="{concat($baseUrl, '/static/geonetwork-client_css.css')}"></link> 
+    		<link rel="stylesheet" href="../../nationalmap/public/third_party/leaflet/leaflet.css"></link> 
+    		<link rel="stylesheet" href="../../nationalmap/public/build/Cesium/Widgets/widgets.css" media="screen"></link>
+    		<link rel="stylesheet" href="../../nationalmap/public/css/AusGlobeViewer.css"></link>
 				
-
-                <!--  CSS for OL -->
-                <link rel="stylesheet" type="text/css">
-                    <xsl:attribute name="href"><xsl:value-of
-                        select="$baseUrl" />/apps/js/OpenLayers/theme/default/style.css</xsl:attribute>
-                </link>
-                
-				<!-- CSS for Ext -->
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext/resources/css/ext-all.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext/resources/css/xtheme-gray.css</xsl:attribute>
-				</link>
-
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext-ux/Rating/rating.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext-ux/SuperBoxSelect/superboxselect.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext-ux/LightBox/lightbox.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext-ux/FileUploadField/file-upload.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet" type="text/css">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext-ux/MultiselectItemSelector-3.0/Multiselect.css</xsl:attribute>
-				</link>
-
-
-				<link rel="stylesheet">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/html5ui/css/normalize.min.css</xsl:attribute>
-				</link>
-                <link rel="stylesheet">
-                    <xsl:attribute name="href"><xsl:value-of
-                        select="$baseUrl" />/apps/html5ui/css/main.css</xsl:attribute>
-                </link>
-                <link rel="stylesheet">
-                    <xsl:attribute name="href"><xsl:value-of
-                        select="$baseUrl" />/apps/html5ui/css/colors.css</xsl:attribute>
-                </link>
-				<link rel="stylesheet">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/html5ui/css/gnmetadatadefault.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/html5ui/css/gnmetadataview.css</xsl:attribute>
-				</link>
-				<link rel="stylesheet">
-					<xsl:attribute name="href"><xsl:value-of
-						select="$baseUrl" />/apps/html5ui/font-awesome/css/font-awesome.css</xsl:attribute>
-				</link>
-
-
-
-				<!--[if lt IE 7]> <link rel="stylesheet"> <xsl:attribute name="href"><xsl:value-of 
-					select="$baseUrl" />/apps/html5ui/css/ltie7.css"/></xsl:attribute> </link> <![endif] -->
-
-				<script type="text/javascript">
-					<xsl:attribute name="src"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext/adapter/ext/ext-base.js</xsl:attribute>
-				</script>
-
-				<script type="text/javascript">
-					<xsl:attribute name="src"><xsl:value-of
-						select="$baseUrl" />/apps/js/ext/ext-all.js</xsl:attribute>
-				</script>
-
-				<script type="text/javascript">
-					<xsl:attribute name="src"><xsl:value-of
-						select="$baseUrl" />/apps/html5ui/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js</xsl:attribute>
-				</script>
 
 				<script type="text/javascript">
 					var _gaq = _gaq || [];
@@ -131,6 +52,21 @@
 					})();
 
 				</script>
+
+                 <xsl:choose>
+                     <xsl:when test="/root/gui/config/map/osm_map = 'true'">
+                         <script>
+                             var useOSMLayers = true;
+                         </script>
+                     </xsl:when>
+
+                     <xsl:otherwise>
+                         <script>
+                             var useOSMLayers = false;
+                         </script>
+                     </xsl:otherwise>
+                 </xsl:choose>
+
 			</head>
 			<body>
 
@@ -386,20 +322,6 @@
 				<input type="hidden" id="x-history-field" />
 				<iframe id="x-history-frame" height="0" width="0"></iframe>
 
-                 <xsl:choose>
-                     <xsl:when test="/root/gui/config/map/osm_map = 'true'">
-                         <script>
-                             var useOSMLayers = true;
-                         </script>
-                     </xsl:when>
-
-                     <xsl:otherwise>
-                         <script>
-                             var useOSMLayers = false;
-                         </script>
-                     </xsl:otherwise>
-                 </xsl:choose>
-
 				 <xsl:variable name="minimize">
 				   <xsl:choose>
 						 <xsl:when test="/root/request/debug">?minimize=false</xsl:when>
@@ -413,28 +335,7 @@
 				<script type="text/javascript" src="{concat($baseUrl, '/static/nationalmap.js', $minimize)}"></script>
 				<script type="text/javascript" src="{concat($baseUrl, '/static/nationalmap-lib.js', $minimize)}"></script>
 
-    		<link rel="stylesheet" href="../../nationalmap/public/third_party/leaflet/leaflet.css"></link> 
-    		<link rel="stylesheet" href="../../nationalmap/public/build/Cesium/Widgets/widgets.css" media="screen"></link>
-    		<link rel="stylesheet" href="../../nationalmap/public/css/AusGlobeViewer.css"></link>
 
-				<!--
-				<script type="text/javascript" src="../../apps/nationalmap/public/third_party/jquery-1.11.1.min.js"></script>
-				<script type="text/javascript" src="../../apps/nationalmap/public/third_party/jquery.csv-0.71.min.js"></script>
-    		<script type="text/javascript" src="../../apps/nationalmap/public/third_party/jquery.xml2json.js"></script>
-
-    		<script src="../../apps/nationalmap/public/third_party/proj4_epsg.js"></script>
-    		<script src="../../apps/nationalmap/public/third_party/togeojson.js"></script>
-    		<script src="../../apps/nationalmap/public/third_party/URI.js"></script>
-    		 
-    		<script src="../../apps/nationalmap/public/third_party/leaflet/leaflet.js"></script>
-    		<script src="../../apps/nationalmap/public/third_party/Bing.js"></script>
-    		<script src="../../apps/nationalmap/public/third_party/esri-leaflet.js"></script>
-    		<script src="../../apps/nationalmap/public/third_party/html2canvas.js"></script>
-    		<script src="../../apps/nationalmap/public/third_party/TileLayer.Filter.min.js"></script>
-
-   		 
-    		<script src="../../apps/nationalmap/public/build/ausglobe.js"></script>
-				-->
     		<script>L_PREFER_CANVAS = true;</script>
         </div>
 		</body>

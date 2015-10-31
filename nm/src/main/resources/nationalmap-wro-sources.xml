@@ -9,8 +9,8 @@
         <jsSource webappPath="nationalmap/public/build/ausglobe.js" />
     </declarative>
     <declarative name="nationalmap-lib" pathOnDisk="${project.baserdir}/src/main/resources">
-            <jsSource webappPath="nationalmap/public/third_party/jquery-1.11.1.min.js"/>
-            <jsSource webappPath="nationalmap/public/third_party/jquery.csv-0.71.min.js"/>
+            <jsSource webappPath="nationalmap/public/third_party/jquery-1.11.1.min.js" minimize="false"/>
+            <jsSource webappPath="nationalmap/public/third_party/jquery.csv-0.71.min.js" minimize="false"/>
             <jsSource webappPath="nationalmap/public/third_party/jquery.xml2json.js"/>
             <jsSource webappPath="nationalmap/public/third_party/proj4_epsg.js"/>
             <jsSource webappPath="nationalmap/public/third_party/togeojson.js"/>
@@ -19,6 +19,6 @@
             <jsSource webappPath="nationalmap/public/third_party/Bing.js"/>
             <jsSource webappPath="nationalmap/public/third_party/esri-leaflet.js"/>
             <jsSource webappPath="nationalmap/public/third_party/html2canvas.js"/>
-            <jsSource webappPath="nationalmap/public/third_party/TileLayer.Filter.min.js"/>
+            <jsSource webappPath="nationalmap/public/third_party/TileLayer.Filter.min.js" minimize="false"/>
     </declarative>
 </sources>

@@ -282,7 +282,6 @@ public class GeonetWroModelFactory implements WroModelFactory {
         Collection<IncludesStream> results = new ArrayList<IncludesStream>();
         while (resources.hasMoreElements()) {
             final URL url = resources.nextElement();
-						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSS "+url);
             String file = url.getFile();
             if (file.matches("/.:/.*")) {
                 file = file.substring(1);

@@ -32,7 +32,7 @@ html,body,button,input,select,textarea {
 	bottom: 0;
 	width: 100%;
 	height: 150px; /* height of the footer */
-  background-image: url('../images/map_header.png');
+  background-image: url('../apps/html5ui/images/map_header.png');
   background-color: #636363;
   text-align: right;
   font-size: 11px;
@@ -133,12 +133,12 @@ body {
 }
 
 #big-map  .hideBigMapPanel {
-	background: url("../images/sprites/sprite_resize_map.gif") -30px -5px
+	background: url("../apps/html5ui/images/sprites/sprite_resize_map.gif") -30px -5px
 		no-repeat;
 }
 
 #big-map .hideBigMapPanel:hover {
-	background: url("../images/sprites/sprite_resize_map.gif") -31px -30px
+	background: url("../apps/html5ui/images/sprites/sprite_resize_map.gif") -31px -30px
 		no-repeat;
 }
 
@@ -156,7 +156,7 @@ body {
 #header {
   border-bottom:10px solid #F6D4B1;
   padding:17px 0 0;
-/*  background-image:url('../images/map_header.png'); */
+/*  background-image:url('../apps/html5ui/images/map_header.png'); */
   box-shadow:none;
   height: 90px;
 }
@@ -164,7 +164,7 @@ body {
 #logo {
   background-position: left top;
   background-repeat: no-repeat;
-  background-image:url('../images/banner_logo.png');
+  background-image:url('../apps/html5ui/images/banner_logo.png');
   width: 100%;
   height: 55px;
   z-index: 1000;
@@ -377,7 +377,7 @@ a#printer-button:hover,a#rss-button:hover,a#user-button:hover,a#administration-b
   text-decoration: none;
   text-transform: uppercase;
   color: white;
-  background-image: url(../images/sprites/spritetags.png);
+  background-image: url(../apps/html5ui/images/sprites/spritetags.png);
   width: 75px;
   height: 31px;
   display: inline-block;
@@ -854,7 +854,7 @@ nav {
 
 /* Other icons */
 .md-mn-reset {
-	background-image: url(../../images/default/cross.png);
+	background-image: url(../apps/images/default/cross.png);
 }
 
 .fabutton {
@@ -868,77 +868,77 @@ nav {
 }
 
 #result-panel div#resultsPanel .xmlIcon {
-	background-image: url(../../images/default/page_code.png);
+	background-image: url(../apps/images/default/page_code.png);
 }
 
 #result-panel div#resultsPanel .addIcon {
-	background-image: url(../../images/default/add.png) !important;
+	background-image: url(../apps/images/default/add.png) !important;
 }
 
 #result-panel div#resultsPanel .downloadAllIcon {
 }
 
 .privIcon {
-	background-image: url(../../images/default/group_key.png) !important;
+	background-image: url(../apps/images/default/group_key.png) !important;
 }
 
 .validationReportIcon {
-  background-image:url(../../images/default/schematron.gif) !important;
+  background-image:url(../apps/images/default/schematron.gif) !important;
 }
 
 .searchIcon {
-	background-image: url(../../images/default/find.png) !important;
+	background-image: url(../apps/images/default/find.png) !important;
 }
 
 .shortcutHelpIcon {
-	background-image: url(../../images/default/schematron.gif) !important;
+	background-image: url(../apps/images/default/schematron.gif) !important;
 }
 
 .viewModeIcon {
-	background-image: url(../../images/default/application_view_tile.png)
+	background-image: url(../apps/images/default/application_view_tile.png)
 		!important;
 }
 
 .linkIcon {
-	background-image: url(../../images/default/link.png) !important;
+	background-image: url(../apps/images/default/link.png) !important;
 }
 
 .addVector {
-	background-image: url(../../images/default/vector_add.png) !important;
+	background-image: url(../apps/images/default/vector_add.png) !important;
 }
 
 .delVector {
-	background-image: url(../../images/default/vector_delete.png) !important;
+	background-image: url(../apps/images/default/vector_delete.png) !important;
 }
 
 .connect {
-	background-image: url(../../images/default/connect.png) !important;
+	background-image: url(../apps/images/default/connect.png) !important;
 }
 
 .subtemplateIcon {
-	background-image: url(../../images/default/report_magnify.png)
+	background-image: url(../apps/images/default/report_magnify.png)
 		!important;
 }
 
 .processMetadata {
-	background-image: url(../../images/default/table_gear.png) !important;
+	background-image: url(../apps/images/default/table_gear.png) !important;
 }
 
 .repository {
-	background-image: url(../../images/default/database_yellow.png)
+	background-image: url(../apps/images/default/database_yellow.png)
 		!important;
 	background-repeat: no-repeat;
 	padding-left: 15px;
 }
 
 .addLayerIcon,.addLayer {
-	background-image: url(../../html5ui/img/icon_show_map.png) !important;
+	background-image: url(../apps/html5ui/img/icon_show_map.png) !important;
   width: 24px !important;
   height: 24px !important;
 }
 
 button.addLayerButton {
-  background-image:url(../../html5ui/images/default/picture_add.png);
+  background-image:url(../apps/html5ui/images/default/picture_add.png);
   background-position:0 center;
 }
 
@@ -957,7 +957,7 @@ button.addLayerButton {
 }
 
 span.license {
-	background-image: url(../../html5ui/img/icon_gebruiksvoorwaarden.png)
+	background-image: url(../apps/html5ui/img/icon_gebruiksvoorwaarden.png)
 		!important;
 	background-repeat: no-repeat;
 	padding-left: 20px;
@@ -965,195 +965,195 @@ span.license {
 }
 
 .deleteLayer {
-	background-image: url(../../images/default/map/delete_layer.png)
+	background-image: url(../apps/images/default/map/delete_layer.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .measure {
-	background-image: url(../../images/default/map/icon_measure.png)
+	background-image: url(../apps/images/default/map/icon_measure.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .zoomin {
-	background-image: url(../../images/default/map/icon_zoomin.png)
+	background-image: url(../apps/images/default/map/icon_zoomin.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .zoomout {
-	background-image: url(../../images/default/map/icon_zoomout.png)
+	background-image: url(../apps/images/default/map/icon_zoomout.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .zoomfull {
-	background-image: url(../../images/default/map/icon_zoomfull.png)
+	background-image: url(../apps/images/default/map/icon_zoomfull.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .zoomlayer {
-	background-image: url(../../images/default/map/icon_zoomlayer.png)
+	background-image: url(../apps/images/default/map/icon_zoomlayer.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .pan {
-	background-image: url(../../images/default/map/icon_pan.png) !important;
+	background-image: url(../apps/images/default/map/icon_pan.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .selextent {
-	background-image: url(../../images/default/map/icon_selextent.png)
+	background-image: url(../apps/images/default/map/icon_selextent.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .query {
-	background-image: url(../../images/default/map/icon_featureinfo.png)
+	background-image: url(../apps/images/default/map/icon_featureinfo.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .next {
-	background-image: url(../../images/default/map/resultset_next.png)
+	background-image: url(../apps/images/default/map/resultset_next.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .back {
-	background-image: url(../../images/default/map/resultset_previous.png)
+	background-image: url(../apps/images/default/map/resultset_previous.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .savewmc {
-	background-image: url(../../images/default/map/icon_savewmc.png)
+	background-image: url(../apps/images/default/map/icon_savewmc.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .wmsTime {
-	background-image: url(../../images/default/map/wmstime.gif) !important;
+	background-image: url(../apps/images/default/map/wmstime.gif) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .layerStyles {
-	background-image: url(../../images/default/map/layerstyles.png)
+	background-image: url(../apps/images/default/map/layerstyles.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .layerOpacity {
-	background-image: url(../../images/default/map/opacity.png) !important;
+	background-image: url(../apps/images/default/map/opacity.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .wmsInfo {
-	background-image: url(../../images/default/map/wmsinfo.png) !important;
+	background-image: url(../apps/images/default/map/wmsinfo.png) !important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .olControlLoadingPanel {
-	background-image: url(../../images/default/map/indicator_medium.gif);
+	background-image: url(../apps/images/default/map/indicator_medium.gif);
 	background-position: center;
 	background-repeat: no-repeat;
 }
 
 .loadwmc {
-	background-image: url(../../images/default/map/icon_loadwmc.png)
+	background-image: url(../apps/images/default/map/icon_loadwmc.png)
 		!important;
 	height: 20px !important;
 	width: 20px !important;
 }
 
 .selectfile {
-	background: url(../../images/default/map/icon_selectfile.png) no-repeat
+	background: url(../apps/images/default/map/icon_selectfile.png) no-repeat
 		0 0 !important;
 }
 
 .styler {
-	background-image: url(../../images/default/map/layerstyles.png)
+	background-image: url(../apps/images/default/map/layerstyles.png)
 		!important;
 }
 
 .drawPolygon {
-	background-image: url(../../images/default/map/draw_polygon_off.png)
+	background-image: url(../apps/images/default/map/draw_polygon_off.png)
 		!important;
 }
 
 .drawCircle {
-	background-image: url(../../images/default/map/draw_circle_off.png)
+	background-image: url(../apps/images/default/map/draw_circle_off.png)
 		!important;
 }
 
 .drawRectangle {
-	background-image: url(../../images/default/map/draw_rectangle_off.png)
+	background-image: url(../apps/images/default/map/draw_rectangle_off.png)
 		!important;
 }
 
 .clearPolygon {
 	background-image:
-		url(../../images/default/map/draw_polygon_clear_off.png) !important;
+		url(../apps/images/default/map/draw_polygon_clear_off.png) !important;
 }
 
 .md-mn-view {
-	background-image: url(../images/default/page_go.png) !important;
+	background-image: url(../apps/images/default/page_go.png) !important;
 }
 
 .md-mn-edit {
-	background-image: url(../images/default/page_edit.png) !important;
+	background-image: url(../apps/images/default/page_edit.png) !important;
 }
 
 .md-mn-del {
-	background-image: url(../images/default/page_delete.png) !important;
+	background-image: url(../apps/images/default/page_delete.png) !important;
 }
 
 .md-mn-copy {
-	background-image: url(../images/default/page_copy.png) !important;
+	background-image: url(../apps/images/default/page_copy.png) !important;
 }
 
 .md-mn-find {
-	background-image: url(../images/default/find.png) !important;
+	background-image: url(../apps/images/default/find.png) !important;
 }
 
 .md-mn-go {
-	background-image: url(../images/default/bullet_go.png) !important;
+	background-image: url(../apps/images/default/bullet_go.png) !important;
 }
 
 .md-mn-advanced {
-	background-image: url(../images/default/cog.png) !important;
+	background-image: url(../apps/images/default/cog.png) !important;
 }
 
 .md-mn-user {
-	background-image: url(../images/default/user.png) !important;
+	background-image: url(../apps/images/default/user.png) !important;
 }
 
 .md-mn-pdf {
-	background-image: url(../images/default/page_white_acrobat.png)
+	background-image: url(../apps/images/default/page_white_acrobat.png)
 		!important;
 }
 
 .md-mn-badd {
-	background-image: url(../images/default/brick_add.png) !important;
+	background-image: url(../apps/images/default/brick_add.png) !important;
 }
 
 .md-mn-kml {
@@ -1184,56 +1184,56 @@ span.license {
 li.x-menu-list-item img.md-mn-zip {
   height: 16px !important;
   width:16px !important;
-  background-image: url(../../images/default/page_white_compressed.png) !important;
+  background-image: url(../apps/images/default/page_white_compressed.png) !important;
 }
 
 li.x-menu-list-item img.md-mn-csv {
-  background-image: url(../../images/default/page_white.png) !important;
+  background-image: url(../apps/images/default/page_white.png) !important;
   width: 16px !important;
   height: 16px !important;
 }
 
 li.x-menu-list-item img.md-mn-pdf {
-  background-image:url(../../images/default/page_white_acrobat.png) !important;
+  background-image:url(../apps/images/default/page_white_acrobat.png) !important;
   width: 16px !important;
   height: 16px !important;
 }
 
 .md-mn-service {
-  background-image: url(../../html5ui/img/icon_service.png) !important;
+  background-image: url(../apps/html5ui/img/icon_service.png) !important;
   width: 24px !important;
   height: 24px !important;
 }
 
 .mn-user-location {
-	background-image: url(../images/default/user_location.png) !important;
+	background-image: url(../apps/images/default/user_location.png) !important;
 }
 
 .mn-view-simple {
-	background-image: url(../images/default/mv-simple.png) !important;
+	background-image: url(../apps/images/default/mv-simple.png) !important;
 	background-repeat: no-repeat;
 }
 
 .mn-view-full {
-	background-image: url(../images/default/mv-full.png) !important;
+	background-image: url(../apps/images/default/mv-full.png) !important;
 	background-repeat: no-repeat;
 }
 
 .mn-view-thumbnail {
-	background-image: url(../images/default/mv-thumbnail.png) !important;
+	background-image: url(../apps/images/default/mv-thumbnail.png) !important;
 	background-repeat: no-repeat;
 }
 
 .mn-login {
-	background-image: url(../images/default/user_go.png) !important;
+	background-image: url(../apps/images/default/user_go.png) !important;
 }
 
 .mn-logout {
-	background-image: url(../images/default/door_out.png) !important;
+	background-image: url(../apps/images/default/door_out.png) !important;
 }
 
 .mn-clear {
-	background-image: url(../images/default/cross.png) !important;
+	background-image: url(../apps/images/default/cross.png) !important;
 }
 
 div.facets ul {
@@ -1372,7 +1372,7 @@ div.facets * .facet-more-bt,div.facets * .facet-less-bt {
 */
 
 .insert-missing-elements {
-	background-image: url('../images/add-missing-elements.png');
+	background-image: url('../apps/html5ui/images/add-missing-elements.png');
 }
 
 #metadata-panel tr td em button.print {
@@ -1419,7 +1419,7 @@ div.facets * .facet-more-bt,div.facets * .facet-less-bt {
 }
 
 #metadata-panel .metadata.view-simple > div > table.gn > tbody > tr > td {
-	background-image: url('../images/pattern_hr.png');
+	background-image: url('../apps/html5ui/images/pattern_hr.png');
 	background-repeat: repeat-x;
 	background-position: center bottom;
 	border: none;
@@ -1451,7 +1451,7 @@ Share social
 
 a#custom-tweet-button {
 	padding: 2px 5px 2px 20px;
-	background: url('../../html5ui/images/default/bird_blue_16.png') 1px center
+	background: url('../apps/html5ui/images/default/bird_blue_16.png') 1px center
 		no-repeat;
 	border: 1px solid #ccc;
 	text-decoration: none;
@@ -1655,7 +1655,7 @@ dl.xml * dd {
 /** Metadata Menu **/
 #resultsPanel .md-action-menu a {
   color: transparent;
-	background-image: url("../images/metadata-menu.png");
+	background-image: url("../apps/html5ui/images/metadata-menu.png");
 	background-repeat: no-repeat;
 	visibility: visible;
 	padding-left: 15px;
@@ -1683,7 +1683,7 @@ dl.xml * dd {
 /** What if we dont have thumbnail **/
 .emptyThumbnail {
 	min-height: 128px;
-	background: url('../images/no_thumbnail.png');
+	background: url('../apps/html5ui/images/no_thumbnail.png');
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -1703,7 +1703,7 @@ dl.xml * dd {
 	width: inherit;
 	height: inherit;
 	display: none;
-	background-image: url('../images/ico_moreinformation.png');
+	background-image: url('../apps/html5ui/images/ico_moreinformation.png');
 	background-position: center center;
 	background-repeat: no-repeat;
 }
