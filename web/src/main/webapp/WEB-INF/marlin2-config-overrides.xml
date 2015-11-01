@@ -106,7 +106,7 @@
 					},
 					"terrainProvider" : {
 						"options" : {
-							"url"    : "//cesiumjs.org/stk-terrain/tilesets/world/tiles"
+							"url"    : "//assets.agi.com/stk-terrain/v1/tilesets/world/tiles"
 						}
 					}
 			}
