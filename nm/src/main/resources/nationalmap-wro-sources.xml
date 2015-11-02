@@ -1,14 +1,15 @@
 <sources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../../../web/src/main/webResources/WEB-INF/wro-sources.xsd" >
+				 <!-- Un-used due to lack of url path rebasing capability in wro4j
     <declarative name="nationalmap_css" pathOnDisk="${project.basedir}/src/main/resources" >
         <cssSource webappPath="nationalmap/public/third_party/leaflet/leaflet.css" />
         <cssSource webappPath="nationalmap/public/build/Cesium/Widgets/widgets.css" />
         <cssSource webappPath="nationalmap/public/css/AusGlobeViewer.css" />
     </declarative>
+		-->
     <declarative name="nationalmap" pathOnDisk="${project.basedir}/src/main/resources" >
         <jsSource webappPath="nationalmap/public/build/ausglobe.js" />
-    </declarative>
-    <declarative name="nationalmap-lib" pathOnDisk="${project.baserdir}/src/main/resources">
+				<!-- These are the nationalmap libraries -->
             <jsSource webappPath="nationalmap/public/third_party/jquery-1.11.1.min.js" minimize="false"/>
             <jsSource webappPath="nationalmap/public/third_party/jquery.csv-0.71.min.js" minimize="false"/>
             <jsSource webappPath="nationalmap/public/third_party/jquery.xml2json.js"/>

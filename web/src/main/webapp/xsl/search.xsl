@@ -330,10 +330,7 @@
 				</xsl:variable>
 
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
-				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-html5ui-app.js', $minimize)}"></script>
 				<script type="text/javascript" src="{concat($baseUrl, '/static/nationalmap.js', $minimize)}"></script>
-				<script type="text/javascript" src="{concat($baseUrl, '/static/nationalmap-lib.js', $minimize)}"></script>
-
 
     		<script>L_PREFER_CANVAS = true;</script>
         </div>

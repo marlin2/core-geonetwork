@@ -333,40 +333,7 @@
             <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/ExtentMap.js"/>
             <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/Control/ZoomWheel.js"/>
             <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/Control/ExtentBox.js"/>
-        </declarative>
-    <!-- GeoNetwork-mini.js + geonetwork-client-mini-nomap_js-->
-    <declarative name="geonetwork-client-mini" pathOnDisk="${project.basedir}/src/main/resources">
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/core/OGCUtil.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/core/CatalogueInterface.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/core/WMCManager.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/tree/WMSListGenerator.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/tree/WMSTreeGenerator.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/wms/BrowserPanel.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/wms/LayerInfoPanel.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/wms/LayerStylesPanel.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/wms/PreviewPanel.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/wms/WMSLayerInfo.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/FeatureInfoPanel.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/LegendPanel.js"/>
-            <!--<jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/OpacitySlider.js" />-->
-            <!--//"GeoNetwork/map/widgets/PrintAction.js" />-->
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/ProjectionSelector.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/TimeSelector.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/widgets/WxSExtractor.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/BaseWindow.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/SingletonWindowManager.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/AddWMS.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/AddWMTS.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/FeatureInfo.js"/>
-            <!--<jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/Opacity.js" />-->
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/LoadWmc.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/Disclaimer.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/LayerStyles.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/WmsLayerMetadata.js"/>
-            <jsSource webappPath="apps/js/GeoNetwork/lib/GeoNetwork/map/windows/WMSTime.js"/>
-    </declarative>
-    <!-- html5ui/js/App-mini.js + geonetwork-client-mini-nomap_js + geonetwork-client-mini_js -->
-    <declarative name="geonetwork-client-html5ui-app" pathOnDisk="${project.basedir}/src/main/resources">
+						<!-- Everything from here is needed for html5ui -->
             <jsSource webappPath="apps/js/OpenLayers/lib/OpenLayers/Control/Panel.js"/>
             <jsSource webappPath="apps/html5ui/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"  minimize="false"/>
             <jsSource webappPath="apps/html5ui/js/GlobalFunctions.js"/>
