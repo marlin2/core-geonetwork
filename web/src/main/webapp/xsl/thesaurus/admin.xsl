@@ -38,8 +38,6 @@
     </xsl:variable>
 
 		<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
-    <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini.js', $minimize)}"></script>
-    <script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-html5ui-app.js', $minimize)}"></script>
 
 		<script type="text/javascript" language="JavaScript">
 			var catalogue;
