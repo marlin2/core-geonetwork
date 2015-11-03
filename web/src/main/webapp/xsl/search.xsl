@@ -31,10 +31,6 @@
 				<link rel="search" href="{$serviceUrl}/portal.opensearch" type="application/opensearchdescription+xml" title="{$siteName}"/>
 
     		<link rel="stylesheet" href="{concat($baseUrl, '/static/geonetwork-client_css.css')}"></link> 
-    		<link rel="stylesheet" href="../../nationalmap/public/third_party/leaflet/leaflet.css"></link> 
-    		<link rel="stylesheet" href="../../nationalmap/public/build/Cesium/Widgets/cesiumwidgetsbundle.css" media="screen"></link>
-    		<link rel="stylesheet" href="../../nationalmap/public/css/AusGlobeViewer.css"></link>
-				
 
 				<script type="text/javascript">
 					var _gaq = _gaq || [];
@@ -51,6 +47,33 @@
 					s.parentNode.insertBefore(ga, s);
 					})();
 
+					// lazy load the css and js required for nationalmap once page load is finished, taken from
+					// http://www.giftofspeed.com/defer-loading-css/ and the ga stuff above
+					function doLoadSS(stylesheetUrl) {
+						var l = document.createElement('link'); l.rel = 'stylesheet';
+						l.href = stylesheetUrl;
+						var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+					};
+					function doLoadJS(jsUrl){
+					  var s = document.createElement('script');
+						s.type = 'text/javascript';
+						s.async = true;
+						s.src = jsUrl;
+						var x = document.getElementsByTagName('script')[0];
+						x.parentNode.insertBefore(s, x);
+					}
+					var cbNM = function() {
+						setTimeout( function() {
+								doLoadSS("../../nationalmap/public/third_party/leaflet/leaflet.css");
+								doLoadSS("../../nationalmap/public/build/Cesium/Widgets/cesiumwidgetsbundle.css");
+								doLoadSS("../../nationalmap/public/css/AusGlobeViewer.css");
+								doLoadJS("<xsl:value-of select="concat($baseUrl, '/static/nationalmap.js')"/>");
+						},3000);
+					};
+					var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+					webkitRequestAnimationFrame || msRequestAnimationFrame;
+					if (raf) raf(cbNM);
+					else window.addEventListener('load', cbNM);
 				</script>
 
                  <xsl:choose>
@@ -330,7 +353,6 @@
 				</xsl:variable>
 
 				<script type="text/javascript" src="{concat($baseUrl, '/static/geonetwork-client-mini-nomap.js', $minimize)}"></script>
-				<script type="text/javascript" src="{concat($baseUrl, '/static/nationalmap.js', $minimize)}"></script>
 
     		<script>L_PREFER_CANVAS = true;</script>
         </div>
