@@ -70,10 +70,7 @@
 								doLoadJS("<xsl:value-of select="concat($baseUrl, '/static/nationalmap.js')"/>");
 						},3000);
 					};
-					var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-					webkitRequestAnimationFrame || msRequestAnimationFrame;
-					if (raf) raf(cbNM);
-					else window.addEventListener('load', cbNM);
+					window.addEventListener('load', cbNM);
 				</script>
 
                  <xsl:choose>
