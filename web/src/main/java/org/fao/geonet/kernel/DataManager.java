@@ -1357,7 +1357,7 @@ public class DataManager {
         String protocol = settingMan.getValue(Geonet.Settings.SERVER_PROTOCOL);
         String host    = settingMan.getValue(Geonet.Settings.SERVER_HOST);
         String port    = settingMan.getValue(Geonet.Settings.SERVER_PORT);
-        String locServ = baseURL +"/"+ Jeeves.Prefix.SERVICE +"/en";
+        String locServ = baseURL +"/"+ Jeeves.Prefix.SERVICE +"/eng";
 
         return protocol + "://" + host + (port.equals("80") ? "" : ":" + port) + locServ;
     }
@@ -3304,6 +3304,7 @@ public class DataManager {
     public void buildExtraMetadataInfo(ServiceContext context, String id,
                                        Element info) throws Exception {
 
+        Log.debug(Geonet.DATA_MANAGER, "START buildExtraMetadataInfo for record "+id);
 				Set<String> hsOper = null;
 
 				boolean isOwner = accessMan.isOwner(context, id);
@@ -3328,6 +3329,8 @@ public class DataManager {
         addElement(info, Edit.Info.Elem.DOWNLOAD, 			String.valueOf(hsOper.contains(AccessManager.OPER_DOWNLOAD)));
         addElement(info, Edit.Info.Elem.DYNAMIC,  			String.valueOf(hsOper.contains(AccessManager.OPER_DYNAMIC)));
         addElement(info, Edit.Info.Elem.FEATURED, 			String.valueOf(hsOper.contains(AccessManager.OPER_FEATURED)));
+
+        Log.debug(Geonet.DATA_MANAGER, "STOP buildExtraMetadataInfo for record "+id);
 
     }
 
