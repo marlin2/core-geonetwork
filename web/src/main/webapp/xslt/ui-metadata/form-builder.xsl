@@ -377,7 +377,6 @@
             </xsl:choose>
           </xsl:if>
 
-
           <xsl:if test="not($addDirective)">
             <div>
               <xsl:if test="$hasAddAction">
@@ -392,8 +391,12 @@
                 <xsl:variable name="readonly" select="if ($keyValues) then $keyValues/field[@name = $valueLabelKey]/readonly else ''"/>
 
                 <!-- Only display label if more than one key to match -->
+								<xsl:variable name="useBlock" select="@use = 'checkbox'"/>
                 <xsl:if test="count($template/values/key) > 1">
                   <label for="{$id}_{@label}">
+										<xsl:if test="not($useBlock)">
+											<xsl:attribute name="style" select="'display:block;'"/>
+										</xsl:if>
                     <xsl:value-of select="$strings/*[name() = $valueLabelKey]"/>
                   </label>
                 </xsl:if>
