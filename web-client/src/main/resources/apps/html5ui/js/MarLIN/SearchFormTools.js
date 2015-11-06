@@ -344,7 +344,6 @@ MarLIN.SearchFormTools = {
         });
 
         var orgNameField = new Ext.ux.form.SuperBoxSelect({
-            hideLabel: false,
 						anchor: '95%',
             minChars: 0,
             queryParam: 'q',
@@ -359,9 +358,6 @@ MarLIN.SearchFormTools = {
             fieldLabel: OpenLayers.i18n('org')
         });
 
-				orgNameField.on('beforerender', function() {
-							orgNameStore.load();
-				});
         return orgNameField;
     },
     /** api:method[getTitleField] 
@@ -384,7 +380,6 @@ MarLIN.SearchFormTools = {
         });
 
         var titNameField = new Ext.ux.form.SuperBoxSelect({
-            hideLabel: false,
 						anchor: '95%',
             minChars: 0,
             queryParam: 'q',
@@ -399,9 +394,6 @@ MarLIN.SearchFormTools = {
             fieldLabel: OpenLayers.i18n('Title')
         });
 
-				titNameField.on('beforerender', function() {
-							titNameStore.load();
-				});
         return titNameField;
     },
     /** api:method[getCreditField] 
@@ -424,7 +416,6 @@ MarLIN.SearchFormTools = {
         });
 
         var credNameField = new Ext.ux.form.SuperBoxSelect({
-            hideLabel: false,
 						anchor: '95%',
             minChars: 0,
             queryParam: 'q',
@@ -439,9 +430,6 @@ MarLIN.SearchFormTools = {
             fieldLabel: OpenLayers.i18n('Credit')
         });
 
-				credNameField.on('beforerender', function() {
-							credNameStore.load();
-				});
         return credNameField;
     },
     /** api:method[getDataParamField] 
@@ -464,7 +452,6 @@ MarLIN.SearchFormTools = {
         });
 
         var dataParamField = new Ext.ux.form.SuperBoxSelect({
-            hideLabel: false,
 						anchor: '95%',
             minChars: 0,
             queryParam: 'q',
@@ -479,9 +466,6 @@ MarLIN.SearchFormTools = {
             fieldLabel: OpenLayers.i18n('Data Parameters')
         });
 
-				dataParamField.on('beforerender', function() {
-							dataParamStore.load();
-				});
         return dataParamField;
     },
     /** method[getThesaurusField] 
@@ -573,10 +557,6 @@ MarLIN.SearchFormTools = {
             selector = new Ext.form.ComboBox(config);
         }
 
-				selector.on('beforerender', function() {
-					keyStore.load();
-				});
-
 				return MarLIN.buildKeywordRow(services, selector, thesaurusInfo);
 		},
 		/** api:method[getFields]
@@ -603,6 +583,14 @@ MarLIN.SearchFormTools = {
 				items: [this.getResourceTypeField(multi), this.getTitleField(services), this.getOrganisationField(services), this.getCreditField(services), this.getDataParamField(services)]
 			});
 
+			// Don't load stores until selector panel is expanded
+			MarLIN.SelectorPanel.on('beforeexpand', function(p) {
+					Ext.each(p.items.items, function(item, index) {
+						var store = item.getStore();
+						if (store && store.url && store.load) store.load();
+					});
+			});
+
 			MarLIN.ThesaurusPanel = new Ext.Panel({
         title:'Thesaurus Selectors',
 				layout: 'form',
@@ -613,6 +601,14 @@ MarLIN.SearchFormTools = {
 				collapsible: true,
 				id: 'marlin-keywords',
 				items: []
+			});
+
+			// Don't load stores until thesaurus panel is expanded
+			MarLIN.ThesaurusPanel.on('beforeexpand', function(p) {
+					Ext.each(p.items.items, function(item, index) {
+						var store = item.getStore();
+						if (store && store.url && store.load) store.load();
+					});
 			});
 
 			// now get all thesauri in use from Lucene index field thesaurusName
@@ -632,12 +628,14 @@ MarLIN.SearchFormTools = {
 									//console.log('Loading '+theValues);
 									Ext.each(theValues, function(item, index) {
 										var found = MarLIN.ThesauriStore.find('thesaurus',item);
+										var hide = true;
 										if (found >= 0) {
 											//console.log('Adding '+item+' '+MarLIN.ThesauriStore.getAt(found));
+											hide = false;
 											MarLIN.ThesaurusPanel.add(MarLIN.SearchFormTools.getThesaurusField(MarLIN.ThesauriStore.getAt(found), services));
 										}
 									});
-									MarLIN.ThesaurusPanel.doLayout();
+									if (hide) MarLIN.ThesaurusPanel.hide();
 					},
 					scope: this 
 			});
