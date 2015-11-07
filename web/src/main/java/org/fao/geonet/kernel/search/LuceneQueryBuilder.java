@@ -981,6 +981,21 @@ public class LuceneQueryBuilder {
             groupsQuery.add(adminClause);
         }
 
+        //
+        // GroupOwner: destroy groups query and rewrite to get results with 
+				// specified groupOwner (usually goes with admin)
+        //
+        Set<String> groupOwners = luceneQueryInput.getGroupOwners();
+        if (!CollectionUtils.isEmpty(groupOwners)) {
+        	groupsQuery = new BooleanQuery();
+					for (String groupOwner : groupOwners) {
+            TermQuery groupOwnerQuery = new TermQuery(new Term(LuceneIndexField.GROUP_OWNER, groupOwner));
+						BooleanClause groupOwnerClause = new BooleanClause(groupOwnerQuery, groupOccur);
+            groupsQueryEmpty = false;
+            groupsQuery.add(groupOwnerClause);
+					}
+        }
+
         // Add the privilege part of the query
         if (!groupsQueryEmpty) {
             BooleanClause.Occur groupsOccur = LuceneUtils.convertRequiredAndProhibitedToOccur(true, false);

@@ -189,57 +189,14 @@ GeoNetwork.searchApp = function() {
                         'search');
             });
 
-            // Multi select keyword
-            var themekeyStore = new GeoNetwork.data.OpenSearchSuggestionStore({
-                url : catalogue.services.opensearchSuggest,
-                rootId : 1,
-                baseParams : {
-                    field : 'keyword'
-                }
-            });
-
-            var themekeyField = new Ext.ux.form.SuperBoxSelect({
-                hideLabel : false,
-                minChars : 0,
-                queryParam : 'q',
-                hideTrigger : false,
-                id : 'E_themekey',
-                name : 'E_themekey',
-                store : themekeyStore,
-                valueField : 'value',
-                displayField : 'value',
-                valueDelimiter : ' or ',
-                // tpl: tpl,
-                fieldLabel : OpenLayers.i18n('keyword')
-            });
-
-            var orgNameStore = new GeoNetwork.data.OpenSearchSuggestionStore({
-                url : catalogue.services.opensearchSuggest,
-                rootId : 1,
-                baseParams : {
-                    field : 'orgName'
-                }
-            });
-
-            var orgNameField = new Ext.ux.form.SuperBoxSelect({
-                hideLabel : false,
-                minChars : 0,
-                queryParam : 'q',
-                hideTrigger : false,
-                id : 'E_orgName',
-                name : 'E_orgName',
-                store : orgNameStore,
-                valueField : 'value',
-                displayField : 'value',
-                valueDelimiter : ' or ',
-                // tpl: tpl,
-                fieldLabel : OpenLayers.i18n('org')
-            });
-
         		var catalogueField = GeoNetwork.util.SearchFormTools.getCatalogueField(
                 		catalogue.services.getSources, catalogue.services.logoUrl, true);
         		var groupField = GeoNetwork.util.SearchFormTools.getGroupField(
                 		catalogue.services.getGroups, true);
+        		var ownerGroupField = GeoNetwork.util.SearchFormTools.getOwnerGroupField(
+                		catalogue.services.getGroups, true);
+        		var ownedByField = GeoNetwork.util.SearchFormTools.getOwnedByField(
+                		catalogue.services.getUsers, true);
         		var statusField = GeoNetwork.util.SearchFormTools.getStatusField(
                 		catalogue.services.getStatus, true);
         		var metadataTypeField = GeoNetwork.util.SearchFormTools
@@ -269,10 +226,10 @@ GeoNetwork.searchApp = function() {
 						var serviceTypeField = GeoNetwork.util.INSPIRESearchFormTools
 						    .getServiceTypeField(true);
 
-						// Leave out themekeyField and orgNameField - handled elsewhere
             advancedCriteria.push(
-										catalogueField, groupField, statusField, metadataTypeField, 
-										categoryField, validField, spatialTypes, denominatorField,
+										categoryField, statusField, groupField, ownedByField,
+										ownerGroupField, metadataTypeField, catalogueField,
+										validField, spatialTypes, denominatorField,
                     ownerField, isHarvestedField, siteId);
 
             var sortByCombo = new Ext.form.TextField({
@@ -400,7 +357,7 @@ GeoNetwork.searchApp = function() {
                    }]
             });
 
-            this.setAdminFieldsCallback([ groupField ]);
+            this.setAdminFieldsCallback([ groupField, ownedByField, ownerGroupField ]);
 
             return new GeoNetwork.SearchFormPanel({
                 id : 'advanced-search-options-content-form',

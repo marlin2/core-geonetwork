@@ -200,6 +200,8 @@ GeoNetwork.Lang.en = {
     'abstract': 'Abstract',
     'catalogue': 'Catalogue',
     'group': 'Group',
+    'ownerGroup': 'Owner Group',
+    'ownedBy': 'Owned By',
     'chooseGroup': 'Select a group',
     'md': 'Metadata',
     'tpl': 'Template',

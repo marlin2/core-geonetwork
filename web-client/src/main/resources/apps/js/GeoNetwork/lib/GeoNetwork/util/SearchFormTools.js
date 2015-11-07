@@ -43,6 +43,7 @@ Ext.namespace("GeoNetwork.util");
 GeoNetwork.util.SearchFormTools = {
 
     groupField: null,
+    ownedByField: null,
 
     /** api:method[getSimpleFormFields]
      *  :param services: Optional GeoNetwork services URL used for OpenSearch suggestion URL. If not defined, no suggestion fields.
@@ -219,6 +220,8 @@ GeoNetwork.util.SearchFormTools = {
         // Admin option
         var catalogueField = GeoNetwork.util.SearchFormTools.getCatalogueField(services.getSources, services.logoUrl);
         this.groupField = GeoNetwork.util.SearchFormTools.getGroupField(services.getGroups);
+        this.ownerGroupField = GeoNetwork.util.SearchFormTools.getOwnerGroupField(services.getGroups);
+        this.ownedByField = GeoNetwork.util.SearchFormTools.getOwnedByField(services.getUsers);
         var metadataTypeField = GeoNetwork.util.SearchFormTools.getMetadataTypeField();
         var categoryField = GeoNetwork.util.SearchFormTools.getCategoryField(services.getCategories, null, true);
         
@@ -476,7 +479,6 @@ GeoNetwork.util.SearchFormTools = {
     getCatalogueField: function(url, logoUrl, multi){
         var catStore = GeoNetwork.data.CatalogueSourceStore(url),
             tpl = '<tpl for="."><div class="x-combo-list-item logo"><img src="' + logoUrl + '{id}.gif"/>{name}</div></tpl>';
-        catStore.load();
         
         var config = {
                 name: 'E_siteId',
@@ -488,16 +490,66 @@ GeoNetwork.util.SearchFormTools = {
                 displayField: 'name',
                 tpl: tpl
             };
-        
+       
+			 	var theField;
         if (multi) {
             Ext.apply(config, {
                 valueDelimiter: ' or ',
                 stackItems: true,
                 displayFieldTpl: '<img style="max-width:16px;" src="' + logoUrl + '{id}.gif"/>{name}'});
-            return new Ext.ux.form.SuperBoxSelect(config);
+            theField = new Ext.ux.form.SuperBoxSelect(config);
         } else {
-            return new Ext.form.ComboBox(config);
+            theField = new Ext.form.ComboBox(config);
         }
+				theField.on({
+					'beforequery': function(w) {
+						var store = w.combo.getStore();
+        		if (store && store.load && (store.url || store.proxy.url)) store.load();
+					}
+				});
+				return theField;
+    },
+    /** api:method[getOwnedByField]
+     *  :return: An ownedBy combo
+     *
+     *  Create a combo for owner field
+     */
+    getOwnedByField: function(url, multi){
+        if (this.ownedByField != null) return this.ownedByField;
+
+        var lang = GeoNetwork.Util.getCatalogueLang(OpenLayers.Lang.getCode());
+
+        var usersStore = GeoNetwork.data.UserStore(url),
+            tpl = '<tpl for="."><div class="x-combo-list-item">{[values.username]}</div></tpl>';
+        
+        var config = {
+                name: 'E__owner',
+                mode: 'local',
+                triggerAction: 'all',
+                fieldLabel: OpenLayers.i18n('ownedBy'),
+                store: usersStore,
+                valueField: 'id',
+                displayField: 'username',
+                tpl: tpl
+            };
+
+				var theField;
+        if (multi) {
+            Ext.apply(config, {
+                valueDelimiter: ' or ',
+                stackItems: true,
+                displayFieldTpl: '{[values.username]}'});
+            theField = new Ext.ux.form.SuperBoxSelect(config);
+        } else {
+            theField = new Ext.form.ComboBox(config);
+        }
+				theField.on({
+					'beforequery': function(w) {
+						var store = w.combo.getStore();
+        		if (store && store.load && (store.url || store.proxy.url)) store.load();
+					}
+				});
+				return theField;
     },
     /** api:method[getGroupField]
      *  :return: A group combo
@@ -511,7 +563,7 @@ GeoNetwork.util.SearchFormTools = {
 
         var groupStore = GeoNetwork.data.GroupStore(url),
             tpl = '<tpl for="."><div class="x-combo-list-item">{[values.label.' + lang + ']}</div></tpl>';
-        groupStore.load();
+        
         var config = {
                 name: 'E_group',
                 mode: 'local',
@@ -522,15 +574,24 @@ GeoNetwork.util.SearchFormTools = {
                 displayField: 'name',
                 tpl: tpl
             };
+
+				var theField;
         if (multi) {
             Ext.apply(config, {
                 valueDelimiter: ' or ',
                 stackItems: true,
                 displayFieldTpl: '{[values.label.' + lang + ']}'});
-            return new Ext.ux.form.SuperBoxSelect(config);
+            theField = new Ext.ux.form.SuperBoxSelect(config);
         } else {
-            return new Ext.form.ComboBox(config);
+            theField = new Ext.form.ComboBox(config);
         }
+				theField.on({
+					'beforequery': function(w) {
+						var store = w.combo.getStore();
+        		if (store && store.load && (store.url || store.proxy.url)) store.load();
+					}
+				});
+				return theField;
     },
     /**
      * api:method[refreshGroupFieldValues]
@@ -542,6 +603,52 @@ GeoNetwork.util.SearchFormTools = {
             this.groupField.store.removeAll();
             this.groupField.store.reload();
         }
+        if (this.ownerGroupField != null) {
+            this.ownerGroupField.store.removeAll();
+            this.ownerGroupField.store.reload();
+        }
+    },
+    /** api:method[getOwnerGroupField]
+     *  :return: A group combo
+     *
+     *  Create a combo for group field
+     */
+    getOwnerGroupField: function(url, multi){
+        if (this.ownerGroupField != null) return this.ownerGroupField;
+
+        var lang = GeoNetwork.Util.getCatalogueLang(OpenLayers.Lang.getCode());
+
+        var groupStore = GeoNetwork.data.GroupStore(url),
+            tpl = '<tpl for="."><div class="x-combo-list-item">{[values.label.' + lang + ']}</div></tpl>';
+        
+        var config = {
+                name: 'E__groupOwner',
+                mode: 'local',
+                triggerAction: 'all',
+                fieldLabel: OpenLayers.i18n('ownerGroup'),
+                store: groupStore,
+                valueField: 'id',
+                displayField: 'name',
+                tpl: tpl
+            };
+
+				var theField;
+        if (multi) {
+            Ext.apply(config, {
+                valueDelimiter: ' or ',
+                stackItems: true,
+                displayFieldTpl: '{[values.label.' + lang + ']}'});
+            theField = new Ext.ux.form.SuperBoxSelect(config);
+        } else {
+            theField = new Ext.form.ComboBox(config);
+        }
+				theField.on({
+					'beforequery': function(w) {
+						var store = w.combo.getStore();
+        		if (store && store.load && (store.url || store.proxy.url)) store.load();
+					}
+				});
+				return theField;
     },
     /** api:method[getMetadataTypeField]
      *  :return: A metadata type combo
@@ -582,8 +689,6 @@ GeoNetwork.util.SearchFormTools = {
 
         var store = GeoNetwork.data.CategoryStore(url);
         
-        store.load();
-        
         var tpl = (imgUrl ?
                 '<tpl for="."><div class="x-combo-list-item"><img src="' + imgUrl + '{name}.png"/>{[values.label.' + lang + ']}</div></tpl>':
                 '<tpl for="."><div class="x-combo-list-item">{[values.label.' + lang + ']}</div></tpl>');
@@ -598,6 +703,8 @@ GeoNetwork.util.SearchFormTools = {
             displayField: 'name',
             tpl: tpl
         };
+
+				var theField;
         if (multi) {
             var displaytpl = (imgUrl ?
                     '<img src="' + imgUrl + '{name}.png"/>{[values.label.' + lang + ' || values]}':
@@ -606,10 +713,17 @@ GeoNetwork.util.SearchFormTools = {
                 valueDelimiter: ' or ',
                 stackItems: true,
                 displayFieldTpl: displaytpl});
-            return new Ext.ux.form.SuperBoxSelect (config);
+            theField = new Ext.ux.form.SuperBoxSelect (config);
         } else {
-                return new Ext.form.ComboBox(config);
+            theField = new Ext.form.ComboBox(config);
         }
+				theField.on({
+					'beforequery': function(w) {
+						var store = w.combo.getStore();
+        		if (store && store.load && (store.url || store.proxy.url)) store.load();
+					}
+				});
+				return theField;
     },
     /** api:method[getAdvancedTextFields]
      *  :return: A fieldset with advanced text search
@@ -1120,9 +1234,8 @@ GeoNetwork.util.SearchFormTools = {
     getStatusField: function(url, multi){
         var lang = GeoNetwork.Util.getCatalogueLang(OpenLayers.Lang.getCode());
 
-        var store = GeoNetwork.data.StatusStore(url);
-        store.load();
-        
+				var store = GeoNetwork.data.StatusStore(url);
+
         var tpl = '<tpl for="."><div class="x-combo-list-item">{[values.label.' + lang + ']}</div></tpl>';
         
         var config = {
@@ -1137,15 +1250,24 @@ GeoNetwork.util.SearchFormTools = {
                 displayField: 'label',
                 tpl: tpl
             };
+
+				var theField;
         if (multi) {
             Ext.apply(config, {
                 valueDelimiter: ' or ',
                 displayFieldTpl: '{[values.label.' + lang + ']}'
                 });
-            return new Ext.ux.form.SuperBoxSelect(config);
+            theField = new Ext.ux.form.SuperBoxSelect(config);
         } else {
-            return new Ext.form.ComboBox(config);
+            theField = new Ext.form.ComboBox(config);
         }
+				theField.on({
+					'beforequery': function(w) {
+						var store = w.combo.getStore();
+        		if (store && store.load && (store.url || store.proxy.url)) store.load();
+					}
+				});
+				return theField;
     },
     /** api:method[getTypesField]
      *  :return: Type selection using combo box based
