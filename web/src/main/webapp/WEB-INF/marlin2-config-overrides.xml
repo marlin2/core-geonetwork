@@ -67,8 +67,6 @@
 	<file name=".*WEB-INF/config-gui\.xml">
 		<!-- set server to use geoserver -->
 		<replaceAtt xpath="mapViewer/layers/layer" attName="server" value="http://marlin2-dev.its.csiro.au/geoserver/wms" />
-		<!-- switch off OSM in html5ui etc -->
-		<replaceXML xpath="map/osm_map"/>
 		<addXML xpath="">
 			<!-- NICTA National Map config
 			     proxyDomains: means use nationalmap corsProxy on these domains 
@@ -97,11 +95,9 @@
 					"disableCorsProxy" :  "true",
 					"proxyHost"        :  "../../proxy/",
 					"baseLayer"        : {
-						     "type" : "wms",
+						     "type" : "bing",
 						     "options" : {
-								 			
-							        "layers" : "ea-be:World_Bright-Earth-e-Atlas-basemap_No-Labels",
-							        "url"    : "http://www.cmar.csiro.au/geoserver/gwc/service/wms"
+							        "url"    : "//dev.virtualearth.net"
 						     }
 					},
 					"terrainProvider" : {
