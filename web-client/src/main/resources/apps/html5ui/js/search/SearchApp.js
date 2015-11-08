@@ -223,6 +223,11 @@ GeoNetwork.searchApp = function() {
                 name : 'E_siteId',
                 hidden : true
             });
+            var hitsPerPage = new Ext.form.TextField({
+                name : 'E_hitsperpage',
+                hidden : true,
+								value: GeoNetwork.Settings.HITSPERPAGE
+            });
 						var serviceTypeField = GeoNetwork.util.INSPIRESearchFormTools
 						    .getServiceTypeField(true);
 
@@ -230,7 +235,7 @@ GeoNetwork.searchApp = function() {
 										categoryField, statusField, groupField, ownedByField,
 										ownerGroupField, metadataTypeField, catalogueField,
 										validField, spatialTypes, denominatorField,
-                    ownerField, isHarvestedField, siteId);
+                    ownerField, isHarvestedField, siteId, hitsPerPage);
 
             var sortByCombo = new Ext.form.TextField({
                 name : 'E_sortBy',

@@ -54,7 +54,8 @@ GeoNetwork.util.SearchTools = {
     fast: 'false',
     output: 'full',
     sortBy: 'relevance',
-    hitsPerPage: '30',
+    hitsPerPage: 50, // shouldn't be used - just a fall back in case the form
+		                 // doesn't have an E_hitsperpage field
     
     
     /** api:method[doQuery]
