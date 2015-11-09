@@ -605,9 +605,10 @@ MarLIN.SearchFormTools = {
 
 			// Don't load stores until thesaurus panel is expanded
 			MarLIN.ThesaurusPanel.on('beforeexpand', function(p) {
-					Ext.each(p.items.items, function(item, index) {
-						var store = item.getStore();
-						if (store && store.url && store.load) store.load();
+					var thesaurusCombos = p.findByType('combo');
+					Ext.each(thesaurusCombos, function(combo, index) {
+						var store = combo.getStore();
+						if (store && (store.url || store.proxy.url) && store.load) store.load();
 					});
 			});
 
