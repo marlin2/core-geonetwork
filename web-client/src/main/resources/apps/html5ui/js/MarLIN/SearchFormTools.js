@@ -626,9 +626,9 @@ MarLIN.SearchFormTools = {
 					'load': function() { 
 									var theValues = theStore.collect('value');
 									//console.log('Loading '+theValues);
+									var hide = true;
 									Ext.each(theValues, function(item, index) {
 										var found = MarLIN.ThesauriStore.find('thesaurus',item);
-										var hide = true;
 										if (found >= 0) {
 											//console.log('Adding '+item+' '+MarLIN.ThesauriStore.getAt(found));
 											hide = false;
