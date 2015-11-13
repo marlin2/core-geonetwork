@@ -607,7 +607,7 @@ public class LuceneSearcher extends MetaSearcher {
                 }
                 if (owner != null) {
 					request.addContent(new Element(SearchParameter.OWNER).addContent(owner));
-                } else {
+                } else if (request.getChild(SearchParameter._STATUS) == null) {
 									for (String status : this.okStatus) {
 					request.addContent(new Element(SearchParameter._STATUS).addContent(status));
 									}

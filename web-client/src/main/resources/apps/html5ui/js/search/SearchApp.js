@@ -49,7 +49,7 @@ GeoNetwork.searchApp = function() {
         },
         /**
          * Set event in order to display some search criteria only when user is
-         * logged in.
+         * logged in and administrator.
          */
         setAdminFieldsCallback : function(adminFields) {
             // Hide or show extra fields after login event
@@ -57,28 +57,39 @@ GeoNetwork.searchApp = function() {
                 item.setVisible(catalogue.identifiedUser
                         && catalogue.identifiedUser.role === "Administrator");
             });
-            catalogue
-                    .on(
-                            'afterLogin',
-                            function() {
-                                Ext
-                                        .each(
-                                                adminFields,
-                                                function(item) {
-                                                    item
-                                                            .setVisible(catalogue.identifiedUser
-                                                                    && catalogue.identifiedUser.role === "Administrator");
-                                                });
-                                GeoNetwork.util.SearchFormTools
-                                        .refreshGroupFieldValues();
-                            });
+            catalogue.on('afterLogin', function() {
+                Ext.each(adminFields, function(item) {
+                    item.setVisible(catalogue.identifiedUser && catalogue.identifiedUser.role === "Administrator");
+                });
+                GeoNetwork.util.SearchFormTools.refreshGroupFieldValues();
+            });
             catalogue.on('afterLogout', function() {
                 Ext.each(adminFields, function(item) {
                     item.setVisible(!(catalogue.identifiedUser === undefined));
                 });
                 GeoNetwork.util.SearchFormTools.refreshGroupFieldValues();
             });
-
+        },
+        /**
+         * Set event in order to display some search criteria only when user is
+         * logged in.
+         */
+        setRegisteredUserFieldsCallback : function(registeredUserFields) {
+            // Hide or show extra fields after login event
+						var loggedIn = catalogue.identifiedUser && catalogue.identifiedUser.role !== undefined;
+            Ext.each(registeredUserFields, function(item) {
+                item.setVisible(loggedIn);
+            });
+            catalogue.on('afterLogin', function() {
+                Ext.each(registeredUserFields, function(item) {
+                    item.setVisible(true);
+                });
+            });
+            catalogue.on('afterLogout', function() {
+                Ext.each(registeredUserFields, function(item) {
+                    item.setVisible(false);
+                });
+            });
         },
         generateSimpleSearchForm : function() {
             var field = new GeoNetwork.form.OpenSearchSuggestionTextField({
@@ -363,6 +374,7 @@ GeoNetwork.searchApp = function() {
             });
 
             this.setAdminFieldsCallback([ groupField, ownedByField, ownerGroupField ]);
+            this.setRegisteredUserFieldsCallback([ statusField ]);
 
             return new GeoNetwork.SearchFormPanel({
                 id : 'advanced-search-options-content-form',
