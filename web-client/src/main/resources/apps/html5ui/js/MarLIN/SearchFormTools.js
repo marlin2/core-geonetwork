@@ -73,8 +73,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.discipline.urn:marlin.csiro.au:keywords:standardDataType',
-		thesaurusShortName: 'register.discipline.urn:marlin.csiro.au:keywords:standardDataType',
+		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marlin.csiro.au:keywords:standardDataType',
+		thesaurusShortName: 'register.dataSource.urn:marlin.csiro.au:keywords:standardDataType',
 		luceneFieldName:	'E_keywordId',
 		label:						'Data Type',
 		valueField:				'uri',
