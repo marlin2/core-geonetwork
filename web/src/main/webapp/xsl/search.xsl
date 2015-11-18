@@ -47,30 +47,6 @@
 					s.parentNode.insertBefore(ga, s);
 					})();
 
-					// lazy load the css and js required for nationalmap once page load is finished, taken from
-					// http://www.giftofspeed.com/defer-loading-css/ and the ga stuff above
-					function doLoadSS(stylesheetUrl) {
-						var l = document.createElement('link'); l.rel = 'stylesheet';
-						l.href = stylesheetUrl;
-						var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
-					};
-					function doLoadJS(jsUrl){
-					  var s = document.createElement('script');
-						s.type = 'text/javascript';
-						s.async = true;
-						s.src = jsUrl;
-						var x = document.getElementsByTagName('script')[0];
-						x.parentNode.insertBefore(s, x);
-					}
-					var cbNM = function() {
-						setTimeout( function() {
-								doLoadSS("../../nationalmap/public/third_party/leaflet/leaflet.css");
-								doLoadSS("../../nationalmap/public/build/Cesium/Widgets/cesiumwidgetsbundle.css");
-								doLoadSS("../../nationalmap/public/css/AusGlobeViewer.css");
-								doLoadJS("<xsl:value-of select="concat($baseUrl, '/static/nationalmap.js')"/>");
-						},3000);
-					};
-					window.addEventListener('load', cbNM);
 				</script>
 
                  <xsl:choose>

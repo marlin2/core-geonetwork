@@ -17,6 +17,8 @@
  * along with GeoNetwork.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var loadedNMJS = false;
+
 // The following functions are for the advanced search hiding and showing
 function hide(id) {
     if (Ext.get(id)) {
@@ -102,6 +104,20 @@ function hideAbout() {
     hide("about");
 }
 
+					function doLoadSS(stylesheetUrl) {
+						var l = document.createElement('link'); l.rel = 'stylesheet';
+						l.href = stylesheetUrl;
+						var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+					};
+					function doLoadJS(jsUrl){
+					  var s = document.createElement('script');
+						s.type = 'text/javascript';
+						s.async = true;
+						s.src = jsUrl;
+						var x = document.getElementsByTagName('script')[0];
+						x.parentNode.insertBefore(s, x);
+					}
+
 function showBigMap() {
     hideBrowse();
     hideSearch();
@@ -117,6 +133,16 @@ function showBigMap() {
     });
 
     Ext.get("map-tab").addClass("selected");
+
+		if (!loadedNMJS) {
+					// lazy load the css and js required for nationalmap once page load is finished, taken from
+					// http://www.giftofspeed.com/defer-loading-css/ and the ga stuff above
+					doLoadSS("../../nationalmap/public/third_party/leaflet/leaflet.css");
+					doLoadSS("../../nationalmap/public/build/Cesium/Widgets/cesiumwidgetsbundle.css");
+					doLoadSS("../../nationalmap/public/css/AusGlobeViewer.css");
+					doLoadJS("../../static/nationalmap.js");
+					loadedNMJS = true;
+	 }
 }
 
 function hideBigMap() {
