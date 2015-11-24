@@ -11,12 +11,14 @@ import org.springframework.security.web.util.RegexRequestMatcher;
 
 class AddInterceptUrlUpdater extends BeanUpdater {
 
+		private String patternStr;
     private RegexRequestMatcher pattern;
     private String access;
 
     public AddInterceptUrlUpdater(Element element) {
         setBeanName(element);
-        this.pattern = new RegexRequestMatcher(element.getAttributeValue("pattern"), element.getAttributeValue("httpMethod"), Boolean.parseBoolean(element.getAttributeValue("caseInsensitive")));
+				this.patternStr = element.getAttributeValue("pattern");
+        this.pattern = new RegexRequestMatcher(patternStr, element.getAttributeValue("httpMethod"), Boolean.parseBoolean(element.getAttributeValue("caseInsensitive")));
         this.access = element.getAttributeValue("access");
     }
 
@@ -35,7 +37,7 @@ class AddInterceptUrlUpdater extends BeanUpdater {
             interceptor.setSecurityMetadataSource(overrideSource);
         }
         
-        overrideSource.addMapping(pattern, access);
+        overrideSource.addMapping(patternStr, pattern, access);
         return null;
     }
 }

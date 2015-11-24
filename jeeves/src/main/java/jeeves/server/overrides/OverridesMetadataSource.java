@@ -11,6 +11,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import jeeves.utils.Pair;
+
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -20,8 +22,9 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.RegexRequestMatcher;
 import org.springframework.security.web.util.RequestMatcher;
 
+
 public class OverridesMetadataSource implements FilterInvocationSecurityMetadataSource {
-    private final Map<RequestMatcher, Collection<ConfigAttribute>> requestMap = Collections.synchronizedMap(new HashMap<RequestMatcher, Collection<ConfigAttribute>>());
+    private final Map<String,Pair<RequestMatcher, Collection<ConfigAttribute>>> requestMap = Collections.synchronizedMap(new HashMap<String, Pair<RequestMatcher, Collection<ConfigAttribute>>>());
     private FilterInvocationSecurityMetadataSource baseSource;
 
     public OverridesMetadataSource(FilterInvocationSecurityMetadataSource metadataSource) {
@@ -36,8 +39,8 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 				
 				synchronized( requestMap ) {
 
-        for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
-            allAttributes.addAll(entry.getValue());
+        for (Map.Entry<String, Pair<RequestMatcher, Collection<ConfigAttribute>>> entry : requestMap.entrySet()) {
+            allAttributes.addAll(entry.getValue().two());
         }
 
 				}
@@ -54,9 +57,9 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 					synchronized( requestMap ) {
 
             final HttpServletRequest request = ((FilterInvocation) object).getRequest();
-            for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
-                if (entry.getKey().matches(request)) {
-                    attributes = entry.getValue();
+            for (Map.Entry<String,Pair<RequestMatcher, Collection<ConfigAttribute>>> entry : requestMap.entrySet()) {
+                if (entry.getValue().one().matches(request)) {
+                    attributes = entry.getValue().two();
                     break;
                 }
             }
@@ -73,7 +76,7 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 
 
 
-    public void addMapping(RegexRequestMatcher pattern, final String access) {
+    public void addMapping(String patternStr, RegexRequestMatcher pattern, final String access) {
         LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> map = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
         Collection<ConfigAttribute> atts = new LinkedList<ConfigAttribute>();
         map.put(pattern, atts );
@@ -83,11 +86,15 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
 				synchronized( requestMap ) {
         
         ExpressionBasedFilterInvocationSecurityMetadataSource ms = new ExpressionBasedFilterInvocationSecurityMetadataSource(map, new DefaultWebSecurityExpressionHandler());
-        Collection<ConfigAttribute> allAttributes = requestMap.get(pattern);
-        if(allAttributes == null) {
+
+				Collection<ConfigAttribute> allAttributes = null;
+        Pair<RequestMatcher, Collection<ConfigAttribute>> pair = requestMap.get(patternStr);
+        if(pair == null) {
             allAttributes = new LinkedList<ConfigAttribute>();
-            requestMap.put(pattern, allAttributes);
-        }
+            requestMap.put(patternStr, Pair.read((RequestMatcher)pattern, allAttributes));
+        } else {
+						allAttributes = pair.two();
+				}
         
         allAttributes.addAll(ms.getAllConfigAttributes());
 
