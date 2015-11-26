@@ -283,10 +283,9 @@ function resetAdvancedSearch(updateSearch) {
         Ext.getCmp('E_download').checked = (Ext.getCmp("o_download").getValue());
         Ext.getCmp('E_download').resumeEvents();
 
-        Ext.getCmp('E_nodynamicdownload').suspendEvents(false);
-        Ext.getCmp('E_nodynamicdownload').checked = (
-        Ext.getCmp("o_nodynamicdownload").getValue());
-        Ext.getCmp('E_nodynamicdownload').resumeEvents();
+        Ext.getCmp('mymetadata').suspendEvents(false);
+        Ext.getCmp('mymetadata').checked = false;
+				Ext.getCmp('mymetadata').resumeEvents();
 
 				Ext.getCmp('sortByToolBar').setValue("relevance");
 

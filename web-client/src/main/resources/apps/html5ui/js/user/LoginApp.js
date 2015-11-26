@@ -196,13 +196,14 @@ GeoNetwork.loginApp = function() {
             exception = response.responseText.indexOf('Exception') !== -1;
 
             if (response.status === 200 && authenticated) {
-
+								var userid = me.getElementsByTagName('id')[0];
                 var username = me.getElementsByTagName('username')[0];
                 var name = me.getElementsByTagName('name')[0];
                 var surname = me.getElementsByTagName('surname')[0];
                 var role = me.getElementsByTagName('profile')[0];
 
                 catalogue.identifiedUser = {
+										id: userid.innerText || userid.textContent || userid.text,
                     username : username.innerText || username.textContent
                             || username.text,
                     name : name.innerText || name.textContent || name.text,

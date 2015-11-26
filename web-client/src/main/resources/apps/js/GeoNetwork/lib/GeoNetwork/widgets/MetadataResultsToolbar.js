@@ -375,11 +375,15 @@ GeoNetwork.MetadataResultsToolbar = Ext.extend(Ext.Toolbar, {
         	});
           this.myMetadataAction = undefined;
 				} else {
+					// For now this function doesn't add anything because we've placed a 
+					// checkbox "My metadata" at the top of the search form - this is much
+					// more useful because selections can be made on search results obtained and 
+					// actions (eg. privileges etc) carried out
           this.myMetadataAction = new Ext.menu.Item({text: OpenLayers.i18n('myMetadata'),
             handler: function() {
               catalogue.myMetadata(null, true);
             },
-            hidden: hide
+            hidden: true
           });
 
           this.createMetadataAction = new Ext.menu.Item({text: OpenLayers.i18n('newMetadata'),

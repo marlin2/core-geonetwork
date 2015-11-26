@@ -76,13 +76,13 @@ GeoNetwork.searchApp = function() {
          */
         setRegisteredUserFieldsCallback : function(registeredUserFields) {
             // Hide or show extra fields after login event
-						var loggedIn = catalogue.identifiedUser && catalogue.identifiedUser.role !== undefined;
+						var loggedIn = catalogue.identifiedUser && catalogue.identifiedUser.role !== "Administrator";
             Ext.each(registeredUserFields, function(item) {
                 item.setVisible(loggedIn);
             });
             catalogue.on('afterLogin', function() {
                 Ext.each(registeredUserFields, function(item) {
-                    item.setVisible(true);
+                    item.setVisible(catalogue.identifiedUser && catalogue.identifiedUser.role !== "Administrator");
                 });
             });
             catalogue.on('afterLogout', function() {
@@ -168,7 +168,7 @@ GeoNetwork.searchApp = function() {
             });
 
             var dataForDownload_ = new Ext.form.Checkbox({
-                name : 'O_download_',
+                name : 'O_download',
                 id : 'o_download',
                 boxLabel : OpenLayers.i18n('Data for download'),
                 renderTo : "ck2"
@@ -180,24 +180,33 @@ GeoNetwork.searchApp = function() {
                         'search');
             });
 
-            var noDirectDownload = new Ext.form.Checkbox({
-                name : 'O_nodynamicdownload',
-                id : 'E_nodynamicdownload',
+            var myMetadata = new Ext.form.Checkbox({
+                name : 'mymetadata',
+                id : 'mymetadata_placeholder',
                 hidden : true
             });
 
-            var noDirectDownload_ = new Ext.form.Checkbox({
-                name : 'O_nodynamicdownload_',
-                id : 'o_nodynamicdownload',
-                boxLabel : OpenLayers.i18n('No direct download'),
-                renderTo : "ck3",
-                hidden: true
+            var myMetadata_ = new Ext.form.Checkbox({
+								name : 'mymetadata',
+                id : 'mymetadata',
+                boxLabel : OpenLayers.i18n('My Metadata'),
+                renderTo : "ck3"
             });
 
-            noDirectDownload_.on("check", function(el) {
-                Ext.getCmp('E_nodynamicdownload').setValue(this.getValue());
-                Ext.getCmp('advanced-search-options-content-form').fireEvent(
-                        'search');
+            myMetadata_.on("check", function(el) {
+								if (Ext.getCmp('mymetadata').getValue()) {
+                	Ext.getCmp('E__owner').setValue(catalogue.identifiedUser.id);
+								} else {
+                	Ext.getCmp('E__owner').setValue('');
+								}
+                Ext.getCmp('advanced-search-options-content-form').fireEvent('search');
+            });
+
+						// set by mymetadata checkbox
+            var ownerField = new Ext.form.TextField({
+                id : 'E__owner',
+                name : 'E__owner',
+                hidden : true
             });
 
         		var catalogueField = GeoNetwork.util.SearchFormTools.getCatalogueField(
@@ -220,20 +229,6 @@ GeoNetwork.searchApp = function() {
         		var denominatorField = GeoNetwork.util.SearchFormTools
                 		.getScaleDenominatorField(true);
 
-            // Add hidden fields to be use by quick metadata links from the
-            // admin panel (eg. my metadata).
-            var ownerField = new Ext.form.TextField({
-                name : 'E__owner',
-                hidden : true
-            });
-            var isHarvestedField = new Ext.form.TextField({
-                name : 'E__isHarvested',
-                hidden : true
-            });
-            var siteId = new Ext.form.TextField({
-                name : 'E_siteId',
-                hidden : true
-            });
             var hitsPerPage = new Ext.form.TextField({
                 name : 'E_hitsperpage',
                 hidden : true,
@@ -246,7 +241,7 @@ GeoNetwork.searchApp = function() {
 										categoryField, statusField, groupField, ownedByField,
 										ownerGroupField, metadataTypeField, catalogueField,
 										validField, spatialTypes, denominatorField,
-                    ownerField, isHarvestedField, siteId, hitsPerPage);
+                    ownerField, hitsPerPage);
 
             var sortByCombo = new Ext.form.TextField({
                 name : 'E_sortBy',
@@ -269,7 +264,7 @@ GeoNetwork.searchApp = function() {
                     anchor : '100%'
                 },
                 forceLayout : true,
-                items : [ any, onlineData, dataForDownload, noDirectDownload,
+                items : [ any, onlineData, dataForDownload, myMetadata,
                         sortByCombo, orderBy, advancedCriteria ]
             };
 
@@ -373,8 +368,8 @@ GeoNetwork.searchApp = function() {
                    }]
             });
 
-            this.setAdminFieldsCallback([ groupField, ownedByField, ownerGroupField ]);
-            this.setRegisteredUserFieldsCallback([ statusField ]);
+            this.setAdminFieldsCallback([ groupField, ownedByField, ownerGroupField, statusField ]);
+            this.setRegisteredUserFieldsCallback([ statusField, myMetadata_ ]);
 
             return new GeoNetwork.SearchFormPanel({
                 id : 'advanced-search-options-content-form',
