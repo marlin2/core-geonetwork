@@ -28,7 +28,6 @@ div#tabs ul li ul li.active{background-image:url(../apps/html5ui/images/shadeact
 .metadata * input,.metadata * textarea,.metadata * select{color:#353a3b;border-color:#C1C1C1;border:1px solid #7EADD9;padding:1px 3px;}
 .metadata * input[type='radio']{border-width:0;}
 .metadata * select{max-width:200px;}
-.metadata * input,.metadata * textarea{width:60%;float:left;}
 .metadata * table.map * input{float:none!important;}
 .metadata * input.small{width:10%;}
 .metadata * input[type=checkbox]{width:20px;}

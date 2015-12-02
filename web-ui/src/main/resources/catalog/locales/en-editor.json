@@ -3,6 +3,7 @@
     "add-extent-from-geokeywords": "Compute extent from keywords",
     "add-extent-from-geokeywords-help": "Search all keywords from thesaurus of type place and add matching extents.",
     "addCRS-help": " ",
+		"addConcept": "Add concept to list",
     "addContact": "Add contact",
     "addContactAsLink-help": "Add a link to the contact in the contact directory. The contact will be updated if updated in the directory.",
     "addContactAsText-help": "Default mode. Add the contact into the record.",

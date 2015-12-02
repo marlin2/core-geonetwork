@@ -35,8 +35,9 @@
             <ul ng-repeat="c in broader">
                 <li>
 									<div class="skos-concept-relation">
-                    <i class="fa fa-long-arrow-up" ng-click="navigateConcept(c)"></i>
-										<span skos-label="c" lang="{{language}}" ng-click="addConcept(c)" title="{{c.notation[0]}}"></span>
+										<i class="fa fa-square-o fa-hover" ng-click="navigateConcept(c)" title="Make this concept the current concept"/>
+                    <i class="fa fa-long-arrow-up" title="{{c.prefLabel.en}} is more general than {{c.ancestor.prefLabel.en}}"></i>
+										<span skos-label="c" lang="{{language}}" ng-click="addConcept(c, c.prefLabel.en)" title="{{'addConcept' | translate}}"></span>
 									</div>
                 </li>
             </ul>
@@ -45,8 +46,9 @@
             <ul ng-repeat="c in narrower">
                 <li>
 									<div class="skos-concept-relation">
-										<i class="fa fa-long-arrow-down" ng-click="navigateConcept(c)"></i>
-										<span skos-label="c" lang="{{language}}" ng-click="addConcept(c.uri, c.prefLabel.en)" title="{{c.notation[0]}}"></span>
+										<i class="fa fa-square-o fa-hover" ng-click="navigateConcept(c)" title="Make this concept the current concept"/>
+										<i class="fa fa-long-arrow-down" title="{{c.prefLabel.en}} is more specific than {{c.ancestor.prefLabel.en}}"></i>
+										<span skos-label="c" lang="{{language}}" ng-click="addConcept(c.uri, c.prefLabel.en)" title="{{'addConcept' | translate}}"></span>
 									</div>
                 </li>
             </ul>
@@ -55,8 +57,9 @@
             <ul ng-repeat="c in related">
                 <li>
 									<div class="skos-concept-relation">
-										<i class="fa fa-long-arrow-right" ng-click="navigateConcept(c)"></i>
-                    <span skos-label="c" lang="{{language}}" ng-click="addConcept(c)" title="{{c.notation[0]}}"></span>
+										<i class="fa fa-square-o fa-hover" ng-click="navigateConcept(c)" title="Make this concept the current concept"/>
+										<i class="fa fa-long-arrow-right" title="{{c.prefLabel.en}} is related to {{c.ancestor.prefLabel.en}}"></i>
+                    <span skos-label="c" lang="{{language}}" ng-click="addConcept(c, c.prefLabel.en)" title="{{'addConcept' | translate}}"></span>
                 </li>
             </ul>
         </div>
