@@ -17,6 +17,7 @@
 	<def>
 		<hits>
 			<item name="orgName" plural="orgNames" indexKey="orgName" max="15"/>
+			<item name="source" plural="sources" indexKey="source" max="40"/>
 			<item name="survey" plural="surveys" indexKey="survey" max="40"/>
 			<item name="project" plural="projects" indexKey="project" max="15"/>
 			<item name="gcmd" plural="gcmds" indexKey="gcmd" max="15"/>
@@ -31,6 +32,7 @@
 		</results>
 		<results_with_summary>
 			<item name="orgName" plural="orgNames" indexKey="orgName" max="15"/>
+			<item name="source" plural="sources" indexKey="source" max="40"/>
 			<item name="survey" plural="surveys" indexKey="survey" max="40"/>
 			<item name="project" plural="projects" indexKey="project" max="15"/>
 			<item name="gcmd" plural="gcmds" indexKey="gcmd" max="15"/>

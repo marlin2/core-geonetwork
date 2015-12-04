@@ -55,6 +55,7 @@ GeoNetwork.Settings.mdStore = GeoNetwork.data.MetadataResultsFastStore;
 
 //List of facet to display. If none, the server configuration is use.
 GeoNetwork.Settings.facetListConfig = [ 
+                                    {name: 'sources'}, 
                                     {name: 'surveys'}, 
                                     {name: 'projects'},
                                     {name: 'gcmds'}, 

@@ -669,6 +669,7 @@ GeoNetwork.Lang.en = {
     'createThesaurus': 'Create Thesaurus',
 	'Online data': 'Web Services',
 	'Data for download': 'Data Available',
+	'sources': 'Sources',
 	'surveys': 'Surveys',
 	'projects': 'Projects',
 	'gcmds': 'GCMD Keywords',
