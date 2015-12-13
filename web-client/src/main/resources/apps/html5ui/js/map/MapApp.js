@@ -118,6 +118,45 @@ GeoNetwork.mapApp = function() {
         });
     };
 
+		/**
+		 * Check when nationalmap becomes available (groups and subgroups)
+		 */
+		function whenNMAvailable(callback) {
+			var interval = 100; // ms
+			setTimeout(function() {
+				if ((window.nmObjects === undefined)
+				 || (window.nmObjects.nmApplicationViewModel === undefined)
+				 || (window.nmObjects.nmApplicationViewModel.catalog === undefined)
+				 || (window.nmObjects.nmApplicationViewModel.catalog.group === undefined)
+				 || (window.nmObjects.nmApplicationViewModel.catalog.group.isLoading === true)) {
+					//console.log("Not available");
+					setTimeout(function() {
+						whenNMAvailable(callback)
+					}, interval);
+				} else {
+					var topLevelGroup = window.nmObjects.nmApplicationViewModel.catalog.group;
+					var national = topLevelGroup.findFirstItemByName('GeoNetwork Data Sets');
+					if (national === undefined) {
+						//console.log("Not available");
+						setTimeout(function() {
+							whenNMAvailable(callback)
+						}, interval);
+					} else {
+						var gnGroup = national.findFirstItemByName('WMS Layers');
+						if (gnGroup === undefined) {
+							//console.log("Not available");
+							setTimeout(function() {
+								whenNMAvailable(callback)
+							}, interval);
+						} else {
+							//console.log("Available at last");
+							callback();
+						}
+					}
+				}
+			}, interval);
+		}
+
     // public space:
     return {
         initialize : false,
@@ -142,6 +181,8 @@ GeoNetwork.mapApp = function() {
 						// grab the current national map application view model and get the catalog which
 						// is an instance of CatalogViewModel - see main.js in nationalmap for how 
 						// nmObjects is created
+						whenNMAvailable(function() {
+
 						var nmObjects = window.nmObjects;
 						var catalog = nmObjects.nmApplicationViewModel.catalog;
 						var topLevelGroup = catalog.group;
@@ -159,6 +200,8 @@ GeoNetwork.mapApp = function() {
 							newItem.isShown = true;
 							gnGroup.add(newItem);
 						}
+
+						});
 				},
 
         /**

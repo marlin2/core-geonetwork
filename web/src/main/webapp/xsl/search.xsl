@@ -248,6 +248,9 @@
                       </div>
 	                    
 						<div id="big-map-container" style="display:none;background: #000;">
+							<div id="loadingIndicator"> <!-- will be hidden by nationalmap -->
+    						<div class="loading-indicator">Loading ...</div>
+							</div>
 							<div id="nationalmapContainer" class="nationalmap-container">
 								<div id="cesiumContainer" class="cesium-container"></div>
 							</div>
