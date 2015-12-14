@@ -16,6 +16,8 @@
 
   <xsl:import href="form-configurator.xsl"/>
 
+	<xsl:import href="menu-fn.xsl"/>
+
   <xsl:import href="menu-builder.xsl"/>
 
   <!-- 

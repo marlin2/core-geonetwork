@@ -50,53 +50,13 @@
               </li>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:for-each select="$config/editor/views/view[not(@disabled)]">
+              <xsl:for-each select="$config/editor/views/view[not(@disabled='true')]">
 
-                <xsl:variable name="isViewDisplayed" as="xs:boolean">
-                  <!-- Evaluate XPath expression to
-                    see if view should be displayed
-                    according to the metadata record or
-                    the session information. -->
-                  <xsl:variable name="isInRecord" as="xs:boolean">
-                    <xsl:choose>
-                      <xsl:when test="@displayIfRecord">
-                        <saxon:call-template name="{concat('evaluate-', $schema, '-boolean')}">
-                          <xsl:with-param name="base" select="$metadata"/>
-                          <xsl:with-param name="in" select="concat('/../', @displayIfRecord)"/>
-                        </saxon:call-template>
-                      </xsl:when>
-                      <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-
-                  <xsl:variable name="isInServiceInfo" as="xs:boolean">
-                    <xsl:choose>
-                      <xsl:when test="@displayIfServiceInfo">
-                        <saxon:call-template name="{concat('evaluate-', $schema, '-boolean')}">
-                          <xsl:with-param name="base" select="$serviceInfo"/>
-                          <xsl:with-param name="in" select="concat('/', @displayIfServiceInfo)"/>
-                        </saxon:call-template>
-                      </xsl:when>
-                      <xsl:otherwise><xsl:value-of select="false()"/></xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-
-                  <xsl:choose>
-                    <xsl:when test="@displayIfServiceInfo and @displayIfRecord">
-                      <xsl:value-of select="$isInServiceInfo and $isInRecord"/>
-                    </xsl:when>
-                    <xsl:when test="@displayIfServiceInfo">
-                      <xsl:value-of select="$isInServiceInfo"/>
-                    </xsl:when>
-                    <xsl:when test="@displayIfRecord">
-                      <xsl:value-of select="$isInRecord"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="true()"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:variable>
-
+								<xsl:variable name="isViewDisplayed" as="xs:boolean"
+								              select="gn-fn-metadata:check-viewtab-visibility(
+								                          $schema, $metadata, $serviceInfo,
+								                          @displayIfRecord,
+								                          @displayIfServiceInfo)"/>
 
                 <xsl:if test="$isViewDisplayed">
                   <li>
@@ -173,15 +133,17 @@
     </ul>
   </xsl:template>
 
-
   <!-- Create a link to a tab based on its identifier -->
   <xsl:template mode="menu-builder" match="tab">
-    <li>
-      <xsl:if test="$tab = @id">
-        <xsl:attribute name="class">active</xsl:attribute>
-      </xsl:if>
+		<xsl:variable name="isTabDisplayed" as="xs:boolean"
+	 	              select="gn-fn-metadata:check-viewtab-visibility(
+	                          $schema, $metadata, $serviceInfo,
+	                          @displayIfRecord,
+								            @displayIfServiceInfo)"/>
+
+    <li class="{if ($tab = @id) then 'active' else ''} {if ($isTabDisplayed) then '' else 'disabled'}">
       <a href="">
-        <xsl:if test="$tab != @id">
+        <xsl:if test="$tab != @id and $isTabDisplayed">
           <xsl:attribute name="data-ng-click" 
             select="concat('switchToTab(''', @id, ''', ''', @mode, ''')')"/>
         </xsl:if>
@@ -190,4 +152,5 @@
       </a>
     </li>
   </xsl:template>
+
 </xsl:stylesheet>
