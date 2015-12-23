@@ -455,6 +455,9 @@
       getUuid: function() {
         return this.props['geonet:info'].uuid;
       },
+      getTitle: function() {
+        return this.props.title;
+      },
       getLinks: function() {
         return this.props.link;
       },

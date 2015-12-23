@@ -9,6 +9,11 @@
   <!-- 
     Load the schema configuration for the editor.
       -->
+
+	<xsl:template name="get-dublin-core-is-service">
+		<xsl:value-of select="false()"/>
+	</xsl:template>
+
   <xsl:template name="get-dublin-core-configuration">
     <xsl:copy-of select="document('config-editor.xml')"/>
   </xsl:template>

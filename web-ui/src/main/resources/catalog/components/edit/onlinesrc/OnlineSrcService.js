@@ -397,6 +397,7 @@
             scopedName: qParams.name,
             uuidref: qParams.uuidSrv,
             uuid: qParams.uuidDS,
+            title: qParams.title,
             process: qParams.process
           }).then(function() {
             var qParams = setParams('dataset-add', params);
@@ -405,6 +406,7 @@
               scopedName: qParams.name,
               uuidref: qParams.uuidDS,
               uuid: qParams.uuidSrv,
+              title: qParams.title,
               process: qParams.process
             }).then(function() {
               closePopup(popupid);
@@ -527,7 +529,7 @@
         removeDataset: function(onlinesrc) {
           var params = {
             uuid: gnCurrentEdit.uuid,
-            uuidref: onlinesrc['geonet:info'].uuid
+            uuidref: onlinesrc.id
           };
           runProcess(this,
               setParams('datasets-remove', params));

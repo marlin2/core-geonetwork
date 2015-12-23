@@ -238,7 +238,7 @@
 				<xsl:variable name="serviceUrl">
 					<xsl:choose>
 						<xsl:when test="$connectPoint=''">
-							<xsl:value-of select="../gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
+							<xsl:value-of select="../../gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="$connectPoint"/>
@@ -255,6 +255,36 @@
 				 
 			</xsl:for-each>
 			
+			<!-- Create as many URI element for WPS services -->
+			<xsl:for-each select="
+				gmd:identificationInfo/srv:SV_ServiceIdentification[srv:serviceType/gco:LocalName='OGC:WPS']|
+				gmd:identificationInfo/*[contains(@gco:isoType, 'SV_ServiceIdentification') and srv:serviceType/gco:LocalName='OGC:WPS'] ">
+				<xsl:variable name="connectPoint" select="srv:containsOperations/srv:SV_OperationMetadata/srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
+
+				<xsl:variable name="serviceUrl">
+					<xsl:choose>
+						<xsl:when test="normalize-space($connectPoint)=''">
+							<xsl:value-of select="../../gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$connectPoint"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<xsl:variable name="serviceVersion">
+					<xsl:choose>
+						<xsl:when test="normalize-space(srv:serviceVersion/*)!=''">
+							<xsl:value-of select="normalize-space(srv:serviceVersion/*)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'1.0.0'"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+
+				<dc:URI protocol="OGC:WPS-{$serviceVersion}-http-get-capabilities"><xsl:value-of select="$serviceUrl"/></dc:URI>
+			</xsl:for-each>
 			
 			<xsl:for-each select="gmd:distributionInfo/gmd:MD_Distribution">
 				<xsl:for-each select="gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource">

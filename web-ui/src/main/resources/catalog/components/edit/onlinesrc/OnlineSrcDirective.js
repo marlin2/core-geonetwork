@@ -518,6 +518,7 @@
                   else {
                     scope.layers = links;
                     scope.srcParams.uuidDS = md.getUuid();
+										scope.srcParams.title = md.getTitle();
                     scope.srcParams.uuidSrv = gnCurrentEdit.uuid;
                   }
                 }
