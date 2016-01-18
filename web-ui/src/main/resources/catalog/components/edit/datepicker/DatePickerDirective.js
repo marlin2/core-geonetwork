@@ -106,8 +106,8 @@
 
           // Build xml snippet based on input date.
           var buildDate = function() {
-            var tag = scope.tagName !== undefined ?
-                scope.tagName : defaultElement;
+            var tag = scope.elementName !== undefined ?
+                scope.elementName : defaultElement;
             var namespace = tag.split(':')[0];
 
             if (scope.dateTypeSupported !== true) {
@@ -115,8 +115,8 @@
               if (scope.dateInput === undefined) {
                 return;
               } else {
-                if (scope.tagName !== undefined) {
-									tag = scope.tagName;
+                if (scope.elementName !== undefined) {
+									tag = scope.elementName;
 								} else {
 									if (scope.dateInput.indexOf('T') === -1) {
 										if (dateTimeFixed) { // force time to 00:00:00
@@ -142,8 +142,8 @@
 								scope.dateTime += '-01T00:00:00';
 							}
             } else if (scope.time) {
-              tag = scope.tagName !== undefined ?
-                  scope.tagName : 'gco:DateTime';
+              tag = scope.elementName !== undefined ?
+                  scope.elementName : 'gco:DateTime';
               var time = scope.time;
               // TODO: Set seconds, Timezone ?
               scope.dateTime = scope.date;
@@ -160,7 +160,8 @@
               	scope.dateTime = scope.date;
 							}
             }
-            if (tag === '') {
+						// working with a template key or gml:beginPosition etc
+            if ((scope.elementRef === undefined) || (scope.tagName === '')) {
               scope.xmlSnippet = scope.dateTime;
             } else {
               if (scope.dateTime != '' || scope.indeterminatePosition != '') {

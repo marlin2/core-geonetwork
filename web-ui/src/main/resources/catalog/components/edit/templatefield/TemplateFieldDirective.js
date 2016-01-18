@@ -78,7 +78,6 @@
                 updated = true;
               } else {
 								xmlSnippet = xmlSnippet.replace('{{' + fieldName + '}}', '');
-								updated = true;
 							}
             });
 
