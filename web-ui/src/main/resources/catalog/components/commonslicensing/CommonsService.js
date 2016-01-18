@@ -3,6 +3,9 @@
 
   var module = angular.module('gn_commons_service', []);
 
+	// define some factories that basically provide getters on JSON returned from the GN server
+
+	// factory that gets jurisdiction information
   module.factory('Jurisdiction', function() {
     function Jurisdiction(k) {
       this.props = $.extend(true, {}, k);
@@ -22,6 +25,7 @@
     return Jurisdiction;
   });
 
+	// factory that gets license information
   module.factory('License', function() {
     function License(l) {
       this.props = $.extend(true, {}, l);
@@ -43,12 +47,12 @@
   module.provider('gnCommonsService',
       function() {
         this.$get = [
-          '$q',
-          '$rootScope',
-          '$http',
-          'gnUrlUtils',
-          'Jurisdiction',
-					'License',
+          '$q',                                // angular service for running functions asynchronously - use to retrieve data from server
+          '$rootScope',                        // the application rootScope - not used
+          '$http',                             // angular service for ajax calls to geonetwork server 
+          'gnUrlUtils',                        // geonetwork module that does common manipulations on urls for geonetwork
+          'Jurisdiction',                      // Jurisdiction Factory (see above)
+					'License',                           // License Factory (see above)
           function($q, $rootScope, $http, gnUrlUtils, Jurisdiction, License) {
             return {
               /**
