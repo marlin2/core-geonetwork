@@ -213,6 +213,11 @@ public final class Processor {
 				Log.error(Log.XLINK_PROCESSOR,"Failed on " + uri 
 						+ " with exception message " + e.getMessage());
 			}
+
+			if (remoteFragment != null && remoteFragment.getName().equals("error")) {
+				Log.error(Log.XLINK_PROCESSOR,"Resolving xlink returned error: "+Xml.getString(remoteFragment));
+				remoteFragment = null;
+			}
 			
 			if (remoteFragment != null) {
 				xlinkCache.put(uri.toLowerCase(), remoteFragment);

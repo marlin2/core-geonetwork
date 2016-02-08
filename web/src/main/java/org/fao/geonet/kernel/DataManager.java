@@ -1602,7 +1602,11 @@ public class DataManager {
         //--- store metadata
         xmlSerializer.insert(dbms, schema, metadata, id, source, uuid, createDate, changeDate, isTemplate, title, owner, group, docType, context);
 
-        copyDefaultPrivForGroup(context, dbms, id$, group, false);
+        if (isTemplate.equals("s")) { // set view permissions on subtemplates - available to everyone
+          setOperation(context, dbms, id+"", "1", AccessManager.OPER_VIEW);
+        } else {
+          copyDefaultPrivForGroup(context, dbms, id$, group, false);
+        }
 
         if (category != null) {
             setCategory(context, dbms, id$, category);
