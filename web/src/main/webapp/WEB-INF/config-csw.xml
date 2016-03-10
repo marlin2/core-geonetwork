@@ -9,7 +9,7 @@
 		</operation>
 		<operation name="GetDomain">
 			<!-- Defines the number of records that will be processed for any propertyname  -->
-			<maxNumberOfRecordsForPropertyNames>1000</maxNumberOfRecordsForPropertyNames>
+			<maxNumberOfRecordsForPropertyNames>100000</maxNumberOfRecordsForPropertyNames>
 		</operation>
 		<operation name="GetRecords">
 			<parameters>
