@@ -340,7 +340,8 @@ public final class Processor {
             if(Log.isDebugEnabled(Log.XLINK_PROCESSOR)) Log.debug(Log.XLINK_PROCESSOR, "will resolve href '"+hrefUri+"'");
 			String idSearch = null;
 			int hash = hrefUri.indexOf('#');
-			if (hash > 0 && hash != hrefUri.length()-1) {
+			int questionMark = hrefUri.indexOf('?'); // could be in an argument to the url so exclude if so
+			if (hash > 0 && hash != hrefUri.length()-1 && hash < questionMark) {
 				idSearch = hrefUri.substring(hash+1);
 				hrefUri = hrefUri.substring(0, hash);
 			}
