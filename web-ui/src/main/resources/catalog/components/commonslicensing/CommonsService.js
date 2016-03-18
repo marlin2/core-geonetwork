@@ -58,7 +58,7 @@
               /**
                * Request the XML for the mcp:MD_Commons element. 
                */
-              getXML: function(juris, namespace, name, imageurl, url) {
+              getXML: function(juris, namespace, name, imageurl, url, attribution, derivative, commercial) {
                 // http://localhost:8080/geonetwork/srv/eng/
                 // creativecommons.get?type=creative_commons&jurisdiction=au&...
                 var defer = $q.defer();
@@ -68,7 +68,10 @@
 											ns: namespace,
 											licensename: name ? name : '',
 											licenseurl: url ? url : '',
-											licenseimageurl: imageurl ? imageurl : ''
+											licenseimageurl: imageurl ? imageurl : '',
+											attribution: attribution ? attribution : '',
+											derivative: derivative ? derivative : '',
+											commercial: commercial ? commercial : ''
                     })
                     );
                 $http.get(url, { cache: true }).

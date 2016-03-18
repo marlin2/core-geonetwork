@@ -30,7 +30,10 @@
 						 namespace: '@namespace',                                   // data-namespace
              currentLicenseName: '@licenseName',                        // data-license-name
              currentLicenseUrl: '@licenseUrl',                          // data-license-url
-             currentLicenseImageUrl: '@licenseImageUrl'                 // data-license-image-url
+             currentLicenseImageUrl: '@licenseImageUrl',                // data-license-image-url
+             attributionConstraint: '@attributionConstraint',           // data-attribution-constraint
+             derivativeConstraint: '@derivativeConstraint',             // data-derivative-constraint
+             commercialUseConstraint: '@commercialUseConstraint'        // data-commercial-use-constraint
            },
            templateUrl: '../../catalog/components/commonslicensing/' +     
            'partials/licenseselector.html',                  // this is the HTML template that our directive will add to the editor form
@@ -92,7 +95,7 @@
              scope.addCommons = function(l) {
 						 	 scope.currentLicenseName = l.getName();
                gnCommonsService
-               	.getXML(scope.currentJurisdiction, scope.namespace, l.getName(), l.getImageUrl(), l.getUrl()).then(
+               	.getXML(scope.currentJurisdiction, scope.namespace, l.getName(), l.getImageUrl(), l.getUrl(), scope.attributionConstraint, scope.derivativeConstraint, scope.commercialUseConstraint).then(
                	function(data) {
                		// Add the fragment to the form, ready for saving later on
                   var xmlDeclaration =
