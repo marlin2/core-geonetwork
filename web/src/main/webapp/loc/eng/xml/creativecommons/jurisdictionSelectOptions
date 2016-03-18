@@ -1,4 +1,6 @@
-<select name="f_jurisdiction"><option value="http://creativecommons.org/international/ar/">Argentina</option>
+<select name="f_jurisdiction">
+<option value="http://creativecommons.org/licenses">International</option>
+<option value="http://creativecommons.org/international/ar/">Argentina</option>
 <option value="http://creativecommons.org/international/sg/">Singapore</option>
 <option value="http://creativecommons.org/international/si/">Slovenia</option>
 <option value="http://creativecommons.org/international/bg/">Bulgaria</option>

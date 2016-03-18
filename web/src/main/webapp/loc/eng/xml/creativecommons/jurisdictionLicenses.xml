@@ -1,4 +1,15 @@
 <jurisdictions>
+<jurisdiction name="">
+<select name="f_choice">
+<option value="http://creativecommons.org/licenses/by/4.0/">Attribution 4.0</option>
+<option value="http://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nc/4.0/">Attribution-NonCommercial 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nd/4.0/">Attribution-NoDerivs 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/4.0/">Attribution-NonCommercial-NoDerivs 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
 <jurisdiction name="ar">
 <select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/ar/">Attribution 2.5 Argentina</option>
 <option value="http://creativecommons.org/licenses/by-sa/2.5/ar/">Attribution-ShareAlike 2.5 Argentina</option>
