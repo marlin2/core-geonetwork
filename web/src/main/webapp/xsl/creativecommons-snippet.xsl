@@ -23,7 +23,14 @@
 			<xsl:attribute name="mcp:commonsType" namespace="{$mcpns}">Creative Commons</xsl:attribute>
 			<xsl:attribute name="gco:isoType">gmd:MD_Constraints</xsl:attribute>
 			<xsl:element name="mcp:jurisdictionLink" namespace="{$mcpns}">
-				<gmd:URL><xsl:value-of select="concat($ccurl[1],'/international/',jurisdiction,'/')"/></gmd:URL>
+				<xsl:choose>
+					<xsl:when test="normalize-space(jurisdiction)='International'">
+						<gmd:URL>http://creativecommons.org/licenses</gmd:URL>
+					</xsl:when>
+					<xsl:otherwise>
+						<gmd:URL><xsl:value-of select="concat($ccurl[1],'/international/',jurisdiction,'/')"/></gmd:URL>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:element>
 			<xsl:element name="mcp:licenseLink" namespace="{$mcpns}">
 				<gmd:URL><xsl:value-of select="licenseurl"/></gmd:URL>

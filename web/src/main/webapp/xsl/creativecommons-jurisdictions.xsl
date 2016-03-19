@@ -14,7 +14,17 @@
 			<xsl:for-each select="option">
 				<xsl:sort select="."/>
 				<jurisdiction>
-					<shortname><xsl:value-of select="substring-before(substring-after(@value,'http://creativecommons.org/international/'),'/')"/></shortname>
+					<xsl:variable name="short" select="substring-before(substring-after(@value,'http://creativecommons.org/international/'),'/')"/>
+					<shortname>
+						<xsl:choose>
+							<xsl:when test="normalize-space($short)!=''">
+								<xsl:value-of select="$short"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'International'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</shortname>
 					<name><xsl:value-of select="."/></name>
 					<url><xsl:value-of select="@value"/></url>
 				</jurisdiction>			

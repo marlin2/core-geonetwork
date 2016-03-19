@@ -79,20 +79,13 @@
                      scope.currentLicenseUrl  = listOfLicenses[0].getUrl();
                      scope.currentLicenseImageUrl = listOfLicenses[0].getImageUrl(); 
 										 scope.currentLicense = listOfLicenses[0];
-                  } 
-                   gnCommonsService
-                    .getXML(scope.currentJurisdiction, 
-                            scope.namespace,
-                            scope.currentLicenseName,
-                            scope.currentLicenseImageUrl,
-                            scope.currentLicenseUrl).then(
-                   function(data) {
-                     // Add the fragment to the form
-                    var xmlDeclaration =
-                          '<?xml version="1.0" encoding="UTF-8"?>';
-                     scope.snippet = data.replace(xmlDeclaration,'');
-                     scope.snippetRef = '_X'+scope.elementRef;
-                   });
+                  } else {
+										for (var i = 0;i < listOfLicenses.length;i++) {
+											var lic = listOfLicenses[i];
+											if (lic.getName() === scope.currentLicenseName) scope.currentLicense = lic;
+										}
+									}
+									scope.addCommons(currentLicense);
                });
                return false;
              };
