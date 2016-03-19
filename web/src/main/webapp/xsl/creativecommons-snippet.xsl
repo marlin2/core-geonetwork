@@ -34,17 +34,17 @@
 			<xsl:element name="mcp:licenseName" namespace="{$mcpns}">
 				<gco:CharacterString><xsl:value-of select="licensename"/></gco:CharacterString>
 			</xsl:element>
-			<xsl:if test="normalize-space($attribution)!=''">
+			<xsl:if test="normalize-space(attribution)!=''">
 				<xsl:element name="mcp:attributionConstraints" namespace="{$mcpns}">
 					<gco:CharacterString><xsl:value-of select="attribution"/></gco:CharacterString>
 				</xsl:element>
 			</xsl:if>
-			<xsl:if test="normalize-space($derivative)!=''">
+			<xsl:if test="normalize-space(derivative)!=''">
 				<xsl:element name="mcp:derivativeConstraints" namespace="{$mcpns}">
 					<gco:CharacterString><xsl:value-of select="derivative"/></gco:CharacterString>
 				</xsl:element>
 			</xsl:if>
-			<xsl:if test="normalize-space($commercial)!=''">
+			<xsl:if test="normalize-space(commercial)!=''">
 				<xsl:element name="mcp:commercialUseConstraints" namespace="{$mcpns}">
 					<gco:CharacterString><xsl:value-of select="commercial"/></gco:CharacterString>
 				</xsl:element>
