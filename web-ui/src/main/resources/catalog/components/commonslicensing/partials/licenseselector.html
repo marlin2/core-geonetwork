@@ -26,15 +26,15 @@
 		</div>
 					<div ng-if="currentLicenseName.indexOf('Attribution')>-1" class="gn-field">
 						<label for="aCons">Attribution Constraints</label>
-						<textarea id="aCons" class="form-control" data-gn-autogrow ng-model="attributionConstraint" data-ng-change="addCommons()" />
+						<textarea id="aCons" class="form-control" data-gn-autogrow data-ng-model="constraints.attribution" data-ng-change="addCommons(currentLicense)" data-ng-model-options="{updateOn: 'blur'}"/>
 					</div>
 					<div ng-if="currentLicenseName.indexOf('Attribution')>-1 && currentLicenseName.indexOf('NoDerivs')=='-1'" class="gn-field">
 						<label for="dCons">Derivative Constraints</label>
-						<textarea type="text" id="dCons" class="form-control" data-gn-autogrow ng-model="derivativeConstraint" data-ng-change="addCommons()"/>
+						<textarea type="text" id="dCons" class="form-control" data-gn-autogrow data-ng-model="constraints.derivative" data-ng-change="addCommons(currentLicense)" data-ng-model-options="{updateOn: 'blur'}"/>
 					</div>
 					<div ng-if="currentLicenseName.indexOf('Attribution')>-1 && currentLicenseName.indexOf('NonCommercial')=='-1'" class="gn-field">
 						<label for="cUseCons">Commercial Use Constraints</label>
-						<textarea type="text" id="cUseCons" class="form-control" data-gn-autogrow ng-model="commercialUseConstraint" data-ng-change="addCommons()"/>
+						<textarea type="text" id="cUseCons" class="form-control" data-gn-autogrow data-ng-model="constraints.commercialUse" data-ng-change="addCommons(currentLicense)" data-ng-model-options="{updateOn: 'blur'}"/>
 					</div>
 	</div>
   <!-- The commons snippet to insert once received -->
