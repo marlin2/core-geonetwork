@@ -85,7 +85,7 @@
 											if (lic.getName() === scope.currentLicenseName) scope.currentLicense = lic;
 										}
 									}
-									scope.addCommons(currentLicense);
+									scope.addCommons(scope.currentLicense);
                });
                return false;
              };
