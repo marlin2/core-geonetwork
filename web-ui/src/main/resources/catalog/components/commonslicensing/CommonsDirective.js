@@ -16,8 +16,8 @@
   // Documentation on directives can be found at https://docs.angularjs.org/guide/directive
   module.directive('gnCommonsJurisdictionSelector',
      // pass in the other modules we will use in this directive - we use only one: gnCommonsService
-     [ 'gnCommonsService',
-       function(gnCommonsService) {
+     [ 'gnCommonsService', 'gnCurrentEdit',
+       function(gnCommonsService, gnCurrentEdit) {
          return {
             // directive options
            restrict: 'A',    // this directive can only be matched if the attribute data-gn-commons-jurisdiction-selector is present
@@ -94,6 +94,7 @@
              // metadata record when the editor form is submitted
              scope.addCommons = function(l) {
                 scope.currentLicenseName = l.getName();
+							 gnCurrentEdit.saving = true;
                gnCommonsService
                  .getXML(scope.currentJurisdiction, scope.namespace, l.getName(), l.getImageUrl(), l.getUrl(), scope.constraints.attribution, scope.constraints.derivative, scope.constraints.commercialUse).then(
                  function(data) {
@@ -102,6 +103,7 @@
                           '<?xml version="1.0" encoding="UTF-8"?>';
                    scope.snippet = data.replace(xmlDeclaration,'');
                    scope.snippetRef = '_X'+scope.elementRef;
+									 gnCurrentEdit.saving = false;
                });
                scope.currentLicense = l;
                return false;
