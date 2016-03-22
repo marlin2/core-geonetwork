@@ -59,7 +59,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
@@ -87,7 +88,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
@@ -105,7 +107,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
@@ -123,7 +126,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
@@ -141,7 +145,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
@@ -159,7 +164,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
@@ -177,7 +183,8 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","service","onlinesrc","parent","sibling"]
+					"categories":["thumbnail","onlinesrc"],
+					"uploadFileDisabled":true
 				},
 				"suggestion":
 				{
