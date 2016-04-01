@@ -59,8 +59,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
@@ -88,8 +87,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
@@ -107,8 +105,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
@@ -126,8 +123,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
@@ -145,8 +141,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
@@ -164,8 +159,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
@@ -183,8 +177,7 @@
 				"related":
 				{
 					"display":true,
-					"categories":["thumbnail","onlinesrc"],
-					"uploadFileDisabled":true
+					"categories":["thumbnail","onlinesrc"]
 				},
 				"suggestion":
 				{
