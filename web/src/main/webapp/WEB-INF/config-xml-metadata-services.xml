@@ -66,6 +66,12 @@
 		<!-- Status Services -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+		<!-- Add xml.metadata.status as synonym for xml.metadata.status.set -->
+		<service name="xml.metadata.status">
+			<class name=".services.metadata.UpdateStatus"/>
+			<error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8"/> 
+		</service>
+
 		<service name="xml.metadata.status.set">
 			<class name=".services.metadata.UpdateStatus"/>
 			<error sheet="xml-error.xsl" contentType="application/xml; charset=UTF-8"/> 

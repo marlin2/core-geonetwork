@@ -467,6 +467,7 @@ public class CatalogSearcher {
             sort = LuceneSearcher.makeSort(fields, _lang, requestedLanguageOnTop);
 		}
 
+
 		// --- put query on groups in AND with lucene query
 
 		BooleanQuery query = new BooleanQuery();
@@ -483,6 +484,16 @@ public class CatalogSearcher {
 			query.add(data, occur);
         }
 		query.add(groups, occur);
+
+		// if no authenticated user then only show approved records ie _status = 2
+		if (context.getUserSession().getUserId() == null) {
+		  BooleanQuery bq = new BooleanQuery();
+		  BooleanClause.Occur statoccur = LuceneUtils
+				.convertRequiredAndProhibitedToOccur(false, false);
+			TermQuery tq = new TermQuery(new Term("_status", "2"));
+			bq.add(tq, statoccur);
+			query.add(bq, occur);
+		}
 
         if (cswCustomFilterQuery != null) {
             query.add(cswCustomFilterQuery, occur);
@@ -721,11 +732,7 @@ public class CatalogSearcher {
 			TermQuery tq = new TermQuery(new Term("_owner", context
 					.getUserSession().getUserId()));
 			query.add(tq, occur);
-		} else { // if no authenticated user then only show approved records ie _status = 2
-			TermQuery tq = new TermQuery(new Term("_status", "2"));
-			query.add(tq, occur);
-		}
-
+		} 
 		return query;
 	}
 
