@@ -2871,6 +2871,16 @@ public class DataManager {
                 }
                 env.addContent(new Element("datadir").setText(Lib.resource.getDir(dataDir, Params.Access.PRIVATE, id)));
 
+								// add user information to env if user is authenticated (should be)
+								Element user = new Element("user");
+								UserSession usrSess = context.getUserSession();
+                if (usrSess.isAuthenticated()) {
+               		String myUserId  = usrSess.getUserId(); 
+									Element elUser = dbms.select("SELECT * FROM Users WHERE id=?", Integer.valueOf(myUserId));
+									elUser.setName("details");
+									user.addContent(elUser);
+								}
+								env.addContent(user);
 
 								// some more stuff to add to env
                 env.addContent(new Element("siteURL")   .setText(getSiteURL()));
