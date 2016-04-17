@@ -644,8 +644,9 @@ class Harvester extends BaseAligner
 			
             reg.id = dataMan.insertMetadata(context, dbms, schema, xml, context.getSerialFactory().getSerial(dbms, "Metadata"), reg.uuid, Integer.parseInt(params.ownerId), group, params.uuid,
                          isTemplate, docType, title, category, date, date, ufo, indexImmediate);
-			
-			xml = dataMan.updateFixedInfo(schema, reg.id, params.uuid, xml, null, DataManager.UpdateDatestamp.no, dbms, context);
+		
+			boolean created = false;
+			xml = dataMan.updateFixedInfo(schema, reg.id, params.uuid, xml, null, DataManager.UpdateDatestamp.no, dbms, context, created);
 			
 			int iId = Integer.parseInt(reg.id);
             if(log.isDebugEnabled()) log.debug("    - Layer loaded in DB.");
