@@ -260,10 +260,15 @@ public class GeonetHarvester extends AbstractHarvester
 
 	protected void doHarvest(Logger log, ResourceManager rm) throws Exception
 	{
-		Dbms dbms = (Dbms) rm.open(Geonet.Res.MAIN_DB);
+		Dbms dbms = null;
 
-		Harvester h = new Harvester(log, context, dbms, params);
-		result = h.harvest();
+		try {
+			dbms = (Dbms) rm.openDirect(Geonet.Res.MAIN_DB);
+			Harvester h = new Harvester(log, context, dbms, params);
+			result = h.harvest();
+		} finally {
+			if (dbms != null) rm.close(Geonet.Res.MAIN_DB, dbms);
+		}
 	}
 
 	//---------------------------------------------------------------------------

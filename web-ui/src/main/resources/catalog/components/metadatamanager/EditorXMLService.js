@@ -44,7 +44,7 @@
         '<cit:date>' +
         '<cit:CI_Date>' +
         '<cit:date>' +
-        '<gco:Date>2008-11-12</gco:Date>' +
+        '<gco:DateTime>2008-11-12</gco:DateTime>' +
         '</cit:date>' +
         '<cit:dateType>' +
         '<cit:CI_DateTypeCode codeList="codeListLocation" codeListValue="publication">publication</cit:CI_DateTypeCode>' +
