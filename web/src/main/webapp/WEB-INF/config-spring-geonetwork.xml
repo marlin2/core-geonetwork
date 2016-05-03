@@ -27,7 +27,7 @@
 		<constructor-arg ref="languages"></constructor-arg>
 		<property name="cacheAllRegionsInMemory" value="true"/>
 		<!-- <property name="thesaurusName" value="external.place.regions"/> -->
-		<property name="thesaurusName" value="external.place.anzlic-allgens"/>
+		<property name="thesaurusName" value="register.place.urn:aodn.org.au:geographicextents"/>
 	</bean>
 	<!--<bean id="MetadataRegionsDAO" class="org.fao.geonet.services.region.MetadataRegionDAO">
 		<property name="cacheAllRegionsInMemory" value="false"/>
