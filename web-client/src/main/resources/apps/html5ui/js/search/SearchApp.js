@@ -71,10 +71,10 @@ GeoNetwork.searchApp = function() {
             });
         },
         /**
-         * Set event in order to display some search criteria only when user is
-         * logged in.
+         * Set event in order to display some search criteria only when a registered, non-administrator user is
+         * logged in - avoid administrator.
          */
-        setRegisteredUserFieldsCallback : function(registeredUserFields) {
+        setRegisteredUserFieldsOnlyCallback : function(registeredUserFields) {
             // Hide or show extra fields after login event
 						var loggedIn = catalogue.identifiedUser && catalogue.identifiedUser.role !== "Administrator";
             Ext.each(registeredUserFields, function(item) {
@@ -83,6 +83,27 @@ GeoNetwork.searchApp = function() {
             catalogue.on('afterLogin', function() {
                 Ext.each(registeredUserFields, function(item) {
                     item.setVisible(catalogue.identifiedUser && catalogue.identifiedUser.role !== "Administrator");
+                });
+            });
+            catalogue.on('afterLogout', function() {
+                Ext.each(registeredUserFields, function(item) {
+                    item.setVisible(false);
+                });
+            });
+        },
+        /**
+         * Set event in order to display some search criteria only when user is
+         * logged in.
+         */
+        setRegisteredUserFieldsCallback : function(registeredUserFields) {
+            // Hide or show extra fields after login event
+						var loggedIn = catalogue.identifiedUser;
+            Ext.each(registeredUserFields, function(item) {
+                item.setVisible(loggedIn);
+            });
+            catalogue.on('afterLogin', function() {
+                Ext.each(registeredUserFields, function(item) {
+                    item.setVisible(catalogue.identifiedUser);
                 });
             });
             catalogue.on('afterLogout', function() {
@@ -368,8 +389,9 @@ GeoNetwork.searchApp = function() {
                    }]
             });
 
-            this.setAdminFieldsCallback([ groupField, ownedByField, ownerGroupField, statusField ]);
-            this.setRegisteredUserFieldsCallback([ statusField, myMetadata_ ]);
+            this.setAdminFieldsCallback([ groupField, ownedByField, ownerGroupField ]);
+            this.setRegisteredUserFieldsOnlyCallback([ myMetadata_ ]);
+            this.setRegisteredUserFieldsCallback([ statusField ]);
 
             return new GeoNetwork.SearchFormPanel({
                 id : 'advanced-search-options-content-form',
