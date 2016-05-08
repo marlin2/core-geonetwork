@@ -126,7 +126,7 @@
 				  </span>
 					<!-- from here on, all elements are floated to the right so 
 					     they are in reverse order -->
-					<a id="help-button" target="_blank" href="/geonetwork/docs/eng/users">
+					<a id="help-button" target="_blank" href="https://confluence.csiro.au/display/DataCentreShared/MARLIN">
 						<i class="fa fa-question-circle"></i><xsl:value-of select="/root/gui/strings/help"/>
 					</a>
 					<a id="lang-button" href="javascript:toggle('lang-form');">
