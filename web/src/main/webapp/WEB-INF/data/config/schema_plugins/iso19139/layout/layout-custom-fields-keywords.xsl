@@ -148,6 +148,7 @@
           data-max-tags="{$maxTags}">
         </div>
 
+				<!--
         <xsl:variable name="isTypePlace" select="count(gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='place']) > 0"/>
         <xsl:if test="$isTypePlace">
           <xsl:call-template name="render-batch-process-button">
@@ -155,6 +156,7 @@
             <xsl:with-param name="process-params">{"replace": true}</xsl:with-param>
           </xsl:call-template>
         </xsl:if>
+				-->
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates mode="mode-iso19139" select="*"/>
