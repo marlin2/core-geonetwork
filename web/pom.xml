@@ -564,7 +564,6 @@
                 <exclude>iso19139.xyz/**</exclude>
                 <exclude>iso19139.geobru/**</exclude>
                 <exclude>iso19139.sdn-cdi/**</exclude>
-                <exclude>iso19139.sdn-csr/**</exclude>
                 <exclude>iso19139.rndt/**</exclude>
                 <exclude>iso19139.nap*/**</exclude>
                 <exclude>iso19139.ngmp/**</exclude>
