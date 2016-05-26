@@ -245,6 +245,9 @@
 	                    	<div id="about-text">
 	                      	<xsl:copy-of select="/root/gui/strings/about.text"/>
                         </div>
+												<div style="margin: 1.33em;">
+													<strong><xsl:value-of select="concat(/root/gui/builddetails/name,' (',/root/gui/builddetails/version,')')"/></strong> Built on: <strong><xsl:value-of select="/root/gui/builddetails/timestamp"/></strong> Build number: <xsl:value-of select="/root/gui/builddetails/revision"/>
+												</div>
                       </div>
 	                    
 						<div id="big-map-container" style="display:none;background: #000;">
