@@ -206,6 +206,12 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
     identifiedUser: undefined,
     
     metadataEditFn: undefined,
+
+    /** api: property[metadataEditFnCallback]
+     *  ``Function`` Callback to be executed when editing (see metadataEdit2).
+     */
+    metadataEditFnCallback: undefined,
+
     /** api: config[adminAppUrl]
      *  ``String`` URL to the administration interface
      *  TODO : should we go to admin service by default ?
@@ -1030,6 +1036,7 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
           url += 'metadata/' + id;
         }
         window.open(url, '_blank');
+				if (this.metadataEditFnCallback) this.metadataEditFnCallback();
       }
     },
     myMetadata: function(){

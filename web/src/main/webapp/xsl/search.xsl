@@ -258,7 +258,11 @@
 								<div id="cesiumContainer" class="cesium-container"></div>
 							</div>
 						</div>
-                       <div id="metadata-info" style="display:none;"/>
+            <div id="metadata-container" style="display:none;">
+							<div id="metadata-refresh-button" style="display:none;margin-top:20px;margin-left:20px;"></div>
+              <div id="metadata-info">
+							</div>
+						</div>
 						<div id="search-container" class="main wrapper clearfix">
 							<div id="bread-crumb-div"></div>
 

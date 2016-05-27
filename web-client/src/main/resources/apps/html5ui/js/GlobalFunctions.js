@@ -199,7 +199,7 @@ function showMetadata() {
     hideSearch();
     hideBigMap();
 
-    show("metadata-info");
+    show("metadata-container");
 		show("bread-crumb-app");
 
     app.breadcrumb.setDefaultPrevious(2);
@@ -212,7 +212,7 @@ function showMetadata() {
 }
 
 function hideMetadata() {
-    hide("metadata-info");
+    hide("metadata-container");
     hide("share-capabilities");
 		hide("bread-crumb-app");
 

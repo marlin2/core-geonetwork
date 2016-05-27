@@ -163,7 +163,7 @@ GeoNetwork.app = function() {
         });
     };
 
-    function edit(metadataId, create, group, child) {
+    function editMetadata(metadataId, create, group, child) {
 
         Ext.getCmp('metadata-panel') && Ext.getCmp('metadata-panel').destroy();
         var editorPanel = new GeoNetwork.editor.EditorPanel({
@@ -196,7 +196,16 @@ GeoNetwork.app = function() {
         });
     }
 
-    function show(uuid, record, url, maximized, width, height, clean) {
+    // Function supplied to Catalog to be called when metadata in viewer is edited
+    function showRefreshButtonHideMetadata() {
+				show('metadata-refresh-button');
+				hide('metadata-info');
+		}
+
+    function viewMetadata(uuid, record, url, maximized, width, height, clean) {
+
+
+    	var viewMetadataFn = function(uuid, record, url, maximized, width, height, clean) {
 
         Ext.get("metadata-info").update("");
 
@@ -362,8 +371,25 @@ GeoNetwork.app = function() {
         });
 
         Ext.getCmp("metadata-panel").doLayout();
+        hide('metadata-refresh-button');
+        show('metadata-info');
 
-    }
+    	};
+
+      Ext.get("metadata-refresh-button").update("");
+			var fileBtn =  new Ext.Button({
+			    text    : 'Refresh this record',
+					renderTo: 'metadata-refresh-button',
+			    listeners: {
+						click: function() {
+						  viewMetadataFn(uuid, record, url, maximized, width, height, clean);
+					  }
+					}
+		  });
+
+			viewMetadataFn(uuid, record, url, maximized, width, height, clean);
+
+		}
 
     // public space:
     return {
@@ -445,8 +471,9 @@ GeoNetwork.app = function() {
                                 .MetadataCSWResultsStore(),
                         summaryStore : GeoNetwork.data.MetadataSummaryStore(),
                         editMode : 2,
-                        metadataEditFn : edit,
-                        metadataShowFn : show
+                        metadataEditFn : editMetadata,
+                        metadataEditFnCallback : showRefreshButtonHideMetadata,
+                        metadataShowFn : viewMetadata
                     });
 
             // Make sure we are still logged in:
@@ -508,7 +535,7 @@ GeoNetwork.app = function() {
             }
         },
         edit : function(uuid) {
-            edit(uuid);
+            editMetadata(uuid);
         },
         switchMode : function() {
             // Deprecated
