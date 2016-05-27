@@ -717,7 +717,7 @@ nav {
 .main article {
   float: left;
 	width: 78%;
-	margin: 9px;
+	margin: 10px 0;
 }
 
 .main article#map {
