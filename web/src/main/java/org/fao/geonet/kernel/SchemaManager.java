@@ -1678,7 +1678,7 @@ public class SchemaManager {
 					for (String t : needleToken) {
 											Log.debug(Geonet.SCHEMA_MANAGER, "    Comparing: '" + t + "' \n****with****\n '" + tempVal + "'");
 	                    if(tempVal!=null && needleVal!=null){
-	                        returnVal = t.equals(tempVal);
+	                        returnVal = t.equals(tempVal) || tempVal.matches(t);
 	                        if (returnVal) {
                                 if(Log.isDebugEnabled(Geonet.SCHEMA_MANAGER))
                                     Log.debug(Geonet.SCHEMA_MANAGER, "    Found value: " + t + " for needle: " + needleName);
