@@ -26,7 +26,7 @@
 
   <!-- Geonetwork module (and submodule) logging -->
   <logger name="geonetwork" additivity="false">
-    <level value="WARN"/>
+    <level value="DEBUG"/>
     <appender-ref ref="consoleAppender"/>
     <appender-ref ref="fileAppender"/>
   </logger>
@@ -76,7 +76,7 @@
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.harvester" additivity="false">
-    <level value="WARN"/>
+    <level value="DEBUG"/>
     <appender-ref ref="consoleAppender"/>
     <appender-ref ref="fileAppender"/>
   </logger>
@@ -119,7 +119,7 @@
 
   <!--  Jeeves module and submodule logger configuration -->
   <logger name="jeeves" additivity="false">
-    <level value="WARN"/>
+    <level value="DEBUG"/>
     <appender-ref ref="consoleAppender"/>
     <appender-ref ref="fileAppender"/>
   </logger>
