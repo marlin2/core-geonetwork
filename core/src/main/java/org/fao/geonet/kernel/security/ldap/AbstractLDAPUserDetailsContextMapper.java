@@ -59,6 +59,7 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
     WritableUserDetailsContextMapper {
 
     protected boolean importPrivilegesFromLdap;
+    protected boolean keepExistingUserGroups = false;
     protected DefaultSpringSecurityContextSource contextSource;
     Map<String, String[]> mapping;
     Map<String, Profile> profileMapping;
@@ -197,7 +198,7 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
                 p.setCn(cn);
                 ldapManager.createUser(p.createUserDetails());
             }
-            ldapUtils.saveUser(userDetails, importPrivilegesFromLdap, createNonExistingLdapGroup);
+            ldapUtils.saveUser(userDetails, importPrivilegesFromLdap, createNonExistingLdapGroup, keepExistingUserGroups);
         } catch (Exception e) {
             throw new AuthenticationServiceException(
                 "Unexpected error while saving/updating LDAP user in database",
@@ -325,4 +326,11 @@ public abstract class AbstractLDAPUserDetailsContextMapper implements
         this.ldapBaseDn = ldapBaseDn;
     }
 
+    public boolean keepExistingUserGroups() {
+        return keepExistingUserGroups;
+    }
+
+    public void setKeepExistingUserGroups(boolean keepExistingUserGroups) {
+        this.keepExistingUserGroups = keepExistingUserGroups;
+    }
 }
