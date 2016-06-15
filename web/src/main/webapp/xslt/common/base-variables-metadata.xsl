@@ -97,8 +97,9 @@
     <xsl:call-template name="get-iso19139-configuration"/>
   </xsl:variable>
   
-  <xsl:variable name="tab" select="if (/root/gui/currTab) then /root/gui/currTab else 
-    $editorConfig/editor/views/view/tab[@default]/@id"/>
+  <xsl:variable name="tab" select="if (/root/request/currTab) then /root/request/currTab 
+                                   else if (/root/gui/currTab) then /root/gui/currTab 
+                                   else $editorConfig/editor/views/view/tab[@default]/@id"/>
  	
   <xsl:variable name="currentView" as="node()">
 			<xsl:variable name="views" select="$editorConfig/editor/views/view[tab/@id = $tab]"/>

@@ -37,6 +37,7 @@
 
   goog.require('gn_batchedit_controller');
   goog.require('gn_directory_controller');
+  goog.require('gn_commons');
   goog.require('gn_editorboard_controller');
   goog.require('gn_fields');
   goog.require('gn_import_controller');
@@ -53,7 +54,7 @@
        'gn_editorboard_controller', 'gn_share',
        'gn_directory_controller', 'gn_utility_directive',
        'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker',
-       'ngRoute', 'gn_mdactions_service']);
+       'ngRoute', 'gn_mdactions_service', 'gn_commons']);
 
   var tplFolder = '../../catalog/templates/editor/';
 

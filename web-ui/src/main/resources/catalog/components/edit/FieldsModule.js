@@ -68,7 +68,6 @@
   goog.require('gn_fields_directive');
   goog.require('gn_logo_selector_directive');
   goog.require('gn_multilingual_field_directive');
-  goog.require('gn_organisation_entry_selector');
   goog.require('gn_template_field_directive');
 
 
@@ -79,7 +78,6 @@
     'gn_editor_helper',
     'gn_template_field_directive',
     'gn_directory_entry_selector',
-    'gn_organisation_entry_selector',
     'gn_batch_process_button',
     'gn_multilingual_field_directive',
     'gn_logo_selector_directive',

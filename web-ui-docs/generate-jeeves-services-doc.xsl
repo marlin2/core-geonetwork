@@ -103,11 +103,10 @@
       * Output XSLT: [<xsl:value-of select="substring-after(output/@sheet, '../')"/>](<xsl:value-of
       select="$xslURL"/>)
 
-      <xsl:if test="output/xml">
-        <xsl:variable name="locURL" select="concat($githubBaseURL, 'loc/eng/', output/xml/@file)"/>
-        * i18n resource: [<xsl:value-of select="output/xml/@name"/>](<xsl:value-of
-        select="$locURL"/>)
-      </xsl:if>
+      <xsl:for-each select="output/xml">
+        <xsl:variable name="locURL" select="concat($githubBaseURL, 'loc/eng/', @file)"/>
+        * xml resource: [<xsl:value-of select="@name"/>](<xsl:value-of select="$locURL"/>)
+      </xsl:for-each>
     </xsl:if>
 
     <xsl:variable name="configURL" select="concat($githubBaseURL, 'WEB-INF/config/', $fileName)"/>

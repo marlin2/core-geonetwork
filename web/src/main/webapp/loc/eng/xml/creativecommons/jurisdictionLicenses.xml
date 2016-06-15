@@ -1,0 +1,563 @@
+<jurisdictions>
+<jurisdiction name="International">
+<select name="f_choice">
+<option value="http://creativecommons.org/licenses/by/4.0/">Attribution 4.0</option>
+<option value="http://creativecommons.org/licenses/by-sa/4.0/">Attribution-ShareAlike 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nc/4.0/">Attribution-NonCommercial 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nd/4.0/">Attribution-NoDerivs 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/4.0/">Attribution-NonCommercial-NoDerivs 4.0</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ar">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/ar/">Attribution 2.5 Argentina</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/ar/">Attribution-ShareAlike 2.5 Argentina</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/ar/">Attribution-NonCommercial 2.5 Argentina</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/ar/">Attribution-NoDerivs 2.5 Argentina</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/ar/">Attribution-NonCommercial-NoDerivs 2.5 Argentina</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">Attribution-NonCommercial-ShareAlike 2.5 Argentina</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="sg">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/sg/">Attribution 3.0 Singapore</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/sg/">Attribution-ShareAlike 3.0 Singapore</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/sg/">Attribution-NonCommercial 3.0 Singapore</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/sg/">Attribution-NoDerivs 3.0 Singapore</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/sg/">Attribution-NonCommercial-NoDerivs 3.0 Singapore</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/sg/">Attribution-NonCommercial-ShareAlike 3.0 Singapore</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="si">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/si/">Attribution 2.5 Slovenia</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/si/">Attribution-ShareAlike 2.5 Slovenia</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/si/">Attribution-NonCommercial 2.5 Slovenia</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/si/">Attribution-NoDerivs 2.5 Slovenia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/si/">Attribution-NonCommercial-NoDerivs 2.5 Slovenia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/si/">Attribution-NonCommercial-ShareAlike 2.5 Slovenia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="bg">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/bg/">Attribution 2.5 Bulgaria</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/bg/">Attribution-ShareAlike 2.5 Bulgaria</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/bg/">Attribution-NonCommercial 2.5 Bulgaria</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/bg/">Attribution-NoDerivs 2.5 Bulgaria</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/bg/">Attribution-NonCommercial-NoDerivs 2.5 Bulgaria</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/bg/">Attribution-NonCommercial-ShareAlike 2.5 Bulgaria</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="scotland">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/scotland/">Attribution 2.5 UK: Scotland</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/scotland/">Attribution-ShareAlike 2.5 UK: Scotland</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/scotland/">Attribution-NonCommercial 2.5 UK: Scotland</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/scotland/">Attribution-NoDerivs 2.5 UK: Scotland</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/scotland/">Attribution-NonCommercial-NoDerivs 2.5 UK: Scotland</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/scotland/">Attribution-NonCommercial-ShareAlike 2.5 UK: Scotland</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="cz">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/cz/">Attribution 3.0 Czech Republic</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/cz/">Attribution-ShareAlike 3.0 Czech Republic</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/cz/">Attribution-NonCommercial 3.0 Czech Republic</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/cz/">Attribution-NoDerivs 3.0 Czech Republic</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/cz/">Attribution-NonCommercial-NoDerivs 3.0 Czech Republic</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/cz/">Attribution-NonCommercial-ShareAlike 3.0 Czech Republic</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="fr">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.0/fr/">Attribution 2.0 France</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.0/fr/">Attribution-ShareAlike 2.0 France</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.0/fr/">Attribution-NonCommercial 2.0 France</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.0/fr/">Attribution-NoDerivs 2.0 France</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.0/fr/">Attribution-NonCommercial-NoDerivs 2.0 France</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Attribution-NonCommercial-ShareAlike 2.0 France</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="cl">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/cl/">Attribution 3.0 Chile</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/cl/">Attribution-ShareAlike 3.0 Chile</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/cl/">Attribution-NonCommercial 3.0 Chile</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/cl/">Attribution-NoDerivs 3.0 Chile</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/cl/">Attribution-NonCommercial-NoDerivs 3.0 Chile</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/cl/">Attribution-NonCommercial-ShareAlike 3.0 Chile</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="gr">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/gr/">Attribution 3.0 Greece</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/gr/">Attribution-ShareAlike 3.0 Greece</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/gr/">Attribution-NonCommercial 3.0 Greece</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/gr/">Attribution-NoDerivs 3.0 Greece</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/gr/">Attribution-NonCommercial-NoDerivs 3.0 Greece</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/gr/">Attribution-NonCommercial-ShareAlike 3.0 Greece</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="th">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/th/">Attribution 3.0 Thailand</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/th/">Attribution-ShareAlike 3.0 Thailand</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/th/">Attribution-NonCommercial 3.0 Thailand</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/th/">Attribution-NoDerivs 3.0 Thailand</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/th/">Attribution-NonCommercial-NoDerivs 3.0 Thailand</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/th/">Attribution-NonCommercial-ShareAlike 3.0 Thailand</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="pe">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/pe/">Attribution 2.5 Peru</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/pe/">Attribution-ShareAlike 2.5 Peru</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/pe/">Attribution-NonCommercial 2.5 Peru</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/pe/">Attribution-NoDerivs 2.5 Peru</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/pe/">Attribution-NonCommercial-NoDerivs 2.5 Peru</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/pe/">Attribution-NonCommercial-ShareAlike 2.5 Peru</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="it">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/it/">Attribution 2.5 Italy</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/it/">Attribution-ShareAlike 2.5 Italy</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/it/">Attribution-NonCommercial 2.5 Italy</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/it/">Attribution-NoDerivs 2.5 Italy</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/it/">Attribution-NonCommercial-NoDerivs 2.5 Italy</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/it/">Attribution-NonCommercial-ShareAlike 2.5 Italy</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="pr">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/pr/">Attribution 3.0 Puerto Rico</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/pr/">Attribution-ShareAlike 3.0 Puerto Rico</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/pr/">Attribution-NonCommercial 3.0 Puerto Rico</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/pr/">Attribution-NoDerivs 3.0 Puerto Rico</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/pr/">Attribution-NonCommercial-NoDerivs 3.0 Puerto Rico</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/pr/">Attribution-NonCommercial-ShareAlike 3.0 Puerto Rico</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="in">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/in/">Attribution 2.5 India</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/in/">Attribution-ShareAlike 2.5 India</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/in/">Attribution-NonCommercial 2.5 India</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/in/">Attribution-NoDerivs 2.5 India</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/in/">Attribution-NonCommercial-NoDerivs 2.5 India</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/in/">Attribution-NonCommercial-ShareAlike 2.5 India</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="be">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.0/be/">Attribution 2.0 Belgium</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.0/be/">Attribution-ShareAlike 2.0 Belgium</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.0/be/">Attribution-NonCommercial 2.0 Belgium</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.0/be/">Attribution-NoDerivs 2.0 Belgium</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.0/be/">Attribution-NonCommercial-NoDerivs 2.0 Belgium</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.0/be/">Attribution-NonCommercial-ShareAlike 2.0 Belgium</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="mk">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/mk/">Attribution 2.5 Macedonia</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/mk/">Attribution-ShareAlike 2.5 Macedonia</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/mk/">Attribution-NonCommercial 2.5 Macedonia</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/mk/">Attribution-NoDerivs 2.5 Macedonia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/mk/">Attribution-NonCommercial-NoDerivs 2.5 Macedonia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/mk/">Attribution-NonCommercial-ShareAlike 2.5 Macedonia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="za">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/za/">Attribution 2.5 South Africa</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/za/">Attribution-ShareAlike 2.5 South Africa</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/za/">Attribution-NonCommercial 2.5 South Africa</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/za/">Attribution-NoDerivs 2.5 South Africa</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/za/">Attribution-NonCommercial-NoDerivs 2.5 South Africa</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/za/">Attribution-NonCommercial-ShareAlike 2.5 South Africa</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="pt">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/pt/">Attribution 2.5 Portugal</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/pt/">Attribution-ShareAlike 2.5 Portugal</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/pt/">Attribution-NonCommercial 2.5 Portugal</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/pt/">Attribution-NoDerivs 2.5 Portugal</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/pt/">Attribution-NonCommercial-NoDerivs 2.5 Portugal</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/pt/">Attribution-NonCommercial-ShareAlike 2.5 Portugal</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ca">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/ca/">Attribution 2.5 Canada</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/ca/">Attribution-ShareAlike 2.5 Canada</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/ca/">Attribution-NonCommercial 2.5 Canada</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/ca/">Attribution-NoDerivs 2.5 Canada</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/ca/">Attribution-NonCommercial-NoDerivs 2.5 Canada</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/ca/">Attribution-NonCommercial-ShareAlike 2.5 Canada</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="hu">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/hu/">Attribution 2.5 Hungary</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/hu/">Attribution-ShareAlike 2.5 Hungary</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/hu/">Attribution-NonCommercial 2.5 Hungary</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/hu/">Attribution-NoDerivs 2.5 Hungary</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/hu/">Attribution-NonCommercial-NoDerivs 2.5 Hungary</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/hu/">Attribution-NonCommercial-ShareAlike 2.5 Hungary</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="se">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/se/">Attribution 2.5 Sweden</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/se/">Attribution-ShareAlike 2.5 Sweden</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/se/">Attribution-NonCommercial 2.5 Sweden</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/se/">Attribution-NoDerivs 2.5 Sweden</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/se/">Attribution-NonCommercial-NoDerivs 2.5 Sweden</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/se/">Attribution-NonCommercial-ShareAlike 2.5 Sweden</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="pl">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/pl/">Attribution 3.0 Poland</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/pl/">Attribution-ShareAlike 3.0 Poland</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/pl/">Attribution-NonCommercial 3.0 Poland</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/pl/">Attribution-NoDerivs 3.0 Poland</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/pl/">Attribution-NonCommercial-NoDerivs 3.0 Poland</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/pl/">Attribution-NonCommercial-ShareAlike 3.0 Poland</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="dk">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/dk/">Attribution 2.5 Denmark</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/dk/">Attribution-ShareAlike 2.5 Denmark</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/dk/">Attribution-NonCommercial 2.5 Denmark</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/dk/">Attribution-NoDerivs 2.5 Denmark</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/dk/">Attribution-NonCommercial-NoDerivs 2.5 Denmark</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/dk/">Attribution-NonCommercial-ShareAlike 2.5 Denmark</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="hr">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/hr/">Attribution 3.0 Croatia</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/hr/">Attribution-ShareAlike 3.0 Croatia</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/hr/">Attribution-NonCommercial 3.0 Croatia</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/hr/">Attribution-NoDerivs 3.0 Croatia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/hr/">Attribution-NonCommercial-NoDerivs 3.0 Croatia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/hr/">Attribution-NonCommercial-ShareAlike 3.0 Croatia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="mt">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/mt/">Attribution 2.5 Malta</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/mt/">Attribution-ShareAlike 2.5 Malta</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/mt/">Attribution-NonCommercial 2.5 Malta</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/mt/">Attribution-NoDerivs 2.5 Malta</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/mt/">Attribution-NonCommercial-NoDerivs 2.5 Malta</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/mt/">Attribution-NonCommercial-ShareAlike 2.5 Malta</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="lu">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/lu/">Attribution 3.0 Luxembourg</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/lu/">Attribution-ShareAlike 3.0 Luxembourg</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/lu/">Attribution-NonCommercial 3.0 Luxembourg</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/lu/">Attribution-NoDerivs 3.0 Luxembourg</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/lu/">Attribution-NonCommercial-NoDerivs 3.0 Luxembourg</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/lu/">Attribution-NonCommercial-ShareAlike 3.0 Luxembourg</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="at">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/at/">Attribution 3.0 Austria</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/at/">Attribution-ShareAlike 3.0 Austria</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/at/">Attribution-NonCommercial 3.0 Austria</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/at/">Attribution-NoDerivs 3.0 Austria</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/at/">Attribution-NonCommercial-NoDerivs 3.0 Austria</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/at/">Attribution-NonCommercial-ShareAlike 3.0 Austria</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ee">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/ee/">Attribution 3.0 Estonia</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/ee/">Attribution-ShareAlike 3.0 Estonia</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/ee/">Attribution-NonCommercial 3.0 Estonia</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/ee/">Attribution-NoDerivs 3.0 Estonia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/ee/">Attribution-NonCommercial-NoDerivs 3.0 Estonia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/ee/">Attribution-NonCommercial-ShareAlike 3.0 Estonia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ec">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/ec/">Attribution 3.0 Ecuador</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/ec/">Attribution-ShareAlike 3.0 Ecuador</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/ec/">Attribution-NonCommercial 3.0 Ecuador</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/ec/">Attribution-NoDerivs 3.0 Ecuador</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/ec/">Attribution-NonCommercial-NoDerivs 3.0 Ecuador</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/ec/">Attribution-NonCommercial-ShareAlike 3.0 Ecuador</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ro">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/ro/">Attribution 3.0 Romania</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/ro/">Attribution-ShareAlike 3.0 Romania</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/ro/">Attribution-NonCommercial 3.0 Romania</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/ro/">Attribution-NoDerivs 3.0 Romania</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/ro/">Attribution-NonCommercial-NoDerivs 3.0 Romania</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/ro/">Attribution-NonCommercial-ShareAlike 3.0 Romania</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="cr">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/cr/">Attribution 3.0 Costa Rica</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/cr/">Attribution-ShareAlike 3.0 Costa Rica</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/cr/">Attribution-NonCommercial 3.0 Costa Rica</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/cr/">Attribution-NoDerivs 3.0 Costa Rica</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/cr/">Attribution-NonCommercial-NoDerivs 3.0 Costa Rica</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/cr/">Attribution-NonCommercial-ShareAlike 3.0 Costa Rica</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="tw">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/tw/">Attribution 3.0 Taiwan</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/tw/">Attribution-ShareAlike 3.0 Taiwan</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/tw/">Attribution-NonCommercial 3.0 Taiwan</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/tw/">Attribution-NoDerivs 3.0 Taiwan</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/tw/">Attribution-NonCommercial-NoDerivs 3.0 Taiwan</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/tw/">Attribution-NonCommercial-ShareAlike 3.0 Taiwan</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ph">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/ph/">Attribution 3.0 Philippines</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/ph/">Attribution-ShareAlike 3.0 Philippines</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/ph/">Attribution-NonCommercial 3.0 Philippines</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/ph/">Attribution-NoDerivs 3.0 Philippines</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/ph/">Attribution-NonCommercial-NoDerivs 3.0 Philippines</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/ph/">Attribution-NonCommercial-ShareAlike 3.0 Philippines</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="co">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/co/">Attribution 2.5 Colombia</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/co/">Attribution-ShareAlike 2.5 Colombia</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/co/">Attribution-NonCommercial 2.5 Colombia</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/co/">Attribution-NoDerivs 2.5 Colombia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/co/">Attribution-NonCommercial-NoDerivs 2.5 Colombia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/co/">Attribution-NonCommercial-ShareAlike 2.5 Colombia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="de">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/de/">Attribution 3.0 Germany</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/de/">Attribution-ShareAlike 3.0 Germany</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/de/">Attribution-NonCommercial 3.0 Germany</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/de/">Attribution-NoDerivs 3.0 Germany</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/de/">Attribution-NonCommercial-NoDerivs 3.0 Germany</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/de/">Attribution-NonCommercial-ShareAlike 3.0 Germany</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="fi">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/1.0/fi/">Attribution 1.0 Finland</option>
+<option value="http://creativecommons.org/licenses/by-sa/1.0/fi/">Attribution-ShareAlike 1.0 Finland</option>
+<option value="http://creativecommons.org/licenses/by-nc/1.0/fi/">Attribution-NonCommercial 1.0 Finland</option>
+<option value="http://creativecommons.org/licenses/by-nd/1.0/fi/">Attribution-NoDerivs 1.0 Finland</option>
+<option value="http://creativecommons.org/licenses/by-nd-nc/1.0/fi/">Attribution-NoDerivs-NonCommercial 1.0 Finland</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/1.0/fi/">Attribution-NonCommercial-ShareAlike 1.0 Finland</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="mx">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/mx/">Attribution 2.5 Mexico</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/mx/">Attribution-ShareAlike 2.5 Mexico</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/mx/">Attribution-NonCommercial 2.5 Mexico</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/mx/">Attribution-NoDerivs 2.5 Mexico</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/mx/">Attribution-NonCommercial-NoDerivs 2.5 Mexico</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/mx/">Attribution-NonCommercial-ShareAlike 2.5 Mexico</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="il">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/il/">Attribution 2.5 Israel</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/il/">Attribution-ShareAlike 2.5 Israel</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/il/">Attribution-NonCommercial 2.5 Israel</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/il/">Attribution-NoDerivs 2.5 Israel</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/il/">Attribution-NonCommercial-NoDerivs 2.5 Israel</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/il/">Attribution-NonCommercial-ShareAlike 2.5 Israel</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="vn">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/vn/">Attribution 3.0 Vietnam</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/vn/">Attribution-ShareAlike 3.0 Vietnam</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/vn/">Attribution-NonCommercial 3.0 Vietnam</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/vn/">Attribution-NoDerivs 3.0 Vietnam</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/vn/">Attribution-NonCommercial-NoDerivs 3.0 Vietnam</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/vn/">Attribution-NonCommercial-ShareAlike 3.0 Vietnam</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="uk">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.0/uk/">Attribution 2.0 UK: England &amp; Wales</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.0/uk/">Attribution-ShareAlike 2.0 UK: England &amp; Wales</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.0/uk/">Attribution-NonCommercial 2.0 UK: England &amp; Wales</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.0/uk/">Attribution-NoDerivs 2.0 UK: England &amp; Wales</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.0/uk/">Attribution-NonCommercial-NoDerivs 2.0 UK: England &amp; Wales</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.0/uk/">Attribution-NonCommercial-ShareAlike 2.0 UK: England &amp; Wales</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="nz">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/nz/">Attribution 3.0 New Zealand</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/nz/">Attribution-ShareAlike 3.0 New Zealand</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/nz/">Attribution-NonCommercial 3.0 New Zealand</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/nz/">Attribution-NoDerivs 3.0 New Zealand</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/nz/">Attribution-NonCommercial-NoDerivs 3.0 New Zealand</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/nz/">Attribution-NonCommercial-ShareAlike 3.0 New Zealand</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="es">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/es/">Attribution 3.0 Spain</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/es/">Attribution-ShareAlike 3.0 Spain</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/es/">Attribution-NonCommercial 3.0 Spain</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/es/">Attribution-NoDerivs 3.0 Spain</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/es/">Attribution-NonCommercial-NoDerivs 3.0 Spain</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/es/">Attribution-NonCommercial-ShareAlike 3.0 Spain</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="rs">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/rs/">Attribution 3.0 Serbia</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/rs/">Attribution-ShareAlike 3.0 Serbia</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/rs/">Attribution-NonCommercial 3.0 Serbia</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/rs/">Attribution-NoDerivs 3.0 Serbia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/rs/">Attribution-NonCommercial-NoDerivs 3.0 Serbia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/rs/">Attribution-NonCommercial-ShareAlike 3.0 Serbia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="my">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/my/">Attribution 2.5 Malaysia</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/my/">Attribution-ShareAlike 2.5 Malaysia</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/my/">Attribution-NonCommercial 2.5 Malaysia</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/my/">Attribution-NoDerivs 2.5 Malaysia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/my/">Attribution-NonCommercial-NoDerivs 2.5 Malaysia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/my/">Attribution-NonCommercial-ShareAlike 2.5 Malaysia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="br">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/br/">Attribution 3.0 Brazil</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/br/">Attribution-ShareAlike 3.0 Brazil</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/br/">Attribution-NonCommercial 3.0 Brazil</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/br/">Attribution-NoDerivs 3.0 Brazil</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/br/">Attribution-NonCommercial-NoDerivs 3.0 Brazil</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/br/">Attribution-NonCommercial-ShareAlike 3.0 Brazil</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="gt">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/gt/">Attribution 3.0 Guatemala</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/gt/">Attribution-ShareAlike 3.0 Guatemala</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/gt/">Attribution-NonCommercial 3.0 Guatemala</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/gt/">Attribution-NoDerivs 3.0 Guatemala</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/gt/">Attribution-NonCommercial-NoDerivs 3.0 Guatemala</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/gt/">Attribution-NonCommercial-ShareAlike 3.0 Guatemala</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="jp">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.1/jp/">Attribution 2.1 Japan</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.1/jp/">Attribution-ShareAlike 2.1 Japan</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.1/jp/">Attribution-NonCommercial 2.1 Japan</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.1/jp/">Attribution-NoDerivs 2.1 Japan</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.1/jp/">Attribution-NonCommercial-NoDerivs 2.1 Japan</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.1/jp/">Attribution-NonCommercial-ShareAlike 2.1 Japan</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="kr">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.0/kr/">Attribution 2.0 Korea</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.0/kr/">Attribution-ShareAlike 2.0 Korea</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.0/kr/">Attribution-NonCommercial 2.0 Korea</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.0/kr/">Attribution-NoDerivs 2.0 Korea</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.0/kr/">Attribution-NonCommercial-NoDerivs 2.0 Korea</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.0/kr/">Attribution-NonCommercial-ShareAlike 2.0 Korea</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="ch">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/ch/">Attribution 2.5 Switzerland</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/ch/">Attribution-ShareAlike 2.5 Switzerland</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/ch/">Attribution-NonCommercial 2.5 Switzerland</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/ch/">Attribution-NoDerivs 2.5 Switzerland</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/ch/">Attribution-NonCommercial-NoDerivs 2.5 Switzerland</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/ch/">Attribution-NonCommercial-ShareAlike 2.5 Switzerland</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="au">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/au/">Attribution 3.0 Australia</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/au/">Attribution-ShareAlike 3.0 Australia</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/au/">Attribution-NonCommercial 3.0 Australia</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/au/">Attribution-NoDerivs 3.0 Australia</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/au/">Attribution-NonCommercial-NoDerivs 3.0 Australia</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/au/">Attribution-NonCommercial-ShareAlike 3.0 Australia</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="no">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/no/">Attribution 3.0 Norway</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/no/">Attribution-ShareAlike 3.0 Norway</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/no/">Attribution-NonCommercial 3.0 Norway</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/no/">Attribution-NoDerivs 3.0 Norway</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/no/">Attribution-NonCommercial-NoDerivs 3.0 Norway</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/no/">Attribution-NonCommercial-ShareAlike 3.0 Norway</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="hk">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/hk/">Attribution 3.0 Hong Kong</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/hk/">Attribution-ShareAlike 3.0 Hong Kong</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/hk/">Attribution-NonCommercial 3.0 Hong Kong</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/hk/">Attribution-NoDerivs 3.0 Hong Kong</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/hk/">Attribution-NonCommercial-NoDerivs 3.0 Hong Kong</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/hk/">Attribution-NonCommercial-ShareAlike 3.0 Hong Kong</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="nl">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/nl/">Attribution 3.0 Netherlands</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/nl/">Attribution-ShareAlike 3.0 Netherlands</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/nl/">Attribution-NonCommercial 3.0 Netherlands</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/nl/">Attribution-NoDerivs 3.0 Netherlands</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/nl/">Attribution-NonCommercial-NoDerivs 3.0 Netherlands</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/nl/">Attribution-NonCommercial-ShareAlike 3.0 Netherlands</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="us">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/3.0/us/">Attribution 3.0 United States</option>
+<option value="http://creativecommons.org/licenses/by-sa/3.0/us/">Attribution-ShareAlike 3.0 United States</option>
+<option value="http://creativecommons.org/licenses/by-nc/3.0/us/">Attribution-NonCommercial 3.0 United States</option>
+<option value="http://creativecommons.org/licenses/by-nd/3.0/us/">Attribution-NoDerivs 3.0 United States</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/3.0/us/">Attribution-NonCommercial-NoDerivs 3.0 United States</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">Attribution-NonCommercial-ShareAlike 3.0 United States</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+<jurisdiction name="cn">
+<select name="f_choice"><option value="http://creativecommons.org/licenses/by/2.5/cn/">Attribution 2.5 China Mainland</option>
+<option value="http://creativecommons.org/licenses/by-sa/2.5/cn/">Attribution-ShareAlike 2.5 China Mainland</option>
+<option value="http://creativecommons.org/licenses/by-nc/2.5/cn/">Attribution-NonCommercial 2.5 China Mainland</option>
+<option value="http://creativecommons.org/licenses/by-nd/2.5/cn/">Attribution-NoDerivs 2.5 China Mainland</option>
+<option value="http://creativecommons.org/licenses/by-nc-nd/2.5/cn/">Attribution-NonCommercial-NoDerivs 2.5 China Mainland</option>
+<option value="http://creativecommons.org/licenses/by-nc-sa/2.5/cn/">Attribution-NonCommercial-ShareAlike 2.5 China Mainland</option>
+<option value="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</option>
+<option value="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</option></select>
+</jurisdiction>
+</jurisdictions>

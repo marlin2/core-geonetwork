@@ -904,6 +904,11 @@
                            access="permitAll"/>
         <sec:intercept-url pattern="/[a-zA-Z0-9_\-]+/[a-z]{2,3}/getSLD/.*" access="permitAll"/>
 
+        <!-- Creative Commons metadata services -->
+        <sec:intercept-url pattern="/srv/[a-z]{2,3}/creativecommons.licenses!?.*" access="permitAll"/>
+        <sec:intercept-url pattern="/srv/[a-z]{2,3}/creativecommons.jurisdictions!?.*" access="permitAll"/>
+        <sec:intercept-url pattern="/srv/[a-z]{2,3}/creativecommons.get!?.*" access="hasRole('Editor')"/>
+
         <sec:intercept-url pattern="/.*" access="denyAll"/>
       </sec:filter-security-metadata-source>
     </property>
