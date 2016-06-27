@@ -732,6 +732,7 @@
 
                 WRO4J intelligently caches minified files (and automatically handles gzipping)
             -->
+<!-- Disable doesn't work with nationalmap
             <plugin>
                 <groupId>ro.isdc.wro4j</groupId>
                 <artifactId>wro4j-maven-plugin</artifactId>
@@ -746,13 +747,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- The targetGroups are the groups to test for existence.  if they are not found then
-                         an error is raised.  Currently the groups from web-ui, web-client and web are listed
-                         here.  If web-client (for example) is removed then remove the group below
-
-                         Note:  all groups must be on the same line with not whitespace.
-                    -->
-                    <targetGroups>gn,gn_admin,gn_login,lib,gn.libs,gn.libs.map,gn.libs.scriptaculous,gn,gn.search,gn.editor,gn.geo.libs,kernel,geonetwork-client-ext-ux_css,geonetwork-client_css,geonetwork-client-mini-nomap,nationalmap,closure_deps,srv_custom_style</targetGroups>
                     <minimize>true</minimize>
                     <destinationFolder>${wro4jOutput}</destinationFolder>
                     <cssDestinationFolder>${wro4jOutput}/css</cssDestinationFolder>
@@ -789,9 +783,16 @@
                         <artifactId>less4j</artifactId>
                         <version>1.2.1</version>
                     </dependency>
+                    <dependency>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>nationalmap</artifactId>
+		                  <version>${project.version}</version>
+	                  </dependency>
+	
                 </dependencies>
 
             </plugin>
+-->
 		  <plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-checkstyle-plugin</artifactId>

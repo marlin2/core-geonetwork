@@ -60,14 +60,13 @@ public class GetBuildDetails implements Service
 
 	public Element exec(Element params, ServiceContext context) throws Exception
 	{
-		GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-		if (!haveRead) {
+		if (!GetBuildDetails.getHaveRead()) {
 			InputStream stream = null;
 			try {
 				stream = this.getClass().getClassLoader().getResourceAsStream(PROPSFILE);
 				buildProps.load(stream);
-				haveRead = true;
+				GetBuildDetails.setHaveRead(true);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			} finally {
@@ -104,6 +103,14 @@ timestamp=2016-05-13T08\:59\:24
 		} 
 		return root;
 	}
+
+  public static void setHaveRead(boolean value) {
+    GetBuildDetails.haveRead = value;
+  }
+
+  public static boolean getHaveRead() {
+    return GetBuildDetails.haveRead;
+  }
 }
 
 //=============================================================================
