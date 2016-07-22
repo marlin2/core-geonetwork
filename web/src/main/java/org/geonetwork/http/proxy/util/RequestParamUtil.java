@@ -1,8 +1,10 @@
 package org.geonetwork.http.proxy.util;
 
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.lang.StringUtils;
 
 import java.net.URI;
+import java.net.URLDecoder;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -48,7 +50,11 @@ public class RequestParamUtil {
  * @return a list of {@link NameValuePair} as built from the URI's query portion.
  */
 	public static List <NameValuePair> parse(final URI uri, final String charset) {
-    final String query = uri.getRawQuery();
+    String query = uri.getRawQuery();
+    if (query == null) {
+        query = StringUtils.substringAfter(URLDecoder.decode(uri.toString()), "?");
+        System.out.println("query was null, so decoded and then returned "+query);
+    }
     if (query != null && query.length() > 0) {
         final List<NameValuePair> result = new ArrayList<NameValuePair>();
         final Scanner scanner = new Scanner(query);
