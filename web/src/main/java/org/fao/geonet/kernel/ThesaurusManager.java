@@ -236,6 +236,7 @@ public class ThesaurusManager implements ThesaurusFinder {
         for (String aRdfDataFile : rdfDataFile) {
 
 						Thesaurus gst = null;
+/*
 						if (root.equals(Geonet.CodeList.REGISTER)) {
                             if(Log.isDebugEnabled(Geonet.THESAURUS_MAN))
                                 Log.debug(Geonet.THESAURUS_MAN, "Creating thesaurus : "+ aRdfDataFile);
@@ -251,12 +252,14 @@ public class ThesaurusManager implements ThesaurusFinder {
 								e.printStackTrace();
 								continue;
 							}
-
             	gst = new Thesaurus(aRdfDataFile, root, thesauriDirectory.getName(), outputRdf, dm.getSiteURL());
 
 						} else {
+*/
             	gst = new Thesaurus(aRdfDataFile, root, thesauriDirectory.getName(), new File(thesauriDirectory, aRdfDataFile), dm.getSiteURL());
+/*
 						}
+*/
 
             try {
                 addThesaurus(gst, false);
