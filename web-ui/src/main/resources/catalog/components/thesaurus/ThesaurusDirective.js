@@ -385,6 +385,9 @@
 							 		function(c) {
 						 	 			scope.concept = c;
 									});
+               if (scope.thesaurusKey.indexOf('taxon') > 0) {
+                  scope.taxon = true;
+               }
              }
            }
          };

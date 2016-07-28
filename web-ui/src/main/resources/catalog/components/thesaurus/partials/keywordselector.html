@@ -59,6 +59,21 @@
 				<skos-browser class="tmpl-border" concept="concept" add-concept="addThesaurusConcept"></skos-browser> 
 			</div>
 		</div>
+
+    <div class="row" ng-show="taxon">
+      <span class="col-sm-2">Aphia Id Lookup</span>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" placeholder="{{'aphiaIdLookup' | translate}}"
+               data-ng-model="filter"/>
+      </div>
+      <div class="col-sm-1">
+        <div class="btn-group pull-right">
+          <button type="button" class="btn btn-link dropdown-toggle pull-right"
+                  data-toggle="dropdown"><i class="fa fa-search"/></button>
+        </div>
+      </div>
+    </div>
+
     
     <!-- The thesaurus snippet to insert once received -->
     <div>
