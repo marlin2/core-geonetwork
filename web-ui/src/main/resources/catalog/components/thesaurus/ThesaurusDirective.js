@@ -118,6 +118,7 @@
 
              scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
              scope.filter = null;
+             scope.aphiaIdsInput = null;
              scope.results = null;
              scope.snippet = null;
              scope.isInitialized = false;
@@ -125,6 +126,7 @@
              scope.invalidKeywordMatch = false;
              scope.selected = [];
              scope.initialKeywords = scope.keywords ?  scope.keywords.split('`') : [];
+             scope.aphiaids = [];
              scope.transformationLists = scope.transformations.indexOf(',') !== -1 ?  scope.transformations.split(',') : [scope.transformations];
 
 
@@ -389,6 +391,25 @@
                   scope.taxon = true;
                }
              }
+
+             /* Function to look up aphiaids and create list of ids and scientific names user can add to   
+                current list of keywords */
+             scope.searchAphiaIds = function() {
+               var aphiaids = scope.aphiaIdsInput.split(',');
+               for (var i = 0; i < aphiaids.length;i++) {
+                  var aphia = 'urn:lsid:marinespecies.org:taxname:'+aphiaids[i];
+                  gnThesaurusService.lookupURI(scope.thesaurusKey, aphia).then(
+                     function(concept) {
+								       scope.aphiaids = scope.aphiaids.concat(concept);
+                       if (scope.aphiaids.length === aphiaids.length) {
+                         scope.lookupComplete = true; // trigger display of results as we have searched all
+                       }
+                     }
+                  );
+               } 
+               return false;
+             };
+
            }
          };
        }]);

@@ -63,18 +63,29 @@
     <div class="row" ng-show="taxon">
       <span class="col-sm-2">Aphia Id Lookup</span>
       <div class="col-sm-9">
-        <input type="text" class="form-control" placeholder="{{'aphiaIdLookup' | translate}}"
-               data-ng-model="filter"/>
+        <!-- TODO: Data binding for aphiaid list -->
+        <input type="text" class="form-control" placeholder="{{'aphiaIdLookup' | translate}}" data-ng-model="aphiaIdsInput"/>
       </div>
       <div class="col-sm-1">
         <div class="btn-group pull-right">
-          <button type="button" class="btn btn-link dropdown-toggle pull-right"
-                  data-toggle="dropdown"><i class="fa fa-search"/></button>
+          <button type="button" class="btn btn-link dropdown-toggle pull-right" data-ng-click="searchAphiaIds()"><i class="fa fa-search"/></button>
         </div>
       </div>
     </div>
 
-    
+    <!-- Show results of aphiaid lookup -->
+    <div class="row" style="margin-top: 10px;" ng-show="lookupComplete">
+      <span class="col-sm-2">Aphia Ids</span>
+      <div class="col-sm-9">
+        <!-- for each aphiaid, show the scientific name which we looked up! -->
+        <ul style="list-style-type: none;">
+           <li data-ng-repeat="species in aphiaids">
+             <span class="col-sm-5">{{species.uri}}</span><div class="col-sm-6 skos-concept-relation" data-ng-click="addThesaurusConcept(species.uri, species.prefLabel.eng)"><span>{{species.prefLabel.eng}}</span></div>
+           </li>
+        </ul>
+      </div>
+    </div>
+
     <!-- The thesaurus snippet to insert once received -->
     <div>
       <input name="{{elementRef}}" type="hidden" value="{{snippet}}"/>
