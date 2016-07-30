@@ -67,14 +67,12 @@
         <input type="text" class="form-control" placeholder="{{'aphiaIdLookup' | translate}}" data-ng-model="aphiaIdsInput"/>
       </div>
       <div class="col-sm-1">
-        <div class="btn-group pull-right">
-          <button type="button" class="btn btn-link dropdown-toggle pull-right" data-ng-click="searchAphiaIds()"><i class="fa fa-search"/></button>
-        </div>
+        <a href="" class="btn btn-link pull-right"><i class="fa fa-search" data-ng-click="searchAphiaIds($event)"/></a>
       </div>
     </div>
 
     <!-- Show results of aphiaid lookup -->
-    <div class="row" style="margin-top: 10px;" ng-show="lookupComplete">
+    <div class="row" style="margin-top: 10px;" ng-show="aphiaids">
       <span class="col-sm-2">Aphia Ids</span>
       <div class="col-sm-9">
         <!-- for each aphiaid, show the scientific name which we looked up! -->

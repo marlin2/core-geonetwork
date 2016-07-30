@@ -394,20 +394,20 @@
 
              /* Function to look up aphiaids and create list of ids and scientific names user can add to   
                 current list of keywords */
-             scope.searchAphiaIds = function() {
+             scope.searchAphiaIds = function(ev) {
                var aphiaids = scope.aphiaIdsInput.split(',');
                for (var i = 0; i < aphiaids.length;i++) {
                   var aphia = 'urn:lsid:marinespecies.org:taxname:'+aphiaids[i];
                   gnThesaurusService.lookupURI(scope.thesaurusKey, aphia).then(
                      function(concept) {
-								       scope.aphiaids = scope.aphiaids.concat(concept);
-                       if (scope.aphiaids.length === aphiaids.length) {
-                         scope.lookupComplete = true; // trigger display of results as we have searched all
+                       var present = false;
+                       for (var i = 0; i < scope.aphiaids.length; i++) {
+                          if (scope.aphiaids[i].uri === concept.uri) present = true; 
                        }
+								       if (!present) scope.aphiaids = scope.aphiaids.concat(concept);
                      }
                   );
                } 
-               return false;
              };
 
            }
