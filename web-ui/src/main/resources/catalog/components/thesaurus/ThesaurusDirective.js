@@ -113,8 +113,12 @@
            templateUrl: '../../catalog/components/thesaurus/' +
            'partials/keywordselector.html',
            link: function(scope, element, attrs) {
-					 	 $compile(element.contents())(scope); // pick up skos browser
-						                                      // directive with compiler
+
+             var skosBrowsers = element.find('skos-browser');
+             for (var i = 0;i < skosBrowsers.length;i++) {
+                var sb = skosBrowsers[i];
+					 	    sb = $compile(sb)(scope); // pick up skos-browser directive with compiler
+             }
 
              scope.max = gnThesaurusService.DEFAULT_NUMBER_OF_RESULTS;
              scope.filter = null;
