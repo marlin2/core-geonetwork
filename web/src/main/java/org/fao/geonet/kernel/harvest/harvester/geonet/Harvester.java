@@ -48,6 +48,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,6 +56,13 @@ import java.util.Set;
 
 class Harvester
 {
+  // number of records in each page of search results to get from remote site
+  // The search results have been paged so that we don't try and request
+  // one massize document from the remote and then process that massive 
+  // document here - that simple minded approach can bring down the remote and
+  // or this site if the harvest has many thousands of records.....
+  private int SEARCH_PAGESIZE = 100; 
+
 	//--------------------------------------------------------------------------
 	//---
 	//--- Constructor
@@ -155,19 +163,15 @@ class Harvester
 
 	//---------------------------------------------------------------------------
 
-	private Set<RecordInfo> search(XmlRequest request, Search s) throws OperationAbortedEx
-	{
-		Set<RecordInfo> records = new HashSet<RecordInfo>();
+	private void processSearch(List<Object> results, Set<RecordInfo> records) {
 
-		for (Object o : doSearch(request, s).getChildren("metadata"))
-		{
+		for (Object o : results) {
 			Element md   = (Element) o;
 			Element info = md.getChild("info", Edit.NAMESPACE);
 
-			if (info == null)
+			if (info == null) {
 				log.warning("Missing 'geonet:info' element in 'metadata' element");
-			else
-			{
+			} else {
 				String uuid       = info.getChildText("uuid");
 				String schema     = info.getChildText("schema");
 				String changeDate = info.getChildText("changeDate");
@@ -177,27 +181,41 @@ class Harvester
 			}
 		}
 
-		log.info("Records added to result list : "+ records.size());
-
-		return records;
+		log.info("Records in result list : "+ records.size());
 	}
 
 	//---------------------------------------------------------------------------
 
-	private Element doSearch(XmlRequest request, Search s) throws OperationAbortedEx
-	{
-		request.setAddress(params.getServletPath() +"/srv/en/"+ Geonet.Service.XML_SEARCH);
-		
-		try
-		{
-			log.info("Searching on : "+ params.name);
-			Element response = request.execute(s.createRequest());
-            if(log.isDebugEnabled()) log.debug("Search results:\n"+ Xml.getString(response));
+	private List<Object> doSearch(XmlRequest request, Search s, int times) throws Exception {
+      
+      if(log.isDebugEnabled()) log.debug("Search request:\n"+ Xml.getString(s.createRequest(times, SEARCH_PAGESIZE)));
+			Element response = request.execute(s.createRequest(times, SEARCH_PAGESIZE));
+      if(log.isDebugEnabled()) log.debug("Search results:\n"+ Xml.getString(response));
+      return response.getChildren("metadata");
+  }
 
-			return response;
-		}
-		catch(Exception e)
-		{
+	//---------------------------------------------------------------------------
+
+	private Set<RecordInfo> search(XmlRequest request, Search s) throws Exception {
+		Set<RecordInfo> records = new HashSet<RecordInfo>();
+
+		request.setAddress(params.getServletPath() +"/srv/en/"+ Geonet.Service.XML_SEARCH);
+    
+		
+		try {
+			log.info("Searching on : "+ params.name);
+      int times = 0;
+      List<Object> results = doSearch(request, s, times);
+      processSearch(results, records);
+
+      // process results in groups of SEARCH_PAGESIZE 
+      while (results.size() == SEARCH_PAGESIZE) { // must be end when less than SEARCH_PAGESIZE
+          times++;
+          results = doSearch(request, s, times);
+          processSearch(results, records);
+      }
+			return records;
+		} catch(Exception e) {
 			log.warning("Raised exception when searching : "+ e);
 			throw new OperationAbortedEx("Raised exception when searching", e);
 		}

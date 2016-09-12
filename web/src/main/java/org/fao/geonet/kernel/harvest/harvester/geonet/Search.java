@@ -85,7 +85,7 @@ class Search
 
 	//---------------------------------------------------------------------------
 
-	public Element createRequest()
+	public Element createRequest(int times, int pagesize)
 	{
 		Element req = new Element("request");
 
@@ -102,6 +102,8 @@ class Search
 		if (hardcopy)
 			Lib.element.add(req, "paper", "on");
 
+    add(req, "from", ((times*pagesize)+1)+"");
+    add(req, "to",   ((times+1)*pagesize)+"");
 		return req;
 	}
 

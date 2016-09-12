@@ -95,8 +95,21 @@ public class OverridesMetadataSource implements FilterInvocationSecurityMetadata
         } else {
 						allAttributes = pair.two();
 				}
-        
-        allAttributes.addAll(ms.getAllConfigAttributes());
+       
+        for (ConfigAttribute ca1 : ms.getAllConfigAttributes()) {
+					boolean exists = false;
+					for (ConfigAttribute ca2 : allAttributes) {
+						if (ca2.toString().equals(ca1.toString())) {
+							exists = true;
+							break;
+						}
+					}
+
+					if (!exists) {
+						allAttributes.add(ca1);
+					}
+				} 
+        //allAttributes.addAll(ms.getAllConfigAttributes());
 
 				}
     }
