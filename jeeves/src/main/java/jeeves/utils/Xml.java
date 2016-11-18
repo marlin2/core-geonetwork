@@ -360,6 +360,7 @@ public final class Xml
 		SAXBuilder builder = getSAXBuilderWithoutXMLResolver(false); //new SAXBuilder();
 		builder.setFeature("http://apache.org/xml/features/validation/schema",false);
 		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false);
+    builder.setExpandEntities(false);
 		Document   jdoc    = builder.build(input);
 
 		return (Element) jdoc.getRootElement().detach();
