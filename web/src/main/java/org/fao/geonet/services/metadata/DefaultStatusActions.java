@@ -28,6 +28,7 @@ import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
 import jeeves.utils.Xml;
 
+import org.fao.geonet.constants.Edit;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.GeonetContext;
@@ -182,7 +183,7 @@ public class DefaultStatusActions implements StatusActions {
 	}
 
 	//-------------------------------------------------------------------------
-	// Private methods
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -243,7 +244,7 @@ public class DefaultStatusActions implements StatusActions {
 		}
 
 		String subject = "Metadata records SUBMITTED by "+replyTo+" ("+replyToDescr+") on "+changeDate;
-		processList(contentRevs, subject, Params.Status.SUBMITTED, changeDate, changeMessage);
+		processList(metadata, contentRevs, subject, Params.Status.SUBMITTED, changeDate, changeMessage);
 	}
 
 	/**
@@ -267,7 +268,7 @@ public class DefaultStatusActions implements StatusActions {
 		}
 		subject += " by "+replyTo+" ("+replyToDescr+") on "+changeDate;
 
-		processList(owners, subject, status, changeDate, changeMessage);
+		processList(metadata, owners, subject, status, changeDate, changeMessage);
 
 	}
 
@@ -280,18 +281,21 @@ public class DefaultStatusActions implements StatusActions {
 		* @param changeDate Datestamp of status change
 		* @param changeMessage The message indicating why the status has changed
 		*/
-	private void processList(Element users, String subject, String status, String changeDate, String changeMessage) throws Exception {
+	private void processList(Set<Integer> metadata, Element users, String subject, String status, String changeDate, String changeMessage) throws Exception {
 
 		List<Element> userList = users.getChildren();
 
 		Set<String> emails = new HashSet<String>();
+
+    // assemble uuid and title info for metadata records in the Set metadata
+    String mdInfoForEmail = assembleMetadataLinks(metadata);
 
 		for (Element user : userList) {
 			emails.add(user.getChildText("email"));
 		}
 
 		for (String email : emails) {
-			sendEmail(email, subject, status, changeDate, changeMessage);	
+			sendEmail(email, subject, status, changeDate, changeMessage, mdInfoForEmail);	
 		}
 
 	}
@@ -306,15 +310,26 @@ public class DefaultStatusActions implements StatusActions {
 		* @param changeDate Datestamp of status change
 		* @param changeMessage The message indicating why the status has changed
 		*/
-	private void sendEmail(String sendTo, String subject, String status, String changeDate, String changeMessage) throws Exception {
+	private void sendEmail(String sendTo, String subject, String status, String changeDate, String changeMessage, String mdInfoForEmail) throws Exception {
 
-		String message = changeMessage+"\n\nRecords are available from the following URL:\n"+buildMetadataSearchLink(status, changeDate);
+    String statusText = getStatusText(status);
+
+		StringBuffer message = new StringBuffer();
+    message.append(changeMessage);
+    message.append("\n\nRecords are available from the following URL:\n");
+    message.append(buildMetadataSearchLink(status, changeDate)+"\n");
+    message.append("\n");
+    message.append("Status change requested is "+statusText+" by "+replyTo+" ("+session.getName()+" "+session.getSurname()+")\n");
+    message.append("\n");
+    message.append("Individual records are: \n");
+    message.append(mdInfoForEmail); 
+    message.append("\n");
 
 		if (!emailNotes) {
-			context.info("Would send email \nTo: "+sendTo+"\nSubject: "+subject+"\n Message:\n"+message);
+			context.info("Would send email \nTo: "+sendTo+"\nSubject: "+subject+"\n Message:\n"+message.toString());
 		} else {
 			MailSender sender = new MailSender(context);
-			sender.sendWithReplyTo(host, Integer.parseInt(port), from, fromDescr, sendTo, null, replyTo, replyToDescr, subject, message);
+			sender.sendWithReplyTo(host, Integer.parseInt(port), from, fromDescr, sendTo, null, replyTo, replyToDescr, subject, message.toString());
 		}
 	}
 
@@ -329,11 +344,39 @@ public class DefaultStatusActions implements StatusActions {
 		String suffix = "&_status="+status+"&_statusChangeDate="+changeDate;
 		// FIXME : hard coded link to search URLs
 		if (html5ui) {
-			return siteUrl+"/search#fast=index&from=1&to=50"+suffix;
+		  return siteUrl+"/search#fast=index&from=1&to=50"+suffix;
 		} else {
-			return siteUrl+"/main.search?"+suffix;
+		  return siteUrl+"/main.search?"+suffix;
 		}
 	}
+
+  private String assembleMetadataLinks(Set<Integer> metadata) {
+    StringBuffer buffer = new StringBuffer();
+    for (int id : metadata) {
+       try {
+         Element md = dm.getMetadata(context, dbms, id+"", false, false, false);
+         Element summary = dm.extractSummary(md);
+         String title = summary.getChildText("title");
+         Element info = md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE);
+         String uuid = info.getChildText("uuid");
+         buffer.append("<a href=\""+siteUrl+"/search?uuid="+uuid+"\">"+title+"</a>\n");
+       } catch (Exception e) {
+				 context.error("Error retrieving metadata id "+id+"; will skip");
+         e.printStackTrace();         
+       }
+    }
+    return buffer.toString();
+  }
+
+  private String getStatusText(String status) {
+   
+    if      (status.equals(Params.Status.SUBMITTED)) return "SUBMITTED";
+    else if (status.equals(Params.Status.APPROVED))  return "APPROVED";
+    else if (status.equals(Params.Status.REJECTED))  return "REJECTED";
+    else if (status.equals(Params.Status.RETIRED))   return "RETIRED";
+    else if (status.equals(Params.Status.DRAFT))     return "DRAFT";
+    else                                             return "UNKNOWN";
+  }
 
 	public void setUseHtml5ui(boolean html5ui) {
 		DefaultStatusActions.html5ui = html5ui;
