@@ -83,7 +83,7 @@ function radioModalUpdate(div, service, modalbox, title) {
     var pars = '?';
     var inputs = Ext.DomQuery.select('input[type="hidden"],textarea,select', div);
     Ext.each(inputs, function(s) {
-        pars += "&" + s.name + "=" + s.value;
+				pars += "&"+s.name+"="+encodeURIComponent(s.value);
     });
     var radios = Ext.DomQuery.select('input[type="radio"]', div);
     Ext.each(radios, function(s){
