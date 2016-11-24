@@ -359,7 +359,7 @@ public class DefaultStatusActions implements StatusActions {
          String title = summary.getChildText("title");
          Element info = md.getChild(Edit.RootChild.INFO, Edit.NAMESPACE);
          String uuid = info.getChildText("uuid");
-         buffer.append("<a href=\""+siteUrl+"/search?uuid="+uuid+"\">"+title+"</a>\n");
+         buffer.append(siteUrl+"/search?uuid="+uuid+"  Title: "+title+"\n");
        } catch (Exception e) {
 				 context.error("Error retrieving metadata id "+id+"; will skip");
          e.printStackTrace();         
