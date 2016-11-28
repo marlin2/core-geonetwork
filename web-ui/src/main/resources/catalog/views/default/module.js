@@ -105,17 +105,18 @@
       $scope.location = gnSearchLocation;
       $scope.toggleMap = function () {
         $(searchMap.getTargetElement()).toggle();
+        $('button.gn-minimap-toggle > i').toggleClass('fa-angle-double-left fa-angle-double-right');
       };
       hotkeys.bindTo($scope)
         .add({
             combo: 'h',
-            description: $translate('hotkeyHome'),
+            description: $translate.instant('hotkeyHome'),
             callback: function(event) {
               $location.path('/home');
             }
           }).add({
             combo: 't',
-            description: $translate('hotkeyFocusToSearch'),
+            description: $translate.instant('hotkeyFocusToSearch'),
             callback: function(event) {
               event.preventDefault();
               var anyField = $('#gn-any-field');
@@ -127,21 +128,21 @@
             }
           }).add({
             combo: 'enter',
-            description: $translate('hotkeySearchTheCatalog'),
+            description: $translate.instant('hotkeySearchTheCatalog'),
             allowIn: 'INPUT',
             callback: function() {
               $location.search('tab=search');
             }
             //}).add({
             //  combo: 'r',
-            //  description: $translate('hotkeyResetSearch'),
+            //  description: $translate.instant('hotkeyResetSearch'),
             //  allowIn: 'INPUT',
             //  callback: function () {
             //    $scope.resetSearch();
             //  }
           }).add({
             combo: 'm',
-            description: $translate('hotkeyMap'),
+            description: $translate.instant('hotkeyMap'),
             callback: function(event) {
               $location.path('/map');
             }
@@ -170,11 +171,23 @@
         gnMdView.removeLocationUuid();
       };
       $scope.nextRecord = function() {
-        // TODO: When last record of page reached, go to next page...
-        $scope.openRecord(mdView.current.index + 1);
+        var nextRecordId = mdView.current.index + 1;
+        if (nextRecordId === mdView.records.length) {
+          // When last record of page reached, go to next page...
+          // Not the most elegant way to do it, but it will
+          // be easier using Solr search components
+          $scope.$broadcast('nextPage');
+        } else {
+          $scope.openRecord(nextRecordId);
+        }
       };
       $scope.previousRecord = function() {
-        $scope.openRecord(mdView.current.index - 1);
+        var prevRecordId = mdView.current.index - 1;
+        if (prevRecordId === -1) {
+          $scope.$broadcast('previousPage');
+        } else {
+          $scope.openRecord(prevRecordId);
+        }
       };
 
       $scope.infoTabs = {
@@ -190,7 +203,7 @@
         }};
 
       // Set the default browse mode for the home page
-      $scope.$watch('searchInfo', function () {
+      $scope.$watch('searchInfo', function (n, o) {
         if (angular.isDefined($scope.searchInfo.facet)) {
           if ($scope.searchInfo.facet['inspireThemes'].length > 0) {
             $scope.browse = 'inspire';

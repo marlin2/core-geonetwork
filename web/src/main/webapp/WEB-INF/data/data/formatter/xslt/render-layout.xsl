@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:gn-fn-render="http://geonetwork-opensource.org/xsl/functions/render"
+                xmlns:gn-fn-core="http://geonetwork-opensource.org/xsl/functions/core"
                 xmlns:saxon="http://saxon.sf.net/"
                 extension-element-prefixes="saxon"
                 exclude-result-prefixes="#all"
                 version="2.0">
 
+  <xsl:import href="common/render-html.xsl"/>
+  <xsl:import href="common/functions-core.xsl"/>
   <xsl:import href="render-variables.xsl"/>
   <xsl:import href="render-functions.xsl"/>
   <xsl:import href="render-layout-fields.xsl"/>
@@ -13,14 +16,43 @@
   <!-- Those templates should be overriden in the schema plugin - start -->
   <xsl:template mode="getMetadataTitle" match="undefined"/>
   <xsl:template mode="getMetadataAbstract" match="undefined"/>
+  <xsl:template mode="getMetadataHierarchyLevel" match="undefined"/>
   <xsl:template mode="getMetadataHeader" match="undefined"/>
   <!-- Those templates should be overriden in the schema plugin - end -->
 
   <!-- Starting point -->
   <xsl:template match="/">
-    <div class="container gn-metadata-view">
+    <xsl:choose>
+      <xsl:when test="$root = 'div'">
+        <!-- Render only a DIV with the record details -->
+        <xsl:call-template name="render-record"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- Render complete HTML page -->
+        <xsl:call-template name="render-html">
+          <xsl:with-param name="content">
+            <xsl:call-template name="render-record"/>
+          </xsl:with-param>
+          <xsl:with-param name="title">
+            <xsl:apply-templates mode="getMetadataTitle" select="$metadata"/>
+          </xsl:with-param>
+          <xsl:with-param name="description">
+            <xsl:apply-templates mode="getMetadataAbstract" select="$metadata"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
-      <article id="gn-metadata-view-{$metadataId}">
+  <xsl:template name="render-record">
+    <div class="container-fluid gn-metadata-view">
+
+      <xsl:variable name="type">
+        <xsl:apply-templates mode="getMetadataHierarchyLevel" select="$metadata"/>
+      </xsl:variable>
+      <article id="gn-metadata-view-{$metadataId}"
+               itemscope="itemscope"
+               itemtype="{gn-fn-core:get-schema-org-class($type)}">
         <header>
           <h1>
             <xsl:apply-templates mode="getMetadataTitle" select="$metadata"/>
@@ -42,8 +74,12 @@
 
         </footer>
       </article>
+      <br/>
+      <br/>
     </div>
   </xsl:template>
+
+
 
 
   <!-- Render list of tabs in the current view -->

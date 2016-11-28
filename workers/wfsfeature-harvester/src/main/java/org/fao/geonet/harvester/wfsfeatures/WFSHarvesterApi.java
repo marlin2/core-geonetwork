@@ -51,13 +51,13 @@ import java.util.HashMap;
 })
 @Api(value = "workers",
         tags= "workers",
-        description = "Metadata resource related operations")
+        description = "Workers related operations")
 public class WFSHarvesterApi {
     @Autowired
     private JMSMessager jmsMessager;
 
     @ApiOperation(value = "Index a WFS feature type",
-            nickname = "getAllMetadataResources")
+            nickname = "indexWfsFeatureType")
     @RequestMapping(value = "start",
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE,

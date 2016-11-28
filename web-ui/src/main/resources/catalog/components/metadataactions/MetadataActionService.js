@@ -41,12 +41,13 @@
     'gnAlertService',
     'gnSearchSettings',
     'gnPopup',
+    'gnMdFormatter',
     '$translate',
     '$q',
     '$http',
     function($rootScope, $timeout, $location, gnHttp,
              gnMetadataManager, gnAlertService, gnSearchSettings,
-             gnPopup,
+             gnPopup, gnMdFormatter,
              $translate, $q, $http) {
 
       var windowName = 'geonetwork';
@@ -114,16 +115,16 @@
           if (params.sortOrder) {
             url += '&sortOrder=' + params.sortOrder;
           }
-        }
-        else if (angular.isString(params)) {
-          // TODO: May depend on schema
-          url = gnSearchSettings.formatter.defaultPdfUrl + params;
-        }
-        if (url) {
           location.replace(url);
         }
-        else {
-          console.error('Error while exporting PDF');
+        else if (angular.isString(params)) {
+          gnMdFormatter.getFormatterUrl(null, null, params).then(function(url) {
+            $http.get(url, {
+              headers: {
+                Accept: 'text/html'
+              }
+            });
+          });
         }
       };
 
@@ -160,7 +161,11 @@
           });
         }
         else {
-          return callBatch('mdValidateBatch').then(function() {
+          return gnHttp.callService('../api/records/validate', null,
+                                    {
+                                      method: 'PUT'
+                                    }).then(function(data) {
+            alertResult(data.data);
             $rootScope.$broadcast('mdSelectNone');
             $rootScope.$broadcast('search');
           });
@@ -178,9 +183,8 @@
           });
         }
         else {
-          return callBatch('mdDeleteBatch').then(function() {
+          return $http.delete('../api/records').then(function() {
             $rootScope.$broadcast('mdSelectNone');
-            // TODO: Same here.
             $rootScope.$broadcast('search');
           });
         }
@@ -188,7 +192,7 @@
 
       this.openPrivilegesPanel = function(md, scope) {
         openModal({
-          title: $translate('privileges') + ' - ' +
+          title: $translate.instant('privileges') + ' - ' +
               (md.title || md.defaultTitle),
           content: '<div gn-share="' + md.getId() + '"></div>'
         }, scope, 'PrivilegesUpdated');
@@ -202,21 +206,19 @@
       };
 
       this.startWorkflow = function(md, scope) {
-        return $http.get('md.status.update?' +
-            '_content_type=json&id=' + md.getId() +
-            '&changeMessage=Enable workflow' +
-            '&status=1').then(
+        return $http.put('../api/records/' + md.getId() +
+            '/status?status=1&comment=Enable workflow').then(
             function(data) {
               gnMetadataManager.updateMdObj(md);
               scope.$emit('metadataStatusUpdated', true);
               scope.$emit('StatusUpdated', {
-                msg: $translate('metadataStatusUpdatedWithNoErrors'),
+                msg: $translate.instant('metadataStatusUpdatedWithNoErrors'),
                 timeout: 2,
                 type: 'success'});
             }, function(data) {
               scope.$emit('metadataStatusUpdated', false);
               scope.$emit('StatusUpdated', {
-                title: $translate('metadataStatusUpdatedErrors'),
+                title: $translate.instant('metadataStatusUpdatedErrors'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -230,7 +232,7 @@
         }, scope, 'PrivilegesUpdated');
       };
       this.openBatchEditing = function(scope) {
-        $location.path('/batchedit');
+        $location.path('/batchediting');
       };
       this.openCategoriesBatchPanel = function(scope) {
         openModal({
@@ -242,10 +244,12 @@
       this.openTransferOwnership = function(md, scope) {
         var uuid = md ? md.getUuid() : '';
         var ownerId = md ? md.getOwnerId() : '';
+        var groupOwner = md ? md.getGroupOwner() : '';
         openModal({
           title: 'transferOwnership',
           content: '<div gn-transfer-ownership="' + uuid +
-              '" gn-transfer-md-owner="' + ownerId + '"></div>'
+              '" gn-transfer-md-owner="' + ownerId + '" ' +
+              '" gn-transfer-md-group-owner="' + groupOwner + '"></div>'
         }, scope, 'TransferOwnership');
       };
       /**
@@ -281,25 +285,28 @@
         var service = flag === 'on' ? 'publish' : 'unpublish';
 
         var publishNotification = function(data) {
-          var message = '<h4>' + $translate(service + 'Completed') +
+          var message = '<h4>' + $translate.instant(service + 'Completed') +
               '</h4><dl class="dl-horizontal"><dt>' +
-              $translate('mdPublished') + '</dt><dd>' +
+              $translate.instant('mdPublished') + '</dt><dd>' +
               data.data.published + '</dd><dt>' +
-              $translate('mdUnpublished') + '</dt><dd>' +
+              $translate.instant('mdUnpublished') + '</dt><dd>' +
               data.data.unpublished + '</dd><dt>' +
-              $translate('mdUnmodified') + '</dt><dd>' +
+              $translate.instant('mdUnmodified') + '</dt><dd>' +
               data.data.unmodified + '</dd><dt>' +
-              $translate('mdDisallowed') + '</dt><dd>' +
-              data.data.disallowed + '</dd></dl>';
+              $translate.instant('mdDisallowed') + '</dt><dd>' +
+              data.data.disallowed + '</dd><dt>' +
+              $translate.instant('mdNovalid') + '<dd>' +
+              data.data.novalid + '</dd>' +
+              '</dt></dl>';
 
           var success = 'success';
           if (md) {
             if ((flag === 'on' && data.data.published === 0) ||
                 (flag !== 'on' && data.data.unpublished === 0)) {
               if (data.data.unmodified > 0) {
-                message = $translate('metadataUnchanged');
+                message = $translate.instant('metadataUnchanged');
               } else if (data.data.disallowed > 0) {
-                message = $translate('accessRestricted');
+                message = $translate.instant('accessRestricted');
               }
               success = 'danger';
             }
@@ -324,8 +331,8 @@
 
       this.assignGroup = function(metadataId, groupId) {
         var defer = $q.defer();
-        $http.get('md.group.update?id=' + metadataId +
-            '&groupid=' + groupId)
+        $http.put('../api/records/' + metadataId +
+            '/group', groupId)
             .success(function(data) {
               defer.resolve(data);
             })
@@ -336,11 +343,9 @@
       };
 
       this.assignCategories = function(metadataId, categories) {
-        var defer = $q.defer(), ids = '';
-        angular.forEach(categories, function(value) {
-          ids += '&_' + value + '=on';
-        });
-        $http.get('md.category.update?id=' + metadataId + ids)
+        var defer = $q.defer();
+        $http.get('../records/' + metadataId +
+                  '/tags?id=' + categories.join('&id='))
             .success(function(data) {
               defer.resolve(data);
             })

@@ -57,15 +57,16 @@
    * TODO: This could be used in other places
    * probably. Move to another common or language module ?
    */
-  module.directive('gnCountryPicker', ['gnHttp', 'gnUtilityService',
-    function(gnHttp, gnUtilityService) {
+  module.directive('gnCountryPicker', ['$http',
+    function($http) {
       return {
         restrict: 'A',
         link: function(scope, element, attrs) {
           element.attr('placeholder', '...');
-          gnHttp.callService('country', {}, {
-            cache: true
-          }).success(function(response) {
+          $http.get('../api/regions?categoryId=' +
+              'http://geonetwork-opensource.org/regions%23country', {}, {
+                cache: true
+              }).success(function(response) {
             var data = response.region;
 
             // Compute default name and add a
@@ -179,27 +180,29 @@
             if (scope.regionType) {
               gnRegionService.loadRegion(scope.regionType, scope.lang).then(
                   function(data) {
-                    $(element).typeahead('destroy');
-                    var source = new Bloodhound({
-                      datumTokenizer:
-                          Bloodhound.tokenizers.obj.whitespace('name'),
-                      queryTokenizer: Bloodhound.tokenizers.whitespace,
-                      local: data,
-                      limit: 30
-                    });
-                    source.initialize();
-                    $(element).typeahead({
-                      minLength: 0,
-                      highlight: true
-                    }, {
-                      name: 'countries',
-                      displayKey: 'name',
-                      source: source.ttAdapter()
-                    }).on('typeahead:selected', function(event, datum) {
-                      if (angular.isFunction(scope.onRegionSelect)) {
-                        scope.onRegionSelect(datum);
-                      }
-                    });
+                    if (data) {
+                      $(element).typeahead('destroy');
+                      var source = new Bloodhound({
+                        datumTokenizer:
+                            Bloodhound.tokenizers.obj.whitespace('name'),
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        local: data,
+                        limit: 30
+                      });
+                      source.initialize();
+                      $(element).typeahead({
+                        minLength: 0,
+                        highlight: true
+                      }, {
+                        name: 'countries',
+                        displayKey: 'name',
+                        source: source.ttAdapter()
+                      }).on('typeahead:selected', function(event, datum) {
+                        if (angular.isFunction(scope.onRegionSelect)) {
+                          scope.onRegionSelect(datum);
+                        }
+                      });
+                    }
                   });
             }
           });
@@ -221,13 +224,13 @@
    * like admin > harvesting > OGC WxS
    * probably. Move to another common or language module ?
    */
-  module.directive('gnLanguagePicker', ['gnHttp',
-    function(gnHttp) {
+  module.directive('gnLanguagePicker', ['$http',
+    function($http) {
       return {
         restrict: 'A',
         link: function(scope, element, attrs) {
           element.attr('placeholder', '...');
-          gnHttp.callService('lang', {}, {
+          $http.get('../api/isolanguages', {}, {
             cache: true
           }).success(function(data) {
             // Compute default name and add a
@@ -391,7 +394,7 @@
       return {
         restrict: 'A',
         template: '<button title="{{\'gnToggle\' | translate}}">' +
-            '<i class="fa fa-fw fa-angle-double-left"/>&nbsp;' +
+            '<i class="fa fa-fw fa-angle-double-up"/>&nbsp;' +
             '</button>',
         link: function linkFn(scope, element, attr) {
           var selector = attr['gnSectionToggle'] ||
@@ -401,6 +404,8 @@
             $(selector).each(function(idx, elem) {
               $(elem).trigger(event);
             });
+            $(this).find('i').toggleClass(
+                'fa-angle-double-up fa-angle-double-down');
           });
         }
       };
@@ -983,7 +988,13 @@
           return ioFn(input, 'parse');
         }
         function out(input) {
-          return ioFn(input, 'stringify');
+          // If model value is a string
+          // No need to stringify it.
+          if (attr['gnJsonIsJson']) {
+            return ioFn(input, 'stringify');
+          } else {
+            return input;
+          }
         }
         function ioFn(input, method) {
           var json;
@@ -1100,4 +1111,40 @@
       }
     };
   }]);
+
+  /**
+   * @ngdoc directive
+   * @name gn_utility.directive:gnLynky
+   *
+   * @description
+   * If the text provided contains the following format:
+   * link|URL|Text, it's converted to an hyperlink, otherwise
+   * the text is displayed without any formatting.
+   *
+   */
+  module.directive('gnLynky', ['$compile',
+    function($compile) {
+      return {
+        restrict: 'A',
+        scope: {
+          text: '@gnLynky'
+        },
+        link: function(scope, element, attrs) {
+          if (scope.text.startsWith('link') &&
+              scope.text.split('|').length == 3) {
+            scope.link = scope.text.split('|')[1];
+            scope.value = scope.text.split('|')[2];
+
+            element.replaceWith($compile('<a data-ng-href="{{link}}" ' +
+                'data-ng-bind-html="value"></a>')(scope));
+          } else {
+
+            element.replaceWith($compile('<span ' +
+                'data-ng-bind-html="text"></span>')(scope));
+          }
+        }
+
+      };
+    }
+  ]);
 })();

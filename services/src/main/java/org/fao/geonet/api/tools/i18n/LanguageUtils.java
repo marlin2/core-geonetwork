@@ -24,12 +24,9 @@
 package org.fao.geonet.api.tools.i18n;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Set;
+import com.google.common.collect.Lists;
+
+import java.util.*;
 
 /**
  * Created by francois on 05/02/16.
@@ -61,10 +58,29 @@ public class LanguageUtils {
     public Locale parseAcceptLanguage(final Enumeration<Locale> listOfLocales) {
         while (listOfLocales.hasMoreElements()) {
             Locale l = listOfLocales.nextElement();
-            if (iso3code.contains(l.getISO3Language())) {
+            if (iso3code.contains(locale2gnCode(l.getISO3Language()))) {
                 return l;
             }
         }
         return Locale.forLanguageTag(defaultLanguage);
+    }
+
+    public String getIso3langCode(Enumeration<Locale> locales) {
+        Locale l = parseAcceptLanguage(locales);
+        return locale2gnCode(l.getISO3Language());
+    }
+    private String locale2gnCode (String code) {
+        if (code.equals("fra")) {
+            return "fre";
+        } else {
+            return code;
+        }
+	}
+
+    public Locale parseAcceptLanguage(final Locale locale) {
+        Vector<Locale> locales = new Vector<>();
+        locales.add(locale);
+
+        return parseAcceptLanguage(locales.elements());
     }
 }

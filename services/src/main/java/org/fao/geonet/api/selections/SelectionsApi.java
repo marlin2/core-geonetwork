@@ -23,6 +23,7 @@
 package org.fao.geonet.api.selections;
 
 import org.fao.geonet.api.API;
+import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.kernel.SelectionManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,10 +39,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.Arrays;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import jeeves.server.context.ServiceContext;
+import jeeves.server.UserSession;
+import springfox.documentation.annotations.ApiIgnore;
+
+import static org.fao.geonet.api.ApiParams.API_PARAM_RECORD_UUIDS;
 
 /**
  * Select a list of elements stored in session.
@@ -58,7 +65,7 @@ import jeeves.server.context.ServiceContext;
 public class SelectionsApi {
 
     @ApiOperation(value = "Get current selection",
-        nickname = "get")
+        nickname = "getSelection")
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/{bucket}",
@@ -73,13 +80,13 @@ public class SelectionsApi {
             required = true,
             example = "metadata")
         @PathVariable
-            String bucket
+            String bucket,
+        @ApiIgnore
+        HttpSession httpSession
     )
         throws Exception {
-        ServiceContext serviceContext = ServiceContext.get();
-
         SelectionManager selectionManager =
-            SelectionManager.getManager(serviceContext.getUserSession());
+            SelectionManager.getManager(ApiUtils.getUserSession(httpSession));
 
         synchronized (selectionManager.getSelection(bucket)) {
             return selectionManager.getSelection(bucket);
@@ -88,7 +95,7 @@ public class SelectionsApi {
 
 
     @ApiOperation(value = "Select one or more items",
-        nickname = "add")
+        nickname = "addToSelection")
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/{bucket}",
@@ -106,26 +113,29 @@ public class SelectionsApi {
         @ApiParam(value = "One or more record UUIDs. If null, select all in current search if bucket name is 'metadata' (TODO: remove this limitation?).",
             required = false)
         @RequestParam(required = false)
-            String[] uuid
+            String[] uuid,
+        @ApiIgnore
+        HttpSession httpSession,
+        @ApiIgnore
+        HttpServletRequest request
     )
         throws Exception {
-        ServiceContext serviceContext = ServiceContext.get();
-
+        UserSession session = ApiUtils.getUserSession(httpSession);
         int nbSelected = SelectionManager.updateSelection(bucket,
-            serviceContext.getUserSession(),
+            session,
             uuid != null ?
                 SelectionManager.ADD_SELECTED :
                 SelectionManager.ADD_ALL_SELECTED,
             uuid != null ?
                 Arrays.asList(uuid) : null,
-            serviceContext);
+            ApiUtils.createServiceContext(request));
 
         return new ResponseEntity<>(nbSelected, HttpStatus.CREATED);
     }
 
 
     @ApiOperation(value = "Clear selection or remove items",
-        nickname = "clear")
+        nickname = "clearSelection")
     @RequestMapping(
         method = RequestMethod.DELETE,
         value = "/{bucket}",
@@ -140,22 +150,26 @@ public class SelectionsApi {
             example = "metadata")
         @PathVariable
             String bucket,
-        @ApiParam(value = "One or more record UUIDs",
+        @ApiParam(
+            value = API_PARAM_RECORD_UUIDS,
             required = false)
         @RequestParam(required = false)
-            String[] uuid
+            String[] uuid,
+        @ApiIgnore
+        HttpSession httpSession,
+        @ApiIgnore
+        HttpServletRequest request
     )
         throws Exception {
-        ServiceContext serviceContext = ServiceContext.get();
 
         int nbSelected = SelectionManager.updateSelection(bucket,
-            serviceContext.getUserSession(),
+            ApiUtils.getUserSession(httpSession),
             uuid != null ?
                 SelectionManager.REMOVE_SELECTED :
                 SelectionManager.REMOVE_ALL_SELECTED,
             uuid != null ?
                 Arrays.asList(uuid) : null,
-            serviceContext);
+            ApiUtils.createServiceContext(request));
 
         return new ResponseEntity<>(nbSelected, HttpStatus.OK);
     }

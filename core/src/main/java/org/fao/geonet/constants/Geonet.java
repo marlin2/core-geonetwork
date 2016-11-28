@@ -23,14 +23,12 @@
 
 package org.fao.geonet.constants;
 
-import javax.xml.XMLConstants;
-
-import jeeves.constants.Jeeves;
-
 import org.apache.lucene.util.Version;
 import org.jdom.Namespace;
 
-import java.util.List;
+import javax.xml.XMLConstants;
+
+import jeeves.constants.Jeeves;
 
 /**
  * TODO javadoc.
@@ -237,15 +235,6 @@ public final class Geonet {
          */
         public static final String METADATA_UUIDS = "metadata.uuids";
 
-    }
-
-    public static final class Settings {
-        public static final String SERVER_HOST = "system/server/host";
-        public static final String SERVER_PORT = "system/server/port";
-        public static final String SERVER_SECURE_PORT = "system/server/securePort";
-        public static final String SERVER_PROTOCOL = "system/server/protocol";
-        public static final String VERSION = "system/platform/version";
-        public static final String SUBVERSION = "system/platform/subVersion";
     }
 
     /**
@@ -642,6 +631,7 @@ public final class Geonet {
         public static final Namespace SVRL = Namespace.getNamespace("svrl", "http://purl.oclc.org/dsdl/svrl");
         public static final Namespace SLD = Namespace.getNamespace("sld", "http://www.opengis.net/sld");
         public static final Namespace SE = Namespace.getNamespace("se", "http://www.opengis.net/se");
+        public static final Namespace XML = Namespace.getNamespace("xml", "http://www.w3.org/XML/1998/namespace");
     }
 
     public static class IndexFieldNames {

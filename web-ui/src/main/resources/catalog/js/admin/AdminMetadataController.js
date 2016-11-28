@@ -40,7 +40,7 @@
     'gnSearchManagerService',
     'gnUtilityService',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
-            gnSearchManagerService, 
+            gnSearchManagerService,
             gnUtilityService) {
 
       $scope.pageMenu = {
@@ -64,7 +64,7 @@
               href: '#/metadata/schematron'
             },{
               type: 'metadata-identifier-templates',
-              icon: 'fa-icon-list',
+              icon: 'fa-key',
               label: 'manageMetadataIdentifierTemplates',
               href: '#/metadata/metadata-identifier-templates'
             }]
@@ -78,12 +78,9 @@
       $scope.sampleLoadRunning = false;
 
       function loadSchemas() {
-        $http.get('admin.schema.list?_content_type=json').
+        $http.get('../api/standards').
             success(function(data) {
-              for (var i = 0; i < data.length; i++) {
-                $scope.schemas.push(data[i]['#text'].trim());
-              }
-              $scope.schemas.sort();
+              $scope.schemas = data;
 
               // Trigger load action according to route params
               launchActions();
@@ -143,10 +140,11 @@
       };
 
       $scope.selectAllSchemas = function(selectAll) {
+        $scope.selectedSchemas = [];
         if (selectAll) {
-          $scope.selectedSchemas = $scope.schemas;
-        } else {
-          $scope.selectedSchemas = [];
+          $.each($scope.schemas, function(index, value) {
+            selectSchema(value.name);
+          });
         }
         $scope.loadReport = null;
         $scope.loadTplReport = null;
@@ -154,8 +152,8 @@
 
       $scope.loadTemplates = function() {
         $scope.tplLoadRunning = true;
-        $http.get('admin.load.templates?_content_type=json&schema=' +
-            $scope.selectedSchemas.join(',')
+        $http.put('../api/records/templates?schema=' +
+            $scope.selectedSchemas.join('&schema=')
         ).success(function(data) {
           $scope.loadTplReport = data;
           $scope.tplLoadRunning = false;
@@ -166,10 +164,8 @@
 
       $scope.loadSamples = function() {
         $scope.sampleLoadRunning = true;
-        $http.get('admin.load.samples?_content_type=json&' +
-                  'file_type=mef&uuidAction=overwrite' +
-                  '&schema=' +
-            $scope.selectedSchemas.join(',')
+        $http.put('../api/records/samples?schema=' +
+            $scope.selectedSchemas.join('&schema=')
         ).success(function(data) {
           $scope.loadReport = data;
           $scope.sampleLoadRunning = false;
@@ -180,13 +176,6 @@
 
 
       $scope.templates = null;
-
-      var loadTemplates = function() {
-        $http.get('admin.templates.list?_content_type=json')
-            .success(function(data) {
-              $scope.templates = data;
-            });
-      };
 
       $scope.sortOrder = function(item) {
         return parseInt(item.displayorder, 10);
@@ -218,7 +207,7 @@
        */
       loadFormatterError = function(e, data) {
         $rootScope.$broadcast('StatusUpdated', {
-          title: $translate('formatterUploadError'),
+          title: $translate.instant('formatterUploadError'),
           error: data.jqXHR.responseJSON,
           timeout: 0,
           type: 'danger'});
@@ -294,7 +283,7 @@
             })
             .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('formatterRemovalError'),
+                title: $translate.instant('formatterRemovalError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -331,13 +320,13 @@
             function(response) {
               if (response.status === 200) {
                 $rootScope.$broadcast('StatusUpdated', {
-                  msg: $translate('formatterFileUpdated',
+                  msg: $translate.instant('formatterFileUpdated',
                       {file: $scope.selectedFile['@name']}),
                   timeout: 2,
                   type: 'success'});
               } else {
                 $rootScope.$broadcast('StatusUpdated', {
-                  title: $translate('formatterFileUpdateError',
+                  title: $translate.instant('formatterFileUpdateError',
                       {file: $scope.selectedFile['@name']}),
                   error: data,
                   timeout: 0,

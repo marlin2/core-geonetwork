@@ -35,8 +35,13 @@
                   $east, ' ', $south, '))')"/>
     <xsl:variable name="numberFormat" select="'0.00'"/>
 
-    <div class="thumbnail extent">
-      <span>
+    <div class="thumbnail extent"
+         itemprop="spatial"
+         itemscope="itemscope"
+         itemtype="http://schema.org/Place">
+      <span itemprop="geo"
+            itemscope="itemscope"
+            itemtype="http://schema.org/geoShape">
         <div class="input-group coord coord-north">
           <input type="text" class="form-control"
                  value="{format-number($north, $numberFormat)}" readonly=""/>
@@ -57,6 +62,9 @@
                  value="{format-number($west, $numberFormat)}" readonly=""/>
           <span class="input-group-addon">W</span>
         </div>
+        <meta itemprop="box"
+              content="{$south},{$east} {$north},{$west}"/>
+
       </span>
       <xsl:copy-of select="gn-fn-render:geometry($boxGeometry)"/>
     </div>

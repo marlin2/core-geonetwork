@@ -145,8 +145,8 @@
         <script src="{$uiResourcesPath}lib/bootstrap.ext/tagsinput/bootstrap-tagsinput.js"></script>
         <script
           src="{$uiResourcesPath}lib/bootstrap.ext/datepicker/bootstrap-datepicker.js"></script>
-        <script src="{$uiResourcesPath}/lib/bootstrap-table/dist/bootstrap-table.js"></script>
-        <script src="{$uiResourcesPath}/lib/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
+        <script src="{$uiResourcesPath}lib/bootstrap-table/dist/bootstrap-table.js"></script>
+        <script src="{$uiResourcesPath}lib/bootstrap-table/src/extensions/export/bootstrap-table-export.js"></script>
         <!--</xsl:if>-->
 
       </xsl:when>
@@ -212,6 +212,9 @@
     </xsl:if>
 
     <xsl:if test="$angularApp = 'gn_editor'">
+      <script type="text/javascript" src="{$uiResourcesPath}lib/ace/ace.js"></script>
+      <script type="text/javascript" src="{$uiResourcesPath}lib/angular.ext/ui-ace.js"></script>
+
       <script type="text/javascript">
         var module = angular.module('gn_editor');
         module.config(['gnViewerSettings', 'gnGlobalSettings',

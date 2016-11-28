@@ -130,17 +130,17 @@
       searchThesaurusKeyword = function() {
         if ($scope.thesaurusSelected) {
           $scope.recordsRelatedToThesaurus = 0;
-          $http.get('keywords@json?pNewSearch=true&pTypeSearch=1' +
-              '&pThesauri=' + $scope.thesaurusSelected.key +
-                      '&pMode=searchBox' +
-                      '&pUri=*' +
+          $http.get('../api/registries/vocabularies/search?type=CONTAINS' +
+              '&thesaurus=' + $scope.thesaurusSelected.key +
+                      '&uri=*' +
                       encodeURIComponent($scope.keywordFilter) + '*' +
-                      '&maxResults=' +
+                      '&rows=' +
                       ($scope.maxNumberOfKeywords ||
                               defaultMaxNumberOfKeywords) +
-                      '&pKeyword=' + (encodeURI($scope.keywordFilter) || '*')
+                      '&q=' + (encodeURI($scope.keywordFilter) || '*') +
+              '&lang=' + $scope.lang
           ).success(function(data) {
-            $scope.keywords = data[0];
+            $scope.keywords = data;
             gnSearchManagerService.gnSearch({
               summaryOnly: 'true',
               thesaurusIdentifier: $scope.thesaurusSelected.key}).
@@ -215,7 +215,7 @@
             })
             .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('thesaurusCreationError'),
+                title: $translate.instant('thesaurusCreationError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -240,7 +240,7 @@
        */
       uploadThesaurusError = function(e, data) {
         $rootScope.$broadcast('StatusUpdated', {
-          title: $translate('thesaurusUploadError'),
+          title: $translate.instant('thesaurusUploadError'),
           error: data.jqXHR.responseJSON,
           timeout: 0,
           type: 'danger'});
@@ -286,7 +286,7 @@
             })
             .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('thesaurusDeleteError'),
+                title: $translate.instant('thesaurusDeleteError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -312,7 +312,7 @@
           thesaurusIdentifier: $scope.thesaurusSelected.key}).
             then(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('indexingRecordsRelatedToTheThesaurus'),
+                title: $translate.instant('indexingRecordsRelatedToTheThesaurus'),
                 timeout: 2
               });
             });
@@ -337,7 +337,7 @@
       searchRelation = function(k) {
         $scope.keywordSelectedRelation = {};
         $.each(relationTypes, function(index, value) {
-          $http.get('thesaurus.keyword.links@json?' +
+          $http.get('thesaurus.keyword.links?_content_type=json&' +
               'request=' + value +
                       '&thesaurus=' + $scope.thesaurusSelected.key +
                       '&id=' + encodeURIComponent(k.uri))
@@ -352,7 +352,16 @@
        * Edit an existing keyword, open the modal, search relations
        */
       $scope.editKeyword = function(k) {
-        $scope.keywordSelected = k;
+        if (k.value['#text']) {
+          $scope.keywordSelected = k;
+        } else {
+          $scope.keywordSelected = {
+            'uri': k.uri,
+            'value': {'@language': $scope.lang, '#text': k.value},
+            'definition': {'@language': $scope.lang, '#text': k.definition},
+            'defaultLang': $scope.lang
+          };
+        }
         // Add current language labels if not set in keywords
         if (!$scope.keywordSelected.value['#text']) {
           $scope.keywordSelected.value['#text'] = '';
@@ -429,7 +438,7 @@
               var response = data[0];
               if (response && response['@message']) {
                 var statusConfig = {
-                  title: $translate('keywordCreationError'),
+                  title: $translate.instant('keywordCreationError'),
                   msg: response['@message'],
                   timeout: 0,
                   type: 'danger'
@@ -444,7 +453,7 @@
             })
             .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('keywordCreationError'),
+                title: $translate.instant('keywordCreationError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -466,7 +475,7 @@
             })
             .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('keywordUpdateError'),
+                title: $translate.instant('keywordUpdateError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -485,7 +494,7 @@
             })
             .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
-                title: $translate('keywordDeleteError'),
+                title: $translate.instant('keywordDeleteError'),
                 error: data,
                 timeout: 0,
                 type: 'danger'});
@@ -557,7 +566,7 @@
           $scope.thesaurus = data[0];
         }).error(function(data) {
           $rootScope.$broadcast('StatusUpdated', {
-            title: $translate('thesaurusListError'),
+            title: $translate.instant('thesaurusListError'),
             error: data,
             timeout: 0,
             type: 'danger'});

@@ -273,6 +273,10 @@ public class LuceneQueryBuilder {
         //
         Map<String, Set<String>> searchCriteriaOR = new LinkedHashMap<String, Set<String>>();
 
+        spatialCriteriaAdded = false;
+        temporalCriteriaAdded = false;
+        templateCriteriaAdded = false;
+
         for (Iterator<Entry<String, Set<String>>> i = searchCriteria.entrySet().iterator(); i.hasNext(); ) {
             Entry<String, Set<String>> entry = i.next();
             String fieldName = entry.getKey();
@@ -325,6 +329,15 @@ public class LuceneQueryBuilder {
         }
         query = buildORQuery(searchCriteriaOR, query, similarity);
         query = buildANDQuery(searchCriteria, query, similarity, processedRangeFields);
+
+        // Search only for metadata (no template or sub-templates) if not set by search criteria before
+        if (!templateCriteriaAdded) {
+            BooleanClause.Occur occur = LuceneUtils.convertRequiredAndProhibitedToOccur(true, false);
+            Query q = new TermQuery(new Term(LuceneIndexField.IS_TEMPLATE, "n"));
+            query.add(q, occur);
+            templateCriteriaAdded = true;
+        }
+
         if (StringUtils.isNotEmpty(_language)) {
             if (Log.isDebugEnabled(Geonet.LUCENE))
                 Log.debug(Geonet.LUCENE, "adding locale query for language " + _language);
@@ -369,10 +382,6 @@ public class LuceneQueryBuilder {
      * Builds a query where OR operator is used for each search criteria.
      */
     private BooleanQuery buildORQuery(Map<String, Set<String>> searchCriteria, BooleanQuery query, String similarity) {
-
-        spatialCriteriaAdded = false;
-        temporalCriteriaAdded = false;
-        templateCriteriaAdded = false;
 
         if (searchCriteria.size() == 0) {
             return query;
@@ -431,14 +440,6 @@ public class LuceneQueryBuilder {
         }
         BooleanClause booleanClause = new BooleanClause(booleanQuery, occur);
         query.add(booleanClause);
-
-        // Search only for metadata (no template or sub-templates) if not set by search criteria before
-        if (!templateCriteriaAdded) {
-            occur = LuceneUtils.convertRequiredAndProhibitedToOccur(true, false);
-            Query q = new TermQuery(new Term(LuceneIndexField.IS_TEMPLATE, "n"));
-            query.add(q, occur);
-            templateCriteriaAdded = true;
-        }
         return query;
     }
 
@@ -480,14 +481,6 @@ public class LuceneQueryBuilder {
             String fieldName = searchCriterium.getKey();
             Set<String> fieldValues = searchCriterium.getValue();
             addANDCriteria(fieldName, fieldValues, similarity, query, searchCriteria, processedRangeFields);
-        }
-
-        // Search only for metadata (no template or sub-templates) if not set by search criteria before
-        if (!templateCriteriaAdded) {
-            BooleanClause.Occur occur = LuceneUtils.convertRequiredAndProhibitedToOccur(true, false);
-            Query q = new TermQuery(new Term(LuceneIndexField.IS_TEMPLATE, "n"));
-            query.add(q, occur);
-            templateCriteriaAdded = true;
         }
         return query;
     }
@@ -1064,14 +1057,47 @@ public class LuceneQueryBuilder {
                                       boolean maxExclusive, String luceneIndexField, boolean required) {
         if (min != null && max != null) {
             String type = _numericFieldSet.get(luceneIndexField).getType();
+            int precisionStep = _numericFieldSet.get(luceneIndexField).getPrecisionStep();
 
-            NumericRangeQuery<? extends Number> rangeQuery = buildNumericRangeQueryForType(luceneIndexField, min, max, minInclusive, maxExclusive, type);
+            NumericRangeQuery<? extends Number> rangeQuery = buildNumericRangeQueryForType(luceneIndexField, min, max,
+                    minInclusive, maxExclusive, type, precisionStep);
 
             BooleanClause.Occur denoOccur = LuceneUtils.convertRequiredAndProhibitedToOccur(required, false);
             BooleanClause rangeClause = new BooleanClause(rangeQuery, denoOccur);
 
             query.add(rangeClause);
         }
+    }
+
+    public static NumericRangeQuery<? extends Number> buildNumericRangeQueryForType(String fieldName, String min, String max,
+                                                                  boolean minInclusive, boolean maxInclusive, String type, int precisionStep) {
+        NumericRangeQuery<? extends Number> rangeQuery;
+        if ("double".equals(type)) {
+            rangeQuery = NumericRangeQuery.newDoubleRange(fieldName, precisionStep,
+                    (min == null ? Double.MIN_VALUE : Double.parseDouble(min)),
+                    (max == null ? Double.MAX_VALUE : Double.parseDouble(max)),
+                    true, true);
+
+        }
+        else if ("float".equals(type)) {
+            rangeQuery = NumericRangeQuery.newFloatRange(fieldName, precisionStep,
+                    (min == null ? Float.MIN_VALUE : Float.parseFloat(min)),
+                    (max == null ? Float.MAX_VALUE : Float.parseFloat(max)), true,
+                    true);
+        }
+        else if ("long".equals(type)) {
+            rangeQuery = NumericRangeQuery.newLongRange(fieldName, precisionStep,
+                    (min == null ? Long.MIN_VALUE : Long.parseLong(min)),
+                    (max == null ? Long.MAX_VALUE : Long.parseLong(max)), true,
+                    true);
+        }
+        else {
+            rangeQuery = NumericRangeQuery.newIntRange(fieldName, precisionStep,
+                    (min == null ? Integer.MIN_VALUE : Integer.parseInt(min)),
+                    (max == null ? Integer.MAX_VALUE : Integer.parseInt(max)),
+                    true, true);
+        }
+        return rangeQuery;
     }
 
     /**

@@ -40,7 +40,7 @@
     'gnConfigService',
     'gnConfig',
     function($scope, $routeParams, $http, $rootScope, $translate, $compile,
-            gnSearchManagerService, 
+            gnSearchManagerService,
             gnUtilityService,
             gnMetadataManager,
             gnConfigService,
@@ -71,7 +71,7 @@
       $scope.$watchCollection('groups', function() {
         if (!angular.isUndefined($scope.groups)) {
           if ($scope.groups.length == 1) {
-            $scope.ownerGroup = $scope.groups[0]['@id'];
+            $scope.ownerGroup = $scope.groups[0].id;
           }
         }
       });
@@ -109,8 +109,8 @@
 
 
           // TODO: Better handling of lots of templates
-          gnSearchManagerService.search('qi@json?' +
-              query + '&fast=index&from=1&to=200').
+          gnSearchManagerService.search('qi?_content_type=json&' +
+              query + '&fast=index&from=1&to=200&_isTemplate=y or n').
               then(function(data) {
 
                 $scope.mdList = data;
@@ -188,11 +188,11 @@
 
 
       if ($routeParams.childOf) {
-        $scope.title = $translate('createChildOf');
+        $scope.title = $translate.instant('createChildOf');
       } else if ($routeParams.from) {
-        $scope.title = $translate('createCopyOf');
+        $scope.title = $translate.instant('createCopyOf');
       } else {
-        $scope.title = $translate('createA');
+        $scope.title = $translate.instant('createA');
       }
 
       $scope.createNewMetadata = function(isPublic) {
@@ -229,7 +229,7 @@
             metadataUuid
         ).error(function(data) {
           $rootScope.$broadcast('StatusUpdated', {
-            title: $translate('createMetadataError'),
+            title: $translate.instant('createMetadataError'),
             error: data.error,
             timeout: 0,
             type: 'danger'});
@@ -346,7 +346,7 @@
       function loadMetadataIdentifierTemplates() {
         $scope.mdIdentifierTemplateSelected = {};
 
-        $http.get('metadataIdentifierTemplates?_content_type=json')
+        $http.get('../api/identifiers')
             .success(function(data) {
               $scope.mdIdentifierTemplates = data;
 

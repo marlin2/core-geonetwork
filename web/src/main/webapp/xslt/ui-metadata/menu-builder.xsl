@@ -35,6 +35,7 @@
   -->
   <xsl:template name="menu-builder">
     <xsl:param name="config" as="node()"/>
+    <xsl:variable name="currentView" select="$config/editor/views/view[tab/@id = $tab]"/>
 
     <div class="gn-scroll-spy"
          data-gn-scroll-spy="gn-editor-{$metadataId}"
@@ -118,7 +119,6 @@
           </xsl:choose>
         </ul>
       </li>
-
 
       <!-- Make a tab switcher for all tabs of the current view -->
       <xsl:if test="count($currentView/tab) > 1">

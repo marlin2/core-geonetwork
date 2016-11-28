@@ -169,9 +169,9 @@
   module.directive('gnKeywordSelector',
       ['$compile', '$timeout', '$translate',
        'gnThesaurusService', 'gnEditor',
-       'Keyword',
+       'Keyword', 'gnLangs',
        function($compile, $timeout, $translate,
-               gnThesaurusService, gnEditor, Keyword) {
+               gnThesaurusService, gnEditor, Keyword, gnLangs) {
 
          return {
            restrict: 'A',
@@ -235,6 +235,7 @@
              for (var p in JSON.parse(scope.lang)) {
                langs.push(p);
              }
+             scope.mainLang = langs[0];
              scope.langs = langs.join(',');
 
              // Check initial keywords are available in the thesaurus
@@ -278,24 +279,26 @@
                  var counter = 0;
                  angular.forEach(scope.initialKeywords, function(keyword) {
                    // One keyword only and exact match search
+                   // in current editor language.
                    gnThesaurusService.getKeywords(keyword,
-                   scope.thesaurusKey, 1, 2).then(function(listOfKeywords) {
-                      counter++;
+                   scope.thesaurusKey, gnLangs.current, 1, 'MATCH')
+                     .then(function(listOfKeywords) {
+                     counter++;
 
-                      listOfKeywords[0] &&
+                     listOfKeywords[0] &&
                      scope.selected.push(listOfKeywords[0]);
-                      // Init done when all keywords are selected
-                      if (counter === scope.initialKeywords.length) {
-                        scope.isInitialized = true;
-                        scope.invalidKeywordMatch =
+                     // Init done when all keywords are selected
+                     if (counter === scope.initialKeywords.length) {
+                       scope.isInitialized = true;
+                       scope.invalidKeywordMatch =
                        scope.selected.length !== scope.initialKeywords.length;
 
-                        // Get the matching XML snippet for
-                        // the initial set of keywords
-                        // once the loaded keywords are all selected.
-                        checkState();
-                      }
-                    });
+                       // Get the matching XML snippet for
+                       // the initial set of keywords
+                       // once the loaded keywords are all selected.
+                       checkState();
+                     }
+                   });
                  });
                }
 
@@ -345,16 +348,17 @@
 
                  // Load all keywords from thesaurus on startup
                  gnThesaurusService.getKeywords('',
-                 scope.thesaurusKey, scope.max)
+                 scope.thesaurusKey, scope.mainLang, scope.max)
                   .then(function(listOfKeywords) {
 
                    var field = $(id).tagsinput('input');
-                   field.attr('placeholder', $translate('searchKeyword'));
+                   field.attr('placeholder', $translate.instant('searchKeyword'));
 
                    var keywordsAutocompleter =
                    gnThesaurusService.getKeywordAutocompleter({
                      thesaurusKey: scope.thesaurusKey,
-                     dataToExclude: scope.selected
+                     dataToExclude: scope.selected,
+                     lang: gnLangs.current
                    });
 
                    // Init typeahead
@@ -425,7 +429,7 @@
 
              var search = function() {
                gnThesaurusService.getKeywords(scope.filter,
-               scope.thesaurusKey, scope.max)
+               scope.thesaurusKey, gnLangs.current, scope.max)
                 .then(function(listOfKeywords) {
                  // Remove from search already selected keywords
                  scope.results = $.grep(listOfKeywords, function(n) {
@@ -522,7 +526,7 @@
             // Get list of available thesaurus (if not defined
             // by scope)
             element.typeahead('destroy');
-            element.attr('placeholder', $translate('searchOrTypeKeyword'));
+            element.attr('placeholder', $translate.instant('searchOrTypeKeyword'));
 
             // Thesaurus selector is not added if the key is defined
             // by configuration
@@ -531,7 +535,8 @@
             }
             var keywordsAutocompleter =
                 gnThesaurusService.getKeywordAutocompleter({
-                  thesaurusKey: scope.thesaurusKey
+                  thesaurusKey: scope.thesaurusKey,
+                  lang: scope.lang
                 });
 
             // Init typeahead

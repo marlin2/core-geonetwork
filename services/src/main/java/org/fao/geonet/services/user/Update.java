@@ -24,27 +24,21 @@
 package org.fao.geonet.services.user;
 
 import com.vividsolutions.jts.util.Assert;
-
 import jeeves.server.UserSession;
 import jeeves.server.sources.http.JeevesServlet;
 import jeeves.services.ReadWriteController;
-
 import org.apache.commons.lang.StringUtils;
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Params;
-import org.fao.geonet.domain.Address;
-import org.fao.geonet.domain.Group;
-import org.fao.geonet.domain.Profile;
-import org.fao.geonet.domain.User;
-import org.fao.geonet.domain.UserGroup;
+import org.fao.geonet.domain.*;
 import org.fao.geonet.domain.responses.OkResponse;
+import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
 import org.fao.geonet.repository.specification.UserSpecs;
 import org.fao.geonet.util.PasswordUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContext;
@@ -53,19 +47,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static org.fao.geonet.repository.specification.UserGroupSpecs.hasProfile;
-import static org.fao.geonet.repository.specification.UserGroupSpecs.hasUserId;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.*;
+import java.util.List;
+
+import static org.fao.geonet.repository.specification.UserGroupSpecs.hasProfile;
+import static org.fao.geonet.repository.specification.UserGroupSpecs.hasUserId;
 
 /**
  * Update the information of a user.
@@ -73,21 +61,15 @@ import javax.servlet.http.HttpSession;
 
 @Controller("admin.user.update")
 @ReadWriteController
+@Deprecated
 public class Update {
 
-    @Autowired
-    private UserGroupRepository userGroupRepository;
-    @Autowired
-    private GroupRepository groupRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ApplicationContext applicationContext;
 
     @RequestMapping(value = "/{lang}/admin.user.resetpassword", produces = {
         MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public
     @ResponseBody
+    @Deprecated
     OkResponse resetPassword(
         HttpSession session,
         @RequestParam(value = Params.ID) String id,
@@ -96,6 +78,7 @@ public class Update {
     ) throws Exception {
         Assert.equals(password, password2);
         new LoadCurrentUserInfo(session, id).invoke();
+        UserRepository userRepository = ApplicationContextHolder.get().getBean(UserRepository.class);
 
         User user = userRepository.findOne(id);
         setPassword(Params.Operation.RESETPW, password, user);
@@ -149,6 +132,7 @@ public class Update {
                 }
             }
         }
+        UserRepository userRepository = ApplicationContextHolder.get().getBean(UserRepository.class);
 
         if (profile == Profile.Administrator) {
             // Check at least 1 administrator is enabled
@@ -166,7 +150,28 @@ public class Update {
         }
 
 
+        UserGroupRepository userGroupRepository = ApplicationContextHolder.get().getBean(UserGroupRepository.class);
+
         checkAccessRights(operation, id, username, myProfile, myUserId, groups, userGroupRepository);
+
+        //If it is a useradmin updating,
+        //maybe we don't know all the groups the user is part of
+        if(!myProfile.equals(Profile.Administrator) && !Params.Operation.NEWUSER.equalsIgnoreCase(operation)) {
+            List<Integer> myUserAdminGroups = userGroupRepository.findGroupIds(Specifications.where(
+                    hasProfile(myProfile)).and(hasUserId(Integer.valueOf(myUserId))));
+
+            List<UserGroup> usergroups =
+                    userGroupRepository.findAll(Specifications.where(
+                            hasUserId(Integer.parseInt(id))));
+
+            //keep unknown groups as is
+            for(UserGroup ug : usergroups) {
+                if(!myUserAdminGroups.contains(ug.getGroup().getId())) {
+                    groups.add(new GroupElem(ug.getProfile().name(),
+                            ug.getGroup().getId()));
+                }
+            }
+        }
 
         User user = getUser(userRepository, operation, id, username);
 
@@ -270,6 +275,7 @@ public class Update {
                 user.getEmailAddresses().add(mail);
             }
         }
+        UserRepository userRepository = ApplicationContextHolder.get().getBean(UserRepository.class);
 
         // -- For adding new user
         if (operation.equals(Params.Operation.NEWUSER)
@@ -286,7 +292,7 @@ public class Update {
     public void setPassword(String operation, String password, User user) {
         if (password != null) {
             user.getSecurity().setPassword(
-                PasswordUtil.encoder(applicationContext).encode(
+                PasswordUtil.encoder(ApplicationContextHolder.get()).encode(
                     password));
         } else if (operation.equals(Params.Operation.RESETPW)
             || operation.equals(Params.Operation.NEWUSER)) {
@@ -360,6 +366,8 @@ public class Update {
 
     private void setUserGroups(final User user, List<GroupElem> userGroups)
         throws Exception {
+        UserGroupRepository userGroupRepository = ApplicationContextHolder.get().getBean(UserGroupRepository.class);
+        GroupRepository groupRepository = ApplicationContextHolder.get().getBean(GroupRepository.class);
 
         Collection<UserGroup> all = userGroupRepository.findAll(UserGroupSpecs
             .hasUserId(user.getId()));
@@ -485,10 +493,12 @@ public class Update {
     }
 }
 
+@Deprecated
 class GroupElem {
 
     private String profile;
     private Integer id;
+
     public GroupElem(String profile, Integer id) {
         this.id = id;
         this.profile = profile;

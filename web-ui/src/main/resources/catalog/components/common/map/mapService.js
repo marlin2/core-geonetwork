@@ -449,10 +449,9 @@
               return;
             }
 
-            var proxyUrl = gnGlobalSettings.proxyUrl + encodeURIComponent(url);
             var kmlSource = new ol.source.KML({
               projection: map.getView().getProjection(),
-              url: proxyUrl
+              url: url
             });
 
             var vector = new ol.layer.Vector({
@@ -570,7 +569,7 @@
                       tileEvent.currentTarget.getParams().LAYERS :
                       layerParams.LAYERS;
 
-                  var msg = $translate('layerTileLoadError', {
+                  var msg = $translate.instant('layerTileLoadError', {
                     url: url,
                     layer: layer
                   });
@@ -628,12 +627,12 @@
                   }
                 }
               } else {
-                errors.push($translate('layerCRSNotFound'));
-                console.warn($translate('layerCRSNotFound'));
+                errors.push($translate.instant('layerCRSNotFound'));
+                console.warn($translate.instant('layerCRSNotFound'));
               }
               if (!isLayerAvailableInMapProjection) {
-                errors.push($translate('layerNotAvailableInMapProj'));
-                console.warn($translate('layerNotAvailableInMapProj'));
+                errors.push($translate.instant('layerNotAvailableInMapProj'));
+                console.warn($translate.instant('layerNotAvailableInMapProj'));
               }
               */
 
@@ -755,13 +754,13 @@
                   }
                 }
               } else {
-                errors.push($translate('layerCRSNotFound'));
-                console.warn($translate('layerCRSNotFound'));
+                errors.push($translate.instant('layerCRSNotFound'));
+                console.warn($translate.instant('layerCRSNotFound'));
               }
 
               if (!isLayerAvailableInMapProjection) {
-                errors.push($translate('layerNotAvailableInMapProj'));
-                console.warn($translate('layerNotAvailableInMapProj'));
+                errors.push($translate.instant('layerNotAvailableInMapProj'));
+                console.warn($translate.instant('layerNotAvailableInMapProj'));
               }
 
               // TODO: parse better legend & attribution
@@ -818,8 +817,7 @@
 
                   var parts = url.split('?');
 
-                  var proxyUrl = gnGlobalSettings.proxyUrl +
-                      encodeURIComponent(gnUrlUtils.append(parts[0],
+                  var url = gnUrlUtils.append(parts[0],
                       gnUrlUtils.toKeyValue({
                         service: 'WFS',
                         request: 'GetFeature',
@@ -827,10 +825,10 @@
                         srsName: map.getView().getProjection().getCode(),
                         bbox: extent.join(','),
                         typename: getCapLayer.name.prefix + ':' +
-                                   getCapLayer.name.localPart})));
+                                   getCapLayer.name.localPart}));
 
                   $.ajax({
-                    url: proxyUrl
+                    url: url
                   })
                       .done(function(response) {
                         // TODO: Check WFS exception
@@ -1009,7 +1007,7 @@
                   if (!angular.isArray(olL.get('errors'))) {
                     olL.set('errors', []);
                   }
-                  var errormsg = $translate('layerNotfoundInCapability', {
+                  var errormsg = $translate.instant('layerNotfoundInCapability', {
                     layer: name,
                     url: url
                   });
@@ -1019,6 +1017,7 @@
                   olL.get('errors').push(errors);
 
                   gnWmsQueue.error(o);
+                  o.layer = olL;
                   defer.reject(o);
                 } else {
                   olL = $this.createOlWMSFromCap(map, capL, url);
@@ -1052,36 +1051,6 @@
               });
             }
             return defer.promise;
-          },
-
-          /**
-           * Call a WMS getCapabilities and create ol3 layers for all items.
-           * Add them to the map if `createOnly` is false;
-           *
-           * @param {ol.Map} map to add the layer
-           * @param {string} url of the service
-           * @param {string} name of the layer
-           * @param {boolean} createOnly or add it to the map
-           */
-          addWmsAllLayersFromCap: function(map, url, createOnly) {
-            var $this = this;
-
-            return gnOwsCapabilities.getWMSCapabilities(url).
-                then(function(capObj) {
-
-                  var createdLayers = [];
-
-                  var layers = capObj.layers || capObj.Layer;
-                  for (var i = 0, len = layers.length; i < len; i++) {
-                    var capL = layers[i];
-                    var olL = $this.createOlWMSFromCap(map, capL);
-                    if (!createOnly) {
-                      map.addLayer(olL);
-                    }
-                    createdLayers.push(olL);
-                  }
-                  return createdLayers;
-                });
           },
 
           /**
@@ -1226,7 +1195,7 @@
                 if (!angular.isArray(olL.get('errors'))) {
                   olL.set('errors', []);
                 }
-                var errormsg = $translate('layerNotfoundInCapability', {
+                var errormsg = $translate.instant('layerNotfoundInCapability', {
                   layer: name,
                   url: url
                 });
@@ -1537,7 +1506,19 @@
                 _content_type: 'json'
               }).then(function(data) {
                 if (data.metadata.length == 1) {
-                  layer.set('md', new Metadata(data.metadata[0]));
+                  var md = new Metadata(data.metadata[0]);
+                  layer.set('md', md);
+
+                  var mdLinks = md.getLinksByType('#OGC:WMTS',
+                      '#OGC:WMS', '#OGC:WMS-1.1.1-http-get-map');
+
+                  angular.forEach(mdLinks, function(link) {
+                    if (layer.get('url').indexOf(link.url) >= 0 &&
+                        link.name == layer.getSource().getParams().LAYERS) {
+                      this.feedLayerWithRelated(layer, link.group);
+                      return;
+                    }
+                  }, $this);
                 }
                 return layer;
               });
@@ -1563,11 +1544,11 @@
 
             // We can bind layer and download/process
             if (md.getLinksByType(linkGroup, '#OGC:WMTS',
-                    '#OGC:WMS', '#OGC:WMS-1.1.1-http-get-map').length == 1) {
+                '#OGC:WMS', '#OGC:WMS-1.1.1-http-get-map').length == 1) {
 
               var downloads = md && md.getLinksByType(linkGroup,
-                      'WWW:DOWNLOAD-1.0-link--download', 'FILE', 'DB',
-                      'WFS', 'WCS', 'COPYFILE');
+                  'WWW:DOWNLOAD-1.0-link--download', 'FILE', 'DB',
+                  'WFS', 'WCS', 'COPYFILE');
               layer.set('downloads', downloads);
 
               var wfs = md && md.getLinksByType(linkGroup, '#WFS');
@@ -1592,7 +1573,7 @@
          * appear in the layer manager
          */
         selected: function(layer) {
-          return layer.displayInLayerManager;
+          return layer.displayInLayerManager && !layer.get('fromWps');
         },
         visible: function(layer) {
           return layer.displayInLayerManager && layer.visible;

@@ -53,7 +53,7 @@
                if (scope.layer) {
                  scope.currentLayer = scope.layer;
                }
-             }
+             };
              scope.map.getLayers().on('remove', function(e) {
                if (e.element == scope.currentLayer) {
                  scope.setLayer(null);
@@ -105,7 +105,7 @@
                    if ($.inArray(field.idxName, scope.excludeCols) === -1) {
                      columns.push({
                        field: field.idxName,
-                       title: $translate(field.label)
+                       title: $translate.instant(field.label)
                      });
                    }
                  });
