@@ -167,7 +167,7 @@
 			</xsl:choose>
 	</xsl:variable>
 
-  <xsl:variable name="viewConfig" select="$currentView"/>
+  <xsl:variable name="viewConfig" select="$currentView[tab/@id = $tab]"/>
   <xsl:variable name="tabConfig" select="$currentView/tab[@id = $tab]"/>
   <xsl:variable name="thesaurusList" select="$editorConfig/editor/views/view[tab/@id = $tab]/thesaurusList"/>
   

@@ -185,8 +185,11 @@
                   data.metadata[0].defaultTitle;
 
               // Set default schema configuration in case none is defined
-              var config =
-                  gnConfig['metadata.editor.schemaConfig'][$scope.mdSchema];
+              var scConfig = JSON.parse(gnConfig['metadata.editor.schemaConfig']);
+              var config;
+              if (scConfig) { 
+                config = scConfig[$scope.mdSchema];
+              }
               if (!config) {
                 config = {
                   displayToolTip: false
