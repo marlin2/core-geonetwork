@@ -78,6 +78,10 @@ public class Result implements Service
 				params.addContent(new Element("to").setText(range));
 			}
 
+		String fast = _config.getValue("fast");
+    if (fast != null) {
+       params.addContent(new Element("fast").setText(fast));
+    }
 
 		Element result = searcher.present(context, params, _config);
 
