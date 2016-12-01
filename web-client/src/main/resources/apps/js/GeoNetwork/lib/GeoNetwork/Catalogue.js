@@ -894,6 +894,10 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
                 var store = GeoNetwork.data.MetadataResultsFastStore();
                 this.kvpSearch("fast=index&_uuid=" + uuid, null, null, null, true, store, null, false);
                 record = store.getAt(store.find('uuid', uuid));
+                if (!record) { // check and see whether this is a template
+                  this.kvpSearch("_isTemplate=y&fast=index&_uuid=" + uuid, null, null, null, true, store, null, false);
+                  record = store.getAt(store.find('uuid', uuid));
+                }
             }
             
             // metadata deleted or not visible to current user
