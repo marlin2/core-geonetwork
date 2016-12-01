@@ -73,8 +73,8 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marlin.csiro.au:keywords:standardDataType',
-		thesaurusShortName: 'register.dataSource.urn:marlin.csiro.au:keywords:standardDataType',
+		thesaurus: 'geonetwork.thesaurus.register.discipline.urn:marlin.csiro.au:keywords:standardDataType',
+		thesaurusShortName: 'register.discipline.urn:marlin.csiro.au:keywords:standardDataType',
 		luceneFieldName:	'E_keywordId',
 		label:						'Data Type',
 		valueField:				'uri',
@@ -93,10 +93,10 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.external.theme.mcp_collection_methods',
-		thesaurusShortName: 'external.theme.mcp_collection_methods',
+		thesaurus: 'geonetwork.thesaurus.register.equipment.urn:marlin.csiro.au:Equipment',
+		thesaurusShortName: 'register.equipment.urn:marlin.csiro.au:Equipment',
 		luceneFieldName:	'E_keywordId',
-		label:						'MCP Collection Methods',
+		label:						'Equipment',
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
@@ -113,30 +113,20 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.external.place.mcp_regions',
-		thesaurusShortName: 'external.place.mcp_regions',
+		thesaurus: 'geonetwork.thesaurus.register.place.urn:marlin.csiro.au:definedregions',
+		thesaurusShortName: 'register.place.urn:marlin.csiro.au:definedregions',
 		luceneFieldName:	'E_keywordId',
-		label:						'MCP Geographic Extent Names',
+		label:						'Defined Regions',
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.external.taxon.nsl_species_all',
-		thesaurusShortName: 'external.taxon.nsl_species_all',
+		thesaurus: 'geonetwork.thesaurus.register.taxon.urn:lsid:marinespecies.org:taxname',
+		thesaurusShortName: 'register.taxon.urn:lsid:marinespecies.org:taxname',
 		luceneFieldName:	'E_keywordId',
-		label:						'Aust. National Species List',
-		valueField:				'uri',
-		displayField:			'value',
-		thesaurusField:		'uri',
-		multi:						true
-	},
-	{ 
-		thesaurus: 'geonetwork.thesaurus.external.taxon.worms_algae_au',
-		thesaurusShortName: 'external.taxon.worms_algae_au',
-		luceneFieldName:	'E_keywordId',
-		label:						'World Register of Marine Species - Algae',
+		label:						'WORMS',
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
