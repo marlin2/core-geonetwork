@@ -153,6 +153,7 @@ MarLIN.buildKeywordRow = function(services, selector, thesaurusInfo) {
 			id: 'thesaurusBt'+thesaurusInfo.get('thesaurus'), 
 			iconCls: 'fabutton-1x fa fa-search-plus',
 			cls: 'marlin-keyword-search-button',
+      fieldLabel: selector ? '' : thesaurusInfo.get('label'),
 			toolTip: 'Search '+thesaurusInfo.get('label')+' List',
 			listeners: {
 						click: function(){
@@ -162,7 +163,7 @@ MarLIN.buildKeywordRow = function(services, selector, thesaurusInfo) {
 	});
 
   var kwitems = [];
-  if (selector != undefined) {
+  if (selector) {
     kwitems.push({
                   xtype: 'panel',
                   columnWidth: 0.95,
@@ -176,7 +177,7 @@ MarLIN.buildKeywordRow = function(services, selector, thesaurusInfo) {
                   xtype: 'panel',
                   layout: 'form',
                   border: false,
-                  columnWidth: 0.05,
+                  columnWidth: selector ? 0.05 : 1.0,
                   items: button
   });
 
