@@ -113,10 +113,10 @@ MarLIN.Thesauri = [
 		multi:						true
 	},
 	{ 
-		thesaurus: 'geonetwork.thesaurus.register.place.urn:marlin.csiro.au:definedregions',
-		thesaurusShortName: 'register.place.urn:marlin.csiro.au:definedregions',
+		thesaurus: 'geonetwork.thesaurus.register.place.urn:aodn.org.au:geographicextents',
+		thesaurusShortName: 'register.place.urn:aodn.org.au:geographicextents',
 		luceneFieldName:	'E_keywordId',
-		label:						'Defined Regions',
+		label:						'AODN Geographic Extents',
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
@@ -130,7 +130,9 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    noBox:            true,
+    noReduce:         true
 	}
 ]
 
@@ -151,28 +153,31 @@ MarLIN.buildKeywordRow = function(services, selector, thesaurusInfo) {
 			}
 	});
 
+  var kwitems = [];
+  if (selector != undefined) {
+    kwitems.push({
+                  xtype: 'panel',
+                  columnWidth: 0.95,
+                  layout: 'form',
+                  border: false,
+                  items: selector
+    });
+  } 
+
+  kwitems.push({
+                  xtype: 'panel',
+                  layout: 'form',
+                  border: false,
+                  columnWidth: 0.05,
+                  items: button
+  });
+
 			
 	return [{
 						xtype: 'panel',
 						layout: 'column',
 						border: false,
-						items:
-						[
-							{
-									xtype: 'panel',
-									columnWidth: 0.95, 
-									layout: 'form',
-									border: false,
-									items: selector 	
-							},
-							{
-									xtype: 'panel',
-									layout: 'form',
-									border: false,
-									columnWidth: 0.05,
-									items: button
-							}
-						]
+						items: kwitems
 				}];
 }
 
@@ -471,6 +476,7 @@ MarLIN.SearchFormTools = {
      */
     getThesaurusField : function (thesaurusInfo, services) {
         var keyStore, selector;
+        if (thesaurusInfo.get('noBox') != undefined) {
 
         // Keyword store which is thesaurus terms filtered with values from
 				// lucene field ThesaurusName
@@ -545,6 +551,7 @@ MarLIN.SearchFormTools = {
             selector = new Ext.ux.form.SuperBoxSelect(config);
         } else {
             selector = new Ext.form.ComboBox(config);
+        }
         }
 
 				return MarLIN.buildKeywordRow(services, selector, thesaurusInfo);
