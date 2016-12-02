@@ -40,7 +40,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.project.urn:marlin.csiro.au:globalprojectregister',
@@ -50,7 +51,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.survey.urn:marlin.csiro.au:surveyregister',
@@ -60,7 +62,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'definition',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.dataSource.urn:marlin.csiro.au:sourceregister',
@@ -70,7 +73,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'definition',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.discipline.urn:marlin.csiro.au:keywords:standardDataType',
@@ -80,7 +84,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.discipline.urn:marlin.csiro.au:keywords:cmarAOI',
@@ -90,7 +95,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.equipment.urn:marlin.csiro.au:Equipment',
@@ -100,7 +106,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.external.theme.gcmd_keywords',
@@ -110,7 +117,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.place.urn:aodn.org.au:geographicextents',
@@ -120,7 +128,8 @@ MarLIN.Thesauri = [
 		valueField:				'uri',
 		displayField:			'value',
 		thesaurusField:		'uri',
-		multi:						true
+		multi:						true,
+    selector:         true
 	},
 	{ 
 		thesaurus: 'geonetwork.thesaurus.register.taxon.urn:lsid:marinespecies.org:taxname',
@@ -131,13 +140,12 @@ MarLIN.Thesauri = [
 		displayField:			'value',
 		thesaurusField:		'uri',
 		multi:						true,
-    noBox:            true,
-    noReduce:         true
+    selector:         false
 	}
 ]
 
 MarLIN.ThesauriStore = new Ext.data.JsonStore({
-		fields: [ 'thesaurus', 'thesaurusShortName', 'luceneFieldName', 'label', 'valueField', 'displayField', 'thesaurusField', 'multi' ]
+		fields: [ 'thesaurus', 'thesaurusShortName', 'luceneFieldName', 'label', 'valueField', 'displayField', 'thesaurusField', 'multi', 'selector' ]
 });
 
 MarLIN.buildKeywordRow = function(services, selector, thesaurusInfo) {
@@ -476,7 +484,7 @@ MarLIN.SearchFormTools = {
      */
     getThesaurusField : function (thesaurusInfo, services) {
         var keyStore, selector;
-        if (thesaurusInfo.get('noBox') != undefined) {
+        if (thesaurusInfo.get('selector')) {
 
         // Keyword store which is thesaurus terms filtered with values from
 				// lucene field ThesaurusName
