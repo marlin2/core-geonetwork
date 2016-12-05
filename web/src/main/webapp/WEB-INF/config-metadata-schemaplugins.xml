@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<geonet>
+	<services package="org.fao.geonet">
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- MCP services - services specific to the Marine Community Profile  -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="creativecommons.get">
+			<output sheet="../xslt/services/creativecommons/creativecommons-snippet.xsl" contentType="text/xml; charset=UTF-8">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="creativecommons.jurisdictions">
+			<output sheet="../xslt/services/creativecommons/creativecommons-jurisdictions.xsl" contentType="text/xml; charset=UTF-8">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="creativecommons.licenses">
+			<output sheet="../xslt/services/creativecommons/creativecommons-licenses.xsl" contentType="text/xml; charset=UTF-8">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+	</services>
+</geonet>
+

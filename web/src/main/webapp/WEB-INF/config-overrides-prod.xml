@@ -22,4 +22,5 @@
   -->
 
 <overrides>
+  <import file="/WEB-INF/anzmest-config-overrides.xml"/>
 </overrides>

@@ -1,0 +1,88 @@
+<overrides xmlns:sec="http://www.springframework.org/schema/security">
+	<file name=".*WEB-INF/config\.xml">
+		<!-- make iso19139.anzlic the preferred schema -->
+		<replaceAtt xpath="appHandler/param[@name='preferredSchema']" attName="value" value="iso19139.anzlic" />
+		<!-- add services for schemaplugins -->
+		<addXML xpath="">
+			<include>config-metadata-schemaplugins.xml</include>
+		</addXML>
+		<!-- commons license jurisdictions to /root/gui xpath for XSLTs -->
+		<addXML xpath="default/gui">
+			<xml name="ccjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions" />
+		</addXML>
+	</file>
+	<!-- add gmd:protocol choices to the strings file -->
+	<file name=".*geonetwork/loc/eng/xml/strings\.xml">
+		<addXML xpath="">
+			<protocolChoice show="y" value="WWW:LINK-1.0-http--metadata-URL">Metadata URL</protocolChoice>
+			<protocolChoice show="y" value="WWW:LINK-1.0-http--downloaddata">Data for download (URL)</protocolChoice>
+			<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-http--downloaddata">Data File for download</protocolChoice>
+			<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-http--downloadother">Other File for download</protocolChoice>
+			<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-ftp--downloaddata">Data File for download through FTP</protocolChoice>
+			<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-ftp--downloadother">Other File for download through FTP</protocolChoice>
+		</addXML>
+	</file>
+	<!-- all services in config-metadata-schemaplugins.xml need to be in added
+	     to the spring security config -->
+	<spring>
+			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/creativecommons.licenses!?.*" access="permitAll"/>
+			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/creativecommons.jurisdictions!?.*" access="permitAll"/>
+			<addInterceptUrl bean="overridefilterSecurityInterceptor" pattern="/srv/[a-z]{2,3}/creativecommons.get!?.*" access="permitAll"/>
+	</spring>
+	<!-- add rif-cs prefix to config-oai-prefixes.xml -->
+	<file name=".*WEB-INF/config-oai-prefixes\.xml">
+		<addXML xpath="">
+			<schema prefix="rif" nsUrl="http://ands.org.au/standards/rif-cs/registryObjects" schemaLocation="http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd"/>
+		</addXML>
+	</file>
+	<!-- add summary items to config-summary.xml -->
+	<file name=".*WEB-INF/config-summary\.xml">
+		<addXML xpath="facets">
+      <facet name="dataparam" label="dataparams" indexKey="dataparam"/>
+      <facet name="credit" label="credits" indexKey="credit"/>
+      <facet name="longParamName" label="longParamNames" indexKey="longParamName"/>
+		</addXML>
+		<replaceAtt xpath="hits/item[@facet='keyword']" attName="max" value="100" />
+    <replaceAtt xpath="hits/item[@facet='orgName']" attName="max" value="100" />
+		<addXML xpath="hits">
+      <item facet="dataparam" sortOrder="asc" max="100"/>
+      <item facet="credit" sortOrder="asc" max="100"/>
+      <item facet="longParamName" sortOrder="asc" max="100"/>
+		</addXML>
+	</file>
+	<!-- add lucene field configs for schema plugins to config-lucene.xml -->
+	<file name=".*WEB-INF/config-lucene\.xml">
+		<addXML xpath="fieldSpecificAnalyzer">
+			<Field name="credit" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
+			<Field name="dataparam" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
+		</addXML>
+		<addXML xpath="tokenized">
+			<Field name="credit"/>
+			<Field name="dataparam"/>
+		</addXML>
+	</file>
+	<!-- add rif converter to iso19139 base metadata schema-conversions.xml -->
+	<file name=".*iso19139/schema-conversions\.xml">
+		<addXML xpath="">
+			<converter name="xml_iso19139Torifcs" nsUri="http://ands.org.au/standards/rif-cs/registryObjects" schemaLocation="http://services.ands.org.au/home/orca/schemata/registryObjects.xsd" xslt="rif.xsl"/>
+		</addXML>
+	</file>
+	<!-- config setup defaults in database load -->
+	<textFile name=".*WEB-INF/classes/setup/sql/data/data-db-default.sql">
+    <!-- https enabled -->
+		<!-- not yet
+    <update linePattern="(INSERT INTO Settings VALUES \(23,20,'protocol',').+?('.*)">$1https$2</update>
+		-->
+    <!-- xlink resolver enabled -->
+    <!--<update linePattern="(INSERT INTO Settings VALUES \(231,230,'enable',').+?('.*)">$1true$2</update>-->
+    <update linePattern="(INSERT INTO Settings \(name, value, datatype, position, internal\) VALUES \('system/xlinkResolver/enable', ').+?('.*)">$1true$2</update>
+		<!-- maximum number of records in a batch operation to 100000 -->
+    <!-- <update linePattern="INSERT INTO Settings VALUES \(91,90,'maxrecords','.+?('.*)">INSERT INTO Settings VALUES (91,90,'maxrecords','100000')\;</update> -->
+    <update linePattern="INSERT INTO Settings \(name, value, datatype, position, internal\) VALUES \('system/selectionmanager/maxrecords', '.+?('.*)">INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/selectionmanager/maxrecords', '100000', 1, 910, 'y')\;</update>
+    <!-- change download from simple to withdisclaimer -->
+    <!-- <update linePattern="(INSERT INTO Settings VALUES \(222,220,'simple',').+?('.*)">$1false$2</update> -->
+    <update linePattern="(INSERT INTO Settings \(name, value, datatype, position, internal\) VALUES \('system/downloadservice/simple', ').+?('.*)">$1false$2</update>
+		<!-- <update linePattern="(INSERT INTO Settings VALUES \(223,220,'withdisclaimer',').+?('.*)">$1true$2</update> -->
+    <update linePattern="(INSERT INTO Settings \(name, value, datatype, position, internal\) VALUES \('system/downloadservice/withdisclaimer', ').+?('.*)">$1true$2</update>
+	</textFile>
+</overrides>
