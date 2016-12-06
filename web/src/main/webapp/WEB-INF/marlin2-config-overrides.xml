@@ -1,11 +1,11 @@
 <overrides>
   <!-- add ldap settings in config-security-ldap.xml -->
   <spring>
-    <import file="WEB-INF/config-security-ldap.xml"/>
+    <import file="WEB-INF/config-security/config-security-ldap.xml"/>
     <!-- add user search bean (so that we can search in more than one 
          organisational unit) and then set it on the bindAuthenticator
          bean in config-security-ldap.xml -->
-    <import file="WEB-INF/config-ldap-marlin2-ldapUserSearch.xml"/>
+    <import file="WEB-INF/config-security/config-ldap-marlin2-ldapUserSearch.xml"/>
     <set bean="bindAuthenticator" property="userSearch" ref="ldapUserSearch"/>
   </spring>
 	<!-- add marlin description to the strings file -->
