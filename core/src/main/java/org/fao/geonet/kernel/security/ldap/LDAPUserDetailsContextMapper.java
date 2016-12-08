@@ -63,8 +63,8 @@ public class LDAPUserDetailsContextMapper extends
             }
         }
 
-        // If no profile defined, use default profile
-        if (userDetails.getUser().getProfile() == null) {
+        // If default profile defined in mapping or no profile defined in LDAPUser, use default profile
+        if ((mapping.get("profile")[1] != null) || (userDetails.getUser().getProfile() == null)) {
             if (Log.isDebugEnabled(Geonet.LDAP)) {
                 Log.debug(Geonet.LDAP,
                     "  No profile defined in LDAP, using default profile "
