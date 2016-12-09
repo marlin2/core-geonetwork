@@ -14,15 +14,10 @@ public class TextFile extends GeonetEntity {
 
     static final String ID_SEQ_NAME = "files_id_seq";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TextFile.ID_SEQ_NAME)
-    @Column(nullable = false)
     private int _id;
 
-    @Column(nullable = false, columnDefinition="text")
     private String _content;
 
-    @Column(nullable = false)
     private String _mimeType;
 
     /**
@@ -33,6 +28,9 @@ public class TextFile extends GeonetEntity {
      *
      * @return the id of the file.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = TextFile.ID_SEQ_NAME)
+    @Column(nullable = false)
     public int getId() {
         return this._id;
     }
@@ -54,6 +52,7 @@ public class TextFile extends GeonetEntity {
      * @return content of the file
      */
 
+    @Column(nullable = false, columnDefinition="text")
     public String getContent() {
         return this._content;
     }
@@ -73,6 +72,7 @@ public class TextFile extends GeonetEntity {
      *
      * @return MIME Type of the file
      */
+    @Column(nullable = false)
     public String getMimeType() {
         return this._mimeType;
     }
