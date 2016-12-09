@@ -569,6 +569,7 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/proxy/username', NULL, 0, 540, 'y');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/proxy/password', NULL, 0, 550, 'y');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/proxy/ignorehostlist', NULL, 0, 560, 'y');
+INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/cors/allowedHosts', '*', 0, 561, 'y');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/feedback/email', 'root@localhost', 0, 610, 'y');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/feedback/mailServer/host', '', 0, 630, 'y');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/feedback/mailServer/port', '25', 1, 640, 'y');
@@ -653,6 +654,8 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES
   ('map/is3DModeAllowed', 'false', 2, 9593, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES
   ('map/isSaveMapInCatalogAllowed', 'true', 2, 9594, 'n');
+INSERT INTO Settings (name, value, datatype, position, internal) VALUES
+('map/bingKey', 'AnElW2Zqi4fI-9cYx1LHiQfokQ9GrNzcjOh_p_0hkO1yo78ba8zTLARcLBIf8H6D', 0, 9595, 'n');
 
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES 
   ('metadata/editor/schemaConfig', '{"iso19110":{"defaultTab":"default","displayToolTip":false,"related":{"display":true,"readonly":true,"categories":["dataset"]},"validation":{"display":true}},"iso19139":{"defaultTab":"default","displayToolTip":false,"related":{"display":true,"categories":[]},"suggestion":{"display":true},"validation":{"display":true}},"dublin-core":{"defaultTab":"default","related":{"display":true,"readonly":false,"categories":["parent","onlinesrc"]}},"iso19139.mcp": { "defaultTab":"resourceCitation", "displayToolTip":false, "related": { "display":true, "categories":["thumbnail","service","onlinesrc","parent","sibling"] }, "suggestion": { "display":false }, "validation": { "display":true }}, "iso19139.mcp-2.0": { "defaultTab":"default", "displayToolTip":false, "related": { "display":true, "categories":["thumbnail","service","onlinesrc","parent","sibling"] }, "suggestion": { "display":false }, "validation": { "display":true }},"iso19139.anzlic": { "defaultTab":"default", "displayToolTip":false, "related": { "display":true, "categories":["thumbnail","service","onlinesrc","parent","sibling"] }, "suggestion": { "display":false }, "validation": { "display":true }}, "iso19115-3": { "defaultTab":"default", "displayToolTip":false, "related": { "display":true, "categories":["thumbnail","service","onlinesrc","parent","sibling"] }, "suggestion": { "display":false }, "validation": { "display":true }},"iso19115-2": { "defaultTab":"default", "displayToolTip":false, "related": { "display":true, "categories":["thumbnail","service","onlinesrc","parent","sibling"] }, "suggestion": { "display":false }, "validation": { "display":true } }, "prov-xml": { "defaultTab":"default", "displayToolTip":true, "displayAttribute":true, "related": { "display":false, "categories":[] }, "suggestion": { "display":false }, "validation": { "display":true }}}', 0, 10000, 'n');
