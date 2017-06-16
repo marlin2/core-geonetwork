@@ -5,16 +5,16 @@
     xmlns:gmx="http://www.isotc211.org/2005/gmx"
     xmlns:gmd="http://www.isotc211.org/2005/gmd"
     xmlns:gco="http://www.isotc211.org/2005/gco"
-    exclude-result-prefixes="mcp-old gmx">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    exclude-result-prefixes="mcp-old xsi">
 
   <xsl:output method="xml" indent="yes"/>
 
   <!-- S.Pigot, December-2016, Initial Coding -->
 
-  <!-- <xsl:variable name="mapping" select="document('../mcp-equipment/equipmentToDataParamsMapping.xml')"/> -->
-  <xsl:variable name="mapping">
-    <map>
-       <!-- The csv layout is:
+  <xsl:variable name="mapping" select="document('../mcp-equipment/equipmentToDataParamsMapping.xml')"/>
+
+  <!-- The csv layout for each element in the above file is:
                           1)OA_EQUIPMENT_ID,
                           2)OA_EQUIPMENT_LABEL,
                           3)AODN_PLATFORM,
@@ -25,26 +25,57 @@
                           8)Parameter IRI,
                           9)AODN_UNITS,
                           10)UNITS IRI
-            NOTE: can be multiple rows for each equipment keyword -->
-      <equipment>144,Multibeam Echosounder - EM122,research vessel,IRI: http://vocab.nerc.ac.uk/collection/L06/current/31,multi-beam echosounders,http://vocab.nerc.ac.uk/collection/L05/current/157,Sea-floor depth below surface of the water body,http://vocab.aodn.org.au/def/discovery_parameter/entity/574,Metres,http://vocab.nerc.ac.uk/collection/P06/current/ULAA</equipment>
-      <equipment>144,Multibeam Echosounder - EM122,research vessel,IRI: http://vocab.nerc.ac.uk/collection/L06/current/31,multi-beam echosounders,http://vocab.nerc.ac.uk/collection/L05/current/157,Sea-floor surface hardness,N/A,geologic unit,http://resource.geosciml.org/classifier/cgi/geologicunittype/geologic_unit</equipment>
-      <equipment>144,Multibeam Echosounder - EM122,research vessel,IRI: http://vocab.nerc.ac.uk/collection/L06/current/31,multi-beam echosounders,http://vocab.nerc.ac.uk/collection/L05/current/157,Density of the water body,http://vocab.aodn.org.au/def/discovery_parameter/entity/401,Kilograms per cubic metre,http://vocab.nerc.ac.uk/collection/P06/current/UKMC</equipment>
-    </map>
-  </xsl:variable>
+        NOTE: can be multiple rows for each equipment keyword -->
+
   <xsl:variable name="equipThesaurus" select="'geonetwork.thesaurus.register.equipment.urn:marlin.csiro.au:Equipment'"/>
+
 
 	<!-- copy everything that isn't part of the mcp namespace -->
 	<xsl:template match="@*|node()">
 		<xsl:copy copy-namespaces="no">
-			<xsl:apply-templates select="@*|node()"/>
+			<xsl:apply-templates select="@*[name()!='xsi:schemaLocation']|node()"/>
 		</xsl:copy>
 	</xsl:template>
+
+	<!-- Match the root element so we can force the namespaces we want -->
+	<xsl:template match="mcp-old:MD_Metadata" priority="100">
+    <xsl:element name="mcp:MD_Metadata" namespace="http://schemas.aodn.org.au/mcp-2.0">
+      <xsl:namespace name="gmd" select="'http://www.isotc211.org/2005/gmd'"/>
+      <xsl:namespace name="gco" select="'http://www.isotc211.org/2005/gco'"/>
+      <xsl:namespace name="gmx" select="'http://www.isotc211.org/2005/gmx'"/>
+      <xsl:namespace name="gml" select="'http://www.opengis.net/gml'"/>
+      <xsl:namespace name="xlink" select="'http://www.w3.org/1999/xlink'"/>
+			<xsl:apply-templates select="@*[name()!='xsi:schemaLocation']|node()"/>
+    </xsl:element>  
+  </xsl:template> 
+
+	<!-- Set version number to 2.0 -->
+	<xsl:template match="gmd:metadataStandardVersion" priority="100">
+    <xsl:copy copy-namespaces="no">
+    	<xsl:element name="gco:CharacterString" namespace="http://www.isotc211.org/2005/gco">2.0</xsl:element>
+		</xsl:copy>
+	</xsl:template>
+
+  <!-- catch all @codeList attributes -->
+  <xsl:template match="@codeList">
+    <xsl:variable name="parent" select="local-name(..)"/>
+    <xsl:attribute name="codeList">
+      <xsl:value-of select="concat('http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#',$parent)"/>
+    </xsl:attribute>
+  </xsl:template>
 
   <!-- catch all for mcp-old namespace elements - overrides for specific ones are below -->
 	<xsl:template match="*[namespace-uri()='http://bluenet3.antcrc.utas.edu.au/mcp']">
 		<xsl:element name="mcp:{local-name()}">
 			<xsl:apply-templates select="@*[name()!='xsi:schemaLocation']|node()"/>
 		</xsl:element>
+	</xsl:template>
+
+  <!-- catch all for mcp-old namespace attributes -->
+	<xsl:template match="@*[namespace-uri()='http://bluenet3.antcrc.utas.edu.au/mcp']">
+		<xsl:attribute name="mcp:{local-name()}">
+			<xsl:copy-of select="."/>
+		</xsl:attribute>
 	</xsl:template>
 
   <xsl:template match="mcp-old:MD_DataIdentification" priority="100">
@@ -84,8 +115,10 @@
           <mcp:dataParameters>
            <mcp:DP_DataParameters>
            <xsl:variable name="currentKeyword" select="text()"/>
+           <xsl:comment>Automatically created dp from <xsl:value-of select="$currentKeyword"/></xsl:comment>
            <xsl:for-each select="$mapping/map/equipment">
               <xsl:variable name="tokens" select="tokenize(string(),',')"/>
+              <!-- <xsl:message>Checking <xsl:value-of select="$tokens[2]"/></xsl:message> -->
               <xsl:if test="$currentKeyword=$tokens[2]">
                  <xsl:message>KW MATCHED TOKEN: <xsl:value-of select="$tokens[2]"/></xsl:message>
                  <xsl:call-template name="fillOutDataParameters">
@@ -100,9 +133,9 @@
       </xsl:variable>
 
       <!-- Now copy the constructed data parameters into the record -->
-      <xsl:if test="count($equipPresent/dp/mcp:dataParameters/mcp:DP_DataParameters/*) > 0">
+      <xsl:for-each select="$equipPresent/dp/mcp:dataParameters[count(mcp:DP_DataParameters/*) > 0]">
       	<xsl:copy-of select="$equipPresent/dp/*"/>
-      </xsl:if>
+      </xsl:for-each>
 
 			<!-- Finally, copy in the resourceContactInfo -->
       <xsl:apply-templates select="mcp-old:resourceContactInfo"/>
