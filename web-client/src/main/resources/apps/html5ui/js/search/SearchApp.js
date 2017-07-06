@@ -267,7 +267,8 @@ GeoNetwork.searchApp = function() {
             var sortByCombo = new Ext.form.TextField({
                 name : 'E_sortBy',
                 id : 'E_sortBy',
-                inputType : 'hidden'
+                inputType : 'hidden',
+                value: 'changeDate'
             });
 
             var orderBy = new Ext.form.TextField({
@@ -420,7 +421,7 @@ GeoNetwork.searchApp = function() {
 										hideAdvancedSearch();
                 },
 								resetCb: function() {
-            			Ext.getCmp('sortByToolBar').setValue("relevance");
+            			Ext.getCmp('sortByToolBar').setValue("changeDate");
 								},
                 listeners : {
                     onreset : function() {

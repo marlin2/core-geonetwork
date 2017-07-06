@@ -287,7 +287,7 @@ function resetAdvancedSearch(updateSearch) {
         Ext.getCmp('mymetadata').checked = false;
 				Ext.getCmp('mymetadata').resumeEvents();
 
-				Ext.getCmp('sortByToolBar').setValue("relevance");
+				Ext.getCmp('sortByToolBar').setValue("changeDate");
 
         GeoNetwork.state.History.resumeEvents();
 

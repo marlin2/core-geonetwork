@@ -390,7 +390,7 @@ GeoNetwork.util.SearchFormTools = {
             inputType: 'hidden',
             linkedCombo: combo
         });
-        combo.setValue(defaultValue || 'relevance#');
+        combo.setValue(defaultValue || 'changeDate#');
         return [sortByField, sortOrderField, combo];
     },
     /** api:method[getSortByStore]
@@ -400,11 +400,12 @@ GeoNetwork.util.SearchFormTools = {
     getSortByStore: function(defaultValue){
         return new Ext.data.ArrayStore({
             id: 0,
+            autoLoad: true,
             fields: ['id', 'name'],
             data: [ 
-										['relevance#', OpenLayers.i18n('relevance')] 
+                    ['changeDate#', OpenLayers.i18n('changeDate')] 
                    ,['title#reverse', OpenLayers.i18n('title')] 
-                   ,['changeDate#', OpenLayers.i18n('changeDate')] 
+									 ,['relevance#', OpenLayers.i18n('relevance')] 
                    ,['rating#', OpenLayers.i18n('rating')]
                    ,['popularity#', OpenLayers.i18n('popularity')]
               		 ,['denominator#', OpenLayers.i18n('scaleDesc')] 
