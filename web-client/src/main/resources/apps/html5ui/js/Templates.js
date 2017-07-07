@@ -283,11 +283,6 @@ GeoNetwork.HTML5UI.Templates.THUMB =
                 <img src="{thumbnail}" alt="Thumbnail"/>\
             </a>\
         </tpl>\
-        <tpl if="!thumbnail">\
-            <div class="emptyThumbnail">\
-				<span>{[OpenLayers.i18n("no-thumbnail")]}</span>\
-			</div>\
-        </tpl>\
     </div>';
 
 GeoNetwork.HTML5UI.Templates.CHANGE_DATE = 
@@ -481,7 +476,8 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
                 {values.abstract}\
                 </tpl>\
                 </p>',    // FIXME : 250 as parameters
-                GeoNetwork.HTML5UI.Templates.SUBJECT,
+                '<p>Uuid: {uuid}</p>',
+                /* GeoNetwork.HTML5UI.Templates.SUBJECT, */
 								'<p class="abstract">\
 								<tpl if="this.isIdentified() && !(this.statusUnknown(values.status))">\
 									<b>Status:</b> {[this.getStatusText(values.status)]} <i class="status {[this.getStatusText(values.status)]} {[this.getStatusStyle(values.status)]}"></i>\
