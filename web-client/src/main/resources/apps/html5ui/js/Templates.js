@@ -483,15 +483,6 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
 									<b>Status:</b> {[this.getStatusText(values.status)]} <i class="status {[this.getStatusText(values.status)]} {[this.getStatusStyle(values.status)]}"></i>\
 								</tpl>\
 								</p>',
-            '</td>\
-            <td class="thumb">',
-                GeoNetwork.HTML5UI.Templates.RATING_TPL,
-                GeoNetwork.HTML5UI.Templates.THUMB,
-                GeoNetwork.HTML5UI.Templates.CONTACT_INFO,
-            '</td>',
-            GeoNetwork.HTML5UI.Templates.CATEGORIES,
-        '</tr>',
-    '</table>',
     '<table><tr>',
             '<td>',
             GeoNetwork.HTML5UI.Templates.COPYTOCLIPBOARD,
@@ -500,6 +491,15 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
             GeoNetwork.HTML5UI.Templates.LINKCONTAINER,
             GeoNetwork.HTML5UI.Templates.VALID,
             '</td>',
+        '</tr>',
+    '</table>',
+            '</td>\
+            <td class="thumb">',
+                GeoNetwork.HTML5UI.Templates.RATING_TPL,
+                GeoNetwork.HTML5UI.Templates.THUMB,
+                GeoNetwork.HTML5UI.Templates.CONTACT_INFO,
+            '</td>',
+            GeoNetwork.HTML5UI.Templates.CATEGORIES,
         '</tr>',
     '</table>',
 		'<span style="float:right;margin-right: 5px;"><b>Schema:</b> {[values.schema]}</span>',
