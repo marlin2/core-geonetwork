@@ -476,7 +476,6 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
                 {values.abstract}\
                 </tpl>\
                 </p>',    // FIXME : 250 as parameters
-                '<p style="font-size: x-small;">Uuid: {uuid}</p>',
                 /* GeoNetwork.HTML5UI.Templates.SUBJECT, */
 								'<p class="abstract">\
 								<tpl if="this.isIdentified() && !(this.statusUnknown(values.status))">\
