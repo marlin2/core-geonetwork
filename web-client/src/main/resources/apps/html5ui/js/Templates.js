@@ -277,13 +277,13 @@ GeoNetwork.HTML5UI.Templates.COPYTOCLIPBOARD =
  * Thumbnails
  */
 GeoNetwork.HTML5UI.Templates.THUMB =
-    '<div style="height:150px" class="thumbnail">\
-        <tpl if="thumbnail">\
+    '<tpl if="thumbnail">\
+      <div style="height:150px" class="thumbnail">\
             <a href="javascript:catalogue.metadataShow(\'{uuid}\');return false;">\
                 <img src="{thumbnail}" alt="Thumbnail"/>\
             </a>\
-        </tpl>\
-    </div>';
+      </div>\
+    </tpl>';
 
 GeoNetwork.HTML5UI.Templates.CHANGE_DATE = 
     '<tpl if="edit==\'false\' || isharvested==\'y\'">\
@@ -295,19 +295,20 @@ GeoNetwork.HTML5UI.Templates.CHANGE_DATE =
  */
 GeoNetwork.HTML5UI.Templates.CONTACT_INFO =
     '<div class="md-contact">\
-<tpl for="contact">\
- <tpl if="applies==\'resource\'">\
-     <div title="{role} - {applies}">\
-         <tpl if="values.logo !== undefined && values.logo !== \'\'">\
-             <img src="{logo}" class="orgLogo"/>\
-         </tpl>{name}\
-     </div>\
- </tpl>\
-</tpl>\
-<tpl if="edit==\'true\' && isharvested!=\'y\'">\
- <div class="md-mn md-mn-user" title="{[OpenLayers.i18n("ownerName")]}">{ownername} -  {[OpenLayers.i18n("lastUpdate")]}{[values.changedate.split(\'T\')[0]]}</div>\
-        </tpl>' +
-    GeoNetwork.HTML5UI.Templates.CHANGE_DATE + 
+      <tpl for="contact">\
+       <tpl if="applies==\'resource\'">\
+           <div title="{role} - {applies}">\
+               <tpl if="values.logo !== undefined && values.logo !== \'\'">\
+                   <img src="{logo}" class="orgLogo"/>\
+               </tpl>{name}\
+           </div>\
+       </tpl>\
+      </tpl>\
+      <div><b>Schema:</b> {[values.schema]}</div>\
+      <tpl if="edit==\'true\' && isharvested!=\'y\'">\
+       <div class="md-mn md-mn-user" title="{[OpenLayers.i18n("ownerName")]}">{ownername} -  {[OpenLayers.i18n("lastUpdate")]}{[values.changedate.split(\'T\')[0]]}</div>\
+      </tpl>',
+      GeoNetwork.HTML5UI.Templates.CHANGE_DATE,
     '</div>';
 
 GeoNetwork.HTML5UI.Templates.CONTACT_INFO_TOOLTIP =
@@ -324,7 +325,7 @@ GeoNetwork.HTML5UI.Templates.SUBJECT =
     </tpl>';
 
 /**
- * Description
+ * Categories
  */
 GeoNetwork.HTML5UI.Templates.CATEGORIES =
     '<td class="icon" title="{[OpenLayers.i18n("metadataCategories")]}">',
@@ -466,7 +467,7 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
             '<td class="left">',
             GeoNetwork.HTML5UI.Templates.LOGO,
             '</td>',
-            '<td id="{uuid}" style="width:80%;">',
+            '<td id="{uuid}" style="width:100%;">',
                 GeoNetwork.HTML5UI.Templates.TITLE,
                 '<p class="abstract">\
                 <tpl if="values.abstract.length &gt;350">\
@@ -482,6 +483,7 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
 									<b>Status:</b> {[this.getStatusText(values.status)]} <i class="status {[this.getStatusText(values.status)]} {[this.getStatusStyle(values.status)]}"></i>\
 								</tpl>\
 								</p>',
+                GeoNetwork.HTML5UI.Templates.CONTACT_INFO,
     '<table><tr>',
             '<td>',
             GeoNetwork.HTML5UI.Templates.COPYTOCLIPBOARD,
@@ -494,14 +496,12 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
     '</table>',
             '</td>\
             <td class="thumb">',
-                GeoNetwork.HTML5UI.Templates.RATING_TPL,
+                /* GeoNetwork.HTML5UI.Templates.RATING_TPL, */
                 GeoNetwork.HTML5UI.Templates.THUMB,
-                GeoNetwork.HTML5UI.Templates.CONTACT_INFO,
             '</td>',
-            GeoNetwork.HTML5UI.Templates.CATEGORIES,
+            /*GeoNetwork.HTML5UI.Templates.CATEGORIES,*/
         '</tr>',
     '</table>',
-		'<span style="float:right;margin-right: 5px;"><b>Schema:</b> {[values.schema]}</span>',
     '</li>',
     '</tpl>',
     '</ul>',

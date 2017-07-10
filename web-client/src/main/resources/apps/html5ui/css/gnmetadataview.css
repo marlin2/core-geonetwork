@@ -737,12 +737,12 @@ div#resultsPanel .x-toolbar-right {
 }
 
 #resultsPanel .md-full table {
-	margin-bottom: 5px;
+	/*margin-bottom: 5px;*/
 	width: auto;
 }
 
 #resultsPanel .md-full td {
-	padding: 5px;
+	padding-left: 5px;
 }
 
 #resultsPanel .md-full .icon {
@@ -768,31 +768,35 @@ div#resultsPanel .x-toolbar-right {
 
 #resultsPanel .md-full .rating {
     padding: 4px;
-    border-top: 1px solid #e5e5e5;
+    /*border-top: 1px solid #e5e5e5; */
     margin-top: 5px;
     background: #fff;
     width: 192px;
-    border-left: 1px solid #e5e5e5;
-    border-right: 1px solid #e5e5e5;
+    /*border-left: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;*/
 }
 
 #resultsPanel .md-full .thumbnail {
 	min-height: 140px;
 	width: 192px;
+/*
 	border-left: 1px solid #e5e5e5;
 	border-right: 1px solid #e5e5e5;
+*/
 	background: #fff;
 	text-align: right;
 	padding: 4px;
-	border-top: 1px solid #e5e5e5;
+/* 	border-top: 1px solid #e5e5e5; */
 }
 
 #resultsPanel .md-full .md-contact {
-	border-right: 1px solid #e5e5e5;
+	/* border-right: 1px solid #e5e5e5; */
 	padding: 5px;
+/*
 	background: #fff;
 	border-left: 1px solid #e5e5e5;
 	border-bottom: 1px solid #e5e5e5;
+*/
 	font-size: 12px;
 }
 
