@@ -7,6 +7,7 @@ var gnHarvesteroaipmh = {
             "@type": "oaipmh",
             "owner": [""],
             "ownerGroup": [""],
+            "ownerUser": [""],
             "site":   {
               "name": "",
               "uuid": "",
@@ -15,6 +16,7 @@ var gnHarvesteroaipmh = {
                 "username": "",
                 "password": ""
               },
+              "xslfilter": [],
               "url": "",
               "icon" : "blank.png"
             },
@@ -47,10 +49,14 @@ var gnHarvesteroaipmh = {
         var body = '<node id="' + h['@id'] + '" '
                 + '    type="' + h['@type'] + '">'
                 + '  <ownerGroup><id>' + h.ownerGroup[0] + '</id></ownerGroup>'
+                + '  <ownerUser><id>' + h.ownerUser[0] + '</id></ownerUser>'
                 + '  <site>'
                 + '    <name>' + h.site.name + '</name>'
                 + '    <url>' + h.site.url.replace(/&/g, '&amp;') + '</url>'
                 + '    <icon>' + h.site.icon + '</icon>'
+                + '    <xslfilter>'
+                + (h.site.xslfilter[0] ? h.site.xslfilter.replace(/&/g, '&amp;') : '')
+                + '    </xslfilter>'
                 + '    <account>'
                 + '      <use>' + h.site.account.use + '</use>'
                 + '      <username>' + h.site.account.username + '</username>'

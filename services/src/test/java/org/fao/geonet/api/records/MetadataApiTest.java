@@ -24,6 +24,7 @@ package org.fao.geonet.api.records;
 
 import com.google.common.collect.Lists;
 import jeeves.server.context.ServiceContext;
+import org.fao.geonet.NodeInfo;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.records.model.related.RelatedItemType;
 import org.fao.geonet.constants.Params;
@@ -31,6 +32,7 @@ import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
+import org.fao.geonet.kernel.SpringLocalServiceInvoker;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.mef.MEFLibIntegrationTest;
 import org.fao.geonet.lib.Lib;
@@ -52,24 +54,42 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.fao.geonet.kernel.mef.MEFLib.Version.Constants.MEF_V1_ACCEPT_TYPE;
 import static org.fao.geonet.kernel.mef.MEFLib.Version.Constants.MEF_V2_ACCEPT_TYPE;
 import static org.fao.geonet.schema.iso19139.ISO19139Namespaces.GCO;
 import static org.fao.geonet.schema.iso19139.ISO19139Namespaces.GMD;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 
 /**
@@ -86,6 +106,9 @@ public class MetadataApiTest extends AbstractServiceIntegrationTest {
     private DataManager dataManager;
     @Autowired
     private SourceRepository sourceRepository;
+
+    @PersistenceContext
+    private EntityManager _entityManager;
 
     @Autowired private MetadataRepository metadataRepository;
     @Autowired
@@ -242,6 +265,19 @@ public class MetadataApiTest extends AbstractServiceIntegrationTest {
     }
 
     @Test
+    public void getRecordThruSpringLocalServiceInvoker() throws Exception {
+        MockMvcBuilders.webAppContextSetup(this.wac).build();
+        loginAsAdmin();
+        SpringLocalServiceInvoker toTest = super._applicationContext.getBean(SpringLocalServiceInvoker.class);
+        super._applicationContext.getBean(NodeInfo.class).setId("theNode");
+        toTest.init();
+
+        Object resp = toTest.invoke("local://theNode/api/records/" + uuid + "/formatters/xml");
+
+        assertEquals("MD_Metadata", ((Element)resp).getName());
+    }
+
+    @Test
     public void getRecordAsXML() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         MockHttpSession mockHttpSession = loginAsAdmin();
@@ -317,11 +353,16 @@ public class MetadataApiTest extends AbstractServiceIntegrationTest {
                 equalTo(String.format("inline; filename=\"%s.%s\"", this.uuid, "xml"))))
             .andExpect(content().string(containsString(this.uuid)))
             .andExpect(xpath("/MD_Metadata/fileIdentifier/CharacterString").string(this.uuid));
+
+        // Seem some issue with the transaction in the tests, requires to use explicitly the entity manager.
+        // In the application looks working fine with the @Transactional annotation in MetadataRepository.incrementPopularity
+        _entityManager.flush();
+        _entityManager.clear();
+
         int newPopularity = metadataRepository.findOneByUuid(this.uuid).getDataInfo().getPopularity();
         Assert.assertThat("Popularity has not been incremented by one", newPopularity, equalTo(popularity + 1));
 
         popularity = newPopularity;
-
 
         mockMvc.perform(get("/api/records/" + this.uuid + "/formatters/xml").param("increasePopularity", "false")
             .session(mockHttpSession)
@@ -333,6 +374,12 @@ public class MetadataApiTest extends AbstractServiceIntegrationTest {
                 equalTo(String.format("inline; filename=\"%s.%s\"", this.uuid, "xml"))))
             .andExpect(content().string(containsString(this.uuid)))
             .andExpect(xpath("/MD_Metadata/fileIdentifier/CharacterString").string(this.uuid));
+
+        // Seem some issue with the transaction in the tests, requires to use explicitly the entity manager.
+        // In the application looks working fine with the @Transactional annotation in MetadataRepository.incrementPopularity
+        _entityManager.flush();
+        _entityManager.clear();
+
         newPopularity = metadataRepository.findOneByUuid(this.uuid).getDataInfo().getPopularity();
         Assert.assertThat("Popularity has changed", newPopularity, equalTo(popularity));
     }
@@ -551,8 +598,10 @@ public class MetadataApiTest extends AbstractServiceIntegrationTest {
 
         // Request each type
         for (RelatedItemType type : RelatedItemType.values()) {
-            if (type == RelatedItemType.hassources || type == RelatedItemType.related
-                || type == RelatedItemType.thumbnails) {
+            if (type == RelatedItemType.hassources ||
+                type == RelatedItemType.related ||
+                type == RelatedItemType.hasfeaturecats ||
+                type == RelatedItemType.thumbnails) {
                 // TODO modify mef2-related.zip test metadata to contain a valid hassources value
                 continue;
             }

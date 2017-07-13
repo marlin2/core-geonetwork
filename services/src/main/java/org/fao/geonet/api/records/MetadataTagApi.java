@@ -40,7 +40,6 @@ import org.fao.geonet.repository.MetadataRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,7 +104,7 @@ public class MetadataTagApi {
     ) throws Exception {
         Metadata metadata = ApiUtils.canViewRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
-        return metadata.getCategories();
+        return metadata.getMetadataCategories();
     }
 
 
@@ -151,7 +150,7 @@ public class MetadataTagApi {
 
         if (clear) {
             appContext.getBean(MetadataRepository.class).update(
-                metadata.getId(), entity -> entity.getCategories().clear());
+                metadata.getId(), entity -> entity.getMetadataCategories().clear());
         }
 
         DataManager dataManager = appContext.getBean(DataManager.class);
@@ -205,7 +204,7 @@ public class MetadataTagApi {
 
         if (id == null || id.length == 0) {
             appContext.getBean(MetadataRepository.class).update(
-                metadata.getId(), entity -> entity.getCategories().clear());
+                metadata.getId(), entity -> entity.getMetadataCategories().clear());
         }
 
         DataManager dataManager = appContext.getBean(DataManager.class);
@@ -244,6 +243,13 @@ public class MetadataTagApi {
             required = false)
         @RequestParam(required = false) String[] uuids,
         @ApiParam(
+            value = ApiParams.API_PARAM_BUCKET_NAME,
+            required = false)
+        @RequestParam(
+            required = false
+        )
+            String bucket,
+        @ApiParam(
             value = API_PARAM_TAG_IDENTIFIER,
             required = true
         )
@@ -265,7 +271,7 @@ public class MetadataTagApi {
         MetadataProcessingReport report = new SimpleMetadataProcessingReport();
 
         try {
-            Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, ApiUtils.getUserSession(session));
+            Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, ApiUtils.getUserSession(session));
             report.setTotalRecords(records.size());
 
             final ApplicationContext context = ApplicationContextHolder.get();
@@ -284,14 +290,14 @@ public class MetadataTagApi {
                     report.addNotEditableMetadataId(info.getId());
                 } else {
                     if (clear) {
-                        info.getCategories().clear();
+                        info.getMetadataCategories().clear();
                     }
 
                     if (id != null) {
                         for (int c : id) {
                             final MetadataCategory category = categoryRepository.findOne(c);
                             if (category != null) {
-                                info.getCategories().add(category);
+                                info.getMetadataCategories().add(category);
                                 listOfUpdatedRecords.add(String.valueOf(info.getId()));
                             } else {
                                 report.addMetadataInfos(info.getId(), String.format(
@@ -339,6 +345,13 @@ public class MetadataTagApi {
             required = false)
         @RequestParam(required = false) String[] uuids,
         @ApiParam(
+            value = ApiParams.API_PARAM_BUCKET_NAME,
+            required = false)
+        @RequestParam(
+            required = false
+        )
+            String bucket,
+        @ApiParam(
             value = API_PARAM_TAG_IDENTIFIER
         )
         @RequestParam
@@ -350,7 +363,7 @@ public class MetadataTagApi {
         MetadataProcessingReport report = new SimpleMetadataProcessingReport();
 
         try {
-            Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, ApiUtils.getUserSession(session));
+            Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, ApiUtils.getUserSession(session));
             report.setTotalRecords(records.size());
 
             final ApplicationContext context = ApplicationContextHolder.get();
@@ -368,7 +381,7 @@ public class MetadataTagApi {
                     ApiUtils.createServiceContext(request), String.valueOf(info.getId()))) {
                     report.addNotEditableMetadataId(info.getId());
                 } else {
-                    info.getCategories().clear();
+                    info.getMetadataCategories().clear();
                     metadataRepository.save(info);
                     report.incrementProcessedRecords();
                 }

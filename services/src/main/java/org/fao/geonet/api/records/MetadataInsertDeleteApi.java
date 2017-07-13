@@ -53,6 +53,7 @@ import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.Updater;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
+import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
@@ -63,7 +64,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -158,7 +158,9 @@ public class MetadataInsertDeleteApi {
         DataManager dataManager = appContext.getBean(DataManager.class);
         SearchManager searchManager = appContext.getBean(SearchManager.class);
 
-        if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE && withBackup) {
+        if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE &&
+            metadata.getDataInfo().getType() != MetadataType.TEMPLATE_OF_SUB_TEMPLATE &&
+            withBackup) {
             MetadataUtils.backupRecord(metadata, context);
         }
 
@@ -193,6 +195,13 @@ public class MetadataInsertDeleteApi {
         @RequestParam(required = false)
             String[] uuids,
         @ApiParam(
+            value = ApiParams.API_PARAM_BUCKET_NAME,
+            required = false)
+        @RequestParam(
+            required = false
+        )
+            String bucket,
+        @ApiParam(
             value = API_PARAM_BACKUP_FIRST,
             required = false)
         @RequestParam(
@@ -210,7 +219,7 @@ public class MetadataInsertDeleteApi {
         AccessManager accessMan = appContext.getBean(AccessManager.class);
         SearchManager searchManager = appContext.getBean(SearchManager.class);
 
-        Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, ApiUtils.getUserSession(session));
+        Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, ApiUtils.getUserSession(session));
 
         final MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
         SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
@@ -221,7 +230,9 @@ public class MetadataInsertDeleteApi {
             } else if (!accessMan.canEdit(context, String.valueOf(metadata.getId()))) {
                 report.addNotEditableMetadataId(metadata.getId());
             } else {
-                if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE && withBackup) {
+                if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE &&
+                    metadata.getDataInfo().getType() != MetadataType.TEMPLATE_OF_SUB_TEMPLATE &&
+                    withBackup) {
                     MetadataUtils.backupRecord(metadata, context);
                 }
 
@@ -859,6 +870,7 @@ public class MetadataInsertDeleteApi {
         if (!transformWith.equals("_none_")) {
             GeonetworkDataDirectory dataDirectory = appContext.getBean(GeonetworkDataDirectory.class);
             Path folder = dataDirectory.getWebappDir().resolve(Geonet.Path.IMPORT_STYLESHEETS);
+            FilePathChecker.verify(transformWith);
             Path xslFile = folder.resolve(transformWith + ".xsl");
             if (Files.exists(xslFile)) {
                 xmlElement = Xml.transform(xmlElement, xslFile);
@@ -894,7 +906,8 @@ public class MetadataInsertDeleteApi {
 
         //--- if the uuid does not exist we generate it for metadata and templates
         String uuid;
-        if (metadataType == MetadataType.SUB_TEMPLATE) {
+        if (metadataType == MetadataType.SUB_TEMPLATE ||
+            metadataType == MetadataType.TEMPLATE_OF_SUB_TEMPLATE) {
             uuid = UUID.randomUUID().toString();
         } else {
             uuid = dataMan.extractUUID(schema, xmlElement);

@@ -7,6 +7,7 @@ var gnHarvesterarcsde = {
             "@type": "arcsde",
             "owner": [""],
             "ownerGroup": [""],
+            "ownerUser": [""],
             "site":   {
               "name": "",
               "uuid": "",
@@ -20,7 +21,10 @@ var gnHarvesterarcsde = {
               "port": "",
               "username": "",
               "password": "",
-              "database": ""
+              "database": "",
+              "version": "9",
+              "connectionType": "ARCSDE",
+              "databaseType": ""
             },
             "content":   {
               "validate": "NOVALIDATION"
@@ -48,6 +52,7 @@ var gnHarvesterarcsde = {
         var body = '<node id="' + h['@id'] + '" '
                 + '    type="' + h['@type'] + '">'
                 + '  <ownerGroup><id>' + h.ownerGroup[0] + '</id></ownerGroup>'
+                + '  <ownerUser><id>' + h.ownerUser[0] + '</id></ownerUser>' 
                 + '  <site>'
                 + '    <name>' + h.site.name + '</name>'
                 + '    <server>' + h.site.server + '</server>'
@@ -56,6 +61,9 @@ var gnHarvesterarcsde = {
                 + '    <database>' + h.site.database + '</database>'
                 + '    <username>' + h.site.account.username + '</username>'
                 + '    <password>' + h.site.account.password + '</password>'
+                + '    <version>' + h.site.version + '</version>'
+                + '    <connectionType>' + h.site.connectionType + '</connectionType>'
+                + '    <databaseType>' + h.site.databaseType + '</databaseType>'
                 + '    <account>'
                 + '      <use>' + h.site.account.use + '</use>'
                 + '      <username>' + h.site.account.username + '</username>'
@@ -74,4 +82,6 @@ var gnHarvesterarcsde = {
                 + $scope.buildResponseCategory(h) + '</node>';
         return body;
     }
+
+
 };

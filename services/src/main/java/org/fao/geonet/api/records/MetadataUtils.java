@@ -198,7 +198,7 @@ public class MetadataUtils {
         if (listOfTypes.size() == 0 ||
             listOfTypes.contains(RelatedItemType.hassources)) {
             // Return records where this record is a source dataset
-            relatedRecords.addContent(search(uuid, "hassource", context, from, to, fast));
+            relatedRecords.addContent(search(uuid, "hassources", context, from, to, fast));
         }
 
         // Relation table is preserved for backward compatibility but should not be used anymore.
@@ -207,7 +207,7 @@ public class MetadataUtils {
             // Related records could be feature catalogue defined in relation table
             relatedRecords.addContent(new Element("related").addContent(Get.getRelation(iId, "full", context)));
             // Or feature catalogue define in feature catalogue citation
-            relatedRecords.addContent(search(uuid, "hasfeaturecat", context, from, to, fast));
+            relatedRecords.addContent(search(uuid, "hasfeaturecats", context, from, to, fast));
         }
 
         // XSL transformation is used on the metadata record to extract
@@ -237,9 +237,9 @@ public class MetadataUtils {
                 parameters.addContent(new Element("parentUuid").setText(uuid));
             else if ("services".equals(type))
                 parameters.addContent(new Element("operatesOn").setText(uuid));
-            else if ("hasfeaturecat".equals(type))
+            else if ("hasfeaturecats".equals(type))
                 parameters.addContent(new Element("hasfeaturecat").setText(uuid));
-            else if ("hassource".equals(type))
+            else if ("hassources".equals(type))
                 parameters.addContent(new Element("hassource").setText(uuid));
             else if ("associated".equals(type))
                 parameters.addContent(new Element("agg_associated").setText(uuid));

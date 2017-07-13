@@ -32,7 +32,7 @@
 
   var module = angular.module('gn_directory_entry_selector',
       ['gn_metadata_manager_service', 'gn_schema_manager_service',
-        'gn_editor_xml_service']);
+        'gn_editor_xml_service', 'pascalprecht.translate']);
 
   /**
    *
@@ -78,6 +78,8 @@
               // the schema id to properly retrieve the codelists.
               schema: '@',
               selectEntryCb: '='
+              // Can restrict how to insert the entry (xlink, text ..)
+              // insertModes: '@'
             },
             templateUrl: '../../catalog/components/edit/' +
                 'directoryentryselector/partials/' +
@@ -104,16 +106,26 @@
                  gnGlobalSettings.modelOptions);
                 },
                 post: function postLink(scope, iElement, iAttrs) {
+
+
+                  var insertModes = iAttrs.insertModes;
+                  if (insertModes) {
+                    insertModes = insertModes.split(',');
+                  }
+
+                  scope.insertAsXlink = !insertModes ||
+                 insertModes.indexOf('xlink') >= 0;
+                  scope.insertAsText = !insertModes ||
+                 insertModes.indexOf('text') >= 0;
+
                   // Separator between each contact XML
                   // snippet
                   var separator = '&&&';
 
-                  // Define type of XLinks: local:// or http:// based on
-                  // catalog configuration.
-                  var url =
-                 (gnConfig[gnConfig.key.isXLinkLocal] === true ?
-                      'local://' : gnConfigService.getServiceURL()) +
-                 'api/registries/entries/';
+                  // Only local mode (faster)
+                  var url = 'local://' + gnGlobalSettings.nodeId +
+                 '/api/registries/entries/';
+
                   scope.gnConfig = gnConfig;
                   // If true, display button to add the element
                   // without using the subtemplate selector.
@@ -149,7 +161,16 @@
                         scope.elementRef, scope.elementName,
                         scope.domId, 'before').then(function() {
                       if (scope.templateAddAction) {
-                        gnEditor.save(gnCurrentEdit.id, true);
+                        gnEditor.save(gnCurrentEdit.id, true).then(function() {
+                          // success. Nothing to do.
+                        }, function(rejectedValue) {
+                          $rootScope.$broadcast('StatusUpdated', {
+                            title: $translate.instant('saveMetadataError'),
+                            error: rejectedValue,
+                            timeout: 0,
+                            type: 'danger'
+                          });
+                        });
                       }
                     });
                   };
@@ -180,7 +201,14 @@
                             // Save the metadata and refresh the form
                             gnEditor.save(gnCurrentEdit.id, true).then(
                            function(r) {
-                             defer.resolve();
+                             defer.resolve(r);
+                           }, function(rejectedValue) {
+                             $rootScope.$broadcast('StatusUpdated', {
+                               title: $translate.instant('runServiceError'),
+                               error: rejectedValue,
+                               timeout: 0,
+                               type: 'danger'
+                             });
                            });
                           });
                         }
@@ -219,7 +247,7 @@
                       var urlParams = params.join('&');
                       $http.get(
                           '../api/registries/entries/' + uuid + '?' + urlParams)
-                        .success(function(xml) {
+                     .success(function(xml) {
                        if (usingXlink) {
                          snippets.push(gnEditorXMLService.
                                   buildXMLForXlink(scope.schema,
@@ -304,6 +332,8 @@
                  gnGlobalSettings.modelOptions);
                },
                post: function postLink(scope, iElement, iAttrs) {
+                 scope.ctrl = {};
+
                  scope.defaultRoleCode = iAttrs['defaultRole'] || null;
                  scope.defaultRole = null;
                  angular.forEach(scope.roles, function(r) {

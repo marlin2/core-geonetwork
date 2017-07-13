@@ -58,7 +58,7 @@
           </a>
         </li>
         <li>
-          <a data-ng-href="../api/records/{{md.getUuid()}}/formatters/xml"
+          <a data-ng-href="{{gnUrl}}api/records/{{md.getUuid()}}/formatters/xml"
                  target="_blank">
             <i class="fa fa-file-code-o"></i>&nbsp;
             <span data-translate="">xmlView</span>
@@ -201,16 +201,18 @@
           <tr data-ng-if="mdView.current.record.legalConstraints">
             <th data-translate="">legalConstraints</th>
             <td>
-              <p data-ng-repeat="c in mdView.current.record.legalConstraints track by $index">
-                {{c}}</p>
+              <p data-ng-repeat="c in mdView.current.record.legalConstraints track by $index"
+                 data-ng-bind-html="c | newlines">
+              </p>
             </td>
           </tr>
 
           <tr data-ng-if="mdView.current.record.securityConstraints">
             <th data-translate="">securityConstraints</th>
             <td>
-              <p data-ng-repeat="c in mdView.current.record.securityConstraints track by $index">
-                {{c}}</p>
+              <p data-ng-repeat="c in mdView.current.record.securityConstraints track by $index"
+                 data-ng-bind-html="c | newlines">
+              </p>
             </td>
           </tr>
 
@@ -218,8 +220,9 @@
           <tr data-ng-if="mdView.current.record.resourceConstraints">
             <th data-translate="">resourceConstraints</th>
             <td>
-              <p data-ng-repeat="c in mdView.current.record.resourceConstraints track by $index">
-                {{c}}</p>
+              <p data-ng-repeat="c in mdView.current.record.resourceConstraints track by $index"
+                 data-ng-bind-html="c | newlines">
+              </p>
             </td>
           </tr>
 
@@ -318,11 +321,14 @@
               </ul>
             </td>
           </tr>
-          <tr data-ng-if="::mdView.current.record.crs">
+          <tr data-ng-if="::mdView.current.record.crsDetails">
             <th data-translate="">crs</th>
             <td>
               <ul>
-                <li data-ng-repeat="r in ::mdView.current.record.crs">{{r}}</li>
+                <li data-ng-repeat="r in ::mdView.current.record.crsDetails">
+                  <span ng-if="r.name != ''">{{ r.name }} ({{ r.code }})</span>
+                  <span ng-if="r.name == ''">{{ r.code }}</span>
+                </li>
               </ul>
             </td>
           </tr>
@@ -339,7 +345,7 @@
               <p data-ng-bind-html="::mdView.current.record.lineage | newlines"/>
             </td>
           </tr>
-          <tr data-ng-if="hasRelations.sources || hasRelations.hassources">
+          <tr>
             <th></th>
             <td>
               <div data-gn-related="mdView.current.record"
@@ -476,7 +482,7 @@
           <!-- TODO: use map config -->
           <p data-ng-repeat="bbox in mdView.current.record.geoBox">
             <img class="gn-img-thumbnail img-thumbnail gn-img-extent"
-                 data-ng-src="region.getmap.png?mapsrs=EPSG:3857&width=250&background=osm&geomsrs=EPSG:4326&geom={{mdView.current.record.getBoxAsPolygon($index)}}"/>
+                 data-ng-src="{{gnUrl}}/{{lang}}/region.getmap.png?mapsrs=EPSG:3857&width=250&background=osm&geomsrs=EPSG:4326&geom={{mdView.current.record.getBoxAsPolygon($index)}}"/>
           </p>
 
         </section>
@@ -559,7 +565,7 @@
             <i class="fa fa-fw fa-cog"></i>
             <span data-translate="">sourceCatalog</span>
           </h4>
-          <img ng-src="../../images/logos/{{mdView.current.record.source}}.png"
+          <img ng-src="{{gnUrl}}../images/logos/{{mdView.current.record.source}}.png"
                class="gn-source-logo"/>
         </section>
         </br>

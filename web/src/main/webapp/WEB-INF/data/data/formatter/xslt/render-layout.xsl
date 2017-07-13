@@ -45,7 +45,7 @@
   </xsl:template>
 
   <xsl:template name="render-record">
-    <div class="container-fluid gn-metadata-view">
+    <div class="container-fluid gn-metadata-view gn-schema-{$schema}">
 
       <xsl:variable name="type">
         <xsl:apply-templates mode="getMetadataHierarchyLevel" select="$metadata"/>
@@ -63,7 +63,15 @@
           <xsl:apply-templates mode="getMetadataHeader" select="$metadata"/>
           <!--<xsl:apply-templates mode="render-toc" select="$viewConfig"/>-->
         </header>
-        <xsl:apply-templates mode="render-view" select="$viewConfig/*"/>
+
+        <xsl:for-each select="$viewConfig/*">
+          <xsl:sort select="@formatter-order" 
+                    data-type="number"/>
+          <xsl:apply-templates mode="render-view"
+                               select="."/>
+        </xsl:for-each>
+
+
         <!--
         TODO: scrollspy or tabs on header ?
         <div class="gn-scroll-spy"

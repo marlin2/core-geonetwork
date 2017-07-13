@@ -23,6 +23,7 @@
       <version>${activemq.version}</version>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -37,6 +38,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
+              <escapeString>\</escapeString>
               <includeEmptyDirs>false</includeEmptyDirs>
               <outputDirectory>${project.build.directory}</outputDirectory>
               <resources>
@@ -53,4 +55,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

@@ -69,7 +69,7 @@
   </xsl:template>
 
   <!-- Date type is handled in next template -->
-  <xsl:template mode="mode-iso19139" match="gmd:dateType" priority="2000"/>
+  <xsl:template mode="mode-iso19139" match="gmd:dateType" priority="4000"/>
 
   <!-- Rendering date type as a dropdown to select type
   and the calendar next to it.
@@ -79,6 +79,7 @@
                 match="gmd:CI_Date/gmd:date">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
+    <xsl:param name="listOfValues" select="$iso19139codelists" required="no"/>
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
@@ -97,7 +98,7 @@
         <xsl:variable name="codelist"
                       select="gn-fn-metadata:getCodeListValues($schema,
                                   'gmd:CI_DateTypeCode',
-                                  $codelists,
+                                  $listOfValues,
                                   .)"/>
         <xsl:call-template name="render-codelist-as-select">
           <xsl:with-param name="listOfValues" select="$codelist"/>
@@ -165,7 +166,9 @@
     <xsl:variable name="dateTypeElementRef"
                   select="../gn:element/@ref"/>
 
-    <div class="form-group gn-field gn-title gn-required"
+    <xsl:variable name="isRequired" select="gn:element/@min = 1 and gn:element/@max = 1"/>
+
+    <div class="form-group gn-field gn-title {if ($isRequired) then 'gn-required' else ''}"
          id="gn-el-{$dateTypeElementRef}"
          data-gn-field-highlight="">
       <label class="col-sm-2 control-label">

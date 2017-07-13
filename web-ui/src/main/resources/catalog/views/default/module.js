@@ -32,13 +32,14 @@
   goog.require('gn_mdactions_directive');
   goog.require('gn_related_directive');
   goog.require('gn_search');
+  goog.require('gn_gridrelated_directive');
   goog.require('gn_search_default_config');
   goog.require('gn_search_default_directive');
 
   var module = angular.module('gn_search_default',
       ['gn_search', 'gn_search_default_config',
        'gn_search_default_directive', 'gn_related_directive',
-       'cookie_warning', 'gn_mdactions_directive']);
+       'cookie_warning', 'gn_mdactions_directive', 'gn_gridrelated_directive']);
 
 
   module.controller('gnsSearchPopularController', [
@@ -46,6 +47,7 @@
     function($scope, gnSearchSettings) {
       $scope.searchObj = {
         permalink: false,
+        filters: gnSearchSettings.filters,
         params: {
           sortBy: 'popularity',
           from: 1,
@@ -56,10 +58,11 @@
 
 
   module.controller('gnsSearchLatestController', [
-    '$scope',
-    function($scope) {
+    '$scope', 'gnSearchSettings',
+    function($scope, gnSearchSettings) {
       $scope.searchObj = {
         permalink: false,
+        filters: gnSearchSettings.filters,
         params: {
           sortBy: 'changeDate',
           from: 1,
@@ -94,7 +97,6 @@
       var searchMap = gnSearchSettings.searchMap;
 
 
-
       $scope.modelOptions = angular.copy(gnGlobalSettings.modelOptions);
       $scope.modelOptionsForm = angular.copy(gnGlobalSettings.modelOptions);
       $scope.gnWmsQueue = gnWmsQueue;
@@ -102,6 +104,8 @@
       $scope.activeTab = '/home';
       $scope.resultTemplate = gnSearchSettings.resultTemplate;
       $scope.facetsSummaryType = gnSearchSettings.facetsSummaryType;
+      $scope.facetConfig = gnSearchSettings.facetConfig;
+      $scope.facetTabField = gnSearchSettings.facetTabField;
       $scope.location = gnSearchLocation;
       $scope.toggleMap = function () {
         $(searchMap.getTargetElement()).toggle();
@@ -177,7 +181,7 @@
         if (nextRecordId === mdView.records.length) {
           // When last record of page reached, go to next page...
           // Not the most elegant way to do it, but it will
-          // be easier using Solr search components
+          // be easier using index search components
           $scope.$broadcast('nextPage');
         } else {
           $scope.openRecord(nextRecordId);
@@ -226,14 +230,46 @@
       });
 
       $scope.resultviewFns = {
-        addMdLayerToMap: function (link, md) {
-
+        addMdLayerToMapSimple: function (link, md) {
           if (gnMap.isLayerInMap(viewerMap,
               link.name, link.url)) {
             return;
           }
-          gnMap.addWmsFromScratch(viewerMap, link.url, link.name, false, md).
-          then(function(layer) {
+          var loadLayerPromise;
+
+          // handle WMTS layer info
+          if (link.protocol.indexOf('WMTS') > -1) {
+            loadLayerPromise = gnMap.addWmtsFromScratch(
+              viewerMap, link.url, link.name, undefined, md);
+          } else {
+            loadLayerPromise = gnMap.addWmsFromScratch(
+              viewerMap, link.url, link.name, undefined, md);
+          }
+
+          loadLayerPromise.then(function (layer) {
+            if (layer) {
+              gnMap.feedLayerWithRelated(layer, link.group);
+            }
+          });
+        },
+        // Add to basket first and then trigger add to map
+        addMdLayerToMap: function (link, md) {
+          if (gnMap.isLayerInMap(viewerMap,
+              link.name, link.url)) {
+            return;
+          }
+          var loadLayerPromise;
+
+          // handle WMTS layer info
+          if (link.protocol.indexOf('WMTS') > -1) {
+            loadLayerPromise = gnMap.addWmtsFromScratch(
+              viewerMap, link.url, link.name, undefined, md);
+          } else {
+            loadLayerPromise = gnMap.addWmsFromScratch(
+              viewerMap, link.url, link.name, undefined, md);
+          }
+
+          loadLayerPromise.then(function(layer) {
             if(layer) {
               gnMap.feedLayerWithRelated(layer, link.group);
             }
@@ -250,8 +286,14 @@
       };
 
       // Manage route at start and on $location change
+      // depending on configuration
       if (!$location.path()) {
-        $location.path('/home');
+        var m = gnGlobalSettings.gnCfg.mods;
+        $location.path(
+          m.home.enabled ? '/home' :
+          m.search.enabled ? '/search' :
+          m.map.enabled ? '/map' : 'home'
+        );
       }
       $scope.activeTab = $location.path().
           match(/^(\/[a-zA-Z0-9]*)($|\/.*)/)[1];
@@ -260,10 +302,18 @@
         $scope.activeTab = $location.path().
             match(/^(\/[a-zA-Z0-9]*)($|\/.*)/)[1];
 
-        if (gnSearchLocation.isSearch() && (!angular.isArray(
+        // resize search map for any views exluding viewer
+        if (!gnSearchLocation.isMap() && (!angular.isArray(
             searchMap.getSize()) || searchMap.getSize()[0] < 0)) {
           setTimeout(function() {
             searchMap.updateSize();
+
+            // if an extent was obtained from a loaded context, apply it
+            if(searchMap.get('lastExtent')) {
+              searchMap.getView().fit(
+                searchMap.get('lastExtent'),
+                searchMap.getSize(), { nearest: true });
+            }
 
             // TODO: load custom context to the search map
             //gnOwsContextService.loadContextFromUrl(
@@ -272,34 +322,46 @@
 
           }, 0);
         }
+
+        // resize viewer map for corresponding view
         if (gnSearchLocation.isMap() && (!angular.isArray(
             viewerMap.getSize()) || viewerMap.getSize().indexOf(0) >= 0)) {
           setTimeout(function() {
             viewerMap.updateSize();
+
+            // if an extent was obtained from a loaded context, apply it
+            if(viewerMap.get('lastExtent')) {
+              viewerMap.getView().fit(
+                viewerMap.get('lastExtent'),
+                viewerMap.getSize(), { nearest: true });
+            }
           }, 0);
         }
       });
-
-
 
       angular.extend($scope.searchObj, {
         advancedMode: false,
         from: 1,
         to: 30,
+        selectionBucket: 's101',
         viewerMap: viewerMap,
         searchMap: searchMap,
         mapfieldOption: {
           relations: ['within']
         },
+        hitsperpageValues: gnSearchSettings.hitsperpageValues,
+        filters: gnSearchSettings.filters,
         defaultParams: {
           'facet.q': '',
-          resultType: gnSearchSettings.facetsSummaryType || 'details'
+          resultType: gnSearchSettings.facetsSummaryType || 'details',
+          sortBy: gnSearchSettings.sortBy || 'relevance'
         },
         params: {
           'facet.q': '',
-          resultType: gnSearchSettings.facetsSummaryType || 'details'
-        }
-      }, gnSearchSettings.sortbyDefault);
-
+          resultType: gnSearchSettings.facetsSummaryType || 'details',
+          sortBy: gnSearchSettings.sortBy || 'relevance'
+        },
+        sortbyValues: gnSearchSettings.sortbyValues
+      });
     }]);
 })();

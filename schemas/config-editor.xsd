@@ -70,6 +70,7 @@ a set of views with at least one.
         <xs:element minOccurs="0" maxOccurs="1" ref="fields"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="fieldsWithFieldset"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="multilingualFields"/>
+        <xs:element minOccurs="0" maxOccurs="1" ref="tableFields"/>
         <xs:element minOccurs="1" maxOccurs="1" ref="views"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="batchEditing"/>
       </xs:sequence>
@@ -204,6 +205,140 @@ If expanded, then one field per language is displayed with no need to click on t
     </xs:complexType>
   </xs:element>
 
+  <xs:element name="tableFields">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[
+Defining fields to display as tables
+------------------------------------
+
+Configure here the list of fields to display using a table. This only applies to flat mode views.
+
+.. figure:: ../../user-guide/describing-information/img/table-fields.png
+
+
+.. code-block:: xml
+
+
+    <editor>
+       <fields>...</fields>
+       <fieldsWithFieldset>...</fieldsWithFieldset>
+        <multilingualFields>...</multilingualFields>
+        <tableFields>
+          <table for="gmd:CI_OnlineResource">
+            <header>
+              <hcol label="gmd:protocol"/>
+              <hcol label="gmd:linkage"/>
+              <hcol label="gmd:name"/>
+              <hcol/>
+            </header>
+            <row>
+              <col xpath="gmd:protocol"/>
+              <col xpath="gmd:linkage"/>
+              <col xpath="gmd:name"/>
+              <col del=".."/>
+            </row>
+          </table>
+
+
+
+Tables can also contains subforms.
+
+Configuration is defined in the table config with a section element pointing to the element to add as a new row. In the following example, service operation are displayed in a table:
+
+* with 3 columns: operation name, DCP and connect point.
+
+* if parameters are defined, one subrow will be created per parameters
+
+* and if srv:parameters is in flatModeException, and extra row will be added to allow to add new parameters for the operation
+
+.. code-block:: xml
+
+    <table for="srv:SV_OperationMetadata">
+      <header>
+        <col label="srv:operationName"/>
+        <col label="srv:DCP"/>
+        <col label="srv:connectPoint"/>
+        <col/>
+      </header>
+      <row>
+        <col xpath="srv:operationName"/>
+        <col xpath="srv:DCP"/>
+        <col xpath="srv:connectPoint/gmd:CI_OnlineResource/gmd:linkage"/>
+        <col del=".."/>
+        <section xpath="srv:SV_OperationMetadata/srv:parameters"
+                 or="parameters" in="srv:SV_OperationMetadata"/>
+      </row>
+    </table>
+
+        ]]></xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="table">
+          <xs:complexType>
+            <xs:attribute name="for" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[
+Element to match for creating the table.
+                  ]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:sequence>
+              <xs:element maxOccurs="1" ref="header"/>
+              <xs:element maxOccurs="1" ref="row"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="header">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[
+Table header row.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" name="col">
+          <xs:complexType>
+            <xs:attribute name="label" type="xs:string"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="row">
+    <xs:annotation>
+      <xs:documentation>
+        <![CDATA[
+Table column.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" name="col">
+          <xs:complexType>
+            <xs:attribute name="xpath" type="xs:string" use="optional"/>
+            <xs:attribute name="del" type="xs:string" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" ref="section"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
   <xs:element name="expanded">
     <xs:annotation>
       <xs:documentation>
@@ -231,7 +366,48 @@ relevant to have parent defined to have more control over the list.
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="1" maxOccurs="unbounded" ref="name"/>
+        <xs:element name="name" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              <![CDATA[
+        The element name including its namespace prefix (eg.
+        gmd:identificationInfo).
+        ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="parent" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[
+          The parent element name including its namespace prefix (eg.
+          gmd:identificationInfo).
+          ]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="ancestor" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  <![CDATA[
+          One of the element ancestors name including its namespace prefix (eg.
+          gmd:identificationInfo).
+          ]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="child" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <![CDATA[
+          The first child name including its namespace prefix (eg.
+          gmd:identificationInfo).
+          ]]>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -458,6 +634,13 @@ The tab key used in URL parameter to activate that tab. The key is also use for 
           <xs:documentation><![CDATA[
 Define if the tab should be displayed in a drop down menu instead of a tab. This is used for advanced
 section which is not used often by the end-user. More than one tab could be grouped in that drop down tab menu.
+            ]]></xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="formatter-order" type="xs:int">
+        <xs:annotation>
+          <xs:documentation><![CDATA[
+Define the ordering index of this tab in the XSLT formatter (Note used for editor).
             ]]></xs:documentation>
         </xs:annotation>
       </xs:attribute>
@@ -909,7 +1092,7 @@ Warning: Template based field does not support multilingual editing for ISO stan
             <xs:documentation>The list of values to match from the template.</xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element minOccurs="1" maxOccurs="1" ref="snippet"/>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="snippet"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -1046,12 +1229,118 @@ XPath:
           </action>
 
 
+Example of a drowdown button with 3 coordinates system to choose from:
+
+.. code-block:: xml
+
+         <!-- Display CRS description only,
+                 customize label
+                 and drop the refSysInfo element if removed -->
+          <field xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo/*/
+                           mrs:referenceSystemIdentifier/*/mcc:description"
+                 name="referenceSystemInfo"
+                 del="../../../.."/>
+
+          <!-- Add one of the 3 CRS proposed using the dropdown -->
+          <action type="add"
+                  btnLabel="addCrs"
+                  name="referenceSystemInfo" or="referenceSystemInfo"
+                  in="/mdb:MD_Metadata">
+            <template>
+              <snippet label="addCrs4326">
+                <mdb:referenceSystemInfo>
+                  <mrs:MD_ReferenceSystem>
+                    <mrs:referenceSystemIdentifier>
+                      <mcc:MD_Identifier>
+                        <mcc:code>
+                          <gco:CharacterString>http://www.opengis.net/def/crs/EPSG/0/4326</gco:CharacterString>
+                        </mcc:code>
+                        <mcc:description>
+                          <gco:CharacterString>WGS 84 (EPSG:4326)</gco:CharacterString>
+                        </mcc:description>
+                      </mcc:MD_Identifier>
+                    </mrs:referenceSystemIdentifier>
+                  </mrs:MD_ReferenceSystem>
+                </mdb:referenceSystemInfo>
+              </snippet>
+              <snippet label="addCrs4258">
+                <mdb:referenceSystemInfo>
+                  <mrs:MD_ReferenceSystem>
+                    <mrs:referenceSystemIdentifier>
+                      <mcc:MD_Identifier>
+                        <mcc:code>
+                          <gco:CharacterString>http://www.opengis.net/def/crs/EPSG/0/4258</gco:CharacterString>
+                        </mcc:code>
+                        <mcc:description>
+                          <gco:CharacterString>ETRS89 (EPSG:4258)</gco:CharacterString>
+                        </mcc:description>
+                      </mcc:MD_Identifier>
+                    </mrs:referenceSystemIdentifier>
+                  </mrs:MD_ReferenceSystem>
+                </mdb:referenceSystemInfo>
+              </snippet>
+              <snippet label="addCrs3035">
+                <mdb:referenceSystemInfo>
+                  <mrs:MD_ReferenceSystem>
+                    <mrs:referenceSystemIdentifier>
+                      <mcc:MD_Identifier>
+                        <mcc:code>
+                          <gco:CharacterString>http://www.opengis.net/def/crs/EPSG/0/3035</gco:CharacterString>
+                        </mcc:code>
+                        <mcc:description>
+                          <gco:CharacterString>ETRS89 / LAEA Europe (EPSG:3035)</gco:CharacterString>
+                        </mcc:description>
+                      </mcc:MD_Identifier>
+                    </mrs:referenceSystemIdentifier>
+                  </mrs:MD_ReferenceSystem>
+                </mdb:referenceSystemInfo>
+              </snippet>
+            </template>
+          </action>
+
+
         ]]></xs:documentation>
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="template" minOccurs="0" maxOccurs="1"/>
-        <xs:element ref="directiveAttributes" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="directiveAttributes" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation><![CDATA[
+When type is add, add optional directive attributes.
+
+.. code-block:: xml
+
+          <action type="add"
+                  name="checkpoint-tdp-add-component"
+                  or="dataQualityInfo"
+                  in="/mdb:MD_Metadata"
+                  if="count(//mri:associatedResource/*/mri:initiativeType/*[@codeListValue = 'specification']) > 0"
+                  addDirective="data-gn-record-fragment-selector">
+            <directiveAttributes data-source-records="xpath::string-join(
+              //mri:associatedResource/*[mri:initiativeType/*/@codeListValue = 'specification']
+                /mri:metadataReference/@uuidref, ',')"/>
+          </action>
+
+When type is associatedResource, optional options can be added
+to open the panel with additional parameters.
+
+For example, for sibling panel, the association type and initiative type could be set:
+
+.. code-block:: xml
+
+        <action type="associatedResource"
+                name="checkpoint-linkToUpstreamData"
+                if="count(//mri:associatedResource/*/mri:initiativeType/*[@codeListValue = 'specification']) = 1"
+                process="sibling">
+          <options>{"associationType": "crossReference", "initiativeType": "upstreamData"}</options>
+        </action>
+
+
+]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
       </xs:sequence>
       <xs:attribute name="name" type="xs:string">
         <xs:annotation>
@@ -1340,6 +1629,11 @@ contains an XLink.
           <xs:documentation>XPath to get the value from the XML snippet.</xs:documentation>
         </xs:annotation>
       </xs:attribute>
+      <xs:attribute name="required" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Indicate if the field is required.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
       <xs:attribute name="tooltip" type="xs:string" use="optional">
         <xs:annotation>
           <xs:documentation><![CDATA[
@@ -1411,6 +1705,11 @@ An XML snippet with replacement for each key defined in that field.
       <xs:sequence>
         <xs:any processContents="skip" namespace="##any"/>
       </xs:sequence>
+      <xs:attribute name="label" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>Snippet label.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
     </xs:complexType>
   </xs:element>
   <xs:element name="batchEditing">
