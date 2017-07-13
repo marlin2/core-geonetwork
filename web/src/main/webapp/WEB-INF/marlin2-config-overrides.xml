@@ -21,19 +21,17 @@
 <p>Marlin is the central, searchable repository for dataset descriptions (metadata) relating to data held by the CSIRO Oceans and Atmosphere Flagship in Australia. Marlin currently contains descriptions of several thousand datasets held by this CSIRO Flagship, many of which are available online via hyperlinks to data files, OGC web services, or our "Data Trawler" application.</p>
 <p>The following links are supplied for Marlin users:             
 <ul>
-<li><b>Catalog:</b> provides both simple free text search and keyword-based filtering (default), plus advanced options to search for metadata
+<li><b>Search:</b> provides both simple free text search and keyword-based filtering (default), plus advanced options to search for metadata
 </li>
 <li><b>Map:</b> shows bounding boxes for all datasets in the present search results; also can add individual custom spatial extents (from web map services) for selected datasets as available, using the green "add to map" buttons
 </li>
-<li><b>About:</b> contains some background information about the present version of Marlin
+<li><b>Contribute:</b> choose a metadata record to clone or create a new one from a template.
 </li>
-<li><b>Home:</b> takes you back to this page.
-</li>                               
-<li>CSIRO and other registered users should <b>Sign In</b> via the link above the CSIRO and Marlin logo to view internal records and/or to create and edit metadata (for CSIRO users, your nexus ID and password should be used).
-</li>                               
-</ul>                
+<li>CSIRO and other registered users should <b>Sign In</b> via the link at the top right hand side of the page to view internal records and/or to create and edit metadata (for CSIRO users, your nexus ID and password should be used).
+</li>
+</ul>
 </p>
-        <p>This is the second (December 2016) release of the Marlin software based on the open source <a href="http://geonetwork-opensource.org/">GeoNetwork</a> product, with enhanced metadata elements and functionality compared with the previous MarLIN system which was in use 1998-2014. Significant advances include:
+        <p>This is the third (July 2017) release of the Marlin software based on the open source <a href="http://geonetwork-opensource.org/">GeoNetwork</a> product, with enhanced metadata elements and functionality compared with the previous MarLIN system which was in use 1998-2014. Significant advances include:
         <ul>
         <li>New, internationally-compliant metadata format based on ISO 19115 (and the Australian Marine Community Profile of the same)</li>
         <li>Facility to link to OGC web services e.g. web map service (WMS) which can be used to plot data extents on the Marlin map viewer, and also accessed via external Portals</li>
@@ -47,5 +45,5 @@
 
         <p>For more information about the GeoNetwork Open Source product on which this version of Marlin is built, see the <a href="http://geonetwork-opensource.org/">GeoNetwork project home page</a>. To contact the Marlin development team to request new features or report problems, please use the email <a href="mailto:CMARMarLINSupport@csiro.au">CMARMarLINSupport@csiro.au</a>.</p>
     </replaceXML>
-	</file>
+  </file>
 </overrides>
