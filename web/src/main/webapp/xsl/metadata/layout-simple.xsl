@@ -23,6 +23,7 @@
           </span>
         </td>
       </tr>
+<!--
       <tr>
         <td>
           <xsl:copy-of select="$abstract"/>
@@ -31,9 +32,10 @@
           <xsl:copy-of select="$logo"/>
         </td>
       </tr>
+-->
       <tr>
         <td colspan="2">
-          <xsl:copy-of select="$relatedResources"/>
+  <!--    <xsl:copy-of select="$relatedResources"/> -->
           <xsl:copy-of select="$tabs"/>
         </td>
       </tr>
