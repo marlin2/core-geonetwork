@@ -286,7 +286,7 @@ GeoNetwork.HTML5UI.Templates.THUMB =
     </tpl>';
 
 GeoNetwork.HTML5UI.Templates.CHANGE_DATE = 
-    '<tpl if="edit==\'false\' || isharvested==\'y\'">\
+    '<tpl>\
         <div> {[OpenLayers.i18n("lastUpdate")]} {[values.changedate.split(\'T\')[0]]}</div>\
     </tpl>';
 
@@ -306,7 +306,7 @@ GeoNetwork.HTML5UI.Templates.CONTACT_INFO =
       </tpl>\
       <div><b>Schema:</b> {[values.schema]}</div>\
       <tpl if="edit==\'true\' && isharvested!=\'y\'">\
-       <div class="md-mn md-mn-user" title="{[OpenLayers.i18n("ownerName")]}">{ownername} -  {[OpenLayers.i18n("lastUpdate")]}{[values.changedate.split(\'T\')[0]]}</div>\
+       <div class="md-mn md-mn-user" title="{[OpenLayers.i18n("ownerName")]}">{ownername}</div>\
       </tpl>',
       GeoNetwork.HTML5UI.Templates.CHANGE_DATE,
     '</div>';
