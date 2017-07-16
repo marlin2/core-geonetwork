@@ -287,7 +287,7 @@ GeoNetwork.HTML5UI.Templates.THUMB =
 
 GeoNetwork.HTML5UI.Templates.CHANGE_DATE = 
     '<tpl>\
-        <div> {[OpenLayers.i18n("lastUpdate")]} {[values.changedate.split(\'T\')[0]]}</div>\
+        <div class="md-contact"> {[OpenLayers.i18n("lastUpdate")]} {[values.changedate.split(\'T\')[0]]}</div>\
     </tpl>';
 
 /**
@@ -307,9 +307,8 @@ GeoNetwork.HTML5UI.Templates.CONTACT_INFO =
       <div><b>Schema:</b> {[values.schema]}</div>\
       <tpl if="edit==\'true\' && isharvested!=\'y\'">\
        <div class="md-mn md-mn-user" title="{[OpenLayers.i18n("ownerName")]}">{ownername}</div>\
-      </tpl>',
-      GeoNetwork.HTML5UI.Templates.CHANGE_DATE,
-    '</div>';
+      </tpl>\
+    </div>';
 
 GeoNetwork.HTML5UI.Templates.CONTACT_INFO_TOOLTIP =
   '<tpl for="contact"><tpl if="applies==\'resource\'"> - {name} ({role}) \n</tpl>\</tpl>';	// In one line to avoid extra space in tooltip
@@ -484,6 +483,7 @@ GeoNetwork.HTML5UI.Templates.FULL = new Ext.XTemplate(
 								</tpl>\
 								</p>',
                 GeoNetwork.HTML5UI.Templates.CONTACT_INFO,
+                GeoNetwork.HTML5UI.Templates.CHANGE_DATE,
     '<table><tr>',
             '<td>',
             GeoNetwork.HTML5UI.Templates.COPYTOCLIPBOARD,
