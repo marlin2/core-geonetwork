@@ -115,7 +115,7 @@
           <mcp:dataParameters>
            <mcp:DP_DataParameters>
            <xsl:variable name="currentKeyword" select="text()"/>
-           <xsl:comment>Automatically created dp from <xsl:value-of select="$currentKeyword"/></xsl:comment>
+           <!-- <xsl:comment>Automatically created dp from <xsl:value-of select="$currentKeyword"/></xsl:comment> -->
            <xsl:for-each select="$mapping/map/equipment">
               <xsl:variable name="tokens" select="tokenize(string(),',')"/>
               <!-- <xsl:message>Checking <xsl:value-of select="$tokens[2]"/></xsl:message> -->
@@ -134,7 +134,7 @@
 
       <!-- Now copy the constructed data parameters into the record -->
       <xsl:for-each select="$equipPresent/dp/mcp:dataParameters[count(mcp:DP_DataParameters/*) > 0]">
-      	<xsl:copy-of select="$equipPresent/dp/*"/>
+      	<xsl:copy-of select="."/>
       </xsl:for-each>
 
 			<!-- Finally, copy in the resourceContactInfo -->
