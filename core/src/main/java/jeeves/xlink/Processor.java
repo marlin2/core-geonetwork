@@ -39,16 +39,6 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -214,15 +204,19 @@ public final class Processor {
     public static synchronized Element resolveXLink(String uri, String idSearch, ServiceContext srvContext) throws IOException, JDOMException, CacheException {
 
         cleanFailures();
-        if (failures.size() > MAX_FAILURES) {
-            throw new RuntimeException("There have been " + failures.size() + " timeouts resolving xlinks in the last " + ELAPSE_TIME + " ms");
-        }
+// Just refusing to resolve after MAX_FAILURES breaks links that do resolve
+// so don't do that! A better strategy is needed...so disable breaking
+// behaviour for now
+//    if (failures.size()>MAX_FAILURES) {
+//      throw new RuntimeException("There have been "+failures.size()+" timeouts resolving xlinks in the last "+ELAPSE_TIME+" ms");
+//    }
         Element remoteFragment = null;
         try {
             // TODO-API: Support local protocol on /api/registries/
             if (uri.startsWith(XLink.LOCAL_PROTOCOL)) {
                 SpringLocalServiceInvoker springLocalServiceInvoker = srvContext.getBean(SpringLocalServiceInvoker.class);
-                remoteFragment = (Element)springLocalServiceInvoker.invoke(uri);
+                // risky as we may get a class cast exception....
+                remoteFragment = (Element)springLocalServiceInvoker.invoke(uri.replaceAll("&amp;", "&"));
             } else {
                 // Avoid references to filesystem
                 if (uri.toLowerCase().startsWith("file://")) {
@@ -263,10 +257,11 @@ public final class Processor {
 
             }
         } catch (Exception e) {    // MalformedURLException, IOException
-            synchronized (Processor.class) {
+            if (!uri.startsWith(XLink.LOCAL_PROTOCOL)) {
+              synchronized (Processor.class) {
                 failures.add(System.currentTimeMillis());
-            }
-
+              }
+						}
             Log.error(Log.XLINK_PROCESSOR, "Failed on " + uri, e);
         }
 
@@ -377,8 +372,11 @@ public final class Processor {
                 Log.debug(Log.XLINK_PROCESSOR, "will resolve href '" + hrefUri + "'");
             String idSearch = null;
             int hash = hrefUri.indexOf('#');
-            if (hash > 0 && hash != hrefUri.length() - 1) {
-                idSearch = hrefUri.substring(hash + 1);
+            // This will probably fail if a # occurs anywhere in the URL
+      			// except as anchor...but such urls are too complex for what we
+      			// usually get here 99% of the time...
+            if (hash > 0 && hash != hrefUri.length() - 1) { // skip local xlinks eg. xlink:href="#details"
+                idSearch = hrefUri.substring(hrefUri.lastIndexOf('#')+1);
                 hrefUri = hrefUri.substring(0, hash);
             }
 

@@ -1300,6 +1300,27 @@ public class DataManager implements ApplicationEventPublisherAware {
     }
 
     /**
+     * Set metadata type to subtemplate and set the title. Only subtemplates 
+     * need to persist the title as it is used to give a meaningful title for
+     * use when offering the subtemplate to users in the editor.
+     *
+     * @param id Metadata id to set to type subtemplate
+     * @param title Title of metadata of subtemplate/fragment
+     */
+    public void setSubtemplateTypeAndTitleExt(final int id, String title) throws Exception {
+        getMetadataRepository().update(id, new Updater<Metadata>() {
+            @Override
+            public void apply(@Nonnull Metadata metadata) {
+                final MetadataDataInfo dataInfo = metadata.getDataInfo();
+                dataInfo.setType(MetadataType.SUB_TEMPLATE);
+                if (title != null) { // do we need to do this?
+                  dataInfo.setTitle(title);
+                }
+            }
+        });
+    }
+
+    /**
      * TODO javadoc.
      */
     public void setHarvested(int id, String harvestUuid) throws Exception {
