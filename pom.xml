@@ -731,7 +731,7 @@
       <dependency>
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
-        <version>1.5.2</version>
+        <version>2.2</version>
       </dependency>
       <dependency>
         <groupId>jaxen</groupId>
@@ -1092,10 +1092,20 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+      <id>blue-cis</id>
+      <name>CMAR OOAP Maven Repository</name>
+      <url>http://blue-cis.hba.marine.csiro.au:8081/artifactory/repo</url>
+    </repository>
+<!--
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
       <id>boundless</id>
       <name>Boundless repository</name>
       <url>http://repo.boundlessgeo.com/main/</url>
     </repository>
+-->
     <repository>
       <snapshots>
         <enabled>false</enabled>
@@ -1123,6 +1133,7 @@
       <name>Repository that has juniversalchardet</name>
       <url>http://mvnrepository.com/artifact</url>
     </repository>
+
     <repository>
       <id>maven.geo-solutions.it</id>
       <name>geo-solutions</name>

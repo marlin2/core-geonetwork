@@ -422,6 +422,13 @@
       <artifactId>dummy-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>edu.ucar</groupId>
+      <artifactId>netcdf</artifactId>
+      <version>4.3.23</version>
+    </dependency>
+
+    <!-- language detection -->
 
     <!-- Handled locally by a temporarly repository -->
     <dependency>
@@ -452,13 +459,7 @@
       <artifactId>jzkit-z3950-plugin</artifactId>
       <version>3.r260.geonetwork.patch.1</version>
     </dependency>
-    <dependency>
-      <groupId>edu.ucar</groupId>
-      <artifactId>netcdf</artifactId>
-      <version>4.0.patch</version>
-    </dependency>
 
-    <!-- language detection -->
     <dependency>
       <groupId>com.cybozu.labs</groupId>
       <artifactId>langdetect</artifactId>

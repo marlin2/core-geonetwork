@@ -405,6 +405,7 @@
 
 
       // TODO: Check if can be moved to arcsde.js
+/*
       $scope.$watch('harvesterSelected.site.connectionType',
           function(newValue) {
             if ($scope.harvesterSelected['@type'] === 'arcsde') {
@@ -413,6 +414,7 @@
               }
             }
           });
+*/
 
       loadHarvesterTypes();
 
