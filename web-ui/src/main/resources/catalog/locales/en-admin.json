@@ -928,6 +928,8 @@
     "thredds-createServiceMdHelp": "Create ISO19119 metadata for all services in the thredds catalog. Typically these are opendap, OGC WMS and the thredds Netcdf subset service. All files in the catalog will be inserted in the operatesOn section of the service record.",
     "thredds-metadataLanguage": "Language",
     "thredds-outputSchema": "Select schema for output metadata records",
+    "thredds-serviceType": "Select thredds service type for output metadata records",
+    "thredds-serviceTypeHelp": "Choose WMS, NetcdfSubset, dods",
     "thredds-topic": "ISO19115 Topic category for output metadata records",
     "thredds-serviceCategory": "Geonetwork category to assign to service metadata records",
     "thredds-datasetCategory": "Geonetwork category to assign to dataset metadata records",

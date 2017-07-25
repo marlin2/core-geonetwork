@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--  Mapping between Thredds Catalog (version 1.0.1) to ISO19119 -->
+<!--  Mapping between Thredds Catalog (version 1.0.1) to ISO19139 -->
 <xsl:stylesheet xmlns:gmd="http://www.isotc211.org/2005/gmd"
                 xmlns:gco="http://www.isotc211.org/2005/gco"
-                xmlns:srv="http://www.isotc211.org/2005/srv"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
                 xmlns:util="java:java.util.UUID"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:wms="http://www.opengis.net/wms"
                 version="2.0"
-                xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
-                exclude-result-prefixes="util">
+                exclude-result-prefixes="wms xsl util">
 
   <!-- ============================================================================= -->
 
@@ -72,7 +72,7 @@
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-      <xsl:for-each select="Service/ContactInformation">
+      <xsl:for-each select="wms:Service/wms:ContactInformation">
         <gmd:contact>
           <gmd:CI_ResponsibleParty>
             <xsl:apply-templates select="." mode="RespParty"/>
@@ -91,15 +91,13 @@
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
       <gmd:metadataStandardName>
-        <gco:CharacterString>AS/NZS 19119/2005: Geographic Information - Services
-        </gco:CharacterString>
+        <gco:CharacterString>Australian Marine Community Profile of ISO 19115:2005/19139</gco:CharacterString>
       </gmd:metadataStandardName>
 
       <gmd:metadataStandardVersion>
-        <gco:CharacterString>1.0 - 2005</gco:CharacterString>
+        <gco:CharacterString>1.5-experimental</gco:CharacterString>
       </gmd:metadataStandardVersion>
 
-      <!-- spatRepInfo-->
       <!-- TODO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
       <xsl:for-each select="refSysInfo">
@@ -110,12 +108,11 @@
         </gmd:referenceSystemInfo>
       </xsl:for-each>
 
-      <!--mdExtInfo-->
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
       <gmd:identificationInfo>
-        <srv:SV_ServiceIdentification>
-          <xsl:apply-templates select="." mode="SrvDataIdentification">
+        <gmd:MD_DataIdentification>
+          <xsl:apply-templates select="." mode="DataIdentification">
             <xsl:with-param name="topic" select="$topic"/>
             <xsl:with-param name="name" select="$name"/>
             <xsl:with-param name="type" select="$type"/>
@@ -126,12 +123,11 @@
             <xsl:with-param name="bbox" select="$bbox"/>
             <xsl:with-param name="textent" select="$textent"/>
           </xsl:apply-templates>
-        </srv:SV_ServiceIdentification>
+        </gmd:MD_DataIdentification>
       </gmd:identificationInfo>
 
-      <!--contInfo-->
-      <!--distInfo -->
-<!-- Don't put url in again
+      <!-- FIXME: If distributing opendap or netcdf subset service then
+                  this should be filled out with netcdf and version number -->
       <gmd:distributionInfo>
         <gmd:MD_Distribution>
           <gmd:distributionFormat>
@@ -146,56 +142,38 @@
           </gmd:distributionFormat>
           <gmd:transferOptions>
             <gmd:MD_DigitalTransferOptions>
+            <!-- URL will be a string of urls separated by ^^^ -->
+            <xsl:for-each select="tokenize($url,'\^\^\^')"> 
               <gmd:onLine>
                 <gmd:CI_OnlineResource>
                   <gmd:linkage>
                     <gmd:URL>
-                      <xsl:value-of select="$url"/>
+                      <xsl:value-of select="."/>
                     </gmd:URL>
                   </gmd:linkage>
                   <gmd:protocol>
-                    <gco:CharacterString>WWW:LINK-1.0-http- -link</gco:CharacterString>
-                  </gmd:protocol>
-                  <gmd:description>
-                    <gco:CharacterString>
-                      <xsl:value-of select="$name"/>
-                    </gco:CharacterString>
-                  </gmd:description>
+										<xsl:choose>
+                    	<xsl:when test="contains($type,'WMS')">
+                  			<gco:CharacterString>OGC:WMS</gco:CharacterString>
+											</xsl:when>
+                    	<xsl:when test="contains($type,'NETCDFSUBSET')">
+                  			<gco:CharacterString>"WWW:LINK-1.0-http--netcdfsubset</gco:CharacterString>
+											</xsl:when>
+                    	<xsl:when test="contains($type,'OPENDAP')">
+                  			<gco:CharacterString>"WWW:LINK-1.0-http--opendap</gco:CharacterString>
+											</xsl:when>
+											<xsl:otherwise>
+                  			<gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+											</xsl:otherwise>
+										</xsl:choose>
+                	</gmd:protocol>
                 </gmd:CI_OnlineResource>
               </gmd:onLine>
+						</xsl:for-each>
             </gmd:MD_DigitalTransferOptions>
           </gmd:transferOptions>
         </gmd:MD_Distribution>
       </gmd:distributionInfo>
--->
-
-      <!--dqInfo-->
-      <gmd:dataQualityInfo>
-        <gmd:DQ_DataQuality>
-          <gmd:scope>
-            <gmd:DQ_Scope>
-              <gmd:level>
-                <gmd:MD_ScopeCode codeListValue="service"
-                                  codeList="./resources/codeList.xml#MD_ScopeCode"/>
-              </gmd:level>
-              <gmd:levelDescription>
-                <gmd:MD_ScopeDescription>
-                  <gmd:attributes/>
-                </gmd:MD_ScopeDescription>
-              </gmd:levelDescription>
-            </gmd:DQ_Scope>
-          </gmd:scope>
-          <gmd:lineage>
-            <gmd:LI_Lineage>
-              <gmd:statement gco:nilReason="missing">
-                <gco:CharacterString/>
-              </gmd:statement>
-            </gmd:LI_Lineage>
-          </gmd:lineage>
-        </gmd:DQ_DataQuality>
-      </gmd:dataQualityInfo>
-      <!--mdConst -->
-      <!--mdMaint-->
 
     </gmd:MD_Metadata>
   </xsl:template>

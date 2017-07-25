@@ -63,6 +63,7 @@ public class ThreddsParams extends AbstractParams {
     public String topic;
     public boolean createServiceMd;
     public String outputSchema;
+    public String threddsServiceType;
     public String datasetCategory;
     public String serviceCategory;
     public ThreddsParams(DataManager dm) {
@@ -79,8 +80,9 @@ public class ThreddsParams extends AbstractParams {
         icon = Util.getParam(site, "icon", "");
         lang = Util.getParam(opt, "lang", "");
         topic = Util.getParam(opt, "topic", "");
-        createServiceMd = Util.getParam(opt, "createServiceMd", true);
+        createServiceMd = Util.getParam(opt, "createServiceMd", false);
         outputSchema = Util.getParam(opt, "outputSchema", "iso19139");
+        threddsServiceType = Util.getParam(opt, "threddsServiceType", "netcdfsubset");
         serviceCategory = Util.getParam(opt, "serviceCategory", "");
         datasetCategory = Util.getParam(opt, "datasetCategory", "");
     }
@@ -104,6 +106,7 @@ public class ThreddsParams extends AbstractParams {
         topic = Util.getParam(opt, "topic", topic);
         createServiceMd = Util.getParam(opt, "createServiceMd", createServiceMd);
         outputSchema = Util.getParam(opt, "outputSchema", outputSchema);
+        threddsServiceType = Util.getParam(opt, "threddsServiceType", threddsServiceType);
         serviceCategory = Util.getParam(opt, "serviceCategory", serviceCategory);
         datasetCategory = Util.getParam(opt, "datasetCategory", datasetCategory);
     }
@@ -118,6 +121,7 @@ public class ThreddsParams extends AbstractParams {
         copy.topic = topic;
         copy.createServiceMd = createServiceMd;
         copy.outputSchema = outputSchema;
+        copy.threddsServiceType = threddsServiceType;
         copy.serviceCategory = serviceCategory;
         copy.datasetCategory = datasetCategory;
         return copy;
