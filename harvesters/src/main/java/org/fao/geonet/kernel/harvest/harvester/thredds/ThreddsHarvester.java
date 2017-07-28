@@ -135,7 +135,8 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
         settingMan.add("id:" + optionsId, "topic", params.topic);
         settingMan.add("id:" + optionsId, "createServiceMd", params.createServiceMd);
         settingMan.add("id:" + optionsId, "outputSchema", params.outputSchema);
-        settingMan.add("id:" + optionsId, "threddsServiceType", params.threddsServiceType);
+        settingMan.add("id:" + optionsId, "datasetTitle", params.datasetTitle);
+        settingMan.add("id:" + optionsId, "datasetAbstract", params.datasetAbstract);
         settingMan.add("id:" + optionsId, "serviceCategory", params.serviceCategory);
         settingMan.add("id:" + optionsId, "datasetCategory", params.datasetCategory);
     }

@@ -38,6 +38,7 @@ import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.exceptions.BadServerCertificateEx;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
@@ -57,6 +58,7 @@ import org.fao.geonet.kernel.harvest.harvester.fragment.FragmentHarvester.Fragme
 import org.fao.geonet.kernel.harvest.harvester.fragment.FragmentHarvester.HarvestSummary;
 import org.fao.geonet.kernel.setting.SettingInfo;
 import org.fao.geonet.lib.Lib;
+import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.util.Sha1Encoder;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Xml;
@@ -474,9 +476,10 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
      * @param md   the metadata being saved
      * @param uuid the uuid of the metadata being saved
      * @param uri  the uri from which the metadata has been harvested
+     * @param isService  is this a service metadata record?
      **/
 
-    private void saveMetadata(Element md, String uuid, String uri) throws Exception {
+    private void saveMetadata(Element md, String uuid, String uri, boolean isService) throws Exception {
 
         //--- strip the catalog namespace as it is not required
         md.removeNamespaceDeclaration(invCatalogNS);
@@ -507,7 +510,20 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             setUuid(params.getUuid()).
             setUri(uri);
 
-        addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
+				if (!isService) {
+        	if (params.datasetCategory != null && !params.datasetCategory.equals("")) {
+           	MetadataCategory metadataCategory = context.getBean(MetadataCategoryRepository.class).findOne(Integer.parseInt(params.datasetCategory));
+	
+           	if (metadataCategory == null) {
+             	throw new IllegalArgumentException("No category found with name: " + params.datasetCategory);
+           	}
+           	metadata.getMetadataCategories().add(metadataCategory);
+        	}
+				}
+				else {
+        	addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
+				}
+
         metadata = dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
@@ -931,50 +947,46 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             InvService serv = ts.service;
             String type = serv.getServiceType().toString();
 
-						if (log.isDebugEnabled()) log.debug("Checking service type "+type+" against param "+params.threddsServiceType);
-            if (type.equals(params.threddsServiceType)) {
+            if (log.isDebugEnabled()) log.debug("Processing Thredds service: " + serv.toString());
 
-
-            	if (log.isDebugEnabled()) log.debug("Processing Thredds service: " + serv.toString());
-
-            	String sUuid = Sha1Encoder.encodeString(sUrl);
-            	String urls = StringUtils.join(ts.datasetUrls,"^^^");
+            String sUuid = Sha1Encoder.encodeString(sUrl);
+            String urls = StringUtils.join(ts.datasetUrls,"^^^");
 
             	//---	pass info to stylesheet which will create a 19119 record
 	
-            	if (log.isDebugEnabled())
+            if (log.isDebugEnabled())
                 log.debug("  - XSLT transformation using " + styleSheet);
 
-            	Map<String, Object> param = new HashMap<String, Object>();
-            	param.put("lang", params.lang);
-            	param.put("topic", params.topic);
-            	param.put("uuid", sUuid);
-            	param.put("url", urls);
-            	param.put("name", "Thredds Service "+serv.getName()+ " at "+sUrl);
-            	param.put("type", serv.getServiceType().toString().toUpperCase());
-            	param.put("version", ts.version);
-            	param.put("desc", serv.toString());
-            	param.put("props", serv.getProperties().toString());
-            	param.put("serverops", ts.ops);
-            	param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
-            	param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("lang", params.lang);
+            param.put("topic", params.topic);
+            param.put("uuid", sUuid);
+            param.put("url", urls);
+            param.put("name", "Thredds Service "+serv.getName()+ " at "+sUrl);
+            param.put("type", serv.getServiceType().toString().toUpperCase());
+            param.put("version", ts.version);
+            param.put("desc", serv.toString());
+            param.put("props", serv.getProperties().toString());
+            param.put("serverops", ts.ops);
+            param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
+            param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
 	
-            	Element md = Xml.transform(cata, styleSheet, param);
+            Element md = Xml.transform(cata, styleSheet, param);
 	
-            	String schema = dataMan.autodetectSchema(md, null);
-            	if (schema == null) {
-                	log.warning("Skipping metadata with unknown schema.");
-                	result.unknownSchema++;
-            	} else {
+            String schema = dataMan.autodetectSchema(md, null);
+            if (schema == null) {
+               	log.warning("Skipping metadata with unknown schema.");
+               	result.unknownSchema++;
+            } else {
 	
-                	//--- Now add to geonetwork
-                	saveMetadata(md, sUuid, sUrl);
+               	//--- Now add to geonetwork
+                boolean isService = true;
+               	saveMetadata(md, sUuid, sUrl, isService);
 	
-                	harvestUris.add(sUrl);
+               	harvestUris.add(sUrl);
 	
-                	result.serviceRecords++;
-            	}
-						}
+               	result.serviceRecords++;
+            }
         }
     }
 
@@ -989,59 +1001,51 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
     private void createDatasetMetadata(Element cata, Path styleSheet, Path dataParamsStylesheet) throws Exception {
 
-        for (String sUrl : services.keySet()) {
+        String sUuid = Sha1Encoder.encodeString(params.url);
 
-            ThreddsService ts = services.get(sUrl);
-            InvService serv = ts.service;
-            String type = serv.getServiceType().toString();
+        //---	pass info to stylesheet which will create a 19139 record
 
-            if (type.equals(params.threddsServiceType)) {
+        if (log.isDebugEnabled())
+               log.debug("  - XSLT transformation using " + styleSheet);
 
-            	if (log.isDebugEnabled()) 
-								log.debug("Processing Thredds service: " + serv.toString());
+				String title = params.datasetTitle;
+        if (title.equals("")) {
+					title =  "Thredds Dataset at "+params.url;
+				}
+        String abst = params.datasetAbstract;
+        if (abst.equals("")) {
+					abst = "Thredds Dataset";
+				}
 
-            	String sUuid = Sha1Encoder.encodeString(params.url);
-            	String urls = StringUtils.join(ts.datasetUrls,"^^^");
-
-            	//---	pass info to stylesheet which will create a 19139 record
-
-            	if (log.isDebugEnabled())
-                log.debug("  - XSLT transformation using " + styleSheet);
-
-            	Map<String, Object> param = new HashMap<String, Object>();
-            	param.put("lang", params.lang);
-            	param.put("topic", params.topic);
-            	param.put("uuid", sUuid);
-            	param.put("url", urls);
-            	param.put("name", "Thredds Dataset at "+params.url);
-            	param.put("type", type.toUpperCase());
-            	param.put("version", ts.version);
-            	param.put("desc", serv.toString());
-            	param.put("props", serv.getProperties().toString());
-            	param.put("serverops", ts.ops);
-            	param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
-            	param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("lang", params.lang);
+        param.put("topic", params.topic);
+        param.put("uuid", sUuid);
+        param.put("url", params.url);
+        param.put("name", title);
+        param.put("desc", abst);
+        param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
+        param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
 	
-            	Element md = Xml.transform(wmsResponse, styleSheet, param);
+        Element md = Xml.transform(wmsResponse, styleSheet, param);
 	
-            	String schema = dataMan.autodetectSchema(md, null);
-            	if (schema == null) {
-                	log.warning("Skipping metadata with unknown schema.");
-                	result.unknownSchema++;
-            	} else {
-                  if (dataParamsStylesheet != null) {
-            	    	Element dps = Xml.transform(gridVariables, dataParamsStylesheet);
-                    addDataParameters(md, dps);
-									}
+        String schema = dataMan.autodetectSchema(md, null);
+        if (schema == null) {
+          log.warning("Skipping metadata with unknown schema.");
+          result.unknownSchema++;
+        } else {
+          if (dataParamsStylesheet != null) {
+            Element dps = Xml.transform(gridVariables, dataParamsStylesheet);
+            addDataParameters(md, dps);
+					}
 	
-                	//--- Now add to geonetwork
-                	saveMetadata(md, sUuid, params.url);
+          //--- Now add to geonetwork
+          boolean isService = false;
+          saveMetadata(md, sUuid, params.url, isService);
 	
-                	harvestUris.add(params.url);
+          harvestUris.add(params.url);
 
-                	result.collectionDatasetRecords++;
-        	    }
-        	}
+          result.collectionDatasetRecords++;
 			}
     }
 

@@ -34,9 +34,12 @@
     <outputSchema>
       <xsl:value-of select="outputSchema/value"/>
     </outputSchema>
-    <threddsServiceType>
-      <xsl:value-of select="threddsServiceType/value"/>
-    </threddsServiceType>
+    <datasetTitle>
+      <xsl:value-of select="datasetTitle/value"/>
+    </datasetTitle>
+    <datasetAbstract>
+      <xsl:value-of select="datasetAbstract/value"/>
+    </datasetAbstract>
     <serviceCategory>
       <xsl:value-of select="serviceCategory/value"/>
     </serviceCategory>

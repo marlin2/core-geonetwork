@@ -63,7 +63,8 @@ public class ThreddsParams extends AbstractParams {
     public String topic;
     public boolean createServiceMd;
     public String outputSchema;
-    public String threddsServiceType;
+    public String datasetTitle;
+    public String datasetAbstract;
     public String datasetCategory;
     public String serviceCategory;
     public ThreddsParams(DataManager dm) {
@@ -82,7 +83,8 @@ public class ThreddsParams extends AbstractParams {
         topic = Util.getParam(opt, "topic", "");
         createServiceMd = Util.getParam(opt, "createServiceMd", false);
         outputSchema = Util.getParam(opt, "outputSchema", "iso19139");
-        threddsServiceType = Util.getParam(opt, "threddsServiceType", "netcdfsubset");
+        datasetTitle = Util.getParam(opt, "datasetTitle", "");
+        datasetAbstract = Util.getParam(opt, "datasetAbstract", "");
         serviceCategory = Util.getParam(opt, "serviceCategory", "");
         datasetCategory = Util.getParam(opt, "datasetCategory", "");
     }
@@ -106,7 +108,8 @@ public class ThreddsParams extends AbstractParams {
         topic = Util.getParam(opt, "topic", topic);
         createServiceMd = Util.getParam(opt, "createServiceMd", createServiceMd);
         outputSchema = Util.getParam(opt, "outputSchema", outputSchema);
-        threddsServiceType = Util.getParam(opt, "threddsServiceType", threddsServiceType);
+        datasetTitle = Util.getParam(opt, "datasetTitle", datasetTitle);
+        datasetAbstract = Util.getParam(opt, "datasetAbstract", datasetTitle);
         serviceCategory = Util.getParam(opt, "serviceCategory", serviceCategory);
         datasetCategory = Util.getParam(opt, "datasetCategory", datasetCategory);
     }
@@ -121,7 +124,8 @@ public class ThreddsParams extends AbstractParams {
         copy.topic = topic;
         copy.createServiceMd = createServiceMd;
         copy.outputSchema = outputSchema;
-        copy.threddsServiceType = threddsServiceType;
+        copy.datasetTitle = datasetTitle;
+        copy.datasetAbstract = datasetAbstract;
         copy.serviceCategory = serviceCategory;
         copy.datasetCategory = datasetCategory;
         return copy;

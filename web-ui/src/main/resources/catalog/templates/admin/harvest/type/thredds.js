@@ -29,7 +29,8 @@ var gnHarvesterthredds = {
                 "topic" : "oceans",
                 "createServiceMd" : true,
                 "outputSchema" : "iso19139",
-                "threddsServiceType" : "NetcdfSubset",
+                "datasetTitle" : "",
+                "datasetAbstract" : "",
                 "serviceCategory" : "",
                 "datasetCategory" : ""
             },
@@ -71,7 +72,8 @@ var gnHarvesterthredds = {
                 + '    <topic>' + h.options.topic + '</topic>'
                 + '    <createServiceMd>' + h.options.createServiceMd + '</createServiceMd>'
                 + '    <outputSchema>' + h.options.outputSchema + '</outputSchema>'
-                + '    <threddsServiceType>' + h.options.threddsServiceType + '</threddsServiceType>'
+                + '    <datasetTitle>' + h.options.datasetTitle + '</datasetTitle>'
+                + '    <datasetAbstract>' + h.options.datasetAbstract + '</datasetAbstract>'
                 + '    <serviceCategory>' + h.options.serviceCategory + '</serviceCategory>'
                 + '    <datasetCategory>' + h.options.datasetCategory + '</datasetCategory>'
                 + '  </options>'

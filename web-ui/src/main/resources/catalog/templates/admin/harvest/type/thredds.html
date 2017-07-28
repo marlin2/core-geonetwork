@@ -62,9 +62,17 @@
     </div>
 
     <div>
-      <label class="control-label" data-translate="">thredds-serviceType</label>
+      <label class="control-label" data-translate="">thredds-datasetTitle</label>
       <input type="text" class="form-control"
-             data-ng-model="harvesterSelected.options.threddsServiceType"/>
+             data-ng-model="harvesterSelected.options.datasetTitle"/>
+      <p class="help-block" data-translate="">thredds-datasetTitleHelp</p>
+    </div>
+
+    <div>
+      <label class="control-label" data-translate="">thredds-datasetAbstract</label>
+      <input type="text" class="form-control"
+             data-ng-model="harvesterSelected.options.datasetAbstract"/>
+      <p class="help-block" data-translate="">thredds-datasetAbstractHelp</p>
     </div>
 
     <div data-gn-category="harvesterSelected.options.serviceCategory" data-lang="{{lang}}"
