@@ -37,6 +37,7 @@
 
   goog.require('gn_batchedit_controller');
   goog.require('gn_directory_controller');
+  goog.require('gn_commons');
   goog.require('gn_editorboard_controller');
   goog.require('gn_fields');
   goog.require('gn_import_controller');
@@ -53,7 +54,7 @@
        'gn_editorboard_controller', 'gn_share',
        'gn_directory_controller', 'gn_utility_directive',
        'gn_scroll_spy', 'gn_thesaurus', 'ui.bootstrap.datetimepicker',
-       'ngRoute', 'gn_mdactions_service', 'pascalprecht.translate']);
+       'ngRoute', 'gn_mdactions_service', 'gn_commons']);
 
   var tplFolder = '../../catalog/templates/editor/';
 
@@ -195,8 +196,11 @@
                   data.metadata[0].defaultTitle;
 
               // Set default schema configuration in case none is defined
-              var config =
-                  gnConfig['metadata.editor.schemaConfig'][$scope.mdSchema];
+              var scConfig = JSON.parse(gnConfig['metadata.editor.schemaConfig']);
+              var config;
+              if (scConfig) { 
+                config = scConfig[$scope.mdSchema];
+              }
               if (!config) {
                 config = {
                   displayToolTip: false
@@ -461,13 +465,17 @@
         $scope.layout.hideTopToolBar = false;
         // Close the editor tab
         window.onbeforeunload = null;
+
+        // if there is no history, attempt to close tab
+        if (window.history.length == 1) {
+          window.close();
+          // This last point may trigger
+          // "Scripts may close only the windows that were opened by it."
+          // when the editor was not opened by a script.
+        }
+
         // Go to editor home
         $location.path('');
-        // Tentative to close the browser tab
-        window.close();
-        // This last point may trigger
-        // "Scripts may close only the windows that were opened by it."
-        // when the editor was not opened by a script.
       };
 
       $scope.cancel = function(refreshForm) {

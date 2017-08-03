@@ -127,7 +127,7 @@
 
 
         <!-- Some views may define tab to be grouped in an extra button -->
-        <xsl:if test="count($config/editor/views/view[tab/@id = $tab]/tab[@toggle]) > 0">
+				<xsl:if test="count($currentView/tab[@toggle]) > 0">
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href=""
                title="{$i18n/moreTabs}">
@@ -136,7 +136,7 @@
             </a>
             <ul class="dropdown-menu">
               <!-- links -->
-              <xsl:for-each select="$config/editor/views/view[tab/@id = $tab]/tab[@toggle]">
+							<xsl:for-each select="$currentView/tab[@toggle]">
                 <li>
                   <xsl:if test="$tab = @id">
                     <xsl:attribute name="class">disabled</xsl:attribute>

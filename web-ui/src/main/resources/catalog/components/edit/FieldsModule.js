@@ -84,6 +84,7 @@
   goog.require('gn_organisation_entry_selector');
   goog.require('gn_record_fragment_selector');
   goog.require('gn_template_field_directive');
+  goog.require('gn_bounding');
 
 
 
@@ -94,12 +95,12 @@
     'gn_editor_helper',
     'gn_template_field_directive',
     'gn_directory_entry_selector',
-    'gn_organisation_entry_selector',
     'gn_batch_process_button',
     'gn_multilingual_field_directive',
     'gn_logo_selector_directive',
     'gn_date_picker_directive',
     'gn_record_fragment_selector',
-    'gn_checkbox_with_nilreason'
+    'gn_checkbox_with_nilreason',
+    'gn_bounding'
   ]);
 })();

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<geonet>
+	<services package="org.fao.geonet">
+
+		<service name="creativecommons.get">
+      <documentation><![CDATA[
+         Given a jurisdiction and license name, get an mcp:MD_Commons element
+      ]]></documentation>
+			<output sheet="../xslt/services/creativecommons/creativecommons-snippet.xsl">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="creativecommons.jurisdictions">
+      <documentation><![CDATA[
+         Get Creative Commons License Jurisdictions
+      ]]></documentation>
+			<output sheet="../xslt/services/creativecommons/creativecommons-jurisdictions.xsl">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<service name="creativecommons.licenses">
+      <documentation><![CDATA[
+         Get Creative Commons Licenses
+      ]]></documentation>
+			<output sheet="../xslt/services/creativecommons/creativecommons-licenses.xsl">
+				<xml name="static" file="xml/creativecommons/jurisdictionLicenses.xml"/>
+				<xml name="staticjurisdictions" file="xml/creativecommons/jurisdictionSelectOptions"/>
+			</output>
+		</service>
+
+	</services>
+</geonet>
+

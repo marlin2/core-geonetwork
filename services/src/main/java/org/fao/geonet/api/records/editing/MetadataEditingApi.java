@@ -358,7 +358,7 @@ public class MetadataEditingApi {
             }
 
             if (reindex) {
-                dataMan.indexMetadata(id, true);
+                dataMan.indexMetadata(id, true, null);
             }
 
             ajaxEditUtils.removeMetadataEmbedded(session, id);

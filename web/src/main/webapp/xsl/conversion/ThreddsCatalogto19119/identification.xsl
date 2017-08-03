@@ -4,11 +4,13 @@
                 xmlns:srv="http://www.isotc211.org/2005/srv"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:gml="http://www.opengis.net/gml"
+                xmlns:wms="http://www.opengis.net/wms"
                 xmlns:math="http://exslt.org/math"
                 xmlns:date="http://exslt.org/dates-and-times"
                 xmlns:exslt="http://exslt.org/common"
-                version="1.0"
-                extension-element-prefixes="math exslt gml date">
+                version="2.0"
+		exclude-result-prefixes="wms xsl date exslt math"
+                extension-element-prefixes="math exslt date">
 
   <!-- =================================================================== -->
 
@@ -20,6 +22,8 @@
     <xsl:param name="props"/>
     <xsl:param name="version"/>
     <xsl:param name="serverops"/>
+    <xsl:param name="bbox"/>
+    <xsl:param name="textent"/>
 
 
     <gmd:citation>
@@ -63,7 +67,7 @@
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-    <xsl:for-each select="//ContactInformation">
+    <xsl:for-each select="//wms:ContactInformation">
       <gmd:pointOfContact>
         <gmd:CI_ResponsibleParty>
           <xsl:apply-templates select="." mode="RespParty"/>
@@ -92,6 +96,48 @@
         </gmd:fees>
       </gmd:MD_StandardOrderProcess>
     </srv:accessProperties>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <xsl:variable name="bboxtokens" select="tokenize($bbox,'\^\^\^')"/>
+    <srv:extent>
+      <gmd:EX_Extent>
+        <gmd:geographicElement>
+          <gmd:EX_GeographicBoundingBox>
+            <gmd:westBoundLongitude>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[3]"/></gco:Decimal>
+            </gmd:westBoundLongitude>
+            <gmd:eastBoundLongitude>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[4]"/></gco:Decimal>
+            </gmd:eastBoundLongitude>
+            <gmd:southBoundLatitude>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[1]"/></gco:Decimal>
+            </gmd:southBoundLatitude>
+            <gmd:northBoundLatitude>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[2]"/></gco:Decimal>
+            </gmd:northBoundLatitude>
+          </gmd:EX_GeographicBoundingBox>
+        </gmd:geographicElement>
+      </gmd:EX_Extent>
+    </srv:extent>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <xsl:variable name="textenttokens" select="tokenize($textent,'\^\^\^')"/>
+		<srv:extent>
+			<gmd:EX_Extent>
+				<gmd:temporalElement>
+					<gmd:EX_TemporalExtent>
+						<gmd:extent>
+							<gml:TimePeriod gml:id="TP1">
+								<gml:beginPosition><xsl:value-of select="$textenttokens[1]"/></gml:beginPosition>
+								<gml:endPosition><xsl:value-of select="$textenttokens[2]"/></gml:endPosition>
+							</gml:TimePeriod>
+						</gmd:extent>
+					</gmd:EX_TemporalExtent>
+				</gmd:temporalElement>
+			</gmd:EX_Extent>
+		</srv:extent>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
@@ -180,30 +226,44 @@
                 </xsl:attribute>
               </srv:DCPList>
             </srv:DCP>
-            <srv:connectPoint>
-              <gmd:CI_OnlineResource>
-                <gmd:linkage>
-                  <gmd:URL>
-                    <xsl:value-of select="$url"/>
-                  </gmd:URL>
-                </gmd:linkage>
-                <gmd:protocol>
-                  <gco:CharacterString>
-                    WWW:LINK-1.0-http--link
-                  </gco:CharacterString>
-                </gmd:protocol>
-                <gmd:description>
-                  <gco:CharacterString>
-                    <xsl:value-of select="$desc"/>
-                  </gco:CharacterString>
-                </gmd:description>
-                <gmd:function>
-                  <gmd:CI_OnLineFunctionCode
-                    codeList="./resources/codeList.xml#CI_OnLineFunctionCode"
-                    codeListValue="information"/>
-                </gmd:function>
-              </gmd:CI_OnlineResource>
-            </srv:connectPoint>
+            <!-- URL will be a string of urls separated by ^^^ -->
+            <xsl:for-each select="tokenize($url,'\^\^\^')"> 
+            	<srv:connectPoint>
+              	<gmd:CI_OnlineResource>
+                	<gmd:linkage>
+                  	<gmd:URL>
+                    	<xsl:value-of select="."/>
+                  	</gmd:URL>
+                	</gmd:linkage>
+                	<gmd:protocol>
+										<xsl:choose>
+                    	<xsl:when test="contains($type,'WMS')">
+                  			<gco:CharacterString>OGC:WMS</gco:CharacterString>
+											</xsl:when>
+                    	<xsl:when test="contains($type,'NETCDFSUBSET')">
+                  			<gco:CharacterString>"WWW:LINK-1.0-http--netcdfsubset</gco:CharacterString>
+											</xsl:when>
+                    	<xsl:when test="contains($type,'OPENDAP')">
+                  			<gco:CharacterString>"WWW:LINK-1.0-http--opendap</gco:CharacterString>
+											</xsl:when>
+											<xsl:otherwise>
+                  			<gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+											</xsl:otherwise>
+										</xsl:choose>
+                	</gmd:protocol>
+                	<gmd:description>
+                  	<gco:CharacterString>
+                    	<xsl:value-of select="$desc"/>
+                  	</gco:CharacterString>
+                	</gmd:description>
+                	<gmd:function>
+                  	<gmd:CI_OnLineFunctionCode
+                    	codeList="./resources/codeList.xml#CI_OnLineFunctionCode"
+                    	codeListValue="information"/>
+                	</gmd:function>
+              	</gmd:CI_OnlineResource>
+            	</srv:connectPoint>
+					  </xsl:for-each>
           </xsl:otherwise>
         </xsl:choose>
       </srv:SV_OperationMetadata>
@@ -262,44 +322,48 @@
 
 
   <!-- =================================================================== -->
-  <!-- === LayerDataIdentification === -->
+  <!-- === DataIdentification === -->
   <!-- =================================================================== -->
 
-  <xsl:template match="*" mode="LayerDataIdentification">
-    <xsl:param name="Name"/>
+  <xsl:template match="*" mode="DataIdentification">
     <xsl:param name="topic"/>
+    <xsl:param name="name"/>
+    <xsl:param name="type"/>
+    <xsl:param name="desc"/>
+    <xsl:param name="props"/>
+    <xsl:param name="version"/>
+    <xsl:param name="bbox"/>
+    <xsl:param name="textent"/>
+    <xsl:param name="modificationdate"/>
+
+    
 
     <gmd:citation>
       <gmd:CI_Citation>
         <gmd:title>
-          <gco:CharacterString>
-          </gco:CharacterString>
+          <gco:CharacterString><xsl:value-of select="$name"/></gco:CharacterString>
         </gmd:title>
-        <gmd:date>
-          <gmd:CI_Date>
-            <xsl:variable name="df">[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]</xsl:variable>
-            <gmd:date>
-              <gco:DateTime>
-                <xsl:value-of select="format-dateTime(current-dateTime(),$df)"/>
-              </gco:DateTime>
-            </gmd:date>
-            <gmd:dateType>
-              <gmd:CI_DateTypeCode codeList="./resources/codeList.xml#CI_DateTypeCode"
-                                   codeListValue="revision"/>
-            </gmd:dateType>
-          </gmd:CI_Date>
-        </gmd:date>
+				<xsl:if test="normalize-space($modificationdate)!=''">
+        	<gmd:date>
+          	<gmd:CI_Date>
+            	<gmd:date>
+              	<gco:DateTime><xsl:value-of select="$modificationdate"/></gco:DateTime>
+            	</gmd:date>
+            	<gmd:dateType>
+              	<gmd:CI_DateTypeCode codeList="./resources/codeList.xml#CI_DateTypeCode"
+                                   	codeListValue="revision"/>
+            	</gmd:dateType>
+          	</gmd:CI_Date>
+        	</gmd:date>
+				</xsl:if>
       </gmd:CI_Citation>
     </gmd:citation>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
     <gmd:abstract>
-      <gco:CharacterString>
-      </gco:CharacterString>
+      <gco:CharacterString>Thredds Dataset</gco:CharacterString>
     </gmd:abstract>
-
-    <!--idPurp-->
 
     <gmd:status>
       <gmd:MD_ProgressCode codeList="./resources/codeList.xml#MD_ProgressCode"
@@ -308,7 +372,7 @@
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-    <xsl:for-each select="Service/ContactInformation">
+    <xsl:for-each select="//wms:ContactInformation">
       <gmd:pointOfContact>
         <gmd:CI_ResponsibleParty>
           <xsl:apply-templates select="." mode="RespParty"/>
@@ -316,10 +380,13 @@
       </gmd:pointOfContact>
     </xsl:for-each>
 
-    <gmd:descriptiveKeywords>
-      <gmd:MD_Keywords>
-      </gmd:MD_Keywords>
-    </gmd:descriptiveKeywords>
+    <xsl:for-each select="//wms:KeywordList">
+    	<gmd:descriptiveKeywords>
+      		<gmd:MD_Keywords>
+	 					<xsl:apply-templates select="." mode="Keywords"/>
+      		</gmd:MD_Keywords>
+    	</gmd:descriptiveKeywords>
+    </xsl:for-each>
 
     <gmd:spatialRepresentationType>
       <gmd:MD_SpatialRepresentationTypeCode
@@ -337,32 +404,52 @@
     </gmd:characterSet>
 
     <gmd:topicCategory>
-      <gmd:MD_TopicCategoryCode>
-        <xsl:value-of select="$topic"/>
-      </gmd:MD_TopicCategoryCode>
+      <gmd:MD_TopicCategoryCode><xsl:value-of select="$topic"/></gmd:MD_TopicCategoryCode>
     </gmd:topicCategory>
 
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <xsl:variable name="bboxtokens" select="tokenize($bbox,'\^\^\^')"/>
     <gmd:extent>
       <gmd:EX_Extent>
         <gmd:geographicElement>
           <gmd:EX_GeographicBoundingBox>
             <gmd:westBoundLongitude>
-              <gco:Decimal></gco:Decimal>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[3]"/></gco:Decimal>
             </gmd:westBoundLongitude>
             <gmd:eastBoundLongitude>
-              <gco:Decimal></gco:Decimal>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[4]"/></gco:Decimal>
             </gmd:eastBoundLongitude>
             <gmd:southBoundLatitude>
-              <gco:Decimal></gco:Decimal>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[1]"/></gco:Decimal>
             </gmd:southBoundLatitude>
             <gmd:northBoundLatitude>
-              <gco:Decimal></gco:Decimal>
+              <gco:Decimal><xsl:value-of select="$bboxtokens[2]"/></gco:Decimal>
             </gmd:northBoundLatitude>
           </gmd:EX_GeographicBoundingBox>
         </gmd:geographicElement>
       </gmd:EX_Extent>
     </gmd:extent>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <xsl:variable name="textenttokens" select="tokenize($textent,'\^\^\^')"/>
+		<gmd:extent>
+			<gmd:EX_Extent>
+				<gmd:temporalElement>
+					<gmd:EX_TemporalExtent>
+						<gmd:extent>
+							<gml:TimePeriod gml:id="TP1">
+								<gml:beginPosition><xsl:value-of select="$textenttokens[1]"/></gml:beginPosition>
+								<gml:endPosition><xsl:value-of select="$textenttokens[2]"/></gml:endPosition>
+							</gml:TimePeriod>
+						</gmd:extent>
+					</gmd:EX_TemporalExtent>
+				</gmd:temporalElement>
+			</gmd:EX_Extent>
+		</gmd:extent>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   </xsl:template>
 
@@ -371,7 +458,7 @@
   <!-- =================================================================== -->
 
   <xsl:template match="*" mode="Keywords">
-    <xsl:for-each select="Keyword">
+    <xsl:for-each select="wms:Keyword">
       <gmd:keyword>
         <gco:CharacterString>
           <xsl:value-of select="."/>
@@ -385,78 +472,6 @@
       <gmd:MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode"
                               codeListValue="theme"/>
     </gmd:type>
-
-  </xsl:template>
-
-  <!-- ================================================================== -->
-  <!-- === Usage === -->
-  <!-- ================================================================== -->
-
-  <xsl:template match="*" mode="Usage">
-
-    <gmd:specificUsage>
-      <gco:CharacterString>
-        <xsl:value-of select="specUsage"/>
-      </gco:CharacterString>
-    </gmd:specificUsage>
-
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-    <xsl:for-each select="usageDate">
-      <gmd:usageDateTime>
-        <gco:DateTime>
-          <xsl:value-of select="."/>
-        </gco:DateTime>
-      </gmd:usageDateTime>
-    </xsl:for-each>
-
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-    <xsl:for-each select="usrDetLim">
-      <gmd:userDeterminedLimitations>
-        <gco:CharacterString>
-          <xsl:value-of select="."/>
-        </gco:CharacterString>
-      </gmd:userDeterminedLimitations>
-    </xsl:for-each>
-
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-    <xsl:for-each select="usrCntInfo">
-      <gmd:userContactInfo>
-        <gmd:CI_ResponsibleParty>
-          <xsl:apply-templates select="." mode="RespParty"/>
-        </gmd:CI_ResponsibleParty>
-      </gmd:userContactInfo>
-    </xsl:for-each>
-
-  </xsl:template>
-
-  <!-- === Resol === -->
-
-  <xsl:template match="*" mode="Resol">
-
-    <xsl:for-each select="equScale">
-      <gmd:equivalentScale>
-        <gmd:MD_RepresentativeFraction>
-          <gmd:denominator>
-            <gco:Integer>
-              <xsl:value-of select="rfDenom"/>
-            </gco:Integer>
-          </gmd:denominator>
-        </gmd:MD_RepresentativeFraction>
-      </gmd:equivalentScale>
-    </xsl:for-each>
-
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-    <xsl:for-each select="scaleDist">
-      <gmd:distance>
-        <gco:Distance>
-          <xsl:apply-templates select="." mode="Measure"/>
-        </gco:Distance>
-      </gmd:distance>
-    </xsl:for-each>
 
   </xsl:template>
 

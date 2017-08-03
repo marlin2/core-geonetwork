@@ -62,7 +62,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import jeeves.server.context.ServiceContext;
 import jeeves.services.ReadWriteController;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping(value = {
     "/api/records",
@@ -147,7 +146,7 @@ public class MetadataWorkflowApi {
         sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment);
 
         //--- reindex metadata
-        IMetadataIndexer dataManager = appContext.getBean(IMetadataIndexer.class);
-        dataManager.indexMetadata(String.valueOf(metadata.getId()), true);
+        DataManager dataManager = appContext.getBean(DataManager.class);
+        dataManager.indexMetadata(String.valueOf(metadata.getId()), true, null);
     }
 }

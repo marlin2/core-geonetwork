@@ -152,9 +152,6 @@ public class Info implements Service {
                 else if (type.equals("wfsFragmentSchemas"))
                     result.addContent(getSchemas(el, context, Geonet.Path.WFS_STYLESHEETS));
 
-                else if (type.equals("threddsDIFSchemas"))
-                    result.addContent(getSchemas(el, context, Geonet.Path.DIF_STYLESHEETS));
-
                 else if (type.equals("importStylesheets"))
                     result.addContent(getStylesheets(importXslPath));
 

@@ -135,6 +135,12 @@ public class DefaultStatusActions implements StatusActions {
             unsetAllOperations(id);
             dm.setStatus(context, id, Integer.valueOf(Params.Status.DRAFT), new ISODate(), changeMessage);
         }
+
+        if (!minorEdit && dm.getCurrentStatus(id).equals(Params.Status.REJECTED)) {
+            ResourceBundle messages = ResourceBundle.getBundle("org.fao.geonet.api.Messages", new Locale(this.language));
+            String changeMessage = String.format(messages.getString("status_email_text_rejected"), replyToDescr, replyTo, id);
+            dm.setStatus(context, id, Integer.valueOf(Params.Status.DRAFT), new ISODate(), changeMessage);
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -166,7 +172,7 @@ public class DefaultStatusActions implements StatusActions {
 
             if (status.equals(Params.Status.APPROVED)) {
                 // setAllOperations(mid); - this is a short cut that could be enabled
-            } else if (status.equals(Params.Status.DRAFT) || status.equals(Params.Status.REJECTED)) {
+            } else if ((status.equals(Params.Status.DRAFT) || status.equals(Params.Status.REJECTED)) || status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
             }
 

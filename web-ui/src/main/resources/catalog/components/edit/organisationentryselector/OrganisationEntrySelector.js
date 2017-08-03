@@ -1,26 +1,3 @@
-/*
- * Copyright (C) 2001-2016 Food and Agriculture Organization of the
- * United Nations (FAO-UN), United Nations World Food Programme (WFP)
- * and United Nations Environment Programme (UNEP)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or (at
- * your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
- *
- * Contact: Jeroen Ticheler - FAO - Viale delle Terme di Caracalla 2,
- * Rome - Italy. email: geonetwork@osgeo.org
- */
-
 (function() {
   goog.provide('gn_organisation_entry_selector');
 
@@ -57,15 +34,15 @@
              elementName: '@',
              elementRef: '@',
              domId: '@',
-             // If elementChoice is set to 'true' then we are displaying
-             // this directory selector next to a choice button which has been
-             // constructed by the form-builder so templateAddAction is ignored
-             // and we use a different template - see getTemplateUrl below
-             elementChoice: '@',
+						 // If elementChoice is set to 'true' then we are displaying 
+						 // this directory selector next to a choice button which has been
+						 // constructed by the form-builder so templateAddAction is ignored
+						 // and we use a different template - see getTemplateUrl below
+						 elementChoice: '@',
              tagName: '@',
              paramName: '@',
              templateAddAction: '@',
-             root: '@'
+						 root: '@'
            },
            template: '<div ng-include="getTemplateUrl()"></div>',
            link: function(scope, element, attrs) {
@@ -78,8 +55,8 @@
              scope.gnConfig = gnConfig;
              scope.templateAddAction = scope.templateAddAction === 'true';
 
-             var root = 'mcp:CI_Organisation';
-             if (scope.root) root = scope.root;
+						 var root = 'mcp:CI_Organisation';
+						 if (scope.root) root = scope.root;
              // Search only for subtemplate with root element set to root
              scope.params = {
                _root: root,
@@ -87,18 +64,14 @@
                fast: 'false'
              };
 
-             // return template according to choice setting
-             scope.getTemplateUrl = function() {
-                if (scope.elementChoice == 'true') {
-                 return '../../catalog/components/edit/' +
-                     'organisationentryselector/partials/' +
-                     'organisationentryselectorchoice.html';
-                } else {
-                 return '../../catalog/components/edit/' +
-                     'organisationentryselector/partials/' +
-                     'organisationentryselector.html';
-                }
-             };
+						 // return template according to choice setting
+						 scope.getTemplateUrl = function() {
+								if (scope.elementChoice == 'true') {
+					 				return '../../catalog/components/edit/organisationentryselector/partials/organisationentryselectorchoice.html';
+								} else {
+					 				return '../../catalog/components/edit/organisationentryselector/partials/organisationentryselector.html';
+								}
+						 };
 
              scope.snippet = null;
              scope.snippetRef = gnEditor.

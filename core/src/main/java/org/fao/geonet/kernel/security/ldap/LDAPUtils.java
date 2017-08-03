@@ -62,7 +62,8 @@ public class LDAPUtils {
 
     @Transactional
     public synchronized void saveUser(LDAPUser user,
-                                      boolean importPrivilegesFromLdap, boolean createNonExistingLdapGroup)
+                                      boolean importPrivilegesFromLdap, boolean createNonExistingLdapGroup,
+                                      boolean keepExistingGroups)
         throws Exception {
         String userName = user.getUsername();
         if (Log.isDebugEnabled(Geonet.LDAP)) {
@@ -77,7 +78,7 @@ public class LDAPUtils {
             List<UserGroup> ug = getPrivilegesAndCreateGroups(user,
                 createNonExistingLdapGroup, toSave);
             entityManager.flush();
-            setUserGroups(toSave, ug);
+            setUserGroups(toSave, ug, keepExistingGroups);
         }
     }
 
@@ -168,7 +169,7 @@ public class LDAPUtils {
     }
 
     @Transactional
-    private void setUserGroups(final User user, List<UserGroup> userGroups)
+    private void setUserGroups(final User user, List<UserGroup> userGroups, boolean keepExistingGroups)
         throws Exception {
         UserGroupRepository userGroupRepo = ApplicationContextHolder.get().getBean(UserGroupRepository.class);
         ;
@@ -251,8 +252,8 @@ public class LDAPUtils {
             }
         }
 
-        // Remove deprecated usergroups (if any)
-        userGroupRepo.delete(toRemove);
+        // Remove deprecated usergroups (if any) if allowed via keepExistingGroups
+        if (!keepExistingGroups) userGroupRepo.delete(toRemove);
         entityManager.flush();
         entityManager.clear();
 

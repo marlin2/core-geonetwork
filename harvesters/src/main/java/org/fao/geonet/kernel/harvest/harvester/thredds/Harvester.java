@@ -30,12 +30,15 @@ import jeeves.server.context.ServiceContext;
 import jeeves.xlink.Processor;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+
 import org.fao.geonet.Constants;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.exceptions.BadServerCertificateEx;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
@@ -55,6 +58,7 @@ import org.fao.geonet.kernel.harvest.harvester.fragment.FragmentHarvester.Fragme
 import org.fao.geonet.kernel.harvest.harvester.fragment.FragmentHarvester.HarvestSummary;
 import org.fao.geonet.kernel.setting.SettingInfo;
 import org.fao.geonet.lib.Lib;
+import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.util.Sha1Encoder;
 import org.fao.geonet.utils.GeonetHttpRequestFactory;
 import org.fao.geonet.utils.Xml;
@@ -68,26 +72,26 @@ import thredds.catalog.InvCatalogFactory;
 import thredds.catalog.InvCatalogImpl;
 import thredds.catalog.InvCatalogRef;
 import thredds.catalog.InvDataset;
-import thredds.catalog.InvMetadata;
 import thredds.catalog.InvService;
 import thredds.catalog.ServiceType;
-import thredds.catalog.ThreddsMetadata;
-import thredds.catalog.dl.DIFWriter;
-import ucar.nc2.Attribute;
-import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.NetcdfDatasetInfo;
-import ucar.nc2.ncml.NcMLWriter;
+import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
-import ucar.unidata.util.StringUtil;
+import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonRect;
+import ucar.unidata.util.StringUtil2;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,12 +108,14 @@ import javax.net.ssl.SSLHandshakeException;
 
 /**
  * A ThreddsHarvester is able to generate metadata for datasets and services from a Thredds
- * catalogue. Metadata for datasets are generated using dataset information contained in the thredds
- * catalogue document or or from opening the dataset and retrieving variables, coordinate systems
- * and/or global attributes.
+ * catalogue. The idea here is that datasets with the same variables but possibly differing spatial and
+ * temporal extents are stored in a thredds catalog. This harvester can be pointed at the directory
+ * and it will query each dataset using WMS to retrieve the spatial and temporal extents plus variables
+ * (each one is a wms layer). A single metadata record with these variables and the union of the extents will 
+ * be then created by running an XSLT on the information collected from the datasets in the directory.
  *
  * Metadata produced are : <ul> <li>ISO19119 for service metadata (all services in the catalog)</li>
- * <li>ISO19139 (or profile) metadata for datasets in catalog</li> </ul>
+ * <li>ISO19139 (or profile) metadata for the directory</li> </ul>
  *
  * <pre>
  * <nodes>
@@ -117,43 +123,18 @@ import javax.net.ssl.SSLHandshakeException;
  *    <site>
  *      <name>TEST</name>
  *      <uuid>c1da2928-c866-49fd-adde-466fe36d3508</uuid>
- *      <account>
- *        <use>true</use>
- *        <username />
- *        <password />
- *      </account>
- *      <url>http://localhost:5556/thredds/catalog.xml</url>
- *      <icon>default.gif</icon>
+ *      <url>http://opendap.bom.gov.au:8080/thredds/catalog/bmrc/access-r-fc/ops/surface/catalog.xml</url>
+ *      <icon>thredds.gif</icon>
  *    </site>
  *    <options>
  *      <every>90</every>
  *      <oneRunOnly>false</oneRunOnly>
  *      <status>active</status>
  *      <lang>eng</lang>
- *      <createThumbnails>false</createThumbnails>
- *      <createServiceMd>false</createServiceMd>
- *      <createCollectionDatasetMd>true</createCollectionDatasetMd>
- *      <createAtomicDatasetMd>false</createAtomicDatasetMd>
- *      <ignoreHarvestOnCollections>true</ignoreHarvestOnCollections>
- * Choice of {
- *      <outputSchemaOnCollectionsDIF>iso19139</outputSchemaOnCollectionsDIF>
- * } OR {
- *      <outputSchemaOnCollectionsFragments>iso19139</outputSchemaOnCollectionsFragments>
- *      <collectionFragmentStylesheet>collection_fragments.xsl</collectionFragmentStylesheet>
- *      <collectionMetadataTemplate>My template</collectionMetadataTemplate>
- *      <createCollectionSubtemplates>false</createCollectionSubtemplates>
- * }
- *      <ignoreHarvestOnAtomics>true</ignoreHarvestOnAtomics>
- * Choice of {
- *      <outputSchemaOnAtomicsDIF>iso19139.mcp</outputSchemaOnAtomicsDIF>
- * } OR {
- *      <outputSchemaOnAtomicsFragments>iso19139</outputSchemaOnAtomicsFragments>
- *      <atomicFragmentStylesheet>atomic_fragments.xsl</atomicFragmentStylesheet>
- *      <atomicMetadataTemplate>My template</atomicMetadataTemplate>
- *      <createAtomicSubtemplates>false</createAtomicSubtemplates>
- * }
- *      <modifiedOnly>true</modifiedOnly>
- *      <datasetCategory></datasetCategory>
+ *      <createServiceMd>true</createServiceMd>
+ *      <outputSchema>iso19139.mcp</outputSchema>
+ *      <datasetCategory>datasets</datasetCategory>
+ *      <serviceCategory>services</serviceCategory>
  *    </options>
  *    <privileges>
  *      <group id="1">
@@ -175,10 +156,6 @@ import javax.net.ssl.SSLHandshakeException;
  */
 class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
-
-    //---------------------------------------------------------------------------
-
-    static private final Namespace difNS = Namespace.getNamespace("http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/");
 
     //---------------------------------------------------------------------------
     //---
@@ -254,16 +231,14 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     private InvCatalogImpl catalog;
 
     //---------------------------------------------------------------------------
-    private FragmentHarvester atomicFragmentHarvester;
-
-    //---------------------------------------------------------------------------
-    private FragmentHarvester collectionFragmentHarvester;
-
-
-    //---------------------------------------------------------------------------
     private List<HarvestError> errors = new LinkedList<HarvestError>();
 
     //---------------------------------------------------------------------------
+    private LatLonRect globalLatLonBox = null;
+    private DateRange globalDateRange = null;
+    private Element wmsResponse = null;
+    private Element gridVariables = null;
+    
 
     /**
      * Constructor
@@ -285,20 +260,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         dataMan = gc.getBean(DataManager.class);
         schemaMan = gc.getBean(SchemaManager.class);
 
-        SettingInfo si = context.getBean(SettingInfo.class);
-        String siteUrl = si.getSiteUrl() + context.getBaseUrl();
-        metadataGetService = siteUrl + "/srv/en/xml.metadata.get";
+        metadataGetService = "local://"+context.getNodeId()+"/api/records/";
 
-
-        //--- Create fragment harvester for atomic datasets if required
-        if (params.createAtomicDatasetMd && params.atomicMetadataGeneration.equals(ThreddsParams.FRAGMENTS)) {
-            atomicFragmentHarvester = new FragmentHarvester(cancelMonitor, log, context, getAtomicFragmentParams());
-        }
-
-        //--- Create fragment harvester for collection datasets if required
-        if (params.createCollectionDatasetMd && params.collectionMetadataGeneration.equals(ThreddsParams.FRAGMENTS)) {
-            collectionFragmentHarvester = new FragmentHarvester(cancelMonitor, log, context, getCollectionFragmentParams());
-        }
     }
 
     //---------------------------------------------------------------------------
@@ -356,7 +319,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
                     if (record.isTemplate.equals("s")) {
                         //--- Uncache xlinks if a subtemplate
-                        Processor.uncacheXLinkUri(metadataGetService + "?uuid=" + record.uuid);
+                        Processor.uncacheXLinkUri(metadataGetService + record.uuid);
                         result.subtemplatesRemoved++;
                     } else {
                         result.locallyRemoved++;
@@ -367,19 +330,21 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         dataMan.flush();
 
-        result.totalMetadata = result.serviceRecords + result.collectionDatasetRecords + result.atomicDatasetRecords;
+        result.totalMetadata = result.serviceRecords + result.collectionDatasetRecords;
         return result;
     }
 
     //---------------------------------------------------------------------------
 
     /**
-     * Add metadata to GN for the services and datasets in a thredds catalog
+     * Add metadata to GN for the services and datasets in a thredds catalog.
      *
-     * 1. Open Catalog Document 2. Crawl the catalog processing datasets as ISO19139 records and
-     * recording services (attach dataset ids to the services that deliver them) 3. Process services
-     * found as ISO19119 records 4. Create a service record for the thredds catalog service provided
-     * and list service records as something that the thredds catalog provides 5. Save all
+     * 1. Open Catalog Document 
+     * 2. Crawl the catalog processing datasets as ISO19139 records and
+     * request WMS GetCapabilities for each dataset
+     * 3. Accumulate union of extents and other info
+     * 4. Create a metadata record from accumulated info and service record for the thredds catalog service
+     * 5. Save all
      *
      * @param cata Catalog document
      **/
@@ -406,9 +371,35 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         //--- display catalog read in log file
         log.info("Catalog read from " + params.url + " is \n" + factory.writeXML(catalog));
-        Path serviceStyleSheet = context.getAppPath().
+
+        Path schemaDir = schemaMan.getSchemaDir(params.outputSchema);
+
+        //--- get service and dataset style sheets, try schema first
+       	Path serviceStyleSheet = schemaDir.
+            resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS). 
+            resolve("ThreddsCatalog-to-19119.xsl");
+       	Path datasetStyleSheet = schemaDir.
+            resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS). 
+            resolve("ThreddsCatalog-to-19139.xsl");
+        if (!Files.exists(serviceStyleSheet)) {
+        	serviceStyleSheet = context.getAppPath().
             resolve(Geonet.Path.IMPORT_STYLESHEETS).
-            resolve("ThreddsCatalog-to-ISO19119_ISO19139.xsl");
+            resolve("ThreddsCatalog-to-ISO19119.xsl");
+        }
+        if (!Files.exists(datasetStyleSheet)) {
+        	datasetStyleSheet = context.getAppPath().
+            resolve(Geonet.Path.IMPORT_STYLESHEETS).
+            resolve("ThreddsCatalog-to-ISO19139.xsl");
+				}
+
+				Path dataParamsStylesheet = null;
+        // -- This is schema dependent - no real equivalent in 19115:2005
+        if (schemaDir.toString().contains("iso19139.mcp")) {
+            dataParamsStylesheet = schemaDir.
+							resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS).
+              resolve("NetcdfSubsetDataset-to-ISO19139MCPDataParameters.xsl");
+        } 
+
 
         //--- Get base host url
         URL url = new URL(params.url);
@@ -426,44 +417,18 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             crawlDatasets(ds);
         }
 
-        //--- show how many datasets have been processed
-        int totalDs = result.collectionDatasetRecords + result.atomicDatasetRecords;
-        log.info("Processed " + totalDs + " datasets.");
-
         if (params.createServiceMd) {
             //--- process services found by crawling the catalog
-            log.info("Processing " + services.size() + " services...");
             processServices(cata, serviceStyleSheet);
-
-            //--- finally create a service record for the thredds catalog itself and
-            //--- add uuids of services that it provides to operatesOn element
-            //--- (not sure that this is what we should do here really - the catalog
-            //--- is a dataset and a service??
-            log.info("Creating service metadata for thredds catalog...");
-            Map<String, Object> param = new HashMap<String, Object>();
-            param.put("lang", params.lang);
-            param.put("topic", params.topic);
-            param.put("uuid", params.getUuid());
-            param.put("url", params.url);
-            param.put("name", catalog.getName());
-            param.put("type", "Thredds Data Service Catalog " + catalog.getVersion());
-            param.put("version", catalog.getVersion());
-            param.put("desc", Xml.getString(cata));
-            param.put("props", catalog.getProperties().toString());
-            param.put("serverops", "");
-
-            if (log.isDebugEnabled())
-                log.debug("  - XSLT transformation using " + serviceStyleSheet);
-            Element md = Xml.transform(cata, serviceStyleSheet, param);
-
-            //--- TODO: Add links to services provided by the thredds catalog - but
-            //--- where do we do this in ISO19119?
-            saveMetadata(md, Sha1Encoder.encodeString(params.url), params.url);
-
-            harvestUris.add(params.url);
-
-            result.serviceRecords++;
         }
+
+        log.info("Adding dataset metadata...");
+        createDatasetMetadata(cata, datasetStyleSheet, dataParamsStylesheet);
+
+        //--- show how many datasets have been processed
+        int totalDs = result.collectionDatasetRecords;
+        log.info("Processed " + totalDs + " datasets.");
+
     }
 
     //---------------------------------------------------------------------------
@@ -486,18 +451,15 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             realDs = proxyDataset.getName().equals(catalogDs.getName()) ? proxyDataset : catalogDs;
         }
 
+        // if there are nested datasets then process those recursively
         if (realDs.hasNestedDatasets()) {
             List<InvDataset> dsets = realDs.getDatasets();
             for (InvDataset ds : dsets) {
                 crawlDatasets(ds);
             }
-        }
-
-        if (harvestMetadata(realDs)) {
-            log.info("Harvesting dataset: " + realDs.getName());
-            harvest(realDs);
         } else {
-            log.info("Skipping dataset: " + realDs.getName());
+            log.info("Processing dataset: " + realDs.getName() + " with URL: " + getUri(realDs));
+            examineThreddsDataset(realDs);
         }
 
         // Release resources allocated when crawling catalog references
@@ -514,9 +476,10 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
      * @param md   the metadata being saved
      * @param uuid the uuid of the metadata being saved
      * @param uri  the uri from which the metadata has been harvested
+     * @param isService  is this a service metadata record?
      **/
 
-    private void saveMetadata(Element md, String uuid, String uri) throws Exception {
+    private void saveMetadata(Element md, String uuid, String uri, boolean isService) throws Exception {
 
         //--- strip the catalog namespace as it is not required
         md.removeNamespaceDeclaration(invCatalogNS);
@@ -534,8 +497,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         //
         // insert metadata
         //
-        Metadata metadata = new Metadata();
-        metadata.setUuid(uuid);
+        Metadata metadata = new Metadata().setUuid(uuid);
         metadata.getDataInfo().
             setSchemaId(schema).
             setRoot(md.getQualifiedName()).
@@ -548,46 +510,51 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             setUuid(params.getUuid()).
             setUri(uri);
 
-        addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+				if (!isService) {
+        	if (params.datasetCategory != null && !params.datasetCategory.equals("")) {
+           	MetadataCategory metadataCategory = context.getBean(MetadataCategoryRepository.class).findOne(Integer.parseInt(params.datasetCategory));
+	
+           	if (metadataCategory == null) {
+             	throw new IllegalArgumentException("No category found with name: " + params.datasetCategory);
+           	}
+           	metadata.getMetadataCategories().add(metadataCategory);
+        	}
+				}
+				else {
+        	addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
+				}
+
+        metadata = dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
         addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
 
-        dataMan.indexMetadata(id, true);
+        dataMan.indexMetadata(id, true, null);
 
         dataMan.flush();
     }
 
-    //---------------------------------------------------------------------------
-    //---
-    //--- Variables
-    //---
-    //---------------------------------------------------------------------------
-
     /**
-     * Process one dataset generating metadata as per harvesting node settings
+     * Examine one dataset getting metadata including variables, extents and 
+     * service urls.
+     * Note: collection datasets are not processes here.
      *
-     * @param ds the dataset to be processed
+     * @param ds the dataset to be examined.
      * @throws Exception
      **/
 
-    private void harvest(InvDataset ds) throws Exception {
+    private void examineThreddsDataset(InvDataset ds) throws Exception {
         //--- harvest metadata only if the dataset has changed
-        if (!params.modifiedOnly || datasetChanged(ds)) {
-            if (harvestMetadataUsingFragments(ds)) {
-                createMetadataUsingFragments(ds);
-            } else {
-                createDIFMetadata(ds);
-            }
+        if (datasetChanged(ds)) {
+            getMetadata(ds);
         }
 
         //--- Add dataset uri to list of harvested uri's
         harvestUris.add(getUri(ds));
 
-        //--- Record uuid of dataset against services that deliver it for
-        //--- inclusion in operatesOn element in 19119 service record
+        //--- Record service URL for the dataset so that it can be added to the service
+        //--- if required 
         List<InvAccess> accesses = ds.getAccess();
         for (InvAccess access : accesses) {
             processService(access.getService(), getUuid(ds), ds);
@@ -595,433 +562,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     }
 
     /**
-     * Get dataset uri
-     *
-     * @param ds the dataset to be processed
-     **/
-
-    private String getUri(InvDataset ds) {
-        if (ds.getID() == null) {
-            return ds.getParentCatalog().getUriString() + "#" + ds.getName();
-        } else {
-            return getSubsetUrl(ds);
-        }
-    }
-
-    /**
-     * Has the dataset has been modified since its metadata was last harvested
-     *
-     * @param ds the dataset to be processed
-     **/
-
-    private boolean datasetChanged(InvDataset ds) {
-        List<RecordInfo> localRecords = localUris.getRecords(getUri(ds));
-
-        if (localRecords == null) return true;
-
-        Date lastModifiedDate = null;
-
-        List<DateType> dates = ds.getDates();
-
-        for (DateType date : dates) {
-            if (date.getType().equalsIgnoreCase("modified")) {
-                lastModifiedDate = date.getDate();
-            }
-        }
-
-        if (lastModifiedDate == null) return true;
-
-        String datasetModifiedDate = new ISODate(lastModifiedDate.getTime(), false).toString();
-
-        for (RecordInfo localRecord : localRecords) {
-            if (localRecord.isOlderThan(datasetModifiedDate)) return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Delete all metadata previously harvested for a particular uri
-     *
-     * @param uri uri for which previously harvested metadata should be deleted
-     **/
-
-    private void deleteExistingMetadata(String uri) throws Exception {
-        List<RecordInfo> localRecords = localUris.getRecords(uri);
-
-        if (localRecords == null) return;
-
-        for (RecordInfo record : localRecords) {
-            dataMan.deleteMetadata(context, record.id);
-
-            if (record.isTemplate.equals("s")) {
-                //--- Uncache xlinks if a subtemplate
-                Processor.uncacheXLinkUri(metadataGetService + "?uuid=" + record.uuid);
-            }
-        }
-    }
-
-    /**
-     * Create metadata using fragments
-     *
-     * <ul> <li>collect useful metadata for the dataset<li> <li>use supplied stylesheet to convert
-     * collected metadata into fragments</li> <li>harvest metadata from fragments as requested</li>
-     * </ul>
-     *
-     * Metadata collected is as follows:
-     *
-     * <pre>
-     * {@code
-     * <root>
-     *    <catalogUri>http://someserver.com/thredds/catalog.xml</catalog>
-     *    <uuid>uuid-generated-for-dataset</uuid>
-     *    <catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
-     * xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0.1">
-     * 		 ... subset of catalog containing dataset as the top dataset ...
-     *    </catalog>
-     *    <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2"
-     * location="example1.nc">
-     *       ... ncml generated for netcdf dataset ...
-     *       ... atomic datasets only ...
-     *    </netcdf>
-     * </root>
-     * }
-     * </pre>
-     **/
-
-    private void createMetadataUsingFragments(InvDataset ds) {
-        try {
-            log.info("Retrieving thredds/netcdf metadata...");
-
-            //--- Create root element to collect dataset metadata to be passed to xsl transformation
-            Element dsMetadata = new Element("root");
-
-            //--- Add catalog uri (url) to allow relative urls to be resolved
-            dsMetadata.addContent(new Element("catalogUri").setText(ds.getParentCatalog().getUriString()));
-
-            //--- Add suggested uuid for dataset
-            dsMetadata.addContent(new Element("uuid").setText(getUuid(ds)));
-
-            //--- Add fullName of dataset
-            dsMetadata.addContent(new Element("fullName").setText(ds.getFullName()));
-
-            //--- Add dataset subset catalog information to metadata
-            dsMetadata.addContent(getDatasetSubset(ds));
-
-            //--- For atomic dataset's add ncml for dataset to metadata
-            if (!ds.hasNestedDatasets()) {
-                NetcdfDataset ncD = NetcdfDataset.openDataset("thredds:" + ds.getCatalogUrl());
-                NcMLWriter ncmlWriter = new NcMLWriter();
-                Element ncml = Xml.loadString(ncmlWriter.writeXML(ncD), false);
-                dsMetadata.addContent(ncml);
-            }
-
-            if (log.isDebugEnabled())
-                log.debug("Thredds metadata and ncml is:" + Xml.getString(dsMetadata));
-
-            //--- Create fragments using provided stylesheet
-
-            String schema = ds.hasNestedDatasets() ? params.outputSchemaOnCollectionsFragments : params.outputSchemaOnAtomicsFragments;
-            fragmentStylesheetDirectory = schemaMan.getSchemaDir(schema).resolve(Geonet.Path.TDS_STYLESHEETS);
-            String stylesheet = ds.hasNestedDatasets() ? params.collectionFragmentStylesheet : params.atomicFragmentStylesheet;
-
-            Element fragments = Xml.transform(dsMetadata, fragmentStylesheetDirectory.resolve(stylesheet));
-            if (log.isDebugEnabled())
-                log.debug("Fragments generated for dataset:" + Xml.getString(fragments));
-
-            //--- remove any previously harvested metadata/sub-templates
-            deleteExistingMetadata(getUri(ds));
-
-            //--- Create metadata/subtemplates from fragments
-            FragmentHarvester fragmentHarvester = ds.hasNestedDatasets() ? collectionFragmentHarvester : atomicFragmentHarvester;
-            HarvestSummary fragmentResult = fragmentHarvester.harvest(fragments, getUri(ds));
-
-            //--- Include fragment results in thredds results
-            result.fragmentsReturned += fragmentResult.fragmentsReturned;
-            result.fragmentsUnknownSchema += fragmentResult.fragmentsUnknownSchema;
-            result.subtemplatesAdded += fragmentResult.fragmentsAdded;
-            result.fragmentsMatched += fragmentResult.fragmentsMatched;
-
-            if (ds.hasNestedDatasets()) {
-                result.collectionDatasetRecords += fragmentResult.recordsBuilt;
-            } else {
-                result.atomicDatasetRecords += fragmentResult.recordsBuilt;
-            }
-        } catch (Exception e) {
-            log.error("Thrown Exception " + e + " during dataset processing");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Return a catalog having the specified dataset as the top dataset resolving inherited metadata
-     * and required services
-     *
-     * @param ds the dataset to be processed
-     */
-
-    private Element getDatasetSubset(InvDataset ds) throws Exception {
-        String datasetSubsetUrl = getSubsetUrl(ds);
-
-        return Xml.loadFile(new URL(datasetSubsetUrl));
-    }
-
-    /**
-     * Return url to a catalog having the specified dataset as the top dataset
-     *
-     * @param ds the dataset to be processed
-     **/
-
-    private String getSubsetUrl(InvDataset ds) {
-        try {
-            return ds.getParentCatalog().getUriString() + "?dataset=" + URLEncoder.encode(ds.getID(), Constants.ENCODING);
-        } catch (UnsupportedEncodingException e) {
-            log.error("Thrown Exception " + e + " during dataset processing");
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Get uuid for dataset
-     *
-     * @param ds the dataset to be processed
-     **/
-
-    private String getUuid(InvDataset ds) {
-        String uuid = ds.getUniqueID();
-
-        if (uuid == null) {
-            uuid = Sha1Encoder.encodeString(ds.getCatalogUrl()); // md5 full dataset url
-        } else {
-            uuid = StringUtil.allow(uuid, "_-.", '-');
-        }
-
-        return uuid;
-    }
-
-    /**
-     * Process one dataset by extracting its metadata, writing to DIF and using xslt to transform to
-     * the required ISO format.
-     *
-     * @param ds the dataset to be processed
-     */
-
-    private void createDIFMetadata(InvDataset ds) {
-        try {
-
-            boolean addCoordSys = false; // add coordinate systems if not DIF relaxed
-
-            //--- TODO: Thredds has a metadata converter interface and some other
-            //--- methods of handling metadata (including XML of different
-            //--- namespaces) in the catalog - this is a place holder for getting
-            //--- this info in future
-            List<InvMetadata> mds = ds.getMetadata();
-            log.info("Dataset has " + mds.size() + " metadata elements");
-            for (InvMetadata md : mds) {
-                log.info("Found metadata " + md.toString());
-            }
-
-            //--- check and see whether this dataset is DIF writeable
-            DIFWriter difWriter = new DIFWriter();
-            StringBuffer sBuff = new StringBuffer();
-            Element dif = null;
-
-            if (difWriter.isDatasetUseable(ds, sBuff)) {
-                log.info("Yay! Dataset has DIF compatible metadata " + sBuff.toString());
-
-                dif = difWriter.writeOneEntry(ds, sBuff);
-
-            } else {
-                log.info("Dataset does not have DIF compatible metadata so we will write a relaxed DIF entry\n" + sBuff.toString());
-
-                dif = difWriter.writeOneRelaxedEntry(ds, sBuff);
-                addCoordSys = true;
-            }
-
-            //--- get the UUID assigned to the DIF record
-            String uuid = dif.getChild("Entry_ID", difNS).getText();
-
-            boolean isCollection = ds.hasNestedDatasets();
-            log.info("Dataset is a collection dataset? " + isCollection);
-
-            //--- now convert DIF entry into an ISO entry using the appropriate
-            //--- difToIso converter (only schemas with a DIF converter are
-            //--- supplied to the user for choice)
-            Element md = null;
-            if (isCollection) {
-                Path difToIsoStyleSheet = schemaMan.getSchemaDir(params.outputSchemaOnCollectionsDIF).
-                    resolve(Geonet.Path.DIF_STYLESHEETS).
-                    resolve("DIFToISO.xsl");
-                log.info("Transforming collection dataset to " + params.outputSchemaOnCollectionsDIF);
-                md = Xml.transform(dif, difToIsoStyleSheet);
-            } else {
-                Path difToIsoStyleSheet = schemaMan.getSchemaDir(params.outputSchemaOnAtomicsDIF).
-                    resolve(Geonet.Path.DIF_STYLESHEETS).
-                    resolve("DIFToISO.xsl");
-                log.info("Transforming atomic dataset to " + params.outputSchemaOnAtomicsDIF);
-                md = Xml.transform(dif, difToIsoStyleSheet);
-            }
-
-            //--- if we don't have full set of DIF metadata then
-            //--- if atomic dataset then check dataset for global attributes
-            //--- and/or dump coordinate systems else
-            //--- if collection then check for ThreddsMetadata.Variables and
-            //--- create a netcdfInfo for addition to the ISO record
-            if (addCoordSys) {
-                boolean globalAttributes = false;
-                if (!isCollection) { // open up atomic dataset for info
-                    log.info("Opening dataset to get global attributes");
-                    //--- if not a dataset collection then
-                    //--- open and check global attributes for metadata conventions
-                    try {
-                        NetcdfDataset ncD = NetcdfDataset.openDataset("thredds:" + ds.getCatalogUrl());
-                        Attribute mdCon = ncD.findGlobalAttributeIgnoreCase("metadata_conventions");
-                        if (mdCon != null) {
-                            List<Attribute> ga = ncD.getGlobalAttributes();
-                            for (Attribute att : ga) {
-                                if (log.isDebugEnabled())
-                                    log.debug("Attribute found " + att.toString());
-                                //--- TODO: Attach the attributes to the metadata node
-                                //--- for conversion into the ISO record by an xslt
-                            }
-                        } else {
-                            if (log.isDebugEnabled())
-                                log.debug("No global attribute with metadata conventions found");
-                        }
-                        ncD.close();
-                    } catch (Exception e) {
-                        log.info("Exception raised in netcdfDataset ops: " + e);
-                        e.printStackTrace();
-                    }
-                }
-
-                //--- if no metadata conventions then find the coordinate systems
-                //--- and add these to the appropriate place in whatever ISO or ISO
-                //--- profile we are using - MCP: mcp:dataParameters & gmd:keywords,
-                //--- ISO: gmd:keywords
-                boolean foundNetcdfInfo = false;
-                if (!globalAttributes && !isCollection) {
-                    log.info("No global attributes describing metadata so opening dataset to get coordinate systems");
-                    try {
-                        NetcdfDatasetInfo ncDI = new NetcdfDatasetInfo("thredds:" + ds.getCatalogUrl());
-                        log.info("Coordinate systems builder is " + ncDI.getConventionUsed());
-                        if (!ncDI.getConventionUsed().equals("None")) {
-                            Document doc = ncDI.makeDocument();
-                            Element coords = doc.detachRootElement();
-                            log.info("Coordinate systems of dataset are: \n" + Xml.getString(coords));
-                            setCoordsStyleSheet(isCollection);
-                            addKeywordsAndDataParams(coords, md);
-                            foundNetcdfInfo = true;
-                        } else {
-                            if (log.isDebugEnabled())
-                                log.debug("Coordinate system convention is not recognized");
-                        }
-                        ncDI.close();
-                    } catch (Exception e) {
-                        log.info("Exception raised in netcdfDatasetInfo ops: " + e);
-                        e.printStackTrace();
-                    }
-                }
-
-                //--- finally - check and see whether we can extract variables from the
-                //--- ThreddsMetadata - we no longer care whether this is a collection
-                //--- or atomic
-                if (!globalAttributes && !foundNetcdfInfo) {
-                    //--- get ThreddsMetadata.Variables and create a netcdfDatasetInfo
-                    //--- document if possible
-                    List<ThreddsMetadata.Variables> vsL = ds.getVariables();
-                    if (vsL != null && vsL.size() > 0) {
-                        for (ThreddsMetadata.Variables vs : vsL) {
-                            String vHref = vs.getVocabHref();
-                            URI vUri = vs.getVocabUri();
-                            String vocab = vs.getVocabulary();
-                            Element coords = new Element("netcdfDatasetInfo");
-                            for (ThreddsMetadata.Variable v : vs.getVariableList()) {
-                                Element varX = new Element("variable");
-                                varX.setAttribute("name", v.getName());
-                                varX.setAttribute("decl", v.getDescription());
-                                varX.setAttribute("units", v.getUnits());
-                                // - these three attributes are new but then there is no
-                                // - xsd for this so we can add as we want!
-                                varX.setAttribute("vocab", vocab);
-                                varX.setAttribute("vocaburi", vUri.toString());
-                                varX.setAttribute("vocabhref", vHref);
-                                coords.addContent(varX);
-                            }
-                            log.info("Coordinate systems from ThreddsMetadata are: \n" + Xml.getString(coords));
-                            setCoordsStyleSheet(isCollection);
-                            addKeywordsAndDataParams(coords, md);
-                        }
-                    }
-                }
-            }
-
-            //--- write metadata
-            saveMetadata(md, uuid, getUri(ds));
-
-            //--- update totals
-            if (isCollection) {
-                result.collectionDatasetRecords++;
-            } else {
-                result.atomicDatasetRecords++;
-            }
-        } catch (Exception e) {
-            log.error("Thrown Exception " + e + " during dataset processing");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Create the coordinate stylesheet names that will be used to add gmd:keywords and
-     * mcp:DataParameters if the output schema requires.
-     *
-     * @param    isCollection true if we are working with a collection dataset
-     */
-    private void setCoordsStyleSheet(boolean isCollection) {
-
-        Path schemaDir;
-        if (!isCollection) {
-            schemaDir = schemaMan.getSchemaDir(params.outputSchemaOnAtomicsDIF);
-        } else {
-            schemaDir = schemaMan.getSchemaDir(params.outputSchemaOnCollectionsDIF);
-        }
-
-        cdmCoordsToIsoKeywordsStyleSheet = schemaDir.resolve(Geonet.Path.DIF_STYLESHEETS).
-            resolve("CDMCoords-to-ISO19139Keywords.xsl");
-
-        // -- FIXME: This is still schema dependent and needs to be improved
-        // -- What we wait upon is finalization of the new coverage data parameters
-        // -- metadata elements (inside MD_ContentInformation) in ISO19115/19139
-        if (schemaDir.toString().contains("iso19139.mcp")) {
-            cdmCoordsToIsoMcpDataParametersStyleSheet = schemaDir.resolve(Geonet.Path.DIF_STYLESHEETS).
-                resolve("/CDMCoords-to-ISO19139MCPDataParameters.xsl");
-        } else {
-            cdmCoordsToIsoMcpDataParametersStyleSheet = null;
-        }
-    }
-
-    /**
-     * Process a netcdfinfo document - adding variables as keywords and mcp:DataParameters if the
-     * output schema requires.
-     *
-     * @param    coords    the netcdfinfo document with coord systems embedded
-     * @param    md        ISO metadata record to add keywords and data params to
-     **/
-
-    private void addKeywordsAndDataParams(Element coords, Element md) throws Exception {
-        Element keywords = Xml.transform(coords, cdmCoordsToIsoKeywordsStyleSheet);
-        addKeywords(md, keywords);
-        if (cdmCoordsToIsoMcpDataParametersStyleSheet != null) {
-            Element dataParameters = Xml.transform(coords, cdmCoordsToIsoMcpDataParametersStyleSheet);
-            log.info("mcp:DataParameters are: \n" + Xml.getString(dataParameters));
-            addDataParameters(md, dataParameters);
-        }
-    }
-
-    /**
-     * Process a service reference in a dataset - record details of the service and add the details
-     * of a dataset to the list of datasets it serves - Note: compound services are expanded.
+     * Process a service reference for a dataset. Record details of the service      * and add a url to access the dataset using this service.
      *
      * @param serv the service to be processed
      * @param uuid uuid of the dataset that is delivered by this service
@@ -1051,6 +592,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                 sUrl = hostUrl + s.getBase();
             }
 
+            log.info("Processing service: "+sUrl+" for "+ds.getName());
             ThreddsService ts = services.get(sUrl);
             if (ts == null) {
                 ts = new ThreddsService();
@@ -1060,7 +602,11 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
                 services.put(sUrl, ts);
             }
-            ts.datasets.put(uuid, ds.getName());
+            InvAccess access = ds.getAccess(s.getServiceType());
+        	  if (access != null) {
+              String url = access.getStandardUrlName();
+              ts.datasetUrls.add(url);
+            }
         }
 
     }
@@ -1084,6 +630,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             }
         } else if (serv.getServiceType() == ServiceType.HTTPServer) {
             result = "HTTP/1.1";
+        } else if (serv.getServiceType() == ServiceType.WMS) {
+            result = "1.3.0"; // hard coded? We could get this elsewhere
         }
         return result;
     }
@@ -1151,66 +699,358 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     }
 
     /**
-     * Process all services that serve datasets in the thredds catalog
+     * Get dataset uri
      *
-     * @param    cata                the XML of the catalog
-     * @param    serviceStyleSheet    name of the stylesheet to produce 19119
+     * @param ds the dataset to be processed
      **/
 
-    private void processServices(Element cata, Path serviceStyleSheet) throws Exception {
+    private String getUri(InvDataset ds) {
+        if (ds.getID() == null) {
+            return ds.getParentCatalog().getUriString() + "#" + ds.getName();
+        } else {
+            return getSubsetUrl(ds);
+        }
+    }
+
+    /**
+     * Return url to a catalog having the specified dataset as the top dataset
+     *
+     * @param ds the dataset to be processed
+     **/
+
+    private String getSubsetUrl(InvDataset ds) {
+        try {
+            return ds.getParentCatalog().getUriString() + "?dataset=" + URLEncoder.encode(ds.getID(), Constants.ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            log.error("Thrown Exception " + e + " during dataset processing");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Has the dataset has been modified since the last harvest
+     *
+     * @param ds the dataset to be processed
+     **/
+
+    private boolean datasetChanged(InvDataset ds) {
+        List<RecordInfo> localRecords = localUris.getRecords(params.url);
+
+        if (localRecords == null) return true;
+
+        Date lastModifiedDate = null;
+
+        List<DateType> dates = ds.getDates();
+
+        for (DateType date : dates) {
+            if (date.getType().equalsIgnoreCase("modified")) {
+                lastModifiedDate = date.getDate();
+            }
+        }
+
+        if (lastModifiedDate == null) return true;
+
+        String datasetModifiedDate = new ISODate(lastModifiedDate.getTime(), false).toString();
+
+        for (RecordInfo localRecord : localRecords) {
+            if (localRecord.isOlderThan(datasetModifiedDate)) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete all metadata previously harvested for a particular uri
+     *
+     * @param uri uri for which previously harvested metadata should be deleted
+     **/
+
+    private void deleteExistingMetadata(String uri) throws Exception {
+        List<RecordInfo> localRecords = localUris.getRecords(uri);
+
+        if (localRecords == null) return;
+
+        for (RecordInfo record : localRecords) {
+            dataMan.deleteMetadata(context, record.id);
+
+            if (record.isTemplate.equals("s")) {
+                //--- Uncache xlinks if a subtemplate
+                Processor.uncacheXLinkUri(metadataGetService + record.uuid);
+            }
+        }
+    }
+
+
+    /**
+     * Get uuid for dataset
+     *
+     * @param ds the dataset to be processed
+     **/
+
+    private String getUuid(InvDataset ds) {
+        String uuid = ds.getUniqueID();
+
+        if (uuid == null) {
+            uuid = Sha1Encoder.encodeString(ds.getCatalogUrl()); // md5 full dataset url
+        } else {
+            uuid = StringUtil2.allow(uuid, "_-.", '-');
+        }
+
+        return uuid;
+    }
+
+		private Element getXMLResponse(String url) throws MalformedURLException, IOException {
+      XmlRequest req = context.getBean(GeonetHttpRequestFactory.class).createXmlRequest();
+      req.setUrl(new URL(url));
+      req.setMethod(XmlRequest.Method.GET);
+      Lib.net.setupProxy(context, req);
+
+      return req.execute();
+		}
+
+    /**
+     * All datasets are assumed to have the same variables and WMS service metadata so we
+     * get the getcapabilities statement for one layer and then just the bounding box and 
+     * date range for all other layers.
+     *
+     * @param ds the dataset to be processed
+     */
+
+    private void getMetadata(InvDataset ds) {
+        try {
+
+          String url = "";
+          InvAccess access = null;
+					if (wmsResponse == null) {
+            // Get WMS URL and build getcapabilities statement for first layer we find.....
+            access = ds.getAccess(ServiceType.WMS);
+        	  if (access != null) {
+              url = access.getStandardUrlName();
+              log.debug("WMS url is "+url);
+            } else {
+              log.error("Cannot build WMS URL!");
+              return;
+            }
+            url += "?request=GetCapabilities&version=1.3.0&service=WMS";
+
+            wmsResponse = getXMLResponse(url); 
+					}
+
+          // now for every other layer go to the subset service and get the 
+          // dataset.xml file as it contains bbox and textent
+          access = ds.getAccess(ServiceType.NetcdfSubset);
+        	if (access != null) {
+            url = access.getStandardUrlName();
+            log.info("NCSS url is "+url);
+          } else {
+            log.error("Cannot build NCSS URL!");
+            return;
+          }
+          url += "/dataset.xml";
+            
+          Element xml = getXMLResponse(url);
+					/* Looking for: 
+                       ....
+                         <LatLonBox>
+                              <west>65.0000</west>
+                              <east>-175.4299</east>
+                              <south>-65.0000</south>
+                              <north>16.9500</north>
+                         </LatLonBox>
+                         <TimeSpan>
+                              <begin>2017-07-22T06:00:00Z</begin>
+                              <end>2017-07-22T06:00:00Z</end>
+                         </TimeSpan>	
+                       ....
+             If we don't find then we skip this dataset
+          */
+          Element latLonBox = xml.getChild("LatLonBox");
+          if (latLonBox == null) {
+						log.error("Cannot find LatLonBox element!, skipping dataset");
+						return;
+          }
+
+          Element timeSpan = xml.getChild("TimeSpan"); 
+          if (timeSpan == null) {
+						log.error("Cannot find TimeSpan element!, skipping dataset");
+						return;
+          }
+
+          if (log.isDebugEnabled()) 
+          	log.debug("Bounding box is:\n"+Xml.getString(latLonBox)+"\n Time span is:\n"+Xml.getString(timeSpan));
+
+					// extend global bbox and textent using what we found
+          addLatLonBox(latLonBox);
+          addTimeSpan(timeSpan);
+
+          // record one copy of the dataset description so that mcp:dataParameters can be 
+          // be created
+          if (gridVariables == null) {
+						gridVariables = xml;
+					}
+
+        } catch (Exception e) {
+          log.error("Thrown Exception " + e + " during dataset processing");
+          e.printStackTrace();
+        }
+		}
+
+    /**
+     * Extend global bounding box (globalLatLonBox) using supplied latLonBox. 
+     *
+     * @param    latLonBox           bounding box to add to globalLatLonBox 
+     **/
+
+    private void addLatLonBox(Element latLonBox) {
+			double west = Double.parseDouble(latLonBox.getChildText("west"));
+			double east = Double.parseDouble(latLonBox.getChildText("east"));
+			double south = Double.parseDouble(latLonBox.getChildText("south"));
+			double north = Double.parseDouble(latLonBox.getChildText("north"));
+      LatLonRect thisBox = new LatLonRect(new LatLonPointImpl(south,west), new LatLonPointImpl(north,east));
+      if (globalLatLonBox == null) {
+				globalLatLonBox = thisBox;
+			} else {
+        globalLatLonBox.extend(thisBox);
+			}
+    }
+
+    /**
+     * Extend global date range (globalDateRange) using supplied timeSpan. 
+     *
+     * @param    timeSpan           time span to add to globalDateRange 
+     **/
+
+    private void addTimeSpan(Element timeSpan) {
+      ISODate beginDate = new ISODate(timeSpan.getChildText("begin"));
+      ISODate endDate = new ISODate(timeSpan.getChildText("end"));
+      DateRange thisDateRange = new DateRange(beginDate.toDate(), endDate.toDate());
+      if (globalDateRange == null) {
+      	globalDateRange = thisDateRange; 
+      } else {
+        globalDateRange.extend(thisDateRange);
+      }
+    }
+
+    /**
+     * Process all services that serve datasets in the thredds catalog. 
+     *
+     * @param    cata                the XML of the catalog
+     * @param    styleSheet    name of the stylesheet to produce 19119
+     **/
+
+    private void processServices(Element cata, Path styleSheet) throws Exception {
 
         for (String sUrl : services.keySet()) {
 
             ThreddsService ts = services.get(sUrl);
             InvService serv = ts.service;
+            String type = serv.getServiceType().toString();
 
             if (log.isDebugEnabled()) log.debug("Processing Thredds service: " + serv.toString());
 
             String sUuid = Sha1Encoder.encodeString(sUrl);
+            String urls = StringUtils.join(ts.datasetUrls,"^^^");
 
-            //--- TODO: if service is WCS or WMS then pass the full service url to
-            //--- OGCWxS service metadata creator
-
-            //---	pass info to stylesheet which will create a 19119 record
-
+            	//---	pass info to stylesheet which will create a 19119 record
+	
             if (log.isDebugEnabled())
-                log.debug("  - XSLT transformation using " + serviceStyleSheet);
+                log.debug("  - XSLT transformation using " + styleSheet);
 
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("lang", params.lang);
             param.put("topic", params.topic);
             param.put("uuid", sUuid);
-            param.put("url", sUrl);
-            param.put("name", serv.getName());
+            param.put("url", urls);
+            param.put("name", "Thredds Service "+serv.getName()+ " at "+sUrl);
             param.put("type", serv.getServiceType().toString().toUpperCase());
             param.put("version", ts.version);
             param.put("desc", serv.toString());
             param.put("props", serv.getProperties().toString());
             param.put("serverops", ts.ops);
-
-            Element md = Xml.transform(cata, serviceStyleSheet, param);
-
+            param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
+            param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
+	
+            Element md = Xml.transform(cata, styleSheet, param);
+	
             String schema = dataMan.autodetectSchema(md, null);
             if (schema == null) {
-                log.warning("Skipping metadata with unknown schema.");
-                result.unknownSchema++;
+               	log.warning("Skipping metadata with unknown schema.");
+               	result.unknownSchema++;
             } else {
-
-                //--- Update ISO19119 for data/service links (ie. operatesOn element)
-                md = addOperatesOnUuid(md, ts.datasets);
-
-                //--- Now add to geonetwork
-                saveMetadata(md, sUuid, sUrl);
-
-                harvestUris.add(sUrl);
-
-                result.serviceRecords++;
+	
+               	//--- Now add to geonetwork
+                boolean isService = true;
+               	saveMetadata(md, sUuid, sUrl, isService);
+	
+               	harvestUris.add(sUrl);
+	
+               	result.serviceRecords++;
             }
         }
     }
 
     /**
-     * Add an Element to a child list at index after specified element
+     * Create a dataset for the thredds catalog URL, write variables and
+     * selected services as online references in distributonInfo.
+     *
+     * @param    cata                    the XML of the catalog
+     * @param    styleSheet              stylesheet to produce 19139
+     * @param    dataParamsStyleSheet    stylesheet to produce mcp:dataParameters from subset service xml
+     **/
+
+    private void createDatasetMetadata(Element cata, Path styleSheet, Path dataParamsStylesheet) throws Exception {
+
+        String sUuid = Sha1Encoder.encodeString(params.url);
+
+        //---	pass info to stylesheet which will create a 19139 record
+
+        if (log.isDebugEnabled())
+               log.debug("  - XSLT transformation using " + styleSheet);
+
+				String title = params.datasetTitle;
+        if (title.equals("")) {
+					title =  "Thredds Dataset at "+params.url;
+				}
+        String abst = params.datasetAbstract;
+        if (abst.equals("")) {
+					abst = "Thredds Dataset";
+				}
+
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("lang", params.lang);
+        param.put("topic", params.topic);
+        param.put("uuid", sUuid);
+        param.put("url", params.url);
+        param.put("name", title);
+        param.put("desc", abst);
+        param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
+        param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
+	
+        Element md = Xml.transform(wmsResponse, styleSheet, param);
+	
+        String schema = dataMan.autodetectSchema(md, null);
+        if (schema == null) {
+          log.warning("Skipping metadata with unknown schema.");
+          result.unknownSchema++;
+        } else {
+          if (dataParamsStylesheet != null) {
+            Element dps = Xml.transform(gridVariables, dataParamsStylesheet);
+            addDataParameters(md, dps);
+					}
+	
+          //--- Now add to geonetwork
+          boolean isService = false;
+          saveMetadata(md, sUuid, params.url, isService);
+	
+          harvestUris.add(params.url);
+
+          result.collectionDatasetRecords++;
+			}
+    }
+
+    /**
+     * Add an Element to a child list at index after specified element.
      *
      * @param md         iso19139 metadata
      * @param theNewElem the new element to be added
@@ -1252,7 +1092,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     }
 
     /**
-     * Add mcp:dataParameters created from CDM coordinate systems to identificationInfo (mcp only)
+     * Add mcp:dataParameters created from netcdf subset service to identificationInfo (mcp only)
      *
      * <mcp:dataParameters> <mcp:DP_DataParameters> ... ... ... </mcp:DP_DataParameters>
      * </mcp:dataParameters>
@@ -1263,116 +1103,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
     private Element addDataParameters(Element md, Element dataParameters) throws Exception {
         Element root = (Element) md.getChild("identificationInfo", gmd).getChildren().get(0);
-        root.addContent(dataParameters); // this is dependent on the mcp schema
+        root.addContent(dataParameters); // this is dependent on the mcp schema - last element
         return md;
-    }
-
-    /**
-     * Add OperatesOn elements on an ISO19119 metadata
-     *
-     * <srv:operatesOn> <gmd:MD_DataIdentification uuidref=""/> </srv:operatesOn>
-     *
-     * @param md       iso19119 metadata
-     * @param datasets HashMap of datasets with uuids to be added
-     **/
-
-    private Element addOperatesOnUuid(Element md, Map<String, String> datasets) {
-        Element root = md.getChild("identificationInfo", gmd).getChild("SV_ServiceIdentification", srv);
-//		Element co 		= root.getChild("containsOperations", srv);
-
-        if (root != null) {
-            if (log.isDebugEnabled())
-                log.debug("  - add operatesOn with uuid and other attributes");
-
-            for (Map.Entry<String, String> entry : datasets.entrySet()) {
-                String dsUuid = entry.getKey();
-
-                Element op = new Element("operatesOn", srv);
-                op.setAttribute("uuidref", dsUuid);
-                op.setAttribute("href", context.getBaseUrl() + "/srv/en/metadata.show?uuid=" + dsUuid, xlink);
-                op.setAttribute("title", entry.getValue(), xlink);
-                root.addContent(op);
-            }
-        }
-
-        return md;
-    }
-
-    ;
-
-    /**
-     * Determine whether dataset metadata should be harvested
-     *
-     * @param ds the dataset to be checked
-     **/
-
-    private boolean harvestMetadata(InvDataset ds) {
-        if (isCollection(ds)) {
-            return params.createCollectionDatasetMd && (params.ignoreHarvestOnCollections || ds.isHarvest());
-        } else {
-            return params.createAtomicDatasetMd && (params.ignoreHarvestOnAtomics || ds.isHarvest());
-        }
-    }
-
-    /**
-     * Determine whether dataset metadata should be harvested using fragments
-     *
-     * @param ds the dataset to be checked
-     **/
-
-    private boolean harvestMetadataUsingFragments(InvDataset ds) {
-        if (isCollection(ds)) {
-            return params.collectionMetadataGeneration.equals(ThreddsParams.FRAGMENTS);
-        } else {
-            return params.atomicMetadataGeneration.equals(ThreddsParams.FRAGMENTS);
-        }
-    }
-
-    /**
-     * Determine whether dataset is a collection i.e. has nested datasets
-     *
-     * @param ds the dataset to be checked
-     **/
-
-    private boolean isCollection(InvDataset ds) {
-        return ds.hasNestedDatasets();
-    }
-
-    /**
-     * Get fragment harvesting parameters for collection datasets
-     *
-     * @return fragment harvesting parameters for collection datasets
-     **/
-
-    private FragmentParams getCollectionFragmentParams() {
-        FragmentParams collectionParams = new FragmentHarvester.FragmentParams();
-        collectionParams.categories = params.getCategories();
-        collectionParams.createSubtemplates = params.createCollectionSubtemplates;
-        collectionParams.isoCategory = params.datasetCategory;
-        collectionParams.privileges = params.getPrivileges();
-        collectionParams.templateId = params.collectionMetadataTemplate;
-        collectionParams.uuid = params.getUuid();
-        collectionParams.outputSchema = params.outputSchemaOnCollectionsFragments;
-        return collectionParams;
-    }
-
-    /**
-     * Get fragment harvesting parameters for atomic datasets
-     *
-     * @return fragment harvesting parameters for atomic datasets
-     **/
-
-    private FragmentParams getAtomicFragmentParams() {
-        FragmentParams atomicParams = new FragmentHarvester.FragmentParams();
-        atomicParams.categories = params.getCategories();
-        atomicParams.createSubtemplates = params.createAtomicSubtemplates;
-        atomicParams.isoCategory = params.datasetCategory;
-        atomicParams.privileges = params.getPrivileges();
-        atomicParams.templateId = params.atomicMetadataTemplate;
-        atomicParams.uuid = params.getUuid();
-        atomicParams.outputSchema = params.outputSchemaOnAtomicsFragments;
-        atomicParams.owner = params.getOwnerId();
-        return atomicParams;
     }
 
     @Override
@@ -1381,7 +1113,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     }
 
     private static class ThreddsService {
-        public Map<String, String> datasets = new HashMap<String, String>();
+        public List<String> datasetUrls = new ArrayList();
         public InvService service;
         public String version;
         public String ops;

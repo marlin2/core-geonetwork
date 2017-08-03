@@ -302,6 +302,7 @@ public abstract class AbstractParams {
         copy.setUuid(getUuid());
         copy.setTranslations(getTranslations());
         copy.setOwnerId(getOwnerId());
+        copy.setOwnerIdUser(getOwnerIdUser());
         copy.setOwnerIdGroup(getOwnerIdGroup());
 
         copy.setUseAccount(isUseAccount());

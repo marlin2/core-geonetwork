@@ -133,26 +133,11 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
         settingMan.add("id:" + siteId, "icon", params.icon);
         settingMan.add("id:" + optionsId, "lang", params.lang);
         settingMan.add("id:" + optionsId, "topic", params.topic);
-        settingMan.add("id:" + optionsId, "createThumbnails", params.createThumbnails);
         settingMan.add("id:" + optionsId, "createServiceMd", params.createServiceMd);
-        settingMan.add("id:" + optionsId, "createCollectionDatasetMd", params.createCollectionDatasetMd);
-        settingMan.add("id:" + optionsId, "createAtomicDatasetMd", params.createAtomicDatasetMd);
-        settingMan.add("id:" + optionsId, "ignoreHarvestOnCollections", params.ignoreHarvestOnCollections);
-        settingMan.add("id:" + optionsId, "collectionGeneration", params.collectionMetadataGeneration);
-        settingMan.add("id:" + optionsId, "collectionFragmentStylesheet", params.collectionFragmentStylesheet);
-        settingMan.add("id:" + optionsId, "collectionMetadataTemplate", params.collectionMetadataTemplate);
-        settingMan.add("id:" + optionsId, "createCollectionSubtemplates", params.createCollectionSubtemplates);
-        settingMan.add("id:" + optionsId, "outputSchemaOnCollectionsDIF", params.outputSchemaOnCollectionsDIF);
-        settingMan.add("id:" + optionsId, "outputSchemaOnCollectionsFragments", params.outputSchemaOnCollectionsFragments);
-        settingMan.add("id:" + optionsId, "ignoreHarvestOnAtomics", params.ignoreHarvestOnAtomics);
-        settingMan.add("id:" + optionsId, "atomicGeneration", params.atomicMetadataGeneration);
-        settingMan.add("id:" + optionsId, "modifiedOnly", params.modifiedOnly);
-        settingMan.add("id:" + optionsId, "atomicFragmentStylesheet", params.atomicFragmentStylesheet);
-        settingMan.add("id:" + optionsId, "atomicMetadataTemplate", params.atomicMetadataTemplate);
-        settingMan.add("id:" + optionsId, "createAtomicSubtemplates", params.createAtomicSubtemplates);
-        settingMan.add("id:" + optionsId, "outputSchemaOnAtomicsDIF", params.outputSchemaOnAtomicsDIF);
-        settingMan.add("id:" + optionsId, "outputSchemaOnAtomicsFragments", params.outputSchemaOnAtomicsFragments);
-        settingMan.add("id:" + optionsId, "createAtomicDatasetMd", params.createAtomicDatasetMd);
+        settingMan.add("id:" + optionsId, "outputSchema", params.outputSchema);
+        settingMan.add("id:" + optionsId, "datasetTitle", params.datasetTitle);
+        settingMan.add("id:" + optionsId, "datasetAbstract", params.datasetAbstract);
+        settingMan.add("id:" + optionsId, "serviceCategory", params.serviceCategory);
         settingMan.add("id:" + optionsId, "datasetCategory", params.datasetCategory);
     }
 

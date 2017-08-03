@@ -1,0 +1,1425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gml="http://www.opengis.net/gml#">
+  <skos:ConceptScheme rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names">
+    <dc:title>MCP Geographic Extent Names</dc:title>
+    <dc:description>MCP Geographic Extent Names from MCP version 1.4(with embedded hierarchy for MarLIN 2)</dc:description>
+    <dc:creator>
+      <foaf:Organization>
+        <foaf:name>CSIRO</foaf:name>
+      </foaf:Organization>
+    </dc:creator>
+    <dc:rights>Free to all for non commercial use.</dc:rights>
+    <dcterms:issued>2014-04-29T14:25:38</dcterms:issued>
+  </skos:ConceptScheme>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#102">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Adelaide, SA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>138 -35</gml:lowerCorner>
+        <gml:upperCorner>139 -34.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#103">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Albany, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>117.5 -35.5</gml:lowerCorner>
+        <gml:upperCorner>118.5 -34.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#104">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Brisbane, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>153 -28</gml:lowerCorner>
+        <gml:upperCorner>153.5 -27</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#105">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Broome, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>122 -18.5</gml:lowerCorner>
+        <gml:upperCorner>122.5 -17.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#106">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Bunbury, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>115.5 -33.5</gml:lowerCorner>
+        <gml:upperCorner>116 -33</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#107">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Bundaberg, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>152 -25</gml:lowerCorner>
+        <gml:upperCorner>152.5 -24.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#108">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Burnie, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>145.5 -41.5</gml:lowerCorner>
+        <gml:upperCorner>146 -41</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#109">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Cairns, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>145.5 -17</gml:lowerCorner>
+        <gml:upperCorner>146 -16.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#111">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Dampier, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>116.5 -21</gml:lowerCorner>
+        <gml:upperCorner>117 -20.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#110">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Darwin, NT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>130.5 -13</gml:lowerCorner>
+        <gml:upperCorner>131 -12</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#112">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Devonport, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>146 -41.5</gml:lowerCorner>
+        <gml:upperCorner>146.5 -41</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#113">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Esperance, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>121.5 -34</gml:lowerCorner>
+        <gml:upperCorner>122 -33.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#114">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Fremantle, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>115.5 -32.5</gml:lowerCorner>
+        <gml:upperCorner>116 -32</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#115">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Geraldton, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>114.5 -29</gml:lowerCorner>
+        <gml:upperCorner>115 -28.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#116">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Gladstone, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151 -24</gml:lowerCorner>
+        <gml:upperCorner>151.5 -23.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#117">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Hobart, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>147 -43</gml:lowerCorner>
+        <gml:upperCorner>147.5 -42.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#118">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Launceston, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>147 -41.5</gml:lowerCorner>
+        <gml:upperCorner>147.5 -41</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#119">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Mackay, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>149 -21.5</gml:lowerCorner>
+        <gml:upperCorner>149.5 -21</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#120">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Melbourne, VIC</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144.5 -38.5</gml:lowerCorner>
+        <gml:upperCorner>145.5 -37.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#121">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Newcastle, NSW</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151.5 -33.5</gml:lowerCorner>
+        <gml:upperCorner>152 -32.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#122">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Perth, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>115.5 -32.5</gml:lowerCorner>
+        <gml:upperCorner>116 -31.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#123">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Port Hedland, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>118.5 -20.5</gml:lowerCorner>
+        <gml:upperCorner>119 -20</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#124">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Portland, VIC</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>141.5 -38.5</gml:lowerCorner>
+        <gml:upperCorner>142 -38</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#125">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Rockhampton, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>150.5 -23.5</gml:lowerCorner>
+        <gml:upperCorner>151 -23</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#126">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Sydney, NSW</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151 -34.5</gml:lowerCorner>
+        <gml:upperCorner>151.5 -33.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#127">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Townsville, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>146.5 -19.5</gml:lowerCorner>
+        <gml:upperCorner>147 -19</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#128">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Coastal Cities / Towns (Australia) | Wollongong, NSW</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>150.5 -34.5</gml:lowerCorner>
+        <gml:upperCorner>151 -34</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#25">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Continents | Antarctica</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-180 -90</gml:lowerCorner>
+        <gml:upperCorner>180 -60</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#26">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | Australia</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>112 -44</gml:lowerCorner>
+        <gml:upperCorner>154 -9</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#28">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | Indonesia</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>100 -12</gml:lowerCorner>
+        <gml:upperCorner>141 2</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#29">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | New Caledonia</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>157 -23.5</gml:lowerCorner>
+        <gml:upperCorner>174 -17</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#30">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | New Zealand</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>164 -48</gml:lowerCorner>
+        <gml:upperCorner>180 -32</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#31">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | Papua New Guinea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>141 -12</gml:lowerCorner>
+        <gml:upperCorner>156 -2</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#32">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | Solomon Islands</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>155 -13</gml:lowerCorner>
+        <gml:upperCorner>171 -5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#27">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | Timor-Leste</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>125 -10</gml:lowerCorner>
+        <gml:upperCorner>128 -8</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#33">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Countries | Vanuatu</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>157.5 -21</gml:lowerCorner>
+        <gml:upperCorner>174 -13</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#3">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | Atlantic Ocean</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-90 -70</gml:lowerCorner>
+        <gml:upperCorner>20 90</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#4">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | Indian Ocean</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>20 -70</gml:lowerCorner>
+        <gml:upperCorner>127 28</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#5">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | Pacific Ocean</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>120 -70</gml:lowerCorner>
+        <gml:upperCorner>180 90</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#6">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | Southern Ocean</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-180 -85</gml:lowerCorner>
+        <gml:upperCorner>180 -60</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#142">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | Southern Ocean/ Australia extension</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>127 -60</gml:lowerCorner>
+        <gml:upperCorner>145 -35</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#1">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | World</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-180 -90</gml:lowerCorner>
+        <gml:upperCorner>180 90</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#2">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Global / Oceans | World Ocean</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>-180 -85</gml:lowerCorner>
+        <gml:upperCorner>180 90</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#64">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Albatross Bay, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>141.5 -13</gml:lowerCorner>
+        <gml:upperCorner>142 -12.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#65">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Australian North West Shelf, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>114 -24</gml:lowerCorner>
+        <gml:upperCorner>122 -17</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#66">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Bass Strait, TAS/VIC</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144 -41</gml:lowerCorner>
+        <gml:upperCorner>150 -37</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#67">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Botany Bay, NSW</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151.16999999999999 -33.950000000000003</gml:lowerCorner>
+        <gml:upperCorner>151.22999999999999 -33.920000000000002</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#68">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Broken Bay, NSW</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151.19999999999999 -33.700000000000003</gml:lowerCorner>
+        <gml:upperCorner>151.40000000000001 -33.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#69">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Derwent Estuary, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>147.19999999999999 -43.100000000000001</gml:lowerCorner>
+        <gml:upperCorner>147.5 -42.700000000000003</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#70">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Exmouth Gulf, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>114 -23</gml:lowerCorner>
+        <gml:upperCorner>115 -21</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#71">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Flinders Bay, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>114.5 -34.5</gml:lowerCorner>
+        <gml:upperCorner>115.5 -33.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#72">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Flinders Island, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>147.5 -40.5</gml:lowerCorner>
+        <gml:upperCorner>148.5 -39.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#73">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Fraser Island, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>152.5 -26</gml:lowerCorner>
+        <gml:upperCorner>153.5 -24.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#74">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Geographe Bay, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>115 -34</gml:lowerCorner>
+        <gml:upperCorner>116 -33</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#75">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Australian Bight, SA/WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>118 -35</gml:lowerCorner>
+        <gml:upperCorner>136 -31</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#77">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Barrier Reef Cairns Section, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>145 -18</gml:lowerCorner>
+        <gml:upperCorner>147 -15</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#78">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Barrier Reef Capricorn/Bunker Section, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151.5 -24.5</gml:lowerCorner>
+        <gml:upperCorner>153 -23</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#79">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Barrier Reef Central Section, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>146 -21</gml:lowerCorner>
+        <gml:upperCorner>150.5 -18</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#80">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Barrier Reef Far North Section, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>143 -15</gml:lowerCorner>
+        <gml:upperCorner>145.5 -11</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#81">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Barrier Reef Mackay Section, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>149 -23</gml:lowerCorner>
+        <gml:upperCorner>153 -21</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#76">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Great Barrier Reef, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>141 -24</gml:lowerCorner>
+        <gml:upperCorner>153 -9</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#82">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Groote Eylandt, NT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>136 -14.5</gml:lowerCorner>
+        <gml:upperCorner>137 -13.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#84">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Gulf St. Vincent, SA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>137 -35</gml:lowerCorner>
+        <gml:upperCorner>139 -34</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#83">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Gulf of Carpentaria, NT/QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>136 -18</gml:lowerCorner>
+        <gml:upperCorner>142 -11</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#85">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Hervey Bay, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>152 -26</gml:lowerCorner>
+        <gml:upperCorner>153 -25</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#86">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Jervis Bay, ACT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>150.5 -35.5</gml:lowerCorner>
+        <gml:upperCorner>151.5 -34.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#87">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Joseph Bonaparte Gulf, NT/WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>127 -15</gml:lowerCorner>
+        <gml:upperCorner>130 -13</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#88">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Kangaroo Island, SA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>136.5 -36.5</gml:lowerCorner>
+        <gml:upperCorner>138.5 -35.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#89">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | King Island, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>143.5 -40.5</gml:lowerCorner>
+        <gml:upperCorner>144.5 -39.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#90">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | King Sound, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>123 -18</gml:lowerCorner>
+        <gml:upperCorner>124 -16</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#91">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Macquarie Harbour, TAS</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144.5 -43.5</gml:lowerCorner>
+        <gml:upperCorner>145.5 -42.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#92">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Melville Island, NT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>130 -12</gml:lowerCorner>
+        <gml:upperCorner>132 -11</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#93">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Moreton Bay, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>153 -28</gml:lowerCorner>
+        <gml:upperCorner>154 -27</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#94">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Mornington Island, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>139 -17</gml:lowerCorner>
+        <gml:upperCorner>140 -16</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#95">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Port Hacking, NSW</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151.09999999999999 -33.899999999999999</gml:lowerCorner>
+        <gml:upperCorner>151.30000000000001 -33.700000000000003</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#96">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Port Phillip Bay, VIC</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144.30000000000001 -38.299999999999997</gml:lowerCorner>
+        <gml:upperCorner>145.19999999999999 -37.799999999999997</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#97">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Shark Bay, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>113 -27</gml:lowerCorner>
+        <gml:upperCorner>115 -25</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#98">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Spencer Gulf, SA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>136 -35</gml:lowerCorner>
+        <gml:upperCorner>138 -32</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#99">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Swan River, WA</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>115.5 -32</gml:lowerCorner>
+        <gml:upperCorner>116.5 -31.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#100">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Torres Strait, QLD</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>142 -11</gml:lowerCorner>
+        <gml:upperCorner>143 -9</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#101">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Features (Australia) | Van Diemen Gulf, NT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>131 -13</gml:lowerCorner>
+        <gml:upperCorner>133 -11</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#50">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Australian Antarctic</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>44 -58</gml:lowerCorner>
+        <gml:upperCorner>162 -71</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#51">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | East</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144 -36.5</gml:lowerCorner>
+        <gml:upperCorner>171.80000000000001 -9.5999999999999996</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#52">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Kerguelen</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>66 -49</gml:lowerCorner>
+        <gml:upperCorner>78 -57</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#53">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Lord Howe</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>155 -36</gml:lowerCorner>
+        <gml:upperCorner>162 -27</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#54">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Macquarie</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>151 -50</gml:lowerCorner>
+        <gml:upperCorner>165 -59</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#55">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Norfolk</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>164 -25</gml:lowerCorner>
+        <gml:upperCorner>172 -33</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#57">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | North</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>125 -18</gml:lowerCorner>
+        <gml:upperCorner>142 -8</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#58">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | North-east</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>127.5 -17.699999999999999</gml:lowerCorner>
+        <gml:upperCorner>142.09999999999999 -8.9000000000000004</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#59">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | North-west</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>109.2 -27.699999999999999</gml:lowerCorner>
+        <gml:upperCorner>129 -11.199999999999999</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#60">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | South-east</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>131.40000000000001 -58.450000000000003</gml:lowerCorner>
+        <gml:upperCorner>164.69999999999999 -35.299999999999997</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#61">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | South-west</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>109.2 -38.5</gml:lowerCorner>
+        <gml:upperCorner>138 -25.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#62">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Sunda</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>93 -7</gml:lowerCorner>
+        <gml:upperCorner>109 -15</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#63">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Marine Planning Regions (Australia) | Western-central</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>108 -19</gml:lowerCorner>
+        <gml:upperCorner>116 -34</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#129">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Amery Ice Shelf, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>67 -73</gml:lowerCorner>
+        <gml:upperCorner>74 -68</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#130">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Casey Station, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>110 -66.299999999999997</gml:lowerCorner>
+        <gml:upperCorner>111 -65</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#131">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Cook Ice Shelf, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>152 -69</gml:lowerCorner>
+        <gml:upperCorner>153 -68.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#132">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Davis Sea, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>85 -66</gml:lowerCorner>
+        <gml:upperCorner>100 -62</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#133">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Davis Station, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>77.5 -69</gml:lowerCorner>
+        <gml:upperCorner>78.200000000000003 -68</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#134">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Dumont D'Urville Sea (France)</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>130 -66</gml:lowerCorner>
+        <gml:upperCorner>145 -62</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#135">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Mawson Station, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>62 -67.599999999999994</gml:lowerCorner>
+        <gml:upperCorner>63 -67</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#136">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Prydz Bay, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>74 -70</gml:lowerCorner>
+        <gml:upperCorner>77 -67</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#137">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Publications Ice Shelf, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>75 -70</gml:lowerCorner>
+        <gml:upperCorner>75.5 -69.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#138">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Shackleton Ice Shelf, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>95 -66</gml:lowerCorner>
+        <gml:upperCorner>104 -64.799999999999997</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#139">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Vincennes Bay, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>108.5 -67</gml:lowerCorner>
+        <gml:upperCorner>111 -65</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#140">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | Voyekov Ice Shelf, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>119 -65.799999999999997</gml:lowerCorner>
+        <gml:upperCorner>120 -65.599999999999994</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#141">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Named Locations (Antarctica) | West Ice Shelf, AAT</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>82 -67</gml:lowerCorner>
+        <gml:upperCorner>89 -66</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#43">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Ashmore &amp; Cartier Islands</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>122.34999999999999 -12.449999999999999</gml:lowerCorner>
+        <gml:upperCorner>123.34999999999999 -11.449999999999999</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#44">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Christmas Island</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>105.09999999999999 -11</gml:lowerCorner>
+        <gml:upperCorner>106.09999999999999 -10</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#45">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Cocos (Keeling) Island</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>96.299999999999997 -12.4</gml:lowerCorner>
+        <gml:upperCorner>97.299999999999997 -11.4</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#46">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Heard &amp; McDonald Islands</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>73 -53.299999999999997</gml:lowerCorner>
+        <gml:upperCorner>74 -52.799999999999997</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#47">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Lord Howe Island</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>158.69999999999999 -31.800000000000001</gml:lowerCorner>
+        <gml:upperCorner>159.30000000000001 -31.199999999999999</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#48">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Macquarie Island</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>158.5 -55</gml:lowerCorner>
+        <gml:upperCorner>159.5 -54</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#49">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Offshore Islands (Australia) | Norfolk Island</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>167.59999999999999 -29.600000000000001</gml:lowerCorner>
+        <gml:upperCorner>168 -29</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#7">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Arafura Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>131 -18</gml:lowerCorner>
+        <gml:upperCorner>142 -3</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#8">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Bali Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>114 -9</gml:lowerCorner>
+        <gml:upperCorner>117 -7</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#9">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Banda Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>120.5 -8.5</gml:lowerCorner>
+        <gml:upperCorner>133 -1</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#10">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Bismarck Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144 -6.5</gml:lowerCorner>
+        <gml:upperCorner>152.5 -2</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#11">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Celebes Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>117 1</gml:lowerCorner>
+        <gml:upperCorner>125 8</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#12">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Ceram Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>126 -3</gml:lowerCorner>
+        <gml:upperCorner>132 -2</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#13">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Coral Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>142 -30</gml:lowerCorner>
+        <gml:upperCorner>170 -7</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#14">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Flores Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>117 -8.5</gml:lowerCorner>
+        <gml:upperCorner>123 -5.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#15">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Gulf of Papua</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>143 -10</gml:lowerCorner>
+        <gml:upperCorner>147 -7.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#16">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Gulf of Thailand</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>99 7</gml:lowerCorner>
+        <gml:upperCorner>105 14</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#17">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Java Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>105 -8</gml:lowerCorner>
+        <gml:upperCorner>119 -3</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#18">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Makassar Strait</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>116 -4</gml:lowerCorner>
+        <gml:upperCorner>119.5 1</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#19">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Molucca Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>123 -1.5</gml:lowerCorner>
+        <gml:upperCorner>128 8</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#20">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Savu Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>118 -11</gml:lowerCorner>
+        <gml:upperCorner>125 -8</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#21">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Solomon Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>147 -12</gml:lowerCorner>
+        <gml:upperCorner>162 -4.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#22">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | South China Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>102 -3</gml:lowerCorner>
+        <gml:upperCorner>120 25</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#23">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Tasman Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>147 -53</gml:lowerCorner>
+        <gml:upperCorner>175 -29</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#24">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">Regional Seas | Timor Sea</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>123 -15</gml:lowerCorner>
+        <gml:upperCorner>133 -8</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#34">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Australian Antarctic Territory</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>45 -90</gml:lowerCorner>
+        <gml:upperCorner>160 -60</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#35">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Australian Capital Territory</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>148.5 -36</gml:lowerCorner>
+        <gml:upperCorner>149.5 -35</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#36">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | New South Wales</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>141 -37.5</gml:lowerCorner>
+        <gml:upperCorner>154 -28</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#37">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Northern Territory</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>129 -26</gml:lowerCorner>
+        <gml:upperCorner>138 -11</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#38">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Queensland</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>138 -29.5</gml:lowerCorner>
+        <gml:upperCorner>153.5 -9</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#39">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | South Australia</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>129 -38.5</gml:lowerCorner>
+        <gml:upperCorner>141 -26</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#40">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Tasmania</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>144.5 -44</gml:lowerCorner>
+        <gml:upperCorner>148.5 -39.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#41">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Victoria</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>141 -39</gml:lowerCorner>
+        <gml:upperCorner>150 -34</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names#42">
+    <skos:inScheme rdf:resource="http://bluenet3.antcrc.utas.edu.au/mcp/geographic_extent_names" />
+    <skos:prefLabel xml:lang="en">States, Territories (Australia) | Western Australia</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>112.5 -35.5</gml:lowerCorner>
+        <gml:upperCorner>129 -13.5</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+  </skos:Concept>
+</rdf:RDF>
+

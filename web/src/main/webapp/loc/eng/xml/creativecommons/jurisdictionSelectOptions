@@ -1,0 +1,4 @@
+<select name="f_jurisdiction">
+<option value="http://creativecommons.org/licenses">International (CC-4.0)</option>
+<option value="http://creativecommons.org/international/au/">Australia (CC-3.0)</option>
+</select>

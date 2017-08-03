@@ -222,6 +222,7 @@
     "title": "Title",
     "to": "To",
     "on": "on",
+    "off": "off",
     "toggleScrollSpy": "Toggle scrolling navigation",
     "tur": "Türkçe",
     "types": "Type of resources",
@@ -328,5 +329,17 @@
     "typeOfRecord": "Type of record",
     "load": "Load",
     "indexAccessError": "Error during index access.",
-    "applyFilter": "Apply Filter"
+    "applyFilter": "Apply Filter",
+    "confirm": "Ok",
+    "confirmDialogTitle": "Confirm Action",
+    "close": "Close",
+    "wpsSelectOutput": "Select output...",
+    "drawGeometry": "Draw",
+    "modifyGeometry": "Modify",
+    "inputValueRequired": "required",
+    "inputValueRequiredError": "A value is required for this field",
+    "inputIsOverloaded": "This value is set in a WFS filter",
+    "insertNewInputValue": "Add a value for this input",
+    "profileGraph": "Profile Graph",
+    "_valid": "Validity"
 }

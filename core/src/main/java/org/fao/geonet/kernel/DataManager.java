@@ -63,7 +63,41 @@ import org.fao.geonet.kernel.metadata.IMetadataStatus;
 import org.fao.geonet.kernel.metadata.IMetadataUtils;
 import org.fao.geonet.kernel.metadata.IMetadataValidator;
 import org.fao.geonet.kernel.schema.MetadataSchema;
+import org.fao.geonet.kernel.search.ISearchManager;
+import org.fao.geonet.kernel.search.SearchManager;
+import org.fao.geonet.kernel.search.index.IndexingList;
+import org.fao.geonet.kernel.setting.SettingManager;
+import org.fao.geonet.kernel.setting.Settings;
+import org.fao.geonet.lib.Lib;
+import org.fao.geonet.notifier.MetadataNotifierManager;
+import org.fao.geonet.repository.GroupRepository;
+import org.fao.geonet.repository.InspireAtomFeedRepository;
+import org.fao.geonet.repository.MetadataCategoryRepository;
+import org.fao.geonet.repository.MetadataFileUploadRepository;
+import org.fao.geonet.repository.MetadataRatingByIpRepository;
+import org.fao.geonet.repository.MetadataRepository;
+import org.fao.geonet.repository.MetadataStatusRepository;
+import org.fao.geonet.repository.MetadataValidationRepository;
+import org.fao.geonet.repository.OperationAllowedRepository;
+import org.fao.geonet.repository.SortUtils;
+import org.fao.geonet.repository.StatusValueRepository;
+import org.fao.geonet.repository.Updater;
 import org.fao.geonet.repository.UserGroupRepository;
+import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.repository.UserSavedSelectionRepository;
+import org.fao.geonet.repository.specification.MetadataFileUploadSpecs;
+import org.fao.geonet.repository.specification.MetadataSpecs;
+import org.fao.geonet.repository.specification.MetadataStatusSpecs;
+import org.fao.geonet.repository.specification.OperationAllowedSpecs;
+import org.fao.geonet.repository.specification.UserGroupSpecs;
+import org.fao.geonet.repository.specification.UserSpecs;
+import org.fao.geonet.repository.PathSpec;
+import org.fao.geonet.resources.Resources;
+import org.fao.geonet.util.ThreadUtils;
+import org.fao.geonet.utils.IO;
+import org.fao.geonet.utils.Log;
+import org.fao.geonet.utils.Xml;
+>>>>>>> develop
 import org.fao.geonet.utils.Xml.ErrorHandler;
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -196,13 +230,30 @@ public class DataManager {
         metadataIndexer.disableOptimizer();
     }
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Schema management API
-    // ---
-    // --------------------------------------------------------------------------
+		@Deprecated
+    public void indexMetadata(final String metadataId,
+            boolean forceRefreshReaders) throws Exception {
+        metadataIndexer.indexMetadata(metadataId, forceRefreshReaders);
+    }
 
     @Deprecated
+    public void rescheduleOptimizer(Calendar beginAt, int interval)
+            throws Exception {
+        metadataIndexer.rescheduleOptimizer(beginAt, interval);
+    }
+
+    @Deprecated
+    public void disableOptimizer() throws Exception {
+        metadataIndexer.disableOptimizer();
+    }
+
+    //--------------------------------------------------------------------------
+    //---
+    //--- Schema management API
+    //---
+    //--------------------------------------------------------------------------
+
+		@Deprecated
     public MetadataSchema getSchema(String name) {
         return metadataSchemaUtils.getSchema(name);
     }
@@ -290,11 +341,11 @@ public class DataManager {
 
     }
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- General purpose API
-    // ---
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //---
+    //--- General purpose API
+    //---
+    //--------------------------------------------------------------------------
 
     @Deprecated
     public String extractUUID(String schema, Element md) throws Exception {
@@ -352,6 +403,11 @@ public class DataManager {
         metadataUtils.setTemplateExt(id, metadataType);
     }
 
+		@Deprecated
+    public void setSubtemplateTypeAndTitleExt(final int id, String title) throws Exception {
+        metadataUtils.setSubtemplateTypeAndTitleExt(id, title);
+		}
+
     @Deprecated
     public void setHarvested(int id, String harvestUuid) throws Exception {
         metadataUtils.setHarvested(id, harvestUuid);
@@ -374,7 +430,7 @@ public class DataManager {
         return metadataSchemaUtils.autodetectSchema(md);
     }
 
-    @Deprecated
+		@Deprecated
     public @CheckForNull String autodetectSchema(Element md,
             String defaultSchema)
             throws SchemaMatchConflictException, NoSchemaMatchesException {
@@ -400,13 +456,13 @@ public class DataManager {
         return metadataUtils.rateMetadata(metadataId, ipAddress, rating);
     }
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Metadata Insert API
-    // ---
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //---
+    //--- Metadata Insert API
+    //---
+    //--------------------------------------------------------------------------
 
-    @Deprecated
+		@Deprecated
     public String createMetadata(ServiceContext context, String templateId,
             String groupOwner, String source, int owner, String parentUuid,
             String isTemplate, boolean fullRightsForGroup) throws Exception {
@@ -448,14 +504,15 @@ public class DataManager {
         return metadataManager.insertMetadata(context, newMetadata, metadataXml,
                 notifyChange, index, updateFixedInfo, updateDatestamp,
                 fullRightsForGroup, forceRefreshReaders);
-    }
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Metadata Get API
-    // ---
-    // --------------------------------------------------------------------------
+    }	
 
-    @Deprecated
+    //--------------------------------------------------------------------------
+    //---
+    //--- Metadata Get API
+    //---
+    //--------------------------------------------------------------------------
+
+		@Deprecated
     public Element getMetadataNoInfo(ServiceContext srvContext, String id)
             throws Exception {
         return metadataManager.getMetadataNoInfo(srvContext, id);
@@ -494,13 +551,13 @@ public class DataManager {
         return metadataUtils.getKeywords();
     }
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Metadata Update API
-    // ---
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //---
+    //--- Metadata Update API
+    //---
+    //--------------------------------------------------------------------------
 
-    @Deprecated
+		@Deprecated
     public synchronized void updateMetadataOwner(final int id,
             final String owner, final String groupOwner) throws Exception {
         metadataManager.updateMetadataOwner(id, owner, groupOwner);
@@ -539,16 +596,15 @@ public class DataManager {
     public Element applyCustomSchematronRules(String schema, int metadataId,
             Element md, String lang, List<MetadataValidation> validations) {
         return metadataValidator.applyCustomSchematronRules(schema, metadataId,
-                md, lang, validations);
-    }
+                md, lang, validations);	
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Metadata Delete API
-    // ---
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //---
+    //--- Metadata Delete API
+    //---
+    //--------------------------------------------------------------------------
 
-    @Deprecated
+		@Deprecated
     public void deleteMetadata(ServiceContext context, String metadataId)
             throws Exception {
         metadataManager.deleteMetadata(context, metadataId);
@@ -567,13 +623,13 @@ public class DataManager {
                 skipAllIntranet);
     }
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Metadata thumbnail API
-    // ---
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //---
+    //--- Metadata thumbnail API
+    //---
+    //--------------------------------------------------------------------------
 
-    @Deprecated
+		@Deprecated
     public Element getThumbnails(ServiceContext context, String metadataId)
             throws Exception {
         return metadataUtils.getThumbnails(context, metadataId);

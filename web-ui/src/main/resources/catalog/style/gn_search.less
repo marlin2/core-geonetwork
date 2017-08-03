@@ -418,7 +418,7 @@ span.gn-facet-label:first-letter {
     width: 140px;
     height: 140px;
     margin-right: 15px;
-    background-image: url(../catalog/views/default/images/no-thumbnail.png);
+    //background-image: url(../catalog/views/default/images/no-thumbnail.png);
     border: 1px solid #ddd;
     border-radius: 4px;
     overflow: hidden;
@@ -428,6 +428,39 @@ span.gn-facet-label:first-letter {
     }
   }
 }
+
+
+.gn-top-records {
+  .well();
+
+  /* Make a wide div with an horizontal scroll */
+  [data-gn-results-container] {
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    .gn-resultview {
+      display: flex;
+    }
+
+    /* to loop over results */
+    li.gn-grid {
+      width: 200px;
+      min-width: 200px;
+      height: 200px;
+      text-align: center;
+
+      .gn-md-thumbnail {
+        display: inline-block;
+        float: none;
+        margin-right: 0px;
+        .gn-img-thumbnail {
+
+        }
+      }
+    }
+  }
+}
+
 .gn-img-thumbnail-caption {
   text-align: center;
   font-size: 90%;

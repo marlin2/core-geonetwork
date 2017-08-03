@@ -45,6 +45,8 @@ public class LDAPUser extends InetOrgPerson implements UserDetails {
         this._user = new User();
         _user.setProfile(Profile.RegisteredUser);
         _user.setUsername(username);
+        // must set a junk password here otherwise some dbs eg. oracle will fail to insert the LDAP user row
+        _user.getSecurity().setPassword("LDAP");
 
         // FIXME Should we here populate the LDAP user with LDAP attributes instead of in the GNLDAPUserDetailsMapper ?
         // TODO : populate userId which should be in session

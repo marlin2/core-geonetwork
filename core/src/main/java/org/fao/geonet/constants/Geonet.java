@@ -201,8 +201,8 @@ public final class Geonet {
         public static final String CONV_STYLESHEETS = STYLESHEETS + "/conversion";
         public static final String IMPORT_STYLESHEETS = CONV_STYLESHEETS + "/import";
         public static final String WFS_STYLESHEETS = "convert/WFSToFragments";
-        public static final String DIF_STYLESHEETS = "convert/ThreddsDIFToISO";
         public static final String TDS_STYLESHEETS = "convert/ThreddsToFragments";
+        public static final String TDS_19119_19139_STYLESHEETS = "convert/ThreddsCatalogto19119";
         public static final String ISO19119TOJZKIT_STYLESHEET = "convert/19119ToJZKitRepository.xsl";
         public static final String OGC_STYLESHEETS = "convert/OGCWxSGetCapabilitiesto19119";
         public static final String CONVERT_STYLESHEETS = "convert/";
@@ -562,9 +562,6 @@ public final class Geonet {
         public static final String LUCENE_CONFIG = "luceneConfig";
         public static final String GUI_CONFIG = "guiConfig";
         public static final String PREFERRED_SCHEMA = "preferredSchema";
-        public static final String STAT_LOG_SPATIAL_OBJECTS = "statLogSpatialObjects";
-        public static final String STAT_LUCENE_TERMS_EXCLUDE = "statLuceneTermsExclude";
-        public static final String STAT_LOG_ASYNCH = "statLogAsynch";
         public static final String MAX_WRITES_IN_TRANSACTION = "maxWritesInTransaction";
         public static final String SUBVERSION_PATH = "subversionPath";
         public static final String STATUS_ACTIONS_CLASS = "statusActionsClass";

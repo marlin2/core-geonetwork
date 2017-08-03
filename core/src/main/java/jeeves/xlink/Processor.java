@@ -24,15 +24,13 @@
 package jeeves.xlink;
 
 import com.google.common.collect.Sets;
-
 import jeeves.server.context.ServiceContext;
 import jeeves.server.local.LocalServiceRequest;
-import jeeves.server.sources.ServiceRequest.InputMethod;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.jcs.access.exception.CacheException;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.JeevesJCS;
+import org.fao.geonet.kernel.SpringLocalServiceInvoker;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.utils.Log;
@@ -206,20 +204,19 @@ public final class Processor {
     public static synchronized Element resolveXLink(String uri, String idSearch, ServiceContext srvContext) throws IOException, JDOMException, CacheException {
 
         cleanFailures();
-        if (failures.size() > MAX_FAILURES) {
-            throw new RuntimeException("There have been " + failures.size() + " timeouts resolving xlinks in the last " + ELAPSE_TIME + " ms");
-        }
+// Just refusing to resolve after MAX_FAILURES breaks links that do resolve
+// so don't do that! A better strategy is needed...so disable breaking
+// behaviour for now
+//    if (failures.size()>MAX_FAILURES) {
+//      throw new RuntimeException("There have been "+failures.size()+" timeouts resolving xlinks in the last "+ELAPSE_TIME+" ms");
+//    }
         Element remoteFragment = null;
         try {
             // TODO-API: Support local protocol on /api/registries/
             if (uri.startsWith(XLink.LOCAL_PROTOCOL)) {
-                LocalServiceRequest request = LocalServiceRequest.create(uri.replaceAll("&amp;", "&"));
-                request.setDebug(false);
-                if (request.getLanguage() == null) {
-                    request.setLanguage(srvContext.getLanguage());
-                }
-                request.setInputMethod(InputMethod.GET);
-                remoteFragment = srvContext.execute(request);
+                SpringLocalServiceInvoker springLocalServiceInvoker = srvContext.getBean(SpringLocalServiceInvoker.class);
+                // risky as we may get a class cast exception....
+                remoteFragment = (Element)springLocalServiceInvoker.invoke(uri.replaceAll("&amp;", "&"));
             } else {
                 // Avoid references to filesystem
                 if (uri.toLowerCase().startsWith("file://")) {
@@ -260,10 +257,11 @@ public final class Processor {
 
             }
         } catch (Exception e) {    // MalformedURLException, IOException
-            synchronized (Processor.class) {
+            if (!uri.startsWith(XLink.LOCAL_PROTOCOL)) {
+              synchronized (Processor.class) {
                 failures.add(System.currentTimeMillis());
-            }
-
+              }
+						}
             Log.error(Log.XLINK_PROCESSOR, "Failed on " + uri, e);
         }
 
@@ -374,17 +372,19 @@ public final class Processor {
                 Log.debug(Log.XLINK_PROCESSOR, "will resolve href '" + hrefUri + "'");
             String idSearch = null;
             int hash = hrefUri.indexOf('#');
-            if (hash > 0 && hash != hrefUri.length() - 1) {
-                idSearch = hrefUri.substring(hash + 1);
+            // This will probably fail if a # occurs anywhere in the URL
+      			// except as anchor...but such urls are too complex for what we
+      			// usually get here 99% of the time...
+            if (hash > 0 && hash != hrefUri.length() - 1) { // skip local xlinks eg. xlink:href="#details"
+                idSearch = hrefUri.substring(hrefUri.lastIndexOf('#')+1);
                 hrefUri = hrefUri.substring(0, hash);
             }
 
-            if (hash != 0) { // skip local xlinks eg. xlink:href="#details"
-                String error = doXLink(hrefUri, idSearch, xlink, action, srvContext);
-                if (error != null) {
-                    errors.add(error);
-                }
+            String error = doXLink(hrefUri, idSearch, xlink, action, srvContext);
+            if (error != null) {
+                errors.add(error);
             }
+
         }
 
         return errors;

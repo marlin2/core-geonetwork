@@ -21,6 +21,8 @@
   <xsl:param name="version"></xsl:param>
   <xsl:param name="props"></xsl:param>
   <xsl:param name="serverops"></xsl:param>
+  <xsl:param name="bbox"></xsl:param>
+  <xsl:param name="textent"></xsl:param>
 
   <!-- ============================================================================= -->
 
@@ -121,12 +123,15 @@
             <xsl:with-param name="props" select="$props"/>
             <xsl:with-param name="version" select="$version"/>
             <xsl:with-param name="serverops" select="$serverops"/>
+            <xsl:with-param name="bbox" select="$bbox"/>
+            <xsl:with-param name="textent" select="$textent"/>
           </xsl:apply-templates>
         </srv:SV_ServiceIdentification>
       </gmd:identificationInfo>
 
       <!--contInfo-->
       <!--distInfo -->
+<!-- Don't put url in again
       <gmd:distributionInfo>
         <gmd:MD_Distribution>
           <gmd:distributionFormat>
@@ -149,7 +154,7 @@
                     </gmd:URL>
                   </gmd:linkage>
                   <gmd:protocol>
-                    <gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+                    <gco:CharacterString>WWW:LINK-1.0-http- -link</gco:CharacterString>
                   </gmd:protocol>
                   <gmd:description>
                     <gco:CharacterString>
@@ -162,6 +167,7 @@
           </gmd:transferOptions>
         </gmd:MD_Distribution>
       </gmd:distributionInfo>
+-->
 
       <!--dqInfo-->
       <gmd:dataQualityInfo>
