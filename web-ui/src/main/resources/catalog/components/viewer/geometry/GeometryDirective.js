@@ -46,155 +46,142 @@
         restrict: 'E',
         scope: {
           map: '<',
-          geometryType: '<',
+          geometryType: '@',
           output: '=',
-          outputFormat: '<',
+          outputFormat: '@',
+          outputCrs: '@',
           allowReset: '@',
           allowModify: '@',
-          outputAsFeatures: '@'
+          outputAsFeatures: '@',
+          input: '=',
+          inputFormat: '@',
+          inputCrs: '@',
+          inputErrorHandler: '='
         },
         templateUrl: '../../catalog/components/viewer/geometry/' +
             'partials/geometrytool.html',
+        controllerAs: 'ctrl',
+        bindToController: true,
         controller: [
           '$scope',
+          '$attrs',
           'ngeoDecorateInteraction',
           'gnGeometryService',
           function GeometryToolController(
             $scope,
+            $attrs,
             ngeoDecorateInteraction,
             gnGeometryService) {
-            var layer = gnGeometryService.getCommonLayer($scope.map);
+            var ctrl = this;
+            var layer = gnGeometryService.getCommonLayer(ctrl.map);
             var source = layer.getSource();
-            var myFeatures = new ol.Collection();
+            ctrl.features = new ol.Collection();
 
-            $scope.drawInteraction = new ol.interaction.Draw({
-              type: $scope.geometryType,
+            ctrl.drawInteraction = new ol.interaction.Draw({
+              type: ctrl.geometryType,
               source: source
             });
-            $scope.modifyInteraction = new ol.interaction.Modify({
-              features: myFeatures
+            ctrl.modifyInteraction = new ol.interaction.Modify({
+              features: ctrl.features
             });
 
             // add our layer&interactions to the map
-            $scope.map.addInteraction($scope.drawInteraction);
-            $scope.map.addInteraction($scope.modifyInteraction);
-            $scope.drawInteraction.setActive(false);
-            $scope.modifyInteraction.setActive(false);
-            ngeoDecorateInteraction($scope.drawInteraction);
-            ngeoDecorateInteraction($scope.modifyInteraction);
+            ctrl.map.addInteraction(ctrl.drawInteraction);
+            ctrl.map.addInteraction(ctrl.modifyInteraction);
+            ctrl.drawInteraction.setActive(false);
+            ctrl.modifyInteraction.setActive(false);
+            ngeoDecorateInteraction(ctrl.drawInteraction);
+            ngeoDecorateInteraction(ctrl.modifyInteraction);
 
             // cleanup when scope is destroyed
             $scope.$on('$destroy', function() {
               removeMyFeatures();
-              $scope.map.removeInteraction($scope.drawInteraction);
-              $scope.map.removeInteraction($scope.modifyInteraction);
+              ctrl.map.removeInteraction(ctrl.drawInteraction);
+              ctrl.map.removeInteraction(ctrl.modifyInteraction);
             });
 
             // remove all my features from the map
-            var removeMyFeatures = function () {
-              myFeatures.forEach(function (feature) {
+            function removeMyFeatures() {
+              var func = function (f) { return f.ol_uid; };
+              ctrl.features.forEach(function (feature) {
                 source.removeFeature(feature);
               });
-              myFeatures.clear();
-            };
+              ctrl.features.clear();
+            }
 
             // modifies the output value
-            var updateOutput = function (feature) {
+            function updateOutput(feature) {
+              // no feature: clear output
               if (!feature) {
-                $scope.output = null;
+                ctrl.output = null;
                 return;
               }
 
-              // set id on feature
-              feature.setId('geometry-tool-output');
-
-              var formatLabel = ($scope.outputFormat || '').toLowerCase();
-              var format;
-              var outputValue;
-              switch (formatLabel) {
-                case 'json':
-                case 'geojson':
-                  format = new ol.format.GeoJSON();
-                  if ($scope.outputAsFeatures) {
-                    outputValue = format.writeFeatures([feature]);
-                  } else {
-                    outputValue = format.writeGeometry(feature.getGeometry());
-                  }
-                  break;
-
-                case 'wkt':
-                  format = new ol.format.WKT();
-                  if ($scope.outputAsFeatures) {
-                    outputValue = format.writeFeatures([feature]);
-                  } else {
-                    outputValue = format.writeGeometry(feature.getGeometry());
-                  }
-                  break;
-
-                case 'gml':
-                  format = new ol.format.GML({
-                    featureNS: 'http://mapserver.gis.umn.edu/mapserver',
-                    featureType: 'features'
-                    // srsName: $scope.map.getView().getProjection().getCode()
-                  });
-
-                  // TODO: refactor this: first clone geom & transform,
-                  // then if necessary create a new feature with this geom
-                  var feature2 = new ol.Feature({
-                    id: 'geometry-tool-output',
-                    geometry: feature.getGeometry().clone()
-                  });
-                  feature2.getGeometry().transform(
-                      $scope.map.getView().getProjection(), 'EPSG:4326');
-
-                  if ($scope.outputAsFeatures) {
-                    outputValue = '<wfs:FeatureCollection ' +
-                        'xmlns:wfs="http://www.opengis.net/wfs">' +
-                        format.writeFeatures([feature2]) +
-                        '</wfs:FeatureCollection>';
-                  } else {
-                    outputValue = format.writeGeometryNode(
-                        feature2.getGeometry())
-                        .innerHTML;
-                  }
-                  break;
-
-                // no valid format specified: output as object + give warning
-                default:
-                  console.warn('No valid output format specified for ' +
-                      'gn-geometry-tool (value=' + $scope.outputFormat + '); ' +
-                      'outputting geometry as object');
-
-                case 'object':
-                  if ($scope.outputAsFeatures) {
-                    outputValue = [feature];
-                  } else {
-                    outputValue = feature.getGeometry().clone();
-                  }
-                  break;
-              }
-
-              $scope.output = outputValue;
+              ctrl.output = gnGeometryService.printGeometryOutput(
+                ctrl.map,
+                feature,
+                {
+                  crs: ctrl.outputCrs,
+                  format: ctrl.outputFormat,
+                  outputAsWFSFeaturesCollection: ctrl.outputAsFeatures  // TODO: make sure this works everytime?
+                }
+              );
             };
 
             // clear existing features on draw end & save feature
-            $scope.drawInteraction.on('drawend', function(event) {
+            ctrl.drawInteraction.on('drawend', function(event) {
               removeMyFeatures();
               updateOutput(event.feature);
-              $scope.drawInteraction.setActive(false);
-              myFeatures.push(event.feature);
+              ctrl.drawInteraction.setActive(false);
+              ctrl.features.push(event.feature);
             });
 
             // update output on modify end
-            $scope.modifyInteraction.on('modifyend', function(event) {
+            ctrl.modifyInteraction.on('modifyend', function(event) {
               updateOutput(event.features.item(0));
             });
 
             // reset drawing
-            $scope.reset = function() {
+            ctrl.reset = function() {
               removeMyFeatures();
               updateOutput();
             };
+
+            // watch parameter changes
+            function handleInputUpdate() {
+              if (!ctrl.input) {
+                return;
+              }
+
+              // parse geometry from text
+              try {
+                var geometry = gnGeometryService.parseGeometryInput(
+                  ctrl.map,
+                  ctrl.input,
+                  {
+                    crs: ctrl.inputCrs,
+                    format: ctrl.inputFormat
+                  }
+                );
+
+                // clear features & add a new one
+                removeMyFeatures();
+                var feature = new ol.Feature({
+                  geometry: geometry
+                });
+                feature.setId('geometry-tool-output');
+                source.addFeature(feature);
+                ctrl.features.push(feature);
+              } catch (e) {
+                // send back error
+                if (ctrl.inputErrorHandler) {
+                  ctrl.inputErrorHandler(e.message);
+                }
+              }
+            }
+            $scope.$watch(function () {
+              return ctrl.input + ctrl.inputCrs + ctrl.inputFormat;
+            }, handleInputUpdate);
           }
         ]
       };

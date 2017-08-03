@@ -380,12 +380,11 @@ public final class Processor {
                 hrefUri = hrefUri.substring(0, hash);
             }
 
-            if (hash != 0) { // skip local xlinks eg. xlink:href="#details"
-                String error = doXLink(hrefUri, idSearch, xlink, action, srvContext);
-                if (error != null) {
-                    errors.add(error);
-                }
+            String error = doXLink(hrefUri, idSearch, xlink, action, srvContext);
+            if (error != null) {
+                errors.add(error);
             }
+
         }
 
         return errors;

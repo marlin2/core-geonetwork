@@ -21,27 +21,16 @@
  * Rome - Italy. email: geonetwork@osgeo.org
  */
 
-package org.fao.geonet.kernel.schema;
+(function() {
+  goog.provide('gn_bounding');
 
-import org.jdom.Element;
-import org.jdom.JDOMException;
 
-import java.util.List;
 
-/**
- * Created by francois on 8/20/14.
- */
-public interface MultilingualSchemaPlugin {
-    /**
-     * Return the sub element matching the requested language.
-     *
-     * @param element            The element to search in
-     * @param languageIdentifier The translation language to search for
-     */
-    public abstract List<Element> getTranslationForElement(Element element, String languageIdentifier);
+  goog.require('gn_bounding_directive');
+  goog.require('gn_bounding_service');
 
-    public abstract void addTranslationToElement(Element element, String languageIdentifier, String value);
-
-    public abstract  Element removeTranslationFromElement(Element element, String mdLang) throws JDOMException;
-
-}
+  var module = angular.module('gn_bounding', [
+    'gn_bounding_service',
+    'gn_bounding_directive'
+  ]);
+})();
