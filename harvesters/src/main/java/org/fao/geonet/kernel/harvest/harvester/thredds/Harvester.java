@@ -1038,7 +1038,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
           log.warning("Skipping metadata with unknown schema.");
           result.unknownSchema++;
         } else {
-          if (dataParamsStylesheet != null) {
+          if (dataParamsStylesheet != null && gridVariables != null) {
             Element dps = Xml.transform(gridVariables, dataParamsStylesheet);
             addDataParameters(md, dps);
 					}
