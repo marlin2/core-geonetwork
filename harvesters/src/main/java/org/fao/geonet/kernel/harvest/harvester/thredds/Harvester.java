@@ -1024,8 +1024,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         param.put("url", params.url);
         param.put("name", title);
         param.put("desc", abst);
-        param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
-        param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
+        if (globalLatLonBox != null) {
+        	param.put("bbox", globalLatLonBox.getLatMin()+"^^^"+globalLatLonBox.getLatMax()+"^^^"+globalLatLonBox.getLonMin()+"^^^"+globalLatLonBox.getLonMax());
+				}
+				if (globalDateRange != null) {
+        	param.put("textent", globalDateRange.getStart().toDateTimeStringISO()+"^^^"+globalDateRange.getEnd().toDateTimeStringISO());
+				}
 	
         Element md = Xml.transform(wmsResponse, styleSheet, param);
 	
