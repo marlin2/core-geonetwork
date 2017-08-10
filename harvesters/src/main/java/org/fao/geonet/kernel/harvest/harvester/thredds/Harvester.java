@@ -73,6 +73,7 @@ import thredds.catalog.InvCatalogImpl;
 import thredds.catalog.InvCatalogRef;
 import thredds.catalog.InvDataset;
 import thredds.catalog.InvService;
+import thredds.catalog.ThreddsMetadata;
 import thredds.catalog.ServiceType;
 import ucar.nc2.units.DateRange;
 import ucar.nc2.units.DateType;
@@ -238,6 +239,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     private DateRange globalDateRange = null;
     private Element wmsResponse = null;
     private Element gridVariables = null;
+    private ServiceType gridVariablesType = null;
+    private boolean metadataObtained = false;
     
 
     /**
@@ -392,12 +395,16 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             resolve("ThreddsCatalog-to-ISO19139.xsl");
 				}
 
-				Path dataParamsStylesheet = null;
+				Path dataParamsNCSSStylesheet = null;
+				Path dataParamsDDXStylesheet = null;
         // -- This is schema dependent - no real equivalent in 19115:2005
         if (schemaDir.toString().contains("iso19139.mcp")) {
-            dataParamsStylesheet = schemaDir.
+            dataParamsNCSSStylesheet = schemaDir.
 							resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS).
               resolve("NetcdfSubsetDataset-to-ISO19139MCPDataParameters.xsl");
+            dataParamsDDXStylesheet = schemaDir.
+							resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS).
+              resolve("OpendapDDXDataset-to-ISO19139MCPDataParameters.xsl");
         } 
 
 
@@ -413,7 +420,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             if (cancelMonitor.get()) {
                 return;
             }
-
             crawlDatasets(ds);
         }
 
@@ -423,7 +429,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         }
 
         log.info("Adding dataset metadata...");
-        createDatasetMetadata(cata, datasetStyleSheet, dataParamsStylesheet);
+        createDatasetMetadata(cata, datasetStyleSheet, dataParamsNCSSStylesheet, dataParamsDDXStylesheet);
 
         //--- show how many datasets have been processed
         int totalDs = result.collectionDatasetRecords;
@@ -545,8 +551,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
      **/
 
     private void examineThreddsDataset(InvDataset ds) throws Exception {
-        //--- harvest metadata only if the dataset has changed
-        if (datasetChanged(ds)) {
+        //--- harvest metadata only if the dataset has changed or we don't have a wmsResponse
+        if (datasetChanged(ds) || wmsResponse == null) {
             getMetadata(ds);
         }
 
@@ -828,25 +834,56 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         	  if (access != null) {
               url = access.getStandardUrlName();
               log.debug("WMS url is "+url);
+              url += "?request=GetCapabilities&version=1.3.0&service=WMS";
+
+              wmsResponse = getXMLResponse(url); 
             } else {
               log.error("Cannot build WMS URL!");
-              return;
             }
-            url += "?request=GetCapabilities&version=1.3.0&service=WMS";
-
-            wmsResponse = getXMLResponse(url); 
 					}
 
-          // now for every other layer go to the subset service and get the 
+          // now for every other layer:
+          if (!metadataObtained) {
+          	if (hasThreddsMetadata(ds)) {
+							extractThreddsMetadata(ds);
+						} else if (hasNetcdfSubsetService(ds)) {
+					  	extractMetadataFromNetcdfSubsetService(ds);
+						} else { // try for ddx
+					  	extractMetadataFromOpendapDDX(ds);
+            }
+					}
+        } catch (Exception e) {
+          log.error("Thrown Exception " + e + " during dataset processing");
+          e.printStackTrace();
+        }
+		}
+
+		private void extractThreddsMetadata(InvDataset ds) {
+			ThreddsMetadata.GeospatialCoverage gsC = ds.getGeospatialCoverage();
+			DateRange dr = ds.getTimeCoverage();
+			List<ThreddsMetadata.Variables> vars = ds.getVariables();
+		}
+
+
+		private	boolean hasThreddsMetadata(InvDataset ds) {
+			ThreddsMetadata.GeospatialCoverage gsC = ds.getGeospatialCoverage();
+			DateRange dr = ds.getTimeCoverage();
+			List<ThreddsMetadata.Variables> vars = ds.getVariables();
+			return (gsC != null && dr != null && vars != null);
+		}
+			
+
+		private boolean hasNetcdfSubsetService(InvDataset ds) {
+			return (ds.getAccess(ServiceType.NetcdfSubset) != null);
+		}
+
+		private void extractMetadataFromNetcdfSubsetService(InvDataset ds) {
+        try {
+          // go to the subset service and get the 
           // dataset.xml file as it contains bbox and textent
-          access = ds.getAccess(ServiceType.NetcdfSubset);
-        	if (access != null) {
-            url = access.getStandardUrlName();
-            log.info("NCSS url is "+url);
-          } else {
-            log.error("Cannot build NCSS URL!");
-            return;
-          }
+          InvAccess access = ds.getAccess(ServiceType.NetcdfSubset);
+          String url = access.getStandardUrlName();
+          log.info("NCSS url is "+url);
           url += "/dataset.xml";
             
           Element xml = getXMLResponse(url);
@@ -863,33 +900,56 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                               <end>2017-07-22T06:00:00Z</end>
                          </TimeSpan>	
                        ....
-             If we don't find then we skip this dataset
+             	If we don't find then we skip this dataset
           */
           Element latLonBox = xml.getChild("LatLonBox");
           if (latLonBox == null) {
 						log.error("Cannot find LatLonBox element!, skipping dataset");
 						return;
           }
-
+	
           Element timeSpan = xml.getChild("TimeSpan"); 
           if (timeSpan == null) {
 						log.error("Cannot find TimeSpan element!, skipping dataset");
 						return;
           }
-
+	
           if (log.isDebugEnabled()) 
           	log.debug("Bounding box is:\n"+Xml.getString(latLonBox)+"\n Time span is:\n"+Xml.getString(timeSpan));
-
+	
 					// extend global bbox and textent using what we found
           addLatLonBox(latLonBox);
           addTimeSpan(timeSpan);
-
+	
           // record one copy of the dataset description so that mcp:dataParameters can be 
           // be created
           if (gridVariables == null) {
 						gridVariables = xml;
+            gridVariablesType = ServiceType.NetcdfSubset;
 					}
+        } catch (Exception e) {
+          log.error("Thrown Exception " + e + " during dataset processing");
+          e.printStackTrace();
+        }
+		}
 
+		private void extractMetadataFromOpendapDDX(InvDataset ds) {
+        try {
+          // go to the subset service and get the 
+          // dataset.xml file as it contains bbox and textent
+          InvAccess access = ds.getAccess(ServiceType.OPENDAP);
+          String url = access.getStandardUrlName();
+          log.info("Opendap url is "+url);
+          url += ".ddx";
+            
+          Element xml = getXMLResponse(url);
+	
+          // record one copy of the dataset description so that mcp:dataParameters can be 
+          // be created
+          if (gridVariables == null) {
+						gridVariables = xml;
+            gridVariablesType = ServiceType.OPENDAP;
+					}
         } catch (Exception e) {
           log.error("Thrown Exception " + e + " during dataset processing");
           e.printStackTrace();
@@ -999,7 +1059,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
      * @param    dataParamsStyleSheet    stylesheet to produce mcp:dataParameters from subset service xml
      **/
 
-    private void createDatasetMetadata(Element cata, Path styleSheet, Path dataParamsStylesheet) throws Exception {
+    private void createDatasetMetadata(Element cata, Path styleSheet, Path dataParamsNCSSStylesheet, 
+																				Path dataParamsDDXStylesheet) throws Exception {
 
         String sUuid = Sha1Encoder.encodeString(params.url);
 
@@ -1038,19 +1099,24 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
           log.warning("Skipping metadata with unknown schema.");
           result.unknownSchema++;
         } else {
-          if (dataParamsStylesheet != null && gridVariables != null) {
-            Element dps = Xml.transform(gridVariables, dataParamsStylesheet);
-            addDataParameters(md, dps);
+					if (schema.contains("iso19139.mcp") && gridVariables != null) {
+						Element dps = null;
+          	if (dataParamsNCSSStylesheet != null && gridVariablesType == ServiceType.NetcdfSubset) {
+            		dps = Xml.transform(gridVariables, dataParamsNCSSStylesheet);
+						} else if (dataParamsDDXStylesheet != null && gridVariablesType == ServiceType.OPENDAP) {
+            		dps = Xml.transform(gridVariables, dataParamsDDXStylesheet);
+						}
+          	if (dps != null) addDataParameters(md, dps);
 					}
 	
-          //--- Now add to geonetwork
-          boolean isService = false;
-          saveMetadata(md, sUuid, params.url, isService);
+ 	        //--- Now add to geonetwork
+        	boolean isService = false;
+        	saveMetadata(md, sUuid, params.url, isService);
 	
-          harvestUris.add(params.url);
-
-          result.collectionDatasetRecords++;
-			}
+        	harvestUris.add(params.url);
+	
+        	result.collectionDatasetRecords++;
+				}
     }
 
     /**
