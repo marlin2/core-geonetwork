@@ -1,10 +1,7 @@
 //=============================================================================
-//===	Copyright (C) 2001-2007 Food and Agriculture Organization of the
+//===	Copyright (C) 2001-2017 Food and Agriculture Organization of the
 //===	United Nations (FAO-UN), United Nations World Food Programme (WFP)
 //===	and United Nations Environment Programme (UNEP)
-//===
-//===	Copyright (C) 2008-2011 CSIRO Marine and Atmospheric Research,
-//=== Australia
 //===
 //===	This program is free software; you can redistribute it and/or modify
 //===	it under the terms of the GNU General Public License as published by
@@ -65,6 +62,7 @@ import org.fao.geonet.utils.Xml;
 import org.fao.geonet.utils.XmlRequest;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
 import thredds.catalog.InvAccess;
@@ -98,6 +96,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -109,8 +108,14 @@ import javax.net.ssl.SSLHandshakeException;
 
 /**
  * A ThreddsHarvester is able to generate metadata for datasets and services from a Thredds
- * catalogue. The idea here is that datasets with the same variables but possibly differing spatial and
- * temporal extents are stored in a thredds catalog. This harvester can be pointed at the directory
+ * catalogue. Thredds datasets can be laid out in one of two ways: 
+ *
+ * 1. by variable: individual datasets contain a single variable. If one directory for each variable, then thredds     
+ * catalog metadata could be held about each variable at the directory level. Otherwise all datasets have to be 
+ * traversed and metadata collected.
+ *
+ * 2. by time/geospatial domain: could have thredds catalog metadata in the top directory or any sub directories
+ * This harvester can be pointed at the directory
  * and it will query each dataset using WMS to retrieve the spatial and temporal extents plus variables
  * (each one is a wms layer). A single metadata record with these variables and the union of the extents will 
  * be then created by running an XSLT on the information collected from the datasets in the directory.
@@ -158,90 +163,43 @@ import javax.net.ssl.SSLHandshakeException;
 class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
 
+		// Namespaces needed here....
+
+    static private final Namespace invCatalogNS = Namespace.getNamespace("http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0");
+    static private final Namespace wmsNS = Namespace.getNamespace("http://www.opengis.net/wms");
+    static private final Namespace gmd = Namespace.getNamespace("gmd", "http://www.isotc211.org/2005/gmd");
+    static private final Namespace srv = Namespace.getNamespace("srv", "http://www.isotc211.org/2005/srv");
+    static private final Namespace xlink = Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink");
+
+    private Logger log;
+    private ServiceContext context;
+    private ThreddsParams params;
+    private DataManager dataMan;
+    private SchemaManager schemaMan;
+    private CategoryMapper localCateg;
+    private GroupMapper localGroups;
+    private UriMapper localUris;
+    private HarvestResult result;
+    private String hostUrl;
+    private HashSet<String> harvestUris = new HashSet<String>();
+    private Map<String, ThreddsService> services = new HashMap<String, Harvester.ThreddsService>();
+    private InvCatalogImpl catalog;
+    private List<HarvestError> errors = new LinkedList<HarvestError>();
+
+    private LatLonRect globalLatLonBox = null;
+    private DateRange globalDateRange = null;
+    private Element wmsResponse = null;
+    private Element isoResponse = null;
+    private Map<String,ThreddsMetadata.Variable> gridVariables = new HashMap<String,ThreddsMetadata.Variable>();
+    private boolean metadataObtained = false;
+    private String metadataGetService;
+		private List<Namespace> iso191152NamespaceList = new ArrayList<Namespace>();
+    
     //---------------------------------------------------------------------------
     //---
     //--- API methods
     //---
     //---------------------------------------------------------------------------
-    static private final Namespace invCatalogNS = Namespace.getNamespace("http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0");
-
-    //---------------------------------------------------------------------------
-    //---
-    //--- Private methods
-    //---
-    //---------------------------------------------------------------------------
-
-    //---------------------------------------------------------------------------
-    static private final Namespace gmd = Namespace.getNamespace("gmd", "http://www.isotc211.org/2005/gmd");
-
-    //---------------------------------------------------------------------------
-    static private final Namespace srv = Namespace.getNamespace("srv", "http://www.isotc211.org/2005/srv");
-
-    //---------------------------------------------------------------------------
-    static private final Namespace xlink = Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink");
-
-    //---------------------------------------------------------------------------
-    private Logger log;
-
-    //---------------------------------------------------------------------------
-    private ServiceContext context;
-
-    //---------------------------------------------------------------------------
-    private ThreddsParams params;
-
-    //---------------------------------------------------------------------------
-    private DataManager dataMan;
-
-    //---------------------------------------------------------------------------
-    private SchemaManager schemaMan;
-
-    //---------------------------------------------------------------------------
-    private CategoryMapper localCateg;
-
-    //---------------------------------------------------------------------------
-    private GroupMapper localGroups;
-
-    //---------------------------------------------------------------------------
-    private UriMapper localUris;
-
-    //---------------------------------------------------------------------------
-    private HarvestResult result;
-
-    //---------------------------------------------------------------------------
-    private String hostUrl;
-
-    //---------------------------------------------------------------------------
-    private HashSet<String> harvestUris = new HashSet<String>();
-
-    //---------------------------------------------------------------------------
-    private Path cdmCoordsToIsoKeywordsStyleSheet;
-
-    //---------------------------------------------------------------------------
-    private Path cdmCoordsToIsoMcpDataParametersStyleSheet;
-
-    //---------------------------------------------------------------------------
-    private Path fragmentStylesheetDirectory;
-
-    //---------------------------------------------------------------------------
-    private String metadataGetService;
-
-    //---------------------------------------------------------------------------
-    private Map<String, ThreddsService> services = new HashMap<String, Harvester.ThreddsService>();
-
-    //---------------------------------------------------------------------------
-    private InvCatalogImpl catalog;
-
-    //---------------------------------------------------------------------------
-    private List<HarvestError> errors = new LinkedList<HarvestError>();
-
-    //---------------------------------------------------------------------------
-    private LatLonRect globalLatLonBox = null;
-    private DateRange globalDateRange = null;
-    private Element wmsResponse = null;
-    private Element gridVariables = null;
-    private ServiceType gridVariablesType = null;
-    private boolean metadataObtained = false;
-    
 
     /**
      * Constructor
@@ -264,6 +222,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         schemaMan = gc.getBean(SchemaManager.class);
 
         metadataGetService = "local://"+context.getNodeId()+"/api/records/";
+
+				iso191152NamespaceList = buildISO191152NamespaceList();
 
     }
 
@@ -337,7 +297,17 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         return result;
     }
 
+    @Override
+    public List<HarvestError> getErrors() {
+        return errors;
+    }
+
     //---------------------------------------------------------------------------
+    //---
+    //--- Private methods
+    //---
+    //---------------------------------------------------------------------------
+
 
     /**
      * Add metadata to GN for the services and datasets in a thredds catalog.
@@ -396,15 +366,11 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 				}
 
 				Path dataParamsNCSSStylesheet = null;
-				Path dataParamsDDXStylesheet = null;
         // -- This is schema dependent - no real equivalent in 19115:2005
         if (schemaDir.toString().contains("iso19139.mcp")) {
             dataParamsNCSSStylesheet = schemaDir.
 							resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS).
               resolve("NetcdfSubsetDataset-to-ISO19139MCPDataParameters.xsl");
-            dataParamsDDXStylesheet = schemaDir.
-							resolve(Geonet.Path.TDS_19119_19139_STYLESHEETS).
-              resolve("OpendapDDXDataset-to-ISO19139MCPDataParameters.xsl");
         } 
 
 
@@ -429,7 +395,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         }
 
         log.info("Adding dataset metadata...");
-        createDatasetMetadata(cata, datasetStyleSheet, dataParamsNCSSStylesheet, dataParamsDDXStylesheet);
+        createDatasetMetadata(cata, datasetStyleSheet, dataParamsNCSSStylesheet);
 
         //--- show how many datasets have been processed
         int totalDs = result.collectionDatasetRecords;
@@ -442,7 +408,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     /**
      * Crawl all datasets in the catalog recursively
      *
-     * @param    catalogDs        the dataset being processed
+     * @param  catalogDs        the dataset being processed
      * @throws Exception
      **/
 
@@ -457,8 +423,14 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             realDs = proxyDataset.getName().equals(catalogDs.getName()) ? proxyDataset : catalogDs;
         }
 
-        // if there are nested datasets then process those recursively
-        if (realDs.hasNestedDatasets()) {
+        // if there are nested datasets then process those recursively - exclude latest as it is a convenience dir
+        // for grouping the latest datasets and thus contains duplicates of other datasets we will traverse
+        if (realDs.hasNestedDatasets() && !realDs.getName().contains("latest")) {
+						// check for thredds metadata as it is most likely to occur here and will be relevant for all
+            // datasets in the directory eg. variables, extents
+						if (hasThreddsMetadata(realDs)) {
+							extractThreddsMetadata(realDs);
+						}
             List<InvDataset> dsets = realDs.getDatasets();
             for (InvDataset ds : dsets) {
                 crawlDatasets(ds);
@@ -474,6 +446,47 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         }
     }
 
+    /**
+     * Extract thredds metadata and use it to extend extents and record variables.
+     *
+     * @param ds        the dataset being processed
+     **/
+
+		private void extractThreddsMetadata(InvDataset ds) {
+			ThreddsMetadata.GeospatialCoverage gsC = ds.getGeospatialCoverage();
+			if (gsC != null) {
+				addLatLonBox(gsC.getBoundingBox());
+			}
+			DateRange dr = ds.getTimeCoverage();
+			if (dr != null) {
+				addTimeSpan(dr);
+			}
+			List<ThreddsMetadata.Variables> variablesList = ds.getVariables();
+			if (variablesList != null) {
+				for (ThreddsMetadata.Variables variables : variablesList) {
+					List<ThreddsMetadata.Variable> variableList = variables.getVariableList();
+          for (ThreddsMetadata.Variable variable : variableList) {
+						gridVariables.put(variable.getName(), variable);
+					}
+				}
+			}
+
+      if (gsC != null && dr != null && variablesList != null) metadataObtained = true;
+		}
+
+    /**
+     * Check to see whether the dataset has thredds metadata.
+     *
+     * @param ds        the dataset being processed
+     **/
+
+		private	boolean hasThreddsMetadata(InvDataset ds) {
+			ThreddsMetadata.GeospatialCoverage gsC = ds.getGeospatialCoverage();
+			DateRange dr = ds.getTimeCoverage();
+			List<ThreddsMetadata.Variables> vars = ds.getVariables();
+			return (gsC != null || dr != null || vars != null);
+		}
+			
     //---------------------------------------------------------------------------
 
     /**
@@ -825,30 +838,21 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
     private void getMetadata(InvDataset ds) {
         try {
-
-          String url = "";
-          InvAccess access = null;
-					if (wmsResponse == null) {
-            // Get WMS URL and build getcapabilities statement for first layer we find.....
-            access = ds.getAccess(ServiceType.WMS);
-        	  if (access != null) {
-              url = access.getStandardUrlName();
-              log.debug("WMS url is "+url);
-              url += "?request=GetCapabilities&version=1.3.0&service=WMS";
-
-              wmsResponse = getXMLResponse(url); 
-            } else {
-              log.error("Cannot build WMS URL!");
-            }
-					}
-
-          // now for every other layer:
+          // try the various thredds services in order to get some metadata about the dataset
           if (!metadataObtained) {
-          	if (hasThreddsMetadata(ds)) {
-							extractThreddsMetadata(ds);
-						} else if (hasNetcdfSubsetService(ds)) {
+						if (hasWMSService(ds)) {
+					  	extractMetadataFromWMS(ds);
+						} 
+
+            if (!metadataObtained && hasNetcdfSubsetService(ds)) {
 					  	extractMetadataFromNetcdfSubsetService(ds);
-						} else { // try for ddx
+						} 
+
+            if (!metadataObtained && hasISOService(ds)) {
+					  	extractMetadataFromISO(ds);
+            }
+
+						if (!metadataObtained) { // try for ddx - last ditch attempt here as usually one of the above will work
 					  	extractMetadataFromOpendapDDX(ds);
             }
 					}
@@ -858,24 +862,297 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         }
 		}
 
-		private void extractThreddsMetadata(InvDataset ds) {
-			ThreddsMetadata.GeospatialCoverage gsC = ds.getGeospatialCoverage();
-			DateRange dr = ds.getTimeCoverage();
-			List<ThreddsMetadata.Variables> vars = ds.getVariables();
-		}
-
-
-		private	boolean hasThreddsMetadata(InvDataset ds) {
-			ThreddsMetadata.GeospatialCoverage gsC = ds.getGeospatialCoverage();
-			DateRange dr = ds.getTimeCoverage();
-			List<ThreddsMetadata.Variables> vars = ds.getVariables();
-			return (gsC != null && dr != null && vars != null);
-		}
-			
 
 		private boolean hasNetcdfSubsetService(InvDataset ds) {
 			return (ds.getAccess(ServiceType.NetcdfSubset) != null);
 		}
+
+		private boolean hasWMSService(InvDataset ds) {
+			return (ds.getAccess(ServiceType.WMS) != null);
+		}
+
+		private boolean hasISOService(InvDataset ds) {
+			return (ds.getAccess(ServiceType.ISO) != null);
+		}
+
+// ISO Stuff
+
+		private void extractMetadataFromISO(InvDataset ds) {
+			try {
+        String url = "";
+        InvAccess access = null;
+        // Get ISO URL and extract metadata from what we find.....
+        access = ds.getAccess(ServiceType.WMS);
+      	if (access != null) {
+          url = access.getStandardUrlName();
+          log.debug("ISO url is "+url);
+
+					// record response in global var isoResponse as we may use it to add some other metadata eg. contacts
+          isoResponse = getXMLResponse(url); 
+
+					if (isoResponse.getName().equals("MI_Metaata")) {
+						Element latLonBox = Xml.selectElement(isoResponse, 
+																		"*//gmd:MD_DataIdentification//gmd:EX_GeographicBoundingBox", iso191152NamespaceList);
+						if (latLonBox == null) {
+						  log.error("Cannot find ISO19115-2 EX_GeographicBoundingBox element!");
+						  return;
+						}
+						
+            Element timeSpan = Xml.selectElement(isoResponse, "*//gmd:MD_DataIdentification//gml:TimePeriod",
+																								iso191152NamespaceList);
+						if (timeSpan == null) {
+						  log.error("Cannot find ISO19115-2 TimePeriod element!");
+						  return;
+						}
+						
+            List<?> contentInfo = Xml.selectNodes(isoResponse, 
+								"*//gmd:contentInfo/gmi:MI_CoverageDescription/gmd:dimension/gmd:MD_Band", iso191152NamespaceList);
+						if (contentInfo == null) {
+							log.error("Cannot find ISO19115-2 contentInfo element!");
+							return;
+						}
+
+						// extend global bbox and textent and add variables using what we found
+            metadataObtained = (addISOLatLonBox(latLonBox) && addISOTimeSpan(timeSpan) && 
+																	extractISOVariables(contentInfo));
+					}
+				}
+      } catch (Exception e) {
+        log.error("Thrown Exception " + e + " during dataset processing");
+        e.printStackTrace();
+      }
+		}
+
+  	/**
+   	 * Extract wms bounding box info.
+   	 * 
+   	 * @param datasetXml JDOM xml of wms getcapabilities statement
+   	 */
+
+		private boolean addISOLatLonBox(Element bbox) {
+			boolean result = false;
+	
+			try {
+				double west = Double.parseDouble(bbox.getAttributeValue("minx"));
+      	double east = Double.parseDouble(bbox.getAttributeValue("maxx"));
+      	double south = Double.parseDouble(bbox.getAttributeValue("miny"));
+      	double north = Double.parseDouble(bbox.getAttributeValue("maxy"));
+      	LatLonRect thisBox = new LatLonRect(new LatLonPointImpl(south,west), new LatLonPointImpl(north,east));
+		  	addLatLonBox(thisBox);
+				result = true;
+			} catch (NumberFormatException nfe) {
+				// skip
+			}
+			return result;
+
+		}
+
+		private boolean addISOTimeSpan(Element dimension) {
+			boolean result = false;
+
+			String[] times = dimension.getText().split(",");
+			
+      String startTime = times[0].trim();
+      String endTime = times[times.length-1].trim();
+			if (startTime != null && endTime != null && startTime.length() > 0 && endTime.length() > 0) {
+        ISODate st = new ISODate(startTime);
+        ISODate et = new ISODate(endTime);
+        DateRange thisDateRange = new DateRange(st.toDate(), et.toDate());
+				addTimeSpan(thisDateRange);
+        result = true;
+      } 
+
+			return result;
+		}
+
+		private boolean extractISOVariables(List<?> bands) {
+			boolean result = false;
+
+			try {
+				for (Object o : bands) {
+					if (o instanceof Element) {
+						Element band = (Element)o;
+						Element layer = Xml.selectElement(band, "*//gco:aName/gco:CharacterString", iso191152NamespaceList);
+						if (layer != null) {
+							String layerName = layer.getText();
+        			if (layerName.length() > 0) {
+								ThreddsMetadata.Variable var = new ThreddsMetadata.Variable();
+								var.setName(layerName);
+								Element desc = Xml.selectElement(band, "*//gmd:descriptor/gco:CharacterString", iso191152NamespaceList);
+								if (desc != null) {
+									String layerDesc = desc.getText();
+          				if (layerDesc.length() > 0) {
+										var.setDescription(layerDesc);
+									}
+								}
+								gridVariables.put(layerName, var);
+								result = true;
+							}
+						}
+					}
+				}
+			} catch (JDOMException je) {
+				je.printStackTrace();
+			}
+			return result;
+		}
+
+    private List<Namespace> buildISO191152NamespaceList() {
+			List<Namespace> nsList = new ArrayList<Namespace>();
+
+			nsList.add(Namespace.getNamespace("xsi","http://www.w3.org/2001/XMLSchema-instance"));
+			nsList.add(Namespace.getNamespace("gco","http://www.isotc211.org/2005/gco"));
+      nsList.add(Namespace.getNamespace("gmd","http://www.isotc211.org/2005/gmd"));
+      nsList.add(Namespace.getNamespace("gmi","http://www.isotc211.org/2005/gmi"));
+      nsList.add(Namespace.getNamespace("srv","http://www.isotc211.org/2005/srv"));
+      nsList.add(Namespace.getNamespace("gmx","http://www.isotc211.org/2005/gmx"));
+      nsList.add(Namespace.getNamespace("gsr","http://www.isotc211.org/2005/gsr"));
+      nsList.add(Namespace.getNamespace("gss","http://www.isotc211.org/2005/gss"));
+      nsList.add(Namespace.getNamespace("gts","http://www.isotc211.org/2005/gts"));
+      nsList.add(Namespace.getNamespace("gml","http://www.opengis.net/gml/3.2"));
+      nsList.add(Namespace.getNamespace("xlink","http://www.w3.org/1999/xlink"));
+      nsList.add(Namespace.getNamespace("xs","http://www.w3.org/2001/XMLSchema"));
+
+			return nsList;
+		}
+
+// End ISO Stuff
+
+// WMS Stuff
+
+    /**
+     * Extract extents and variables from WMS (OGC WMS GetCapabilities) call on dataset,
+     *
+     * @param ds the dataset to be queried via the WMS service
+     */
+
+		private void extractMetadataFromWMS(InvDataset ds) {
+			try {
+        String url = "";
+        InvAccess access = null;
+        // Get WMS URL and build getcapabilities statement for first layer we find.....
+        access = ds.getAccess(ServiceType.WMS);
+      	if (access != null) {
+          url = access.getStandardUrlName();
+          log.debug("WMS url is "+url);
+          url += "?request=GetCapabilities&version=1.3.0&service=WMS";
+
+					// record response in global var wmsResponse as we may use it to add some other metadata eg. contacts
+          wmsResponse = getXMLResponse(url); 
+
+					if (wmsResponse.getName().equals("WMS_Capabilities")) {
+						List<Element> layers = findLayers(wmsResponse);
+						if (layers.size() > 0) {
+          		Element bbox = layers.get(0).getChild("BoundingBox", wmsNS);
+							if (bbox == null) {
+						    log.error("Cannot find OGC WMS BoundingBox element!");
+						    return;
+							}
+							Element dimension = layers.get(0).getChild("Dimension", wmsNS);
+							if (dimension == null || !(dimension.getAttributeValue("name").equals("time"))) {
+						    log.error("Cannot find OGC WMS Dimension element!");
+						    return;
+							}
+							// extend global bbox and textent and add variables using what we found
+              metadataObtained = (addWMSLatLonBox(bbox) && addWMSTimeSpan(dimension) && extractWMSVariables(layers));
+						}
+					}
+				}
+      } catch (Exception e) {
+        log.error("Thrown Exception " + e + " during dataset processing");
+        e.printStackTrace();
+      }
+		}
+
+   /**
+   	 * Find queryable layers in a WMS getcapabilities statement.
+   	 * 
+   	 * @param datasetXml JDOM xml of wms getcapabilities statement
+   	 */
+
+  	private List<Element> findLayers(Element datasetXml) {
+			List<Element> layers = new ArrayList<Element>();
+	
+    	for (Iterator<?> iter = datasetXml.getDescendants(); iter.hasNext(); ) {
+      	Object o = iter.next();
+      	if (o instanceof Element) {
+        	Element layer = (Element)o;
+        	if (layer.getName().equals("Layer") && layer.getAttributeValue("queryable","0").equals("1")) {
+          	layers.add(layer);
+        	}
+      	}
+    	}
+    	return layers;
+  	}
+
+  	/**
+   	 * Extract wms bounding box info.
+   	 * 
+   	 * @param datasetXml JDOM xml of wms getcapabilities statement
+   	 */
+
+		private boolean addWMSLatLonBox(Element bbox) {
+			boolean result = false;
+	
+			try {
+				double west = Double.parseDouble(bbox.getAttributeValue("minx"));
+      	double east = Double.parseDouble(bbox.getAttributeValue("maxx"));
+      	double south = Double.parseDouble(bbox.getAttributeValue("miny"));
+      	double north = Double.parseDouble(bbox.getAttributeValue("maxy"));
+      	LatLonRect thisBox = new LatLonRect(new LatLonPointImpl(south,west), new LatLonPointImpl(north,east));
+		  	addLatLonBox(thisBox);
+				result = true;
+			} catch (NumberFormatException nfe) {
+				// skip
+			}
+			return result;
+
+		}
+
+		private boolean addWMSTimeSpan(Element dimension) {
+			boolean result = false;
+
+			String[] times = dimension.getText().split(",");
+			
+      String startTime = times[0].trim();
+      String endTime = times[times.length-1].trim();
+			if (startTime != null && endTime != null && startTime.length() > 0 && endTime.length() > 0) {
+        ISODate st = new ISODate(startTime);
+        ISODate et = new ISODate(endTime);
+        DateRange thisDateRange = new DateRange(st.toDate(), et.toDate());
+				addTimeSpan(thisDateRange);
+        result = true;
+      } 
+
+			return result;
+		}
+
+		private boolean extractWMSVariables(List<Element> layers) {
+			boolean result = false;
+
+			for (Element layer : layers) {
+				String layerName = layer.getChildText("Name", wmsNS);
+				String layerDesc = layer.getChildText("Abstract", wmsNS);
+        if (layerName != null) {
+					ThreddsMetadata.Variable var = new ThreddsMetadata.Variable();
+					var.setName(layerName);
+          if (layerDesc != null) {
+						var.setDescription(layerDesc);
+					}
+				}
+			}
+			return result;
+		}
+
+// End WMS Stuff
+
+// NCSS Routines
+
+    /**
+     * Extract extents and variables from NCSS (Netcdf subset service) call on dataset. 
+     *
+     * @param ds the dataset to be queried via the NCSS service
+     */
 
 		private void extractMetadataFromNetcdfSubsetService(InvDataset ds) {
         try {
@@ -917,21 +1194,114 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
           if (log.isDebugEnabled()) 
           	log.debug("Bounding box is:\n"+Xml.getString(latLonBox)+"\n Time span is:\n"+Xml.getString(timeSpan));
 	
-					// extend global bbox and textent using what we found
-          addLatLonBox(latLonBox);
-          addTimeSpan(timeSpan);
+					// extend global bbox and textent and add variables using what we found
+          metadataObtained = (addNCSSLatLonBox(latLonBox) && addNCSSTimeSpan(timeSpan) && extractNCSSVariables(xml));
 	
-          // record one copy of the dataset description so that mcp:dataParameters can be 
-          // be created
-          if (gridVariables == null) {
-						gridVariables = xml;
-            gridVariablesType = ServiceType.NetcdfSubset;
-					}
         } catch (Exception e) {
           log.error("Thrown Exception " + e + " during dataset processing");
           e.printStackTrace();
         }
 		}
+
+    /**
+     * Extend global bounding box (globalLatLonBox) using latLonBox from NCSS xml. 
+     *
+     * @param    latLonBox           bounding box from NCSS xml to add to globalLatLonBox 
+     **/
+
+    private boolean addNCSSLatLonBox(Element latLonBox) {
+			boolean result = false;
+
+			try {
+				double west = Double.parseDouble(latLonBox.getChildText("west"));
+				double east = Double.parseDouble(latLonBox.getChildText("east"));
+				double south = Double.parseDouble(latLonBox.getChildText("south"));
+				double north = Double.parseDouble(latLonBox.getChildText("north"));
+      	LatLonRect thisBox = new LatLonRect(new LatLonPointImpl(south,west), new LatLonPointImpl(north,east));
+		  	addLatLonBox(thisBox);
+				result = true;
+			} catch (NumberFormatException nfe) {
+				// skip
+			}
+			return result;
+		}
+
+    /**
+     * Extend global date range (globalDateRange) using timeSpan from NCSS xml. 
+     *
+     * @param    timeSpan           time span from NCSS xml to add to globalDateRange 
+     **/
+
+    private boolean addNCSSTimeSpan(Element timeSpan) {
+			boolean result = false;
+
+			String bt = timeSpan.getChildText("begin");
+			String et = timeSpan.getChildText("end");
+
+			if (bt != null && et != null && bt.length() > 0 && et.length() > 0) {
+      	ISODate beginDate = new ISODate(bt);
+      	ISODate endDate = new ISODate(et);
+      	DateRange thisDateRange = new DateRange(beginDate.toDate(), endDate.toDate());
+				addTimeSpan(thisDateRange);
+				result = true;
+			}
+
+			return result;
+		}
+
+    /**
+     * Extract variables from NCSS (netcdf subset service) call on dataset. 
+     *
+     * @param xml The XML returned from a NCSS call
+     */
+
+		private boolean extractNCSSVariables(Element xml) {
+			boolean result = false;
+
+			try {
+				List<?> grids = Xml.selectNodes(xml, "*//gridSet/grid[attribute/@value='spatial']");
+    		for (Object o : grids) {
+      		if (o instanceof Element) {
+						Element grid = (Element)o;
+						String name = grid.getAttributeValue("name");
+						if (name != null) {
+							ThreddsMetadata.Variable var = new ThreddsMetadata.Variable();
+							var.setName(name);
+							List<?> attrs = grid.getChildren("attribute");
+							for (Object oa : attrs) {
+								if (oa instanceof Element) {
+									Element attr = (Element)oa;
+									String attrName = attr.getAttributeValue("name");
+									if (attrName.equals("long_name")) {
+										var.setDescription(attr.getAttributeValue("value"));
+									} else if (attrName.equals("units")) {
+										var.setUnits(attr.getAttributeValue("value"));
+									}
+								}	
+							}
+            	gridVariables.put(name, var);
+            	result = true;
+						}
+					}
+				}
+			} catch (JDOMException je) {
+				je.printStackTrace();
+			}
+
+			return result;
+		}
+// End NCSS Stuff
+
+// DDX Stuff
+
+    /**
+     * Extract metadata from DDX (Opendap ddx service) call on dataset. This is really a last ditch attempt to
+     * get something about the variables in the dataset because the ddx doesn't contain any info about the 
+     * extents etc. So this gets called when we don't have NCSS, WMS, ISO etc which is only for very old THREDDS
+     * services nowadays though even some of those will fail here as they don't even support ddx calls!
+     *
+     * @param ds the dataset to be queried via the OPENDAP ddx service
+     */
 
 		private void extractMetadataFromOpendapDDX(InvDataset ds) {
         try {
@@ -944,12 +1314,9 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             
           Element xml = getXMLResponse(url);
 	
-          // record one copy of the dataset description so that mcp:dataParameters can be 
-          // be created
-          if (gridVariables == null) {
-						gridVariables = xml;
-            gridVariablesType = ServiceType.OPENDAP;
-					}
+          // add variables to gridVariables
+					if (extractDDXVariables(xml)) metadataObtained = true; 
+
         } catch (Exception e) {
           log.error("Thrown Exception " + e + " during dataset processing");
           e.printStackTrace();
@@ -957,17 +1324,50 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 		}
 
     /**
-     * Extend global bounding box (globalLatLonBox) using supplied latLonBox. 
+     * Extract variables from DDX (Opendap ddx service) call on dataset. 
      *
-     * @param    latLonBox           bounding box to add to globalLatLonBox 
+     * @param xml The XML returned from a DDX call
+     */
+
+		private boolean extractDDXVariables(Element xml) {
+			boolean result = false;
+
+    	for (Iterator<?> iter = xml.getDescendants(); iter.hasNext(); ) {
+      	Object o = iter.next();
+      	if (o instanceof Element) {
+					Element array = (Element)o;
+					String name = array.getAttributeValue("name");
+        	if (name != null) {
+						ThreddsMetadata.Variable var = new ThreddsMetadata.Variable();
+						var.setName(name);
+						List<?> attributes = array.getChildren("Attribute");
+						for (Object oa : attributes) {
+							if (oa instanceof Element) {
+								Element attr = (Element)oa;
+								String attrName = attr.getAttributeValue("name");
+            		if (attrName.equals("long_name")) {	
+						  	  var.setDescription(attr.getChildText("value"));
+								} else if (attrName.equals("units")) {
+						  	  var.setUnits(attr.getChildText("value"));
+								}
+							}
+						}
+            gridVariables.put(name, var);
+            result = true;
+					}
+				}
+			}
+			return result;
+		}
+// End DDX Stuff
+
+    /**
+     * Extend global bounding box (globalLatLonBox) using supplied LatLonRect. 
+     *
+     * @param    thisBox           bounding box supplied as LatLonRect
      **/
 
-    private void addLatLonBox(Element latLonBox) {
-			double west = Double.parseDouble(latLonBox.getChildText("west"));
-			double east = Double.parseDouble(latLonBox.getChildText("east"));
-			double south = Double.parseDouble(latLonBox.getChildText("south"));
-			double north = Double.parseDouble(latLonBox.getChildText("north"));
-      LatLonRect thisBox = new LatLonRect(new LatLonPointImpl(south,west), new LatLonPointImpl(north,east));
+		private void addLatLonBox(LatLonRect thisBox) {
       if (globalLatLonBox == null) {
 				globalLatLonBox = thisBox;
 			} else {
@@ -976,15 +1376,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     }
 
     /**
-     * Extend global date range (globalDateRange) using supplied timeSpan. 
+     * Extend global date range (globalDateRange) using supplied DateRange. 
      *
-     * @param    timeSpan           time span to add to globalDateRange 
+     * @param    thisDateRange      date range supplied as DateRange
      **/
 
-    private void addTimeSpan(Element timeSpan) {
-      ISODate beginDate = new ISODate(timeSpan.getChildText("begin"));
-      ISODate endDate = new ISODate(timeSpan.getChildText("end"));
-      DateRange thisDateRange = new DateRange(beginDate.toDate(), endDate.toDate());
+		private void addTimeSpan(DateRange thisDateRange) {
       if (globalDateRange == null) {
       	globalDateRange = thisDateRange; 
       } else {
@@ -1059,8 +1456,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
      * @param    dataParamsStyleSheet    stylesheet to produce mcp:dataParameters from subset service xml
      **/
 
-    private void createDatasetMetadata(Element cata, Path styleSheet, Path dataParamsNCSSStylesheet, 
-																				Path dataParamsDDXStylesheet) throws Exception {
+    private void createDatasetMetadata(Element cata, Path styleSheet, 
+																				Path dataParamsNCSSStylesheet) throws Exception {
 
         String sUuid = Sha1Encoder.encodeString(params.url);
 
@@ -1101,10 +1498,9 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         } else {
 					if (schema.contains("iso19139.mcp") && gridVariables != null) {
 						Element dps = null;
-          	if (dataParamsNCSSStylesheet != null && gridVariablesType == ServiceType.NetcdfSubset) {
-            		dps = Xml.transform(gridVariables, dataParamsNCSSStylesheet);
-						} else if (dataParamsDDXStylesheet != null && gridVariablesType == ServiceType.OPENDAP) {
-            		dps = Xml.transform(gridVariables, dataParamsDDXStylesheet);
+          	if (dataParamsNCSSStylesheet != null) {
+								Element gridVariablesXml = turnThreddsMetadataVariablesIntoXml();
+            		dps = Xml.transform(gridVariablesXml, dataParamsNCSSStylesheet);
 						}
           	if (dps != null) addDataParameters(md, dps);
 					}
@@ -1119,47 +1515,25 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 				}
     }
 
-    /**
-     * Add an Element to a child list at index after specified element.
-     *
-     * @param md         iso19139 metadata
-     * @param theNewElem the new element to be added
-     * @param name       the name of the element to search for
-     * @param ns         the namespace of the element to search for
-     **/
-
-    boolean addAfter(Element md, Element theNewElem, String name, Namespace ns) throws Exception {
-        Element chSet = md.getChild(name, ns);
-
-        if (chSet != null) {
-            int pos = md.indexOf(chSet);
-            md.addContent(pos + 1, theNewElem);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Add keywords generated from CDM coordinate systems to identificationInfo
-     *
-     * <gmd:descriptiveKeywords> <gmd:MD_Keywords> <gmd:keyword> <gco:CharacterString>
-     * </gco:CharacterString> </gmd:keyword> ... ... ... <gmd:type> <gmd:MD_KeywordType codelist...>
-     * </gmd:type> <gmd:thesaurusName> <gmd:CI_Citation> .... </gmd:CI_Citation>
-     * </gmd:thesaurusName> </gmd:MD_Keywords> </gmd:descriptiveKeywords>
-     *
-     * @param md       iso19139 metadata
-     * @param keywords gmd:keywords block to be added to metadata
-     **/
-
-    private Element addKeywords(Element md, Element keywords) throws Exception {
-        Element root = (Element) md.getChild("identificationInfo", gmd).getChildren().get(0);
-        boolean ok = addAfter(root, keywords, "descriptiveKeywords", gmd);
-        if (!ok) {
-            throw new BadXmlResponseEx("The metadata did not have a descriptiveKeywords Element");
-        }
-        return md;
-    }
+		private Element turnThreddsMetadataVariablesIntoXml() {
+			Element result = new Element("gridDataset");
+			Element gridSet = new Element("gridSet");
+			for (ThreddsMetadata.Variable var : gridVariables.values()) {
+				Element grid = new Element("grid");
+				grid.setAttribute("name", var.getName());
+				Element attr = new Element("attribute");
+				attr.setAttribute("name", "long_name");
+				attr.setAttribute("value", var.getDescription());
+				grid.addContent(attr);
+				attr = new Element("attribute");
+				attr.setAttribute("name", "units");
+				attr.setAttribute("value", var.getUnits());
+				grid.addContent(attr);
+				gridSet.addContent(grid);
+			}
+			result.addContent(gridSet);
+			return result;
+		}
 
     /**
      * Add mcp:dataParameters created from netcdf subset service to identificationInfo (mcp only)
@@ -1175,11 +1549,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         Element root = (Element) md.getChild("identificationInfo", gmd).getChildren().get(0);
         root.addContent(dataParameters); // this is dependent on the mcp schema - last element
         return md;
-    }
-
-    @Override
-    public List<HarvestError> getErrors() {
-        return errors;
     }
 
     private static class ThreddsService {
