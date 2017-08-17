@@ -2832,6 +2832,8 @@ public class DataManager implements ApplicationEventPublisherAware {
                 }
             }
 
+						boolean created = (uuid == null);
+
             String currentUuid = metadata != null ? metadata.getUuid() : null;
             String id = metadata != null ? metadata.getId() + "" : null;
             uuid = uuid == null ? currentUuid : uuid;
@@ -2847,6 +2849,13 @@ public class DataManager implements ApplicationEventPublisherAware {
             Element schemaLoc = new Element("schemaLocation");
             schemaLoc.setAttribute(getSchemaManager().getSchemaLocation(schema, context));
             env.addContent(schemaLoc);
+
+            if (Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
+							Log.debug(Geonet.DATA_MANAGER, "update-fixed-info created is "+created);
+						}
+            if (created) {
+              env.addContent(new Element("created").setText(new ISODate().toString()));
+            }
 
             if (updateDatestamp == UpdateDatestamp.YES) {
                 env.addContent(new Element("changeDate").setText(new ISODate().toString()));
