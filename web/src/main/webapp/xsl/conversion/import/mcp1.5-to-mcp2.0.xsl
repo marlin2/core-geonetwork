@@ -78,6 +78,16 @@
 		</xsl:attribute>
 	</xsl:template>
 
+  <!-- mcp:taxonomicElement doesn't exist in 2.0 -->
+	<xsl:template match="mcp:taxonomicElement|mcp:taxonomicExtent" priority="100"/>
+
+  <!-- mcp:EX_Extent doesn't exist in 2.0 - convert it to a plain old gmd:EX_Extent -->
+	<xsl:template match="mcp:EX_Extent" priority="100">
+		<xsl:element name="gmd:EX_Extent">
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:element>
+	</xsl:template>
+
   <xsl:template match="mcp-old:MD_DataIdentification" priority="100">
     <xsl:element name="mcp:MD_DataIdentification">
       <xsl:copy-of select="@*"/>
