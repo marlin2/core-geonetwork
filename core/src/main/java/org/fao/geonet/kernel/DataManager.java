@@ -2871,6 +2871,7 @@ public class DataManager implements ApplicationEventPublisherAware {
             		elUserDetails.addContent(new Element("surname").setText(user.getSurname()));
             		elUserDetails.addContent(new Element("firstname").setText(user.getName()));
             		elUserDetails.addContent(new Element("organisation").setText(user.getOrganisation()));
+            		elUserDetails.addContent(new Element("username").setText(user.getUsername()));
 								elUser.addContent(elUserDetails);
             		env.addContent(elUser);
         			}
