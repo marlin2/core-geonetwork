@@ -594,10 +594,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
      **/
 
     private void examineThreddsDataset(InvDataset ds) throws Exception {
-        //--- harvest metadata only if the dataset has changed or we don't have a wmsResponse
-        if (datasetChanged(ds) || wmsResponse == null) {
-            getMetadata(ds);
-        }
+        getMetadata(ds);
 
         //--- Add dataset uri to list of harvested uri's
         harvestUris.add(getUri(ds));
@@ -778,38 +775,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     }
 
     /**
-     * Has the dataset has been modified since the last harvest
-     *
-     * @param ds the dataset to be processed
-     **/
-
-    private boolean datasetChanged(InvDataset ds) {
-        List<RecordInfo> localRecords = localUris.getRecords(params.url);
-
-        if (localRecords == null) return true;
-
-        Date lastModifiedDate = null;
-
-        List<DateType> dates = ds.getDates();
-
-        for (DateType date : dates) {
-            if (date.getType().equalsIgnoreCase("modified")) {
-                lastModifiedDate = date.getDate();
-            }
-        }
-
-        if (lastModifiedDate == null) return true;
-
-        String datasetModifiedDate = new ISODate(lastModifiedDate.getTime(), false).toString();
-
-        for (RecordInfo localRecord : localRecords) {
-            if (localRecord.isOlderThan(datasetModifiedDate)) return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Delete all metadata previously harvested for a particular uri
      *
      * @param uri uri for which previously harvested metadata should be deleted
@@ -849,6 +814,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         return uuid;
     }
 
+    /**
+     * Get XML Response.
+     *
+     * @param url the url to get the XML response from
+     **/
+
 		private Element getXMLResponse(String url) throws MalformedURLException, IOException {
       XmlRequest req = context.getBean(GeonetHttpRequestFactory.class).createXmlRequest();
       req.setUrl(new URL(url));
@@ -859,9 +830,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 		}
 
     /**
-     * All datasets are assumed to have the same variables and WMS service metadata so we
-     * get the getcapabilities statement for one layer and then just the bounding box and 
-     * date range for all other layers.
+     * Try the different THREDDS services until we find one that gives us the extents and
+     * variables in the dataset supplied as a parameter. 
      *
      * @param ds the dataset to be processed
      */
@@ -960,9 +930,9 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 		}
 
   	/**
-   	 * Extract wms bounding box info.
+   	 * Extract ISO bounding box info.
    	 * 
-   	 * @param datasetXml JDOM xml of wms getcapabilities statement
+   	 * @param bbox EX_GeographicBoundingBox from THREDDS ISO metadata
    	 */
 
 		private boolean addISOLatLonBox(Element bbox) {
@@ -989,6 +959,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
 		}
 
+  	/**
+   	 * Extract ISO temporal extent info.
+   	 * 
+   	 * @param dimension gml:TimePeriod from THREDDS ISO metadata
+   	 */
+
 		private boolean addISOTimeSpan(Element dimension) {
 			boolean result = false;
 
@@ -1004,6 +980,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
 			return result;
 		}
+
+  	/**
+   	 * Extract ISO variable info.
+   	 * 
+   	 * @param bands List of gmd:MD_Band elements from contentInfo of ISO metadata
+   	 */
 
 		private boolean extractISOVariables(List<?> bands) {
 			boolean result = false;
@@ -1036,6 +1018,10 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 			}
 			return result;
 		}
+
+  	/**
+   	 * Build list of ISO Namespaces for use in xpath calls.
+   	 */
 
     private List<Namespace> buildISO191152NamespaceList() {
 			List<Namespace> nsList = new ArrayList<Namespace>();
@@ -1134,7 +1120,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
   	/**
    	 * Extract wms bounding box info.
    	 * 
-   	 * @param datasetXml JDOM xml of wms getcapabilities statement
+   	 * @param bbox BoundingBox element from WMS GetCapabilities
    	 */
 
 		private boolean addWMSLatLonBox(Element bbox) {
@@ -1155,6 +1141,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
 		}
 
+  	/**
+   	 * Extract wms temporal Dimension info.
+   	 * 
+   	 * @param dimension Dimension element from WMS GetCapabilities
+   	 */
+
 		private boolean addWMSTimeSpan(Element dimension) {
 			boolean result = false;
 
@@ -1172,6 +1164,12 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
 			return result;
 		}
+
+  	/**
+   	 * Extract wms layer names and use as variables.
+   	 * 
+   	 * @param layers List of Layer elements from WMS GetCapabilities
+   	 */
 
 		private boolean extractWMSVariables(List<Element> layers) {
 			boolean result = false;
