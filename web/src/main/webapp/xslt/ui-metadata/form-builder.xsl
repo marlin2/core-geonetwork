@@ -752,6 +752,10 @@
     <xsl:param name="btnLabel" required="no" as="xs:string?" select="''"/>
     <xsl:param name="btnClass" required="no" as="xs:string?" select="''"/>
 
+		<!--
+		<xsl:message><xsl:value-of select="$label"/> with directive: <xsl:copy-of select="$directive"/></xsl:message>
+		-->
+
     <xsl:if test="not($isDisabled) and $parentEditInfo/@ref != ''">
       <xsl:variable name="id" select="generate-id()"/>
       <xsl:variable name="qualifiedName"
@@ -786,7 +790,7 @@
 
                     If only one choice, make a simple button
               -->
-              <xsl:when test="count($childEditInfo/gn:choose) = 1">
+              <xsl:when test="count($childEditInfo/gn:choose) = 1 and $directive/@addDirective = ''">
                 <xsl:for-each select="$childEditInfo/gn:choose">
                   <xsl:variable name="label"
                                 select="gn-fn-metadata:getLabel($schema, @name, $labels, $parentName, '', '')"/>
@@ -808,7 +812,7 @@
               </xsl:when>
               <!--
                     If many choices, make a dropdown button -->
-              <xsl:when test="count($childEditInfo/gn:choose) > 1">
+              <xsl:when test="count($childEditInfo/gn:choose) > 1 and $directive/@addDirective = ''">
                 <div class="btn-group">
                   <button type="button"
                           class="btn btn-default dropdown-toggle {if ($btnClass != '') then $btnClass else 'fa fa-plus'} gn-add"
