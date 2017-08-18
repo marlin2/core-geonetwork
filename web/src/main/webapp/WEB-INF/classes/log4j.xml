@@ -43,7 +43,7 @@
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.editor">
-    <level value="WARN"/>
+    <level value="DEBUG"/>
   </logger>
   <logger name="geonetwork.schemamanager">
     <level value="WARN"/>
@@ -93,6 +93,12 @@
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.mef">
+    <level value="WARN"/>
+  </logger>
+  <logger name="geonetwork.settings">
+    <level value="WARN"/>
+  </logger>
+  <logger name="geonetwork.search-logger">
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.sru">
@@ -151,6 +157,9 @@
     <level value="WARN"/>
   </logger>
   <logger name="jeeves.xmlresolver">
+    <level value="WARN"/>
+  </logger>
+  <logger name="jeeves.config.springutil.JeevesDispatcherServlet">
     <level value="WARN"/>
   </logger>
 
