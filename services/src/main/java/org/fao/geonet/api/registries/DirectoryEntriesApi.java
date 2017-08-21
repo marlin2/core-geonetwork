@@ -78,7 +78,7 @@ public class DirectoryEntriesApi {
             "inserted in metadata records using XLinks. XLinks can be remote or " +
             "local.")
     @RequestMapping(
-        value = "/{uuid}",
+        value = "/{uuid:.+}",
         method = RequestMethod.GET,
         produces = {
             MediaType.APPLICATION_XML_VALUE
