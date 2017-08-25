@@ -61,6 +61,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -269,8 +270,8 @@ public class KeywordsApi {
             String sThesaurusName,
         @ApiParam(
             value = "Languages.",
-            required = true)
-        @RequestParam (name = "lang")
+            required = false)
+        @RequestParam (name = "lang", required = false)
             String [] langs,
         @ApiParam(
             value = "Only print the keyword, no thesaurus information.",
@@ -291,11 +292,16 @@ public class KeywordsApi {
         final String SEPARATOR = ",";
         ServiceContext context = ApiUtils.createServiceContext(request);
 
+        if(langs == null) {
+            langs = context.getLanguage().split(",");
+        }
         for (int i = 0; i < langs.length; i++) {
             langs[i] = mapper.iso639_2_to_iso639_1(langs[i], langs[i].substring(2));
         }
 
         Element descKeys;
+
+        uri = URLDecoder.decode(uri, "UTF-8");
 
         if (uri == null) {
             descKeys = new Element("descKeys");
