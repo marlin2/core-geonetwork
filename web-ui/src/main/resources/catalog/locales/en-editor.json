@@ -75,6 +75,7 @@
     "chooseZeroOrMoreLayerFromService": "Choose the layer published in this service corresponding to the selected record:",
     "serviceContainsManyUrl": "Choose <strong>one</strong> URL in the <strong>{{count}}</strong> provided by ",
     "searchAservice": "Select a service from the catalog",
+    "searchAparty": "Select a person/organisation from the list",
     "searchAnApplication": "Select an application from the catalog",
     "check": "Check",
     "value": "Value",
