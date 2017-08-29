@@ -176,6 +176,7 @@ public class ThesaurusManager implements ThesaurusFinder {
                 final String thesaurusDirName = thesauriDirectory.getFileName().toString();
 
                 final Thesaurus gst;
+/* Disable auto loading of thesauri from register records 
                 if (root.equals(Geonet.CodeList.REGISTER)) {
                     if (Log.isDebugEnabled(Geonet.THESAURUS_MAN)) {
                         Log.debug(Geonet.THESAURUS_MAN, "Creating thesaurus : " + aRdfDataFile);
@@ -194,9 +195,11 @@ public class ThesaurusManager implements ThesaurusFinder {
                     gst = new Thesaurus(getIsoLanguagesMapper(context), rdfFileName, root, thesaurusDirName, outputRdf, siteURL);
 
                 } else {
+*/
                     gst = new Thesaurus(getIsoLanguagesMapper(context), rdfFileName, root, thesaurusDirName, thesauriDirectory.resolve(aRdfDataFile), siteURL);
+/*
                 }
-
+*/
                 try {
                     addThesaurus(gst, false);
                 } catch (Exception e) {
