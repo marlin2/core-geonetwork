@@ -100,6 +100,7 @@ public class GlobalExceptionController {
         RuntimeException.class
     })
     public ApiError runtimeExceptionHandler(final Exception exception) {
+				exception.printStackTrace();
         return new ApiError("runtime_exception", exception.getClass().getSimpleName(), exception.getMessage());
     }
 
