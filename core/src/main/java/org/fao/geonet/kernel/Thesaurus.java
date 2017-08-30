@@ -1099,6 +1099,11 @@ public class Thesaurus {
     }
 
     public Map<String, String> getTitles(ApplicationContext context) throws JDOMException, IOException {
-        return LangUtils.translate(context, getKey());
+				String title = getKey();
+        // remove illegal xpath characters as the title will be used to find a label match
+        if (title.contains(":"))	{
+					title = title.replace(":","");
+				}
+        return LangUtils.translate(context, title);
     }
 }
