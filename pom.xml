@@ -684,6 +684,11 @@
       </dependency>
       <dependency>
         <groupId>org.geotools.jdbc</groupId>
+        <artifactId>gt-jdbc-oracle</artifactId>
+        <version>${geotools.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.geotools.jdbc</groupId>
         <artifactId>gt-jdbc-h2</artifactId>
         <version>${geotools.version}</version>
       </dependency>
