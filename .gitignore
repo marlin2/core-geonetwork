@@ -1,3 +1,7 @@
+installer/install.3xxanzmestmarlin.xml
+web/src/main/webapp/WEB-INF/marlin2-config-overrides.xml
+web/src/main/webapp/WEB-INF/classes/log4j.xml
+web/target/geonetwork/WEB-INF/classes/log4j.xml
 .DS_Store
 .checkstyle
 *.iml

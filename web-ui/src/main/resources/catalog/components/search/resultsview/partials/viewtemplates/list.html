@@ -20,9 +20,9 @@
       <a class="pull-left" ng-if="md.groupWebsite" href="{{md.groupWebsite}}" target="_blank">
         <img ng-src="../..{{md.logo}}" class="media-object"/>
       </a>
-      <a class="pull-left" ng-if="!md.groupWebsite">
+      <!-- <a class="pull-left" ng-if="!md.groupWebsite">
         <img ng-src="../..{{md.logo}}" class="media-object"/>
-      </a>
+      </a> -->
 
       <div class="media-body">
         <h4>
@@ -32,7 +32,7 @@
           <!-- Icon for types -->
           <a href="" gn-metadata-open="md" gn-metadata-open-selector=".gn-resultview"
              title="{{md.title || md.defaultTitle}}">
-            <span class="fa gn-icon-{{md.type[0]}}"></span>
+            <!-- <span class="fa gn-icon-{{md.type[0]}}"></span> -->
             {{md.title || md.defaultTitle}}</a>
         </h4>
         <p class="text-justify" dd-text-collapse dd-text-collapse-max-length="350"
