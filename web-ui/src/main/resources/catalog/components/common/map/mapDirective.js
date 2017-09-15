@@ -154,7 +154,7 @@
              };
 
              if (attrs.hleft !== '' && attrs.hbottom !== '' &&
-                 attrs.hright !== '' && attrs.htop !== '') {
+             attrs.hright !== '' && attrs.htop !== '') {
                scope.extent.md = [
                  parseFloat(attrs.hleft), parseFloat(attrs.hbottom),
                  parseFloat(attrs.hright), parseFloat(attrs.htop)
@@ -163,8 +163,8 @@
 
              var reprojExtent = function(from, to) {
                var extent = gnMap.reprojExtent(
-                   scope.extent[from],
-                   scope.projs[from], scope.projs[to]
+               scope.extent[from],
+               scope.projs[from], scope.projs[to]
                );
                if (extent && extent.map) {
                  var decimals = getDigitNumber(scope.projs.form);
@@ -181,7 +181,7 @@
 
              scope.$watch('projs.form', function(newValue, oldValue) {
                var extent = gnMap.reprojExtent(
-                   scope.extent.form, oldValue, newValue
+                 scope.extent.form, oldValue, newValue
                );
                if (extent && extent.map) {
                  var decimals = getDigitNumber(scope.projs.form);
@@ -217,6 +217,7 @@
                source: source,
                style: boxStyle
              });
+             bboxLayer.setZIndex(100);
 
              var map = new ol.Map({
                layers: [
@@ -235,13 +236,23 @@
              //Uses configuration from database
              if (gnMap.getMapConfig().context) {
                gnOwsContextService.
-                   loadContextFromUrl(gnMap.getMapConfig().context, map);
+               loadContextFromUrl(gnMap.getMapConfig().context, map);
+             }
+
+             // apply background layer from settings
+             var bgLayer = gnMap.getMapConfig().mapBackgroundLayer;
+             if (bgLayer) {
+               map.getLayers().removeAt(0);
+               gnMap.createLayerForType(bgLayer.type, {
+                 name: bgLayer.layer,
+                 url: bgLayer.url
+               }, null, map);
              }
 
              var dragbox = new ol.interaction.DragBox({
                style: boxStyle,
                condition: function() {
-                  return scope.drawing;
+                 return scope.drawing;
                }
              });
 
@@ -263,8 +274,8 @@
              map.addInteraction(dragbox);
 
              /**
-              * Draw the map extent as a bbox onto the map.
-              */
+            * Draw the map extent as a bbox onto the map.
+            */
              var drawBbox = function() {
                var coordinates, geom;
 
@@ -280,7 +291,7 @@
                }
                else {
                  coordinates = gnMap.getPolygonFromExtent(
-                     scope.extent.map);
+                 scope.extent.map);
                  geom = new ol.geom.Polygon(coordinates);
                }
                feature.setGeometry(geom);
@@ -289,31 +300,39 @@
              };
 
              /**
-              * When form is loaded
-              * - set map div
-              * - draw the feature with MD initial coordinates
-              * - fit map extent
-              */
+            * When form is loaded
+            * - set map div
+            * - draw the feature with MD initial coordinates
+            * - fit map extent
+            */
              scope.$watch('gnCurrentEdit.version', function(newValue) {
                map.setTarget(scope.mapId);
                drawBbox();
+
+               // apply extent from settings
+               var mapExtent = gnMap.getMapConfig().mapExtent;
+               if (mapExtent && ol.extent.getWidth(mapExtent) &&
+               ol.extent.getHeight(mapExtent)) {
+                  map.getView().fit(mapExtent, map.getSize());
+               }
+
                if (gnMap.isValidExtent(scope.extent.map)) {
                  map.getView().fit(scope.extent.map, map.getSize());
                }
              });
 
              /**
-              * Switch mode (panning or drawing)
-              */
+            * Switch mode (panning or drawing)
+            */
              scope.drawMap = function() {
                scope.drawing = !scope.drawing;
              };
 
              /**
-              * Called on form input change.
-              * Set map and md extent from form reprojection, and draw
-              * the bbox from the map extent.
-              */
+            * Called on form input change.
+            * Set map and md extent from form reprojection, and draw
+            * the bbox from the map extent.
+            */
              scope.updateBbox = function() {
 
                reprojExtent('form', 'map');
@@ -324,10 +343,10 @@
              };
 
              /**
-              * Callback sent to gn-country-picker directive.
-              * Called on region selection from typeahead.
-              * Zoom to extent.
-              */
+            * Callback sent to gn-country-picker directive.
+            * Called on region selection from typeahead.
+            * Zoom to extent.
+            */
              scope.onRegionSelect = function(region) {
                // Manage regions service and geonames
                var bbox = region.bbox || region;
