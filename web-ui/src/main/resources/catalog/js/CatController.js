@@ -68,7 +68,9 @@
             'cat': 'ca',
             'fin': 'fi',
             'ice': 'is',
-            'ita' : 'it'
+            'ita' : 'it',
+            'rus': 'ru',
+            'chi': 'zh'
           }
         },
         'home': {
@@ -169,8 +171,11 @@
           'disabledTools': {
             'processes': true
           },
-          'graticuleOgcService': {}
+          'graticuleOgcService': {},
+          'mapExtent': [0, 0, 0, 0],
+          'mapBackgroundLayer': {}
         },
+        'geocoder': 'https://secure.geonames.org/searchJSON',
         'editor': {
           'enabled': true,
           'appUrl': '../../srv/{{lang}}/catalog.edit'
@@ -228,9 +233,18 @@
         gnViewerSettings.bingKey = this.gnCfg.mods.map.bingKey;
         gnViewerSettings.owsContext = gnViewerSettings.owsContext ||
             this.gnCfg.mods.map.context;
+        gnViewerSettings.geocoder = this.gnCfg.mods.geocoder;
       },
       getDefaultConfig: function() {
         return angular.copy(defaultConfig);
+      },
+      // this returns a copy of the default config without the languages object
+      // this way, the object can be used as reference for a complete ui
+      // settings page
+      getMergeableDefaultConfig: function() {
+        var copy = angular.copy(defaultConfig);
+        copy.mods.header.languages = {};
+        return copy;
       }
     };
   }());
@@ -374,7 +388,8 @@
       $scope.langLabels = {'eng': 'English', 'dut': 'Nederlands',
         'fre': 'Français', 'ger': 'Deutsch', 'kor': '한국의',
         'spa': 'Español', 'cat': 'Català', 'cze': 'Czech',
-        'ita': 'Italiano', 'fin': 'Suomeksi', 'ice': 'Íslenska'};
+        'ita': 'Italiano', 'fin': 'Suomeksi', 'ice': 'Íslenska',
+        'rus': 'русский', 'chi': '中文'};
       $scope.url = '';
       $scope.gnUrl = gnGlobalSettings.gnUrl;
       $scope.gnCfg = gnGlobalSettings.gnCfg;
@@ -402,7 +417,7 @@
         $rootScope.csrf = value;
       });
       //If no csrf, ask for one:
-      if(!$rootScope.csrf) {
+      if (!$rootScope.csrf) {
         $http.post('info?type=me');
       }
       //Comment the upper lines if you want to remove csrf support

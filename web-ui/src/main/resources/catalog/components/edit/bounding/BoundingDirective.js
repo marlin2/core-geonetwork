@@ -44,7 +44,8 @@
    *  the value entered by the user
    */
   module.directive('gnBoundingPolygon', [
-    function() {
+    'gnMap',
+    function(gnMap) {
       return {
         restrict: 'E',
         scope: {
@@ -56,6 +57,25 @@
         link: {
           post: function(scope, element) {
             scope.ctrl.map.renderSync();
+
+            // apply extent from settings
+            var mapExtent = gnMap.getMapConfig().mapExtent;
+            if (mapExtent && ol.extent.getWidth(mapExtent) &&
+                ol.extent.getHeight(mapExtent)) {
+              scope.ctrl.map.getView().fit(mapExtent,
+                  scope.ctrl.map.getSize());
+            }
+
+            // apply background layer from settings
+            var bgLayer = gnMap.getMapConfig().mapBackgroundLayer;
+            if (bgLayer) {
+              scope.ctrl.map.getLayers().removeAt(0);
+              gnMap.createLayerForType(bgLayer.type, {
+                name: bgLayer.layer,
+                url: bgLayer.url
+              }, null, scope.ctrl.map);
+            }
+
             scope.ctrl.initValue();
           }
         },
@@ -67,7 +87,6 @@
           '$http',
           'gnMap',
           'gnOwsContextService',
-          'gnViewerSettings',
           'ngeoDecorateInteraction',
           'gnGeometryService',
           function BoundingPolygonController(
@@ -76,7 +95,6 @@
               $http,
               gnMap,
               gnOwsContextService,
-              gnViewerSettings,
               ngeoDecorateInteraction,
               gnGeometryService) {
             var ctrl = this;
@@ -155,15 +173,15 @@
             ctrl.formats = ['WKT', 'GeoJSON', 'GML'];
             ctrl.currentFormat = ctrl.formats[0];
 
-            // parse initial input coordinates to display shape (first in WKT)
+            // parse initial input coordinates to display shape
             ctrl.initValue = function() {
               if (ctrl.polygonXml) {
                 // parse first feature from source XML & set geometry name
                 var correctedXml = ctrl.polygonXml
-                    .replace('<gml:LinearRingTypeCHOICE_ELEMENT0>', '')
-                    .replace('</gml:LinearRingTypeCHOICE_ELEMENT0>', '')
-                    .replace('<gml:LineStringTypeCHOICE_ELEMENT1>', '')
-                    .replace('</gml:LineStringTypeCHOICE_ELEMENT1>', '');
+                    .replace(/<gml:LinearRingTypeCHOICE_ELEMENT0>/g, '')
+                    .replace(/<\/gml:LinearRingTypeCHOICE_ELEMENT0>/g, '')
+                    .replace(/<gml:LineStringTypeCHOICE_ELEMENT1>/g, '')
+                    .replace(/<\/gml:LineStringTypeCHOICE_ELEMENT1>/g, '');
                 var geometry = gnGeometryService.parseGeometryInput(
                     ctrl.map,
                     correctedXml,
