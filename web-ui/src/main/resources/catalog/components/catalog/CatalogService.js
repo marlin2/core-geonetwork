@@ -600,6 +600,9 @@
       isOwned: function() {
         return this['geonet:info'].owner === 'true';
       },
+      isLocked: function() {
+        return this['geonet:info'].lock === 'true';
+      },
       getOwnerId: function() {
         return this['geonet:info'].ownerId;
       },

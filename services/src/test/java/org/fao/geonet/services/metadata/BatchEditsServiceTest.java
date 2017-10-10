@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class BatchEditsServiceTest extends AbstractServiceIntegrationTest {
 
-    List<String> uuids = new ArrayList();
+    List<String> uuids = new ArrayList<String>();
     String firstMetadataId = null;
     ServiceContext context;
 

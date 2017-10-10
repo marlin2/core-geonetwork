@@ -23,11 +23,24 @@
 
 package org.fao.geonet.kernel.mef;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
+import static org.fao.geonet.domain.Localized.translationXmlToLangMap;
 
-import jeeves.server.ServiceConfig;
-import jeeves.server.context.ServiceContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
 
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.GeonetContext;
@@ -49,8 +62,14 @@ import org.fao.geonet.domain.Source;
 import org.fao.geonet.exceptions.BadFormatEx;
 import org.fao.geonet.exceptions.NoSchemaMatchesException;
 import org.fao.geonet.exceptions.UnAuthorizedException;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
+import org.fao.geonet.kernel.metadata.IMetadataIndexer;
+import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.metadata.IMetadataOperations;
+import org.fao.geonet.kernel.metadata.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.metadata.IMetadataUtils;
+import org.fao.geonet.kernel.metadata.IMetadataValidator;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.GroupRepository;
@@ -69,24 +88,11 @@ import org.jdom.Element;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.google.common.base.Optional;
+import com.google.common.collect.Maps;
 
-import javax.annotation.Nonnull;
-
-import static org.fao.geonet.domain.Localized.translationXmlToLangMap;
+import jeeves.server.ServiceConfig;
+import jeeves.server.context.ServiceContext;
 
 public class Importer {
     @Deprecated
@@ -122,7 +128,7 @@ public class Importer {
                                         final ServiceContext context,
                                         final Path mefFile) throws Exception {
         ApplicationContext applicationContext = ApplicationContextHolder.get();
-        final DataManager dm = applicationContext.getBean(DataManager.class);
+        final IMetadataManager dm = applicationContext.getBean(DataManager.class);
         final SettingManager sm = applicationContext.getBean(SettingManager.class);
 
         // Load preferred schema and set to iso19139 by default
@@ -162,8 +168,7 @@ public class Importer {
                 md.add(index, metadata);
             }
 
-            public void handleMetadataFiles(DirectoryStream<Path> metadataXmlFiles, Element info, int index)
-                throws Exception {
+            public void handleMetadataFiles(DirectoryStream<Path> metadataXmlFiles, Element info, int index) throws Exception {
                 String infoSchema = "_none_";
                 if (info != null && info.getContentSize() != 0) {
                     Element general = info.getChild("general");
@@ -190,7 +195,7 @@ public class Importer {
                     if (file != null && java.nio.file.Files.isRegularFile(file)) {
                         Element metadata = Xml.loadFile(file);
                         try {
-                            String metadataSchema = dm.autodetectSchema(metadata, null);
+                            String metadataSchema = applicationContext.getBean(IMetadataSchemaUtils.class).autodetectSchema(metadata, null);
                             // If local node doesn't know metadata
                             // schema try to load next xml file.
                             if (metadataSchema == null) {
@@ -312,7 +317,7 @@ public class Importer {
 
 
                 final Element metadata = md.get(index);
-                String schema = dm.autodetectSchema(metadata, null);
+                String schema = applicationContext.getBean(IMetadataSchemaUtils.class).autodetectSchema(metadata, null);
 
                 if (schema == null)
                     throw new Exception("Unknown schema");
@@ -399,7 +404,7 @@ public class Importer {
 
                 if (validate) {
                     // Validate xsd and schematron
-                    DataManager.validateMetadata(schema, metadata, context);
+                    applicationContext.getBean(IMetadataValidator.class).validateMetadata(schema, metadata, context);
                 }
 
 
@@ -412,7 +417,7 @@ public class Importer {
                     // UUID is set as @uuid in root element
                     uuid = UUID.randomUUID().toString();
 
-                    fc.add(index, dm.setUUID("iso19110", uuid, fc.get(index)));
+                    fc.add(index, applicationContext.getBean(IMetadataUtils.class).setUUID("iso19110", uuid, fc.get(index)));
 
                     //
                     // insert metadata
@@ -490,7 +495,7 @@ public class Importer {
                 Files.createDirectories(priDir);
 
 
-                dm.indexMetadata(metadataIdMap.get(index), true, null);
+                applicationContext.getBean(IMetadataIndexer.class).indexMetadata(metadataIdMap.get(index), true, null);
             }
 
             // --------------------------------------------------------------------
@@ -560,7 +565,7 @@ public class Importer {
             uuid = newuuid;
 
             // --- set uuid inside metadata
-            md.add(index, dm.setUUID(schema, uuid, md.get(index)));
+            md.add(index, applicationContext.getBean(IMetadataUtils.class).setUUID(schema, uuid, md.get(index)));
         } else {
             if (sourceName == null)
                 sourceName = "???";
@@ -579,7 +584,7 @@ public class Importer {
         try {
             if (dm.existsMetadataUuid(uuid) && uuidAction != MEFLib.UuidAction.NOTHING) {
                 // user has privileges to replace the existing metadata
-                if (dm.getAccessManager().canEdit(context, dm.getMetadataId(uuid))) {
+                if (context.getBean(AccessManager.class).canEdit(context, dm.getMetadataId(uuid))) {
                     if (Log.isDebugEnabled(Geonet.MEF)) {
                         Log.debug(Geonet.MEF, "Deleting existing metadata with UUID : " + uuid);
                     }
@@ -631,8 +636,7 @@ public class Importer {
     /**
      * Add privileges according to information file.
      */
-    private static Group addPrivileges(final ServiceContext context, final DataManager dm, final int metadataId,
-                                       final Element privil) {
+    private static Group addPrivileges(final ServiceContext context, final IMetadataManager dm, final int metadataId, final Element privil) {
 
         final GroupRepository groupRepository = context.getBean(GroupRepository.class);
         final OperationAllowedRepository allowedRepository = context.getBean(OperationAllowedRepository.class);
@@ -676,7 +680,7 @@ public class Importer {
     /**
      * Add operations according to information file.
      */
-    private static Set<OperationAllowed> addOperations(final ServiceContext context, final DataManager dm, final Element group,
+    private static Set<OperationAllowed> addOperations(final ServiceContext context, final IMetadataManager dm, final Element group,
                                                        final int metadataId, final int grpId) {
         @SuppressWarnings("unchecked")
         List<Element> operations = group.getChildren("operation");
@@ -685,7 +689,7 @@ public class Importer {
         for (Element operation : operations) {
             String opName = operation.getAttributeValue("name");
 
-            int opId = dm.getAccessManager().getPrivilegeId(opName);
+            int opId = context.getBean(AccessManager.class).getPrivilegeId(opName);
 
             if (opId == -1) {
                 if (Log.isDebugEnabled(Geonet.MEF)) {
@@ -697,7 +701,7 @@ public class Importer {
                 if (Log.isDebugEnabled(Geonet.MEF)) {
                     Log.debug(Geonet.MEF, "   Adding --> " + opName);
                 }
-                Optional<OperationAllowed> opAllowed = dm.getOperationAllowedToAdd(context, metadataId, grpId, opId);
+                Optional<OperationAllowed> opAllowed = context.getBean(IMetadataOperations.class).getOperationAllowedToAdd(context, metadataId, grpId, opId);
                 if (opAllowed.isPresent()) {
                     toAdd.add(opAllowed.get());
                 }

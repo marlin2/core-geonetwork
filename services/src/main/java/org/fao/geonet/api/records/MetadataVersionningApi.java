@@ -91,10 +91,10 @@ public class MetadataVersionningApi {
             String metadataUuid,
         HttpServletRequest request
     ) throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
 
-        DataManager dataManager = appContext.getBean(DataManager.class);
+        IMetadataUtils dataManager = appContext.getBean(IMetadataUtils.class);
 
         dataManager.versionMetadata(ApiUtils.createServiceContext(request),
             String.valueOf(metadata.getId()), metadata.getXmlData(false));

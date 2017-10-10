@@ -108,6 +108,7 @@ public class MetadataSharingApi {
     })
     @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public void share(
         @ApiParam(
             value = API_PARAM_RECORD_UUID,
@@ -128,7 +129,7 @@ public class MetadataSharingApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
 
@@ -178,6 +179,7 @@ public class MetadataSharingApi {
     @ResponseStatus(HttpStatus.CREATED)
     public
     @ResponseBody
+    @Transactional
     MetadataProcessingReport share(
         @ApiParam(value = ApiParams.API_PARAM_RECORD_UUIDS_OR_SELECTION,
             required = false)
@@ -208,7 +210,7 @@ public class MetadataSharingApi {
             final ApplicationContext appContext = ApplicationContextHolder.get();
             final DataManager dataMan = appContext.getBean(DataManager.class);
             final AccessManager accessMan = appContext.getBean(AccessManager.class);
-            final MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
+            final IMetadataManager metadataRepository = appContext.getBean(IMetadataManager.class);
 
             UserSession us = ApiUtils.getUserSession(session);
             boolean isAdmin = Profile.Administrator == us.getProfile();
@@ -218,7 +220,7 @@ public class MetadataSharingApi {
 
             List<String> listOfUpdatedRecords = new ArrayList<>();
             for (String uuid : records) {
-                Metadata metadata = metadataRepository.findOneByUuid(uuid);
+                IMetadata metadata = metadataRepository.getMetadataObject(uuid);
                 if (metadata == null) {
                     report.incrementNullRecords();
                 } else if (!accessMan.canEdit(
@@ -266,7 +268,7 @@ public class MetadataSharingApi {
         SharingParameter sharing,
         DataManager dataMan,
         ServiceContext context,
-        Metadata metadata,
+        IMetadata metadata,
         Map<String, Integer> operationMap,
         List<GroupOperations> privileges) throws Exception {
         if (privileges != null) {
@@ -312,7 +314,7 @@ public class MetadataSharingApi {
      * @return
      * @throws Exception
      */
-    private boolean canPublishToAllGroup(ServiceContext context, DataManager dm, Metadata metadata) throws Exception {
+    private boolean canPublishToAllGroup(ServiceContext context, DataManager dm, IMetadata metadata) throws Exception {
         MetadataValidationRepository metadataValidationRepository = context.getBean(MetadataValidationRepository.class);
 
         boolean hasValidation =
@@ -360,7 +362,7 @@ public class MetadataSharingApi {
     )
         throws Exception {
         // TODO: Restrict to user group only in response depending on settings?
-        Metadata metadata = ApiUtils.canViewRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canViewRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
         UserSession userSession = ApiUtils.getUserSession(session);
@@ -465,7 +467,7 @@ public class MetadataSharingApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
 
@@ -477,7 +479,7 @@ public class MetadataSharingApi {
         }
 
         DataManager dataManager = appContext.getBean(DataManager.class);
-        MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
+        IMetadataManager metadataRepository = appContext.getBean(IMetadataManager.class);
 
         metadata.getSourceInfo().setGroupOwner(groupIdentifier);
         metadataRepository.save(metadata);
@@ -606,7 +608,7 @@ public class MetadataSharingApi {
             final DataManager dataManager = context.getBean(DataManager.class);
             final MetadataCategoryRepository categoryRepository = context.getBean(MetadataCategoryRepository.class);
             final AccessManager accessMan = context.getBean(AccessManager.class);
-            final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
+            final IMetadataManager metadataRepository = context.getBean(IMetadataManager.class);
 
             ServiceContext serviceContext = ApiUtils.createServiceContext(request);
 
@@ -675,14 +677,14 @@ public class MetadataSharingApi {
         throws Exception {
         MetadataProcessingReport report = new SimpleMetadataProcessingReport();
 
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         try {
             report.setTotalRecords(1);
 
             final ApplicationContext context = ApplicationContextHolder.get();
             final DataManager dataManager = context.getBean(DataManager.class);
             final AccessManager accessMan = context.getBean(AccessManager.class);
-            final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
+            final IMetadataManager metadataRepository = context.getBean(IMetadataManager.class);
 
             ServiceContext serviceContext = ApiUtils.createServiceContext(request);
             List<String> listOfUpdatedRecords = new ArrayList<>();
@@ -707,10 +709,10 @@ public class MetadataSharingApi {
                                  MetadataProcessingReport report,
                                  DataManager dataManager,
                                  AccessManager accessMan,
-                                 MetadataRepository metadataRepository,
+                                 IMetadataManager metadataRepository,
                                  ServiceContext serviceContext,
                                  List<String> listOfUpdatedRecords, String uuid) throws Exception {
-        Metadata metadata = metadataRepository.findOneByUuid(uuid);
+        IMetadata metadata = metadataRepository.getMetadataObject(uuid);
         if (metadata == null) {
             report.incrementNullRecords();
         } else if (!accessMan.canEdit(

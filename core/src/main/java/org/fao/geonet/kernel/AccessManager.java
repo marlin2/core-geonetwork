@@ -23,13 +23,22 @@
 
 package org.fao.geonet.kernel;
 
-import jeeves.server.UserSession;
-import jeeves.server.context.ServiceContext;
+import static org.fao.geonet.repository.specification.OperationAllowedSpecs.hasMetadataId;
+import static org.fao.geonet.repository.specification.OperationAllowedSpecs.hasOperation;
+import static org.springframework.data.jpa.domain.Specifications.where;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.ApplicationContextHolder;
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Group;
-import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.MetadataSourceInfo;
 import org.fao.geonet.domain.Operation;
 import org.fao.geonet.domain.OperationAllowed;
@@ -41,10 +50,10 @@ import org.fao.geonet.domain.Setting;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.domain.UserGroup;
 import org.fao.geonet.domain.User_;
+import org.fao.geonet.kernel.metadata.IMetadataManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.GroupRepositoryCustom;
-import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
 import org.fao.geonet.repository.OperationRepository;
 import org.fao.geonet.repository.SettingRepository;
@@ -52,21 +61,19 @@ import org.fao.geonet.repository.SortUtils;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
+import org.fao.geonet.utils.Log;
 import org.jdom.Element;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import static org.fao.geonet.repository.specification.OperationAllowedSpecs.hasMetadataId;
-import static org.fao.geonet.repository.specification.OperationAllowedSpecs.hasOperation;
-import static org.springframework.data.jpa.domain.Specifications.where;
+import jeeves.server.UserSession;
+import jeeves.server.context.ServiceContext;
 
 /**
  * Handles the access to a metadata depending on the metadata/group.
@@ -181,6 +188,22 @@ public class AccessManager {
         return hs;
     }
 
+    public Set<Integer> getReviewerGroups(User user) throws Exception {
+        Set<Integer> hs = new HashSet<Integer>();
+        UserGroupRepository _userGroupRepository = ApplicationContextHolder.get().getBean(UserGroupRepository.class);
+
+        // get other groups
+        Specification<UserGroup> spec =
+            UserGroupSpecs.hasUserId(user.getId());
+        spec = Specifications
+            .where(spec)
+            .and(UserGroupSpecs.hasProfile(Profile.Reviewer));
+
+        hs.addAll(_userGroupRepository.findGroupIds(spec));
+
+        return hs;
+    }
+
     public Set<Integer> getReviewerGroups(UserSession usrSess) throws Exception {
         Set<Integer> hs = new HashSet<Integer>();
         UserGroupRepository _userGroupRepository = ApplicationContextHolder.get().getBean(UserGroupRepository.class);
@@ -242,6 +265,16 @@ public class AccessManager {
     }
 
     /**
+     * Returns true if, and only if, at least one of these conditions is satisfied: <ul> <li>the
+     * user is owner (@see #isOwner)</li> <li>the user has edit rights over the metadata</li> </ul>
+     *
+     * @param id The metadata internal identifier
+     */
+    public boolean canEdit(final String id) throws Exception {
+        return isOwner(id) || hasEditPermission(id);
+    }
+
+    /**
      * Return true if the current user is: <ul> <li>administrator</li> <li>the metadata owner (the
      * user who created the record)</li> <li>reviewer in the group the metadata was created</li>
      * </ul>
@@ -254,13 +287,47 @@ public class AccessManager {
      */
     public boolean isOwner(final ServiceContext context, final String id) throws Exception {
 
+        if(id == null) {
+          Log.error(Geonet.ACCESS_MANAGER, "id parameter on AccessManager.isOwner is null. This shouldn't be happening.");
+          return false;
+        }
+
+        if(context == null) {
+          Log.error(Geonet.ACCESS_MANAGER, "context parameter on AccessManager.isOwner is null. This shouldn't be happening.");
+          return false;
+        }
+
         //--- retrieve metadata info
-        Metadata info = context.getBean(MetadataRepository.class).findOne(id);
+        IMetadata info = context.getBean(IMetadataManager.class)
+                .getMetadataObjectNoPriv(Integer.valueOf(id)); 
 
         if (info == null)
             return false;
         final MetadataSourceInfo sourceInfo = info.getSourceInfo();
         return isOwner(context, sourceInfo);
+    }
+
+    /**
+     * Return true if the current user is: <ul> <li>administrator</li> <li>the metadata owner (the
+     * user who created the record)</li> <li>reviewer in the group the metadata was created</li>
+     * </ul>
+     *
+     * Note: old GeoNetwork was also restricting editing on harvested record. This is not restricted
+     * on the server side anymore. If a record is harvested it could be edited by default but the
+     * client application may restrict this condition.
+     *
+     * @param id The metadata internal identifier
+     */
+    public boolean isOwner(final String id) throws Exception {
+
+        //--- retrieve metadata info
+        IMetadata info = ApplicationContextHolder.get().getBean(IMetadataManager.class)
+                .getMetadataObjectNoPriv(Integer.valueOf(id));
+
+        if (info == null)
+            return false;
+        final MetadataSourceInfo sourceInfo = info.getSourceInfo();
+        return isOwner(sourceInfo);
     }
 
     /**
@@ -308,17 +375,52 @@ public class AccessManager {
     }
 
     /**
-     * TODO javadoc.
+     * Return true if the current user is: <ul> <li>administrator</li> <li>the metadata owner (the
+     * user who created the record)</li> <li>reviewer in the group the metadata was created</li>
+     * </ul>
+     *
+     * Note: old GeoNetwork was also restricting editing on harvested record. This is not restricted
+     * on the server side anymore. If a record is harvested it could be edited by default but the
+     * client application may restrict this condition.
+     *
+     * @param sourceInfo The metadata source/owner information
      */
-    private String join(Set<Integer> set, String delim) {
-        StringBuilder sb = new StringBuilder();
-        String loopDelim = "";
-        for (Integer s : set) {
-            sb.append(loopDelim);
-            sb.append(s + "");
-            loopDelim = delim;
+    public boolean isOwner(MetadataSourceInfo sourceInfo) throws Exception {
+
+        final SecurityContext context = SecurityContextHolder.getContext();
+        Authentication auth = context.getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return false;
         }
-        return sb.toString();
+
+        UserRepository userRepo = ApplicationContextHolder.get().getBean(UserRepository.class);
+
+        //--- check if the user is an administrator
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User us = userRepo.findOneByUsername(userDetails.getUsername());
+        final Profile profile = us.getProfile();
+        if (profile == Profile.Administrator)
+            return true;
+
+        //--- check if the user is the metadata owner
+        //
+        if (sourceInfo.getOwner().equals(us.getId()))
+            return true;
+
+        //--- check if the user is a reviewer or useradmin
+        if (profile != Profile.Reviewer && profile != Profile.UserAdmin)
+            return false;
+
+        //--- if there is no group owner then the reviewer cannot review and the useradmin cannot administer
+        final Integer groupOwner = sourceInfo.getGroupOwner();
+        if (groupOwner == null) {
+            return false;
+        }
+        for (Integer userGroup : getReviewerGroups(us)) {
+            if (userGroup == groupOwner.intValue())
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -347,7 +449,8 @@ public class AccessManager {
      * @param metadataId the id of the metadata
      */
     public boolean isVisibleToAll(final String metadataId) throws Exception {
-        Metadata metadata = ApplicationContextHolder.get().getBean(MetadataRepository.class).findOne(metadataId);
+        IMetadata metadata = ApplicationContextHolder.get().getBean(IMetadataManager.class)
+                .getMetadataObjectNoPriv(Integer.valueOf(metadataId));
         if (metadata == null) {
             return false;
         } else {
@@ -396,7 +499,7 @@ public class AccessManager {
      * @param group    the group to check
      * @param opId     the id of the operation to check for
      */
-    public boolean hasPermission(final Metadata metadata, final Group group, final int opId) {
+    public boolean hasPermission(final IMetadata metadata, final Group group, final int opId) {
         OperationAllowedRepository opAllowedRepository = ApplicationContextHolder.get().getBean(OperationAllowedRepository.class);
         return opAllowedRepository.findOneById_GroupIdAndId_MetadataIdAndId_OperationId(group.getId(), metadata.getId(), opId) != null;
     }
@@ -422,6 +525,40 @@ public class AccessManager {
         }
 
         Specifications spec = where(UserGroupSpecs.hasProfile(Profile.Editor)).and(UserGroupSpecs.hasUserId(us.getUserIdAsInt()));
+
+        List<Integer> opAlloweds = new ArrayList<Integer>();
+        for (OperationAllowed opAllowed : allOpAlloweds) {
+            opAlloweds.add(opAllowed.getId().getGroupId());
+        }
+        spec = spec.and(UserGroupSpecs.hasGroupIds(opAlloweds));
+
+        return (!userGroupRepository.findAll(spec).isEmpty());
+    }
+
+    /**
+     * Check if current user can edit the metadata according to the groups where the metadata is
+     * editable.
+     *
+     * @param id The metadata internal identifier
+     */
+    public boolean hasEditPermission(final String id) throws Exception {
+        ApplicationContext context = ApplicationContextHolder.get();
+        Authentication us = SecurityContextHolder.getContext().getAuthentication();
+        if (us == null || !us.isAuthenticated())
+            return false;
+
+
+        OperationAllowedRepository opAllowedRepository = context.getBean(OperationAllowedRepository.class);
+        UserGroupRepository userGroupRepository = context.getBean(UserGroupRepository.class);
+        List<OperationAllowed> allOpAlloweds = opAllowedRepository.findAll(where(hasMetadataId(id)).and(hasOperation(ReservedOperation
+            .editing)));
+        if (allOpAlloweds.isEmpty()) {
+            return false;
+        }
+
+        Specifications spec = where(UserGroupSpecs.hasProfile(Profile.Editor))
+            .and(UserGroupSpecs.hasUserId(context.getBean(UserRepository.class)
+                .findOneByUsername(us.getName()).getId()));
 
         List<Integer> opAlloweds = new ArrayList<Integer>();
         for (OperationAllowed opAllowed : allOpAlloweds) {

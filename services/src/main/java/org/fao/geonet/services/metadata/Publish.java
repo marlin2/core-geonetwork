@@ -34,13 +34,16 @@ import jeeves.server.context.ServiceContext;
 import jeeves.server.dispatchers.ServiceManager;
 
 import org.fao.geonet.ApplicationContextHolder;
-import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.exceptions.ServiceNotAllowedEx;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SelectionManager;
+import org.fao.geonet.kernel.metadata.IMetadataIndexer;
+import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.metadata.IMetadataOperations;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.MetadataValidationRepository;
@@ -132,7 +135,7 @@ public class Publish {
         ConfigurableApplicationContext appContext = ApplicationContextHolder.get();
         DataManager dataManager = appContext.getBean(DataManager.class);
         OperationAllowedRepository operationAllowedRepository = appContext.getBean(OperationAllowedRepository.class);
-        MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
+        IMetadataManager metadataRepository = appContext.getBean(IMetadataManager.class);
         MetadataValidationRepository metadataValidationRepository = appContext.getBean(MetadataValidationRepository.class);
         SettingManager sm = appContext.getBean(SettingManager.class);
 
@@ -171,11 +174,11 @@ public class Publish {
                             (metadataValidationRepository.count(MetadataValidationSpecs.hasMetadataId(mdId)) > 0);
 
                     if (!hasValidation) {
-                        Metadata metadata = metadataRepository.findOne(mdId);
+                        IMetadata metadata = metadataRepository.getMetadataObject(mdId);
 
                         dataManager.doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
                                 new Document(metadata.getXmlData(false)), serviceContext.getLanguage());
-                        dataManager.indexMetadata(nextId, true, null);
+                        mdIndexer.indexMetadata(nextId, true, null);
                     }
 
                     boolean isInvalid =
@@ -310,6 +313,8 @@ public class Publish {
     @XmlRootElement(name = "publishReport")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static final class PublishReport implements Serializable {
+        
+        private static final long serialVersionUID = -4088318479396943965L;
         private int published, unpublished, unmodified, disallowed, novalid;
 
         public void incPublished() {

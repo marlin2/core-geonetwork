@@ -205,7 +205,8 @@ public class Aligner extends BaseAligner {
         // insert metadata
         //
         int userid = 1;
-        Metadata metadata = new Metadata().setUuid(ri.uuid);
+        Metadata metadata = new Metadata();
+        metadata.setUuid(ri.uuid);
         metadata.getDataInfo().
             setSchemaId(schema).
             setRoot(md.getQualifiedName()).
@@ -221,7 +222,7 @@ public class Aligner extends BaseAligner {
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        metadata = dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
@@ -230,6 +231,13 @@ public class Aligner extends BaseAligner {
         dataMan.indexMetadata(id, Math.random() < 0.01, null);
         result.addedMetadata++;
     }
+
+
+    //--------------------------------------------------------------------------
+  	//---
+  	//--- Private methods : updateMetadata
+  	//---
+  	//--------------------------------------------------------------------------
 
     private void updateMetadata(RecordInfo ri, String id) throws Exception {
         String date = localUuids.getChangeDate(ri.uuid);
@@ -262,7 +270,7 @@ public class Aligner extends BaseAligner {
                 boolean ufo = false;
                 boolean index = false;
                 String language = context.getLanguage();
-                final Metadata metadata = dataMan.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate, false);
+                final Metadata metadata = (Metadata) dataMan.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate, false);
 
                 OperationAllowedRepository repository = context.getBean(OperationAllowedRepository.class);
                 repository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));

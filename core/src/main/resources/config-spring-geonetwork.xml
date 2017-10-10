@@ -161,6 +161,8 @@
     <property name="cronExpression" value="0 0 6 ? * *" />
   </bean>
 
+    <!-- Draft or not drafted version when editing published metadata -->
+    <!-- Comment to disable draft -->
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataIndexer"/>
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataManager"/>
     <bean class="org.fao.geonet.kernel.datamanager.base.BaseMetadataValidator"/>

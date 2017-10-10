@@ -40,7 +40,7 @@ import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Edit;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
-import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.exceptions.ConcurrentUpdateEx;
 import org.fao.geonet.lib.Lib;
 import org.jdom.*;
@@ -168,7 +168,7 @@ class EditUtils {
         // update element and return status
         //
 
-        Metadata result = null;
+        IMetadata result = null;
         // whether to request automatic changes (update-fixed-info)
         boolean ufo = true;
         // whether to index on update
@@ -204,7 +204,7 @@ class EditUtils {
             return null;
         }
 
-        EditLib editLib = dataManager.getEditLib();
+        EditLib editLib = context.getBean(IMetadataManager.class).getEditLib();
 
         String schema = dataManager.getMetadataSchema(id);
         editLib.expandElements(schema, md);

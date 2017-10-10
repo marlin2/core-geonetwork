@@ -102,9 +102,14 @@ public class MetadataTagApi {
             String metadataUuid,
         HttpServletRequest request
     ) throws Exception {
-        Metadata metadata = ApiUtils.canViewRecord(metadataUuid, request);
-        ApplicationContext appContext = ApplicationContextHolder.get();
-        return metadata.getMetadataCategories();
+        IMetadata metadata = ApiUtils.canViewRecord(metadataUuid, request);
+        Set<MetadataCategory> categories = null;
+        if(metadata instanceof Metadata) {
+            categories = ((Metadata)metadata).getMetadataCategories();
+        } else if(metadata instanceof MetadataDraft) {
+            categories =  ((MetadataDraft)metadata).getMetadataCategories();
+        } 
+        return categories;
     }
 
 
@@ -145,7 +150,7 @@ public class MetadataTagApi {
             boolean clear,
         HttpServletRequest request
     ) throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
 
         if (clear) {
@@ -199,7 +204,7 @@ public class MetadataTagApi {
             Integer[] id,
         HttpServletRequest request
     ) throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
 
         if (id == null || id.length == 0) {

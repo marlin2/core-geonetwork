@@ -37,6 +37,7 @@ import org.fao.geonet.api.processing.report.XsltMetadataProcessingReport;
 import org.fao.geonet.api.records.model.suggestion.SuggestionType;
 import org.fao.geonet.api.records.model.suggestion.SuggestionsType;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.kernel.DataManager;
@@ -108,7 +109,7 @@ public class MetadataProcessApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
@@ -187,7 +188,7 @@ public class MetadataProcessApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         boolean save = request.getMethod().equals("POST");
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
@@ -235,7 +236,7 @@ public class MetadataProcessApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         boolean save = true;
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
@@ -249,7 +250,7 @@ public class MetadataProcessApi {
     }
 
     private Element process(String process, HttpServletRequest request,
-                         Metadata metadata, boolean save, ServiceContext context,
+                         IMetadata metadata, boolean save, ServiceContext context,
                          SettingManager sm, XsltMetadataProcessingReport report) throws Exception {
         Element processedMetadata;
         try {

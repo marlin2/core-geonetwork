@@ -30,6 +30,7 @@ import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.domain.ISODate;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.DataManager;
@@ -114,7 +115,7 @@ public class MetadataWorkflowApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         Locale locale = languageUtils.parseAcceptLanguage(request.getLocales());
         ServiceContext context = ApiUtils.createServiceContext(request, locale.getISO3Language());
@@ -142,7 +143,7 @@ public class MetadataWorkflowApi {
         sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment);
 
         //--- reindex metadata
-        DataManager dataManager = appContext.getBean(DataManager.class);
+        IMetadataIndexer dataManager = appContext.getBean(IMetadataIndexer.class);
         dataManager.indexMetadata(String.valueOf(metadata.getId()), true, null);
     }
 }

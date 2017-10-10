@@ -398,7 +398,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         //
         // insert metadata
         //
-        Metadata metadata = new Metadata().setUuid(uuid);
+        Metadata metadata = new Metadata();
+        metadata.setUuid(uuid);
         metadata.getDataInfo().
             setSchemaId(schema).
             setRoot(md.getQualifiedName()).
@@ -416,7 +417,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         if (!dataMan.existsMetadataUuid(uuid)) {
             result.addedMetadata++;
-            metadata = dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+            metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
         } else {
             result.updatedMetadata++;
             String id = dataMan.getMetadataId(uuid);
@@ -724,7 +725,8 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             //  insert metadata
             //
             schema = dataMan.autodetectSchema(xml);
-            Metadata metadata = new Metadata().setUuid(reg.uuid);
+            Metadata metadata = new Metadata();
+            metadata.setUuid(reg.uuid);
             metadata.getDataInfo().
                 setSchemaId(schema).
                 setRoot(xml.getQualifiedName()).
@@ -746,7 +748,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             }
             if (!dataMan.existsMetadataUuid(reg.uuid)) {
                 result.addedMetadata++;
-                metadata = dataMan.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
+                metadata = (Metadata) dataMan.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
             } else {
                 result.updatedMetadata++;
                 String id = dataMan.getMetadataId(reg.uuid);

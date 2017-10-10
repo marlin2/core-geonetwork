@@ -46,7 +46,7 @@ import org.fao.geonet.api.records.formatters.groovy.ParamValue;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.ISODate;
-import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.Pair;
@@ -267,7 +267,7 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
 
         final ServiceContext context = createServiceContext(locale.getISO3Language(),
             formatType, request.getNativeRequest(HttpServletRequest.class));
-        Metadata metadata = ApiUtils.canViewRecord(metadataUuid, servletRequest);
+        IMetadata metadata = ApiUtils.canViewRecord(metadataUuid, servletRequest);
 
         Boolean hideWithheld = true;
 //        final boolean hideWithheld = Boolean.TRUE.equals(hide_withheld) ||
@@ -363,7 +363,8 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
             metadataEl = Xml.selectElement(metadataEl, mdPath, namespaces);
             metadataEl.detach();
         }
-        Metadata metadataInfo = new Metadata().setData(metadata).setId(1).setUuid("uuid");
+        Metadata metadataInfo = new Metadata();
+        metadataInfo.setData(metadata).setId(1).setUuid("uuid");
         metadataInfo.getDataInfo().setType(MetadataType.METADATA).setRoot(metadataEl.getQualifiedName()).setSchemaId(schema);
 
         Pair<FormatterImpl, FormatterParams> result = createFormatterAndParams(lang, formatType, xslid, width,

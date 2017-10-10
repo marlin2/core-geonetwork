@@ -137,12 +137,12 @@ public class DirectoryApiTest extends AbstractServiceIntegrationTest {
         // Test record contains 3 contacts matching XPath
         // with 1 in 2 locations.
         final URL resource = DirectoryApiTest.class.getResource("record.xml");
-        int id = importMetadataXML(context, "uuid", resource.openStream(),
+        int id = importMetadataXML(context, null, resource.openStream(),
             MetadataType.METADATA,
             ReservedGroup.all.getId(),
             Params.GENERATE_UUID);
         final URL contact1 = DirectoryApiTest.class.getResource("contact1.xml");
-        int contact1id = importMetadataXML(context, "uuid", contact1.openStream(),
+        int contact1id = importMetadataXML(context, null, contact1.openStream(),
             MetadataType.SUB_TEMPLATE,
             ReservedGroup.all.getId(),
             Params.GENERATE_UUID);

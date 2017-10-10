@@ -34,7 +34,7 @@ import org.fao.geonet.api.records.MetadataUtils;
 import org.fao.geonet.api.records.model.related.RelatedItemType;
 import org.fao.geonet.api.records.model.related.RelatedResponse;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
-import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
@@ -111,7 +111,7 @@ public class Related implements ApplicationContextAware {
         GeonetworkDataDirectory dataDirectory = context.getBean(GeonetworkDataDirectory.class);
         Path relatedXsl = dataDirectory.getWebappDir().resolve("xslt/services/metadata/relation.xsl");
 
-        Metadata md;
+        IMetadata md;
         Map<String, RelatedResponse> res = new HashMap<String, RelatedResponse>();
 
         for(String uuid : uuids) {

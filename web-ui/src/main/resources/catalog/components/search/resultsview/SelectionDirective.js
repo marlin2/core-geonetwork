@@ -180,6 +180,16 @@
         link: function(scope, element, attrs) {
 
           scope.change = function() {
+            gnHttp.callService('mdSelect', {
+              selected: element[0].checked ? 'add' : 'remove',
+              id: scope.md.getUuid(),
+              type: 'metadata'
+            }).success(function(res) {
+              scope.searchResults.selectedCount = parseInt(res[0], 10);
+            });
+          };
+
+          scope.change = function() {
             var method = element[0].checked ? 'select' : 'unselect';
             gnSearchManagerService[method](
                 scope.md.getUuid(), scope.searchResults.selectionBucket).

@@ -159,7 +159,7 @@ public class MetadataInsertDeleteApi {
         HttpServletRequest request
     )
         throws Exception {
-        Metadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
         DataManager dataManager = appContext.getBean(DataManager.class);
@@ -615,7 +615,7 @@ public class MetadataInsertDeleteApi {
     )
         throws Exception {
 
-        Metadata sourceMetadata = ApiUtils.getRecord(sourceUuid);
+        IMetadata sourceMetadata = ApiUtils.getRecord(sourceUuid);
         ApplicationContext applicationContext = ApplicationContextHolder.get();
 
         SettingManager sm = applicationContext.getBean(SettingManager.class);
@@ -631,7 +631,7 @@ public class MetadataInsertDeleteApi {
             } else {
                 // Check if the UUID exists
                 try {
-                    Metadata checkRecord = ApiUtils.getRecord(targetUuid);
+                    IMetadata checkRecord = ApiUtils.getRecord(targetUuid);
                     if (checkRecord != null) {
                         throw new BadParameterEx(String.format(
                             "You can't create a new record with the UUID '%s' because a record already exist with this UUID.",
@@ -1139,7 +1139,7 @@ public class MetadataInsertDeleteApi {
 
         if (rejectIfInvalid) {
             try {
-                DataManager.validateMetadata(schema, xmlElement, context);
+                appContext.getBean(IMetadataValidator.class).validateMetadata(schema, xmlElement, context);
             } catch (XSDValidationErrorEx e) {
                 throw new IllegalArgumentException(e);
             }
