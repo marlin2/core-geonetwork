@@ -63,6 +63,7 @@ import org.fao.geonet.exceptions.BadFormatEx;
 import org.fao.geonet.exceptions.NoSchemaMatchesException;
 import org.fao.geonet.exceptions.UnAuthorizedException;
 import org.fao.geonet.kernel.AccessManager;
+import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.metadata.IMetadataIndexer;
 import org.fao.geonet.kernel.metadata.IMetadataManager;
@@ -128,7 +129,7 @@ public class Importer {
                                         final ServiceContext context,
                                         final Path mefFile) throws Exception {
         ApplicationContext applicationContext = ApplicationContextHolder.get();
-        final IMetadataManager dm = applicationContext.getBean(DataManager.class);
+        final IMetadataManager dm = applicationContext.getBean(IMetadataManager.class);
         final SettingManager sm = applicationContext.getBean(SettingManager.class);
 
         // Load preferred schema and set to iso19139 by default
@@ -495,7 +496,7 @@ public class Importer {
                 Files.createDirectories(priDir);
 
 
-                applicationContext.getBean(IMetadataIndexer.class).indexMetadata(metadataIdMap.get(index), true, null);
+                applicationContext.getBean(IMetadataIndexer.class).indexMetadata(metadataIdMap.get(index), true);
             }
 
             // --------------------------------------------------------------------
@@ -546,11 +547,12 @@ public class Importer {
         }
     }
 
-    public static void importRecord(String uuid,
-                                    MEFLib.UuidAction uuidAction, List<Element> md, String schema, int index,
-                                    String source, String sourceName, Map<String, String> sourceTranslations, ServiceContext context,
-                                    List<String> id, String createDate, String changeDate,
-                                    String groupId, MetadataType isTemplate) throws Exception {
+    public static void importRecord(String uuid, MEFLib.UuidAction uuidAction,
+            List<Element> md, String schema, int index, String source,
+            String sourceName, Map<String, String> sourceTranslations,
+            ServiceContext context, List<String> id, String createDate,
+            String changeDate, String groupId, MetadataType isTemplate)
+                    throws Exception {
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
         DataManager dm = gc.getBean(DataManager.class);
@@ -565,7 +567,7 @@ public class Importer {
             uuid = newuuid;
 
             // --- set uuid inside metadata
-            md.add(index, applicationContext.getBean(IMetadataUtils.class).setUUID(schema, uuid, md.get(index)));
+            md.add(index, dm.setUUID(schema, uuid, md.get(index)));
         } else {
             if (sourceName == null)
                 sourceName = "???";

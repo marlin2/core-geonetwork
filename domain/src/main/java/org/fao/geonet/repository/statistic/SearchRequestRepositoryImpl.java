@@ -30,6 +30,7 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.ISODate_;
 import org.fao.geonet.domain.Pair;
 import org.fao.geonet.domain.ReservedOperation;
+import org.fao.geonet.repository.PathSpec;
 import org.fao.geonet.domain.statistic.SearchRequest;
 import org.fao.geonet.domain.statistic.SearchRequest_;
 import org.springframework.data.domain.Sort;

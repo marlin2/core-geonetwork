@@ -23,6 +23,21 @@
 
 package org.fao.geonet.kernel.mef;
 
+import static com.google.common.xml.XmlEscapers.xmlContentEscaper;
+import static org.fao.geonet.Constants.CHARSET;
+import static org.fao.geonet.constants.Geonet.IndexFieldNames.LOCALE;
+import static org.fao.geonet.constants.Geonet.IndexFieldNames.UUID;
+import static org.fao.geonet.kernel.mef.MEFConstants.FILE_INFO;
+import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA;
+import static org.fao.geonet.kernel.mef.MEFConstants.MD_DIR;
+import static org.fao.geonet.kernel.mef.MEFConstants.SCHEMA;
+
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import jeeves.server.context.ServiceContext;
 
 import org.apache.lucene.document.Document;
@@ -38,6 +53,7 @@ import org.fao.geonet.GeonetContext;
 import org.fao.geonet.ZipUtil;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.IMetadata;
+import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataRelation;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.Pair;
@@ -55,20 +71,6 @@ import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
-
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-
-import static com.google.common.xml.XmlEscapers.xmlContentEscaper;
-import static org.fao.geonet.Constants.CHARSET;
-import static org.fao.geonet.constants.Geonet.IndexFieldNames.LOCALE;
-import static org.fao.geonet.constants.Geonet.IndexFieldNames.UUID;
-import static org.fao.geonet.kernel.mef.MEFConstants.FILE_INFO;
-import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA;
-import static org.fao.geonet.kernel.mef.MEFConstants.MD_DIR;
-import static org.fao.geonet.kernel.mef.MEFConstants.SCHEMA;
 
 class MEF2Exporter {
     /**
@@ -233,7 +235,7 @@ class MEF2Exporter {
 
         Pair<IMetadata, String> recordAndMetadataForExport =
             MEFLib.retrieveMetadata(context, uuid, resolveXlink, removeXlinkAttribute);
-        Metadata record = recordAndMetadataForExport.one();
+        IMetadata record = recordAndMetadataForExport.one();
         String xmlDocumentAsString = recordAndMetadataForExport.two();
 
         String id = "" + record.getId();

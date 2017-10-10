@@ -23,6 +23,12 @@
 
 package org.fao.geonet.kernel.mef;
 
+import static org.fao.geonet.kernel.mef.MEFConstants.FILE_INFO;
+import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA;
+
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import jeeves.server.context.ServiceContext;
 
 import org.fao.geonet.Constants;
@@ -37,13 +43,6 @@ import org.fao.geonet.kernel.mef.MEFLib.Version;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
-
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static org.fao.geonet.kernel.mef.MEFConstants.FILE_INFO;
-import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA;
 
 /**
  * Export MEF file
@@ -62,7 +61,7 @@ class MEFExporter {
                                 Format format, boolean skipUUID, boolean resolveXlink, boolean removeXlinkAttribute) throws Exception {
         Pair<IMetadata, String> recordAndMetadata =
             MEFLib.retrieveMetadata(context, uuid, resolveXlink, removeXlinkAttribute);
-        Metadata record = recordAndMetadata.one();
+        IMetadata record = recordAndMetadata.one();
         String xmlDocumentAsString = recordAndMetadata.two();
 
         if (record.getDataInfo().getType() == MetadataType.SUB_TEMPLATE ||

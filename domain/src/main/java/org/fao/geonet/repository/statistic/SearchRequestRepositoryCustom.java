@@ -26,6 +26,7 @@ package org.fao.geonet.repository.statistic;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Pair;
 import org.fao.geonet.domain.statistic.SearchRequest;
+import org.fao.geonet.repository.PathSpec;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 

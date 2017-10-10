@@ -1114,6 +1114,9 @@ public class LuceneQueryBuilder {
         //
         String owner = luceneQueryInput.getOwner();
         if (owner != null) {
+
+            BooleanQuery ownQuery = new BooleanQuery();
+
             TermQuery ownerQuery = new TermQuery(new Term(LuceneIndexField.OWNER, owner));
             BooleanClause.Occur ownerOccur = LuceneUtils.convertRequiredAndProhibitedToOccur(true, false);
             BooleanClause ownerClause = new BooleanClause(ownerQuery, ownerOccur);

@@ -111,7 +111,7 @@ public class MetadataNotifierManager {
      * @param context  GeoNetwork context
      */
     public void updateMetadata(Element ISO19139, String id, String uuid) throws MetadataNotifierException {
-        final ConfigurableApplicationContext applicationContext = context.getApplicationContext();
+        final ConfigurableApplicationContext applicationContext = ApplicationContextHolder.get();
         ScheduledThreadPoolExecutor timer = applicationContext.getBean("timerThreadPool", ScheduledThreadPoolExecutor.class);
 
         timer.schedule(new UpdateTask(ISO19139, id, uuid), 10, TimeUnit.MILLISECONDS);
