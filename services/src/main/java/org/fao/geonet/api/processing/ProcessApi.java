@@ -31,7 +31,8 @@ import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.processing.report.MetadataReplacementProcessingReport;
 import org.fao.geonet.api.processing.report.ProcessingReport;
 import org.fao.geonet.api.processing.report.registry.IProcessingReportRegistry;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -185,13 +186,12 @@ public class ProcessApi {
             new MetadataReplacementProcessingReport("massive-content-update");
         try {
             ApplicationContext applicationContext = ApplicationContextHolder.get();
-            DataManager dataMan = applicationContext.getBean(DataManager.class);
-
             Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, userSession);
 
             report.setTotalRecords(records.size());
             MetadataSearchAndReplace m = new MetadataSearchAndReplace(
-                dataMan,
+                applicationContext.getBean(IMetadataIndexer.class),
+                applicationContext.getBean(IMetadataUtils.class),
                 process,
                 isTesting, isCaseInsensitive, vacuumMode,
                 allParams,

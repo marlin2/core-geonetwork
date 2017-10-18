@@ -32,7 +32,9 @@ import org.fao.geonet.api.processing.report.SimpleMetadataProcessingReport;
 import org.fao.geonet.api.processing.report.registry.IProcessingReportRegistry;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.services.metadata.BatchOpsMetadataReindexer;
 import org.jdom.Document;
@@ -118,7 +120,6 @@ public class ValidateApi {
             new SimpleMetadataProcessingReport();
         try {
             ApplicationContext applicationContext = ApplicationContextHolder.get();
-            DataManager dataMan = applicationContext.getBean(DataManager.class);
             AccessManager accessMan = applicationContext.getBean(AccessManager.class);
             ServiceContext serviceContext = ApiUtils.createServiceContext(request);
 
@@ -133,7 +134,7 @@ public class ValidateApi {
                     report.addNotEditableMetadataId(record.getId());
                 } else {
                     String idString = String.valueOf(record.getId());
-                    boolean isValid = dataMan.doValidate(record.getDataInfo().getSchemaId(),
+                    boolean isValid = applicationContext.getBean(IMetadataValidator.class).doValidate(record.getDataInfo().getSchemaId(),
                         idString,
                         new Document(record.getXmlData(false)),
                         serviceContext.getLanguage());
@@ -148,7 +149,7 @@ public class ValidateApi {
             }
 
             // index records
-            BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dataMan, report.getMetadata());
+            BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(applicationContext.getBean(IMetadataIndexer.class), applicationContext.getBean(IMetadataUtils.class), report.getMetadata());
             r.process();
         } catch (Exception e) {
             throw e;

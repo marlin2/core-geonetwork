@@ -39,11 +39,12 @@ import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.exceptions.ServiceNotAllowedEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SelectionManager;
-import org.fao.geonet.kernel.metadata.IMetadataIndexer;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
-import org.fao.geonet.kernel.metadata.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.MetadataValidationRepository;
@@ -133,9 +134,7 @@ public class Publish {
     private PublishReport exec(String commaSeparatedIds, boolean publish, boolean skipIntranet, ServiceContext serviceContext) throws
         Exception {
         ConfigurableApplicationContext appContext = ApplicationContextHolder.get();
-        DataManager dataManager = appContext.getBean(DataManager.class);
         OperationAllowedRepository operationAllowedRepository = appContext.getBean(OperationAllowedRepository.class);
-        IMetadataManager metadataRepository = appContext.getBean(IMetadataManager.class);
         MetadataValidationRepository metadataValidationRepository = appContext.getBean(MetadataValidationRepository.class);
         SettingManager sm = appContext.getBean(SettingManager.class);
 
@@ -174,11 +173,11 @@ public class Publish {
                             (metadataValidationRepository.count(MetadataValidationSpecs.hasMetadataId(mdId)) > 0);
 
                     if (!hasValidation) {
-                        IMetadata metadata = metadataRepository.getMetadataObject(mdId);
+                        IMetadata metadata = appContext.getBean(IMetadataManager.class).getMetadataObject(mdId);
 
-                        dataManager.doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
+                        appContext.getBean(IMetadataValidator.class).doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
                                 new Document(metadata.getXmlData(false)), serviceContext.getLanguage());
-                        mdIndexer.indexMetadata(nextId, true, null);
+                        appContext.getBean(IMetadataIndexer.class).indexMetadata(nextId, true, null);
                     }
 
                     boolean isInvalid =
@@ -196,7 +195,7 @@ public class Publish {
             }
         }
 
-        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dataManager, toIndex);
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(appContext.getBean(IMetadataIndexer.class), appContext.getBean(IMetadataUtils.class), toIndex);
         r.process(testing || toIndex.size() < 5);
 
 
@@ -204,7 +203,6 @@ public class Publish {
     }
 
     private Iterator<String> getIds(ConfigurableApplicationContext appContext, UserSession userSession, final String commaSeparatedIds) {
-        final DataManager dataManager = appContext.getBean(DataManager.class);
 
         if (commaSeparatedIds == null) {
             if (userSession != null) {
@@ -215,7 +213,7 @@ public class Publish {
                     @Override
                     public String apply(String uuid) {
                         try {
-                            return dataManager.getMetadataId(uuid);
+                            return appContext.getBean(IMetadataUtils.class).getMetadataId(uuid);
                         } catch (Exception e) {
                             return null;
                         }
@@ -290,15 +288,14 @@ public class Publish {
 
     private boolean updateOps(ServiceContext serviceContext, boolean publish, ArrayList<Integer> groupIds, Collection<Integer>
         operationIds, int metadataId) throws Exception {
-        final DataManager dataManager = serviceContext.getBean(DataManager.class);
 
         for (Integer groupId : groupIds) {
             for (Integer operationId : operationIds) {
                 try {
                     if (publish) {
-                        dataManager.setOperation(serviceContext, metadataId, groupId, operationId);
+                        serviceContext.getBean(IMetadataOperations.class).setOperation(serviceContext, metadataId, groupId, operationId);
                     } else {
-                        dataManager.unsetOperation(serviceContext, metadataId, groupId, operationId);
+                        serviceContext.getBean(IMetadataOperations.class).unsetOperation(serviceContext, metadataId, groupId, operationId);
                     }
                 } catch (ServiceNotAllowedEx e) {
                     return false;

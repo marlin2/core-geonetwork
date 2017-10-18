@@ -58,7 +58,7 @@ public class WfsFeaturesHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new WfsFeaturesParams(dataMan);
+        params = new WfsFeaturesParams();
         super.setParams(params);
 
         params.create(node);
@@ -71,7 +71,7 @@ public class WfsFeaturesHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new WfsFeaturesParams(dataMan);
+        params = new WfsFeaturesParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

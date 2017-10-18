@@ -23,13 +23,21 @@
 
 package org.fao.geonet.kernel.harvest;
 
-import jeeves.server.context.ServiceContext;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.fao.geonet.Logger;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataCategory;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.harvest.harvester.AbstractHarvester;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
@@ -38,9 +46,9 @@ import org.fao.geonet.kernel.harvest.harvester.Privileges;
 import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.repository.MetadataRepository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import jeeves.server.context.ServiceContext;
 
 /**
  * This class helps {@link AbstractHarvester} instances to process all metadata collected on the
@@ -55,6 +63,20 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class BaseAligner {
 
     public final AtomicBoolean cancelMonitor;
+    @Autowired
+    protected IMetadataCategory mdCategory;
+    @Autowired
+    protected IMetadataIndexer mdIndexer;
+    @Autowired
+    protected IMetadataManager mdManager;
+    @Autowired
+    protected IMetadataOperations mdOperations;
+    @Autowired
+    protected IMetadataSchemaUtils mdSchemaUtils;
+    @Autowired
+    protected IMetadataUtils mdUtils;
+    @Autowired
+    protected IMetadataValidator mdValidator;
 
     public BaseAligner(AtomicBoolean cancelMonitor) {
         this.cancelMonitor = cancelMonitor;
@@ -122,12 +144,12 @@ public abstract class BaseAligner {
      * @param id
      * @param privilegesIterable
      * @param localGroups
-     * @param dataMan
+     * @param mdOperations
      * @param context
      * @param log
      * @throws Exception
      */
-    public void addPrivileges(String id, Iterable<Privileges> privilegesIterable, GroupMapper localGroups, DataManager dataMan, ServiceContext context, Logger log) throws Exception {
+    public void addPrivileges(String id, Iterable<Privileges> privilegesIterable, GroupMapper localGroups, IMetadataOperations mdOperations, ServiceContext context, Logger log) throws Exception {
         for (Privileges priv : privilegesIterable) {
             String name = localGroups.getName(priv.getGroupId());
 
@@ -148,7 +170,7 @@ public abstract class BaseAligner {
                         if (log.isDebugEnabled()) {
                             log.debug("       --> Operation: " + name);
                         }
-                        dataMan.setOperation(context, id, priv.getGroupId(), opId + "");
+                        mdOperations.setOperation(context, id, priv.getGroupId(), opId + "");
                     }
                 }
             }

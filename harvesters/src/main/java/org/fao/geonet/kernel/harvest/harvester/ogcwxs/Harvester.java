@@ -36,7 +36,6 @@ import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
@@ -159,7 +158,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     private Logger log;
     private ServiceContext context;
     private OgcWxSParams params;
-    private DataManager dataMan;
 
     //---------------------------------------------------------------------------
     //---
@@ -196,7 +194,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         result = new HarvestResult();
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
         schemaMan = gc.getBean(SchemaManager.class);
     }
 
@@ -240,21 +237,21 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         // Convert from GetCapabilities to ISO19119
         List<String> uuids = addMetadata(xml);
-        dataMan.flush();
+        mdManager.flush();
 
         List<String> ids = Lists.transform(uuids, new Function<String, String>() {
             @Nullable
             @Override
             public String apply(@Nonnull String uuid) {
                 try {
-                    return dataMan.getMetadataId(uuid);
+                    return mdUtils.getMetadataId(uuid);
                 } catch (Exception e) {
                     return null;
                 }
             }
         });
 
-        dataMan.batchIndexInThreadPool(context, ids);
+        mdIndexer.batchIndexInThreadPool(context, ids);
 
         result.totalMetadata = result.addedMetadata + result.updatedMetadata;
 
@@ -276,7 +273,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                 IO.deleteFileOrDirectory(Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class), id));
 
                 // Remove metadata
-                dataMan.deleteMetadata(context, id);
+                mdManager.deleteMetadata(context, id);
 
                 result.locallyRemoved++;
             }
@@ -284,7 +281,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
 
         if (result.locallyRemoved > 0) {
-            dataMan.flush();
+            mdManager.flush();
         }
 
         return result;
@@ -336,7 +333,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             throw new IllegalStateException(message, e);
         }
 
-        String schema = dataMan.autodetectSchema(md, null); // ie. iso19139;
+        String schema = mdSchemaUtils.autodetectSchema(md, null); // ie. iso19139;
 
         if (schema == null) {
             log.warning("Skipping metadata with unknown schema.");
@@ -415,21 +412,21 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        if (!dataMan.existsMetadataUuid(uuid)) {
+        if (!mdUtils.existsMetadataUuid(uuid)) {
             result.addedMetadata++;
-            metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+            metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
         } else {
             result.updatedMetadata++;
-            String id = dataMan.getMetadataId(uuid);
+            String id = mdUtils.getMetadataId(uuid);
             metadata.setId(Integer.valueOf(id));
-            dataMan.updateMetadata(context, id, md, false, false, false,
-                context.getLanguage(), dataMan.extractDateModified(schema, md), false);
+            mdManager.updateMetadata(context, id, md, false, false, false,
+                context.getLanguage(), mdUtils.extractDateModified(schema, md), false);
         }
 
         String id = String.valueOf(metadata.getId());
         uuids.add(uuid);
 
-        addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
         // Add Thumbnails only after metadata insertion to avoid concurrent transaction
         // and loaded thumbnails could eventually failed anyway.
@@ -651,11 +648,11 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                         xml = (Element) xml.getChildren().get(0);
                     }
 
-                    schema = dataMan.autodetectSchema(xml, null); // ie. iso19115 or 139 or DC
+                    schema = mdSchemaUtils.autodetectSchema(xml, null); // ie. iso19115 or 139 or DC
                     // Extract uuid from loaded xml document
                     // FIXME : uuid could be duplicate if metadata already exist in catalog
-                    reg.uuid = dataMan.extractUUID(schema, xml);
-                    exist = dataMan.existsMetadataUuid(reg.uuid);
+                    reg.uuid = mdUtils.extractUUID(schema, xml);
+                    exist = mdUtils.existsMetadataUuid(reg.uuid);
 
                     if (exist) {
                         log.warning(String.format(
@@ -724,7 +721,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             //
             //  insert metadata
             //
-            schema = dataMan.autodetectSchema(xml);
+            schema = mdSchemaUtils.autodetectSchema(xml);
             Metadata metadata = new Metadata();
             metadata.setUuid(reg.uuid);
             metadata.getDataInfo().
@@ -746,15 +743,15 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                 }
                 metadata.getMetadataCategories().add(metadataCategory);
             }
-            if (!dataMan.existsMetadataUuid(reg.uuid)) {
+            if (!mdUtils.existsMetadataUuid(reg.uuid)) {
                 result.addedMetadata++;
-                metadata = (Metadata) dataMan.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
+                metadata = (Metadata) mdManager.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
             } else {
                 result.updatedMetadata++;
-                String id = dataMan.getMetadataId(reg.uuid);
+                String id = mdUtils.getMetadataId(reg.uuid);
                 metadata.setId(Integer.valueOf(id));
-                dataMan.updateMetadata(context, id, xml, false, false, false,
-                    context.getLanguage(), dataMan.extractDateModified(schema, xml), false);
+                mdManager.updateMetadata(context, id, xml, false, false, false,
+                    context.getLanguage(), mdUtils.extractDateModified(schema, xml), false);
             }
 
             reg.id = String.valueOf(metadata.getId());
@@ -762,7 +759,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             if (log.isDebugEnabled()) log.debug("    - Layer loaded in DB.");
 
             if (log.isDebugEnabled()) log.debug("    - Set Privileges and category.");
-            addPrivileges(reg.id, params.getPrivileges(), localGroups, dataMan, context, log);
+            addPrivileges(reg.id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
             if (log.isDebugEnabled()) log.debug("    - Set Harvested.");
 
@@ -835,9 +832,9 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                 par.addContent(new Element("smallScalingDir").setText("width"));
 
                 // Call the services
-                s.execOnHarvest(par, context, dataMan);
+                s.execOnHarvest(par, context);
 
-                dataMan.flush();
+                mdManager.flush();
 
                 result.thumbnails++;
             } else {

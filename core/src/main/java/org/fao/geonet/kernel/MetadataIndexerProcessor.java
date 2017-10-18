@@ -41,21 +41,30 @@
 
 package org.fao.geonet.kernel;
 
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+
 /**
  * Template Method abstract class to handle faster indexing of many metadata documents. Each
  * subclass must implement process method and define a custom constructor with all parameters
  * required to exec the process method
  */
 public abstract class MetadataIndexerProcessor {
-    private DataManager dm;
+    private IMetadataIndexer mdIndexer;
+    private IMetadataUtils mdUtils;
 
-    public MetadataIndexerProcessor(DataManager dm) {
-        this.dm = dm;
+    public MetadataIndexerProcessor(IMetadataIndexer mdIndexer, IMetadataUtils mdUtils) {
+        this.mdIndexer = mdIndexer;
+        this.mdUtils = mdUtils;
     }
 
     public abstract void process() throws Exception;
 
-    protected DataManager getDataManager() {
-        return dm;
+    protected IMetadataIndexer getMetadataIndexer() {
+        return mdIndexer;
+    }
+
+    protected IMetadataUtils getMetadataUtils() {
+        return mdUtils;
     }
 }

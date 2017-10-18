@@ -35,7 +35,10 @@ import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.OperationAllowedId;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.SelectionManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
@@ -84,7 +87,6 @@ public class BatchNewOwner {
         HttpServletRequest request) throws Exception {
 
         ConfigurableApplicationContext appContext = ApplicationContextHolder.get();
-        DataManager dataManager = appContext.getBean(DataManager.class);
         ServiceManager serviceManager = appContext.getBean(ServiceManager.class);
 
         ServiceContext context = serviceManager.createServiceContext("metadata.batch.newowner", lang, request);
@@ -103,7 +105,7 @@ public class BatchNewOwner {
 
         // -- reindex metadata
         context.info("Re-indexing metadata");
-        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dataManager, modified);
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(appContext.getBean(IMetadataIndexer.class), appContext.getBean(IMetadataUtils.class), modified);
         r.process();
 
         return result;
@@ -113,12 +115,11 @@ public class BatchNewOwner {
                                        Collection<String> selection, Set<Integer> modified) throws Exception {
 
         AccessManager accessManager = context.getBean(AccessManager.class);
-        DataManager dataManager = context.getBean(DataManager.class);
 
         Set<Integer> notFound = new HashSet<Integer>();
         Set<Integer> notOwner = new HashSet<Integer>();
         for (String uuid : selection) {
-            String id = dataManager.getMetadataId(uuid);
+            String id = context.getBean(IMetadataUtils.class).getMetadataId(uuid);
 
             context.info("Attempting to set metadata owner on: " + id);
 
@@ -148,21 +149,21 @@ public class BatchNewOwner {
                 // -- Set new privileges for new owner from privileges of the old
                 // -- owner, if none then set defaults
                 if (sourcePriv.size() == 0) {
-                    dataManager.copyDefaultPrivForGroup(context, id, targetGrp, false);
+                    context.getBean(IMetadataOperations.class).copyDefaultPrivForGroup(context, id, targetGrp, false);
                     context.info("No privileges for user " + sourceUsr + " on metadata " + id + ", so setting default privileges");
                 } else {
                     for (OperationAllowedId priv : sourcePriv) {
                         if (sourceGrp != null) {
-                            dataManager.unsetOperation(context, id,
+                            context.getBean(IMetadataOperations.class).unsetOperation(context, id,
                                 "" + sourceGrp,
                                 "" + priv.getOperationId());
                         }
-                        dataManager.setOperation(context, id, targetGrp,
+                        context.getBean(IMetadataOperations.class).setOperation(context, id, targetGrp,
                             "" + priv.getOperationId());
                     }
                 }
                 // -- set the new owner into the metadata record
-                dataManager.updateMetadataOwner(Integer.parseInt(id), targetUsr, targetGrp);
+                context.getBean(IMetadataManager.class).updateMetadataOwner(Integer.parseInt(id), targetUsr, targetGrp);
 
                 modified.add(Integer.valueOf(id));
             }

@@ -38,7 +38,11 @@ import org.fao.geonet.domain.Profile;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.exceptions.SchematronValidationErrorEx;
 import org.fao.geonet.exceptions.XSDValidationErrorEx;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.MetadataIndexerProcessor;
 import org.fao.geonet.kernel.mef.MEFLib;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -165,7 +169,6 @@ public class ImportFromDir extends NotInReadOnlyModeService {
 
     private int standardImport(Element params, ServiceContext context) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
 
         String dir = Util.getParam(params, Params.DIR);
         boolean recurse = Util.getParam(params, Params.RECURSE, "off").equals("on");
@@ -193,7 +196,7 @@ public class ImportFromDir extends NotInReadOnlyModeService {
         if (files.size() == 0)
             throw new Exception("No XML or MEF file found in " + dir);
 
-        ImportMetadataReindexer r = new ImportMetadataReindexer(dm, params, context, files, stylePath, failOnError);
+        ImportMetadataReindexer r = new ImportMetadataReindexer(gc.getBean(IMetadataIndexer.class), gc.getBean(IMetadataUtils.class), params, context, files, stylePath, failOnError);
         r.process();
         exceptions = r.getExceptions();
 
@@ -202,7 +205,6 @@ public class ImportFromDir extends NotInReadOnlyModeService {
 
     private int configImport(Element params, ServiceContext context, Path configFile) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
 
         ImportConfig config = new ImportConfig(configFile, context);
 
@@ -240,7 +242,7 @@ public class ImportFromDir extends NotInReadOnlyModeService {
                                 String schema = config.mapSchema(categ.toString());
 
                                 if (validate)
-                                    dm.validate(schema, xml);
+                                    gc.getBean(IMetadataValidator.class).validate(schema, xml);
 
                                 alImport.add(new ImportInfo(schema, category, xml));
                                 counter++;
@@ -263,12 +265,11 @@ public class ImportFromDir extends NotInReadOnlyModeService {
     private void insert(String schema, Element xml, String group, ServiceContext context,
                         String category) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
 
         //-----------------------------------------------------------------------
         //--- if the uuid does not exist we generate it
 
-        String uuid = dm.extractUUID(schema, xml);
+        String uuid = gc.getBean(IMetadataUtils.class).extractUUID(schema, xml);
 
         if (uuid.length() == 0)
             uuid = UUID.randomUUID().toString();
@@ -280,7 +281,7 @@ public class ImportFromDir extends NotInReadOnlyModeService {
         String docType = null, title = null, createDate = null, changeDate = null;
         boolean ufo = true, indexImmediate = true;
         String isTemplate = "n";
-        dm.insertMetadata(context, schema, xml, uuid, context.getUserSession().getUserIdAsInt(), group, gc.getBean(SettingManager
+        gc.getBean(IMetadataManager.class).insertMetadata(context, schema, xml, uuid, context.getUserSession().getUserIdAsInt(), group, gc.getBean(SettingManager
                 .class).getSiteId(),
             isTemplate, docType, category, createDate, changeDate, ufo, indexImmediate);
 
@@ -361,9 +362,9 @@ public class ImportFromDir extends NotInReadOnlyModeService {
         HashMap<String, Exception> exceptions = new HashMap<String, Exception>();
 
 
-        public ImportMetadataReindexer(DataManager dm, Element params, ServiceContext context, List<Path> fileList, Path stylePath,
+        public ImportMetadataReindexer(IMetadataIndexer mdIndexer, IMetadataUtils mdUtils, Element params, ServiceContext context, List<Path> fileList, Path stylePath,
                                        boolean failOnError) {
-            super(dm);
+            super(mdIndexer, mdUtils);
             this.params = params;
             this.context = context;
             this.files = fileList;
@@ -457,14 +458,13 @@ class ImportConfig {
 
     public ImportConfig(Path configFile, ServiceContext context) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
 
         Element config = Xml.loadFile(configFile);
 
         fillCategIds(context);
 
         mapCategor(config.getChild(CATEGORY_MAPPING));
-        mapSchemas(config.getChild(SCHEMA_MAPPING), dm);
+        mapSchemas(config.getChild(SCHEMA_MAPPING), gc.getBean(IMetadataSchemaUtils.class));
     }
 
     //--------------------------------------------------------------------------
@@ -539,7 +539,7 @@ class ImportConfig {
 
     //--------------------------------------------------------------------------
 
-    private void mapSchemas(Element schemaMapping, DataManager dm) {
+    private void mapSchemas(Element schemaMapping, IMetadataSchemaUtils mdSchemaUtils) {
         @SuppressWarnings("unchecked")
         List<Element> list = schemaMapping.getChildren(MAPPING);
 
@@ -547,7 +547,7 @@ class ImportConfig {
             String dir = el.getAttributeValue(ATTR_DIR);
             String to = el.getAttributeValue(ATTR_TO);
 
-            if (!dm.existsSchema(to))
+            if (!mdSchemaUtils.existsSchema(to))
                 throw new IllegalArgumentException("Schema not found : " + to);
 
             htSchemaMapping.put(dir, to);
@@ -555,7 +555,7 @@ class ImportConfig {
 
         String defaultTo = schemaMapping.getChild(DEFAULT).getAttributeValue(ATTR_TO);
 
-        if (!dm.existsSchema(defaultTo))
+        if (!mdSchemaUtils.existsSchema(defaultTo))
             throw new IllegalArgumentException("Default schema not found : " + defaultTo);
 
         defaultSchema = defaultTo;

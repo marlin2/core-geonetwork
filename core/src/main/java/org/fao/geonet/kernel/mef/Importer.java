@@ -65,12 +65,12 @@ import org.fao.geonet.exceptions.UnAuthorizedException;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
-import org.fao.geonet.kernel.metadata.IMetadataIndexer;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
-import org.fao.geonet.kernel.metadata.IMetadataOperations;
-import org.fao.geonet.kernel.metadata.IMetadataSchemaUtils;
-import org.fao.geonet.kernel.metadata.IMetadataUtils;
-import org.fao.geonet.kernel.metadata.IMetadataValidator;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.GroupRepository;
@@ -130,6 +130,7 @@ public class Importer {
                                         final Path mefFile) throws Exception {
         ApplicationContext applicationContext = ApplicationContextHolder.get();
         final IMetadataManager dm = applicationContext.getBean(IMetadataManager.class);
+        final IMetadataUtils mdUtils = applicationContext.getBean(IMetadataUtils.class);
         final SettingManager sm = applicationContext.getBean(SettingManager.class);
 
         // Load preferred schema and set to iso19139 by default
@@ -353,7 +354,7 @@ public class Importer {
 
                     if (isTemplate == MetadataType.METADATA) {
                         // Get the Metadata uuid if it's not a template.
-                        uuid = dm.extractUUID(schema, md.get(index));
+                        uuid = mdUtils.extractUUID(schema, md.get(index));
                     } else if (isTemplate == MetadataType.SUB_TEMPLATE) {
                         // Get subtemplate uuid if defined in @uuid at root
                         uuid = md.get(index).getAttributeValue("uuid");
@@ -405,7 +406,7 @@ public class Importer {
 
                 if (validate) {
                     // Validate xsd and schematron
-                    applicationContext.getBean(IMetadataValidator.class).validateMetadata(schema, metadata, context);
+                    applicationContext.getBean(IMetadataValidator.class).validateMetadata(schema, metadata, context, " ");
                 }
 
 
@@ -418,7 +419,7 @@ public class Importer {
                     // UUID is set as @uuid in root element
                     uuid = UUID.randomUUID().toString();
 
-                    fc.add(index, applicationContext.getBean(IMetadataUtils.class).setUUID("iso19110", uuid, fc.get(index)));
+                    fc.add(index, mdUtils.setUUID("iso19110", uuid, fc.get(index)));
 
                     //
                     // insert metadata
@@ -496,7 +497,7 @@ public class Importer {
                 Files.createDirectories(priDir);
 
 
-                applicationContext.getBean(IMetadataIndexer.class).indexMetadata(metadataIdMap.get(index), true);
+                applicationContext.getBean(IMetadataIndexer.class).indexMetadata(metadataIdMap.get(index), true, null);
             }
 
             // --------------------------------------------------------------------

@@ -23,6 +23,11 @@
 
 package org.fao.geonet.api.records.editing;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
 
 import org.fao.geonet.exceptions.BadParameterEx;
@@ -31,6 +36,9 @@ import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
 
 import org.fao.geonet.kernel.*;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.schema.MultilingualSchemaPlugin;
 import org.fao.geonet.kernel.schema.SchemaPlugin;
 import org.fao.geonet.utils.Log;
@@ -45,19 +53,12 @@ import org.fao.geonet.exceptions.ConcurrentUpdateEx;
 import org.fao.geonet.lib.Lib;
 import org.jdom.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-
 /**
  * Utilities.
  */
 class EditUtils {
 
     protected ServiceContext context;
-    protected DataManager dataManager;
     protected XmlSerializer xmlSerializer;
     protected GeonetContext gc;
     protected AccessManager accessMan;
@@ -65,7 +66,6 @@ class EditUtils {
     public EditUtils(ServiceContext context) {
         this.context = context;
         this.gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        this.dataManager = gc.getBean(DataManager.class);
         this.xmlSerializer = gc.getBean(XmlSerializer.class);
         this.accessMan = gc.getBean(AccessManager.class);
         this.session = context.getUserSession();
@@ -127,7 +127,7 @@ class EditUtils {
         //--- check access
         int iLocalId = Integer.parseInt(id);
 
-        if (!dataManager.existsMetadata(iLocalId))
+        if (!context.getBean(IMetadataUtils.class).existsMetadata(iLocalId))
             throw new BadParameterEx("id", id);
 
         if (!accessMan.canEdit(context, id))
@@ -179,12 +179,12 @@ class EditUtils {
         if (embedded) {
             Element updatedMetada = new AjaxEditUtils(context).applyChangesEmbedded(id, htChanges, version);
             if (updatedMetada != null) {
-                result = dataManager.updateMetadata(context, id, updatedMetada, false, ufo, index, context.getLanguage(), changeDate, updateDateStamp);
+                result = context.getBean(IMetadataManager.class).updateMetadata(context, id, updatedMetada, false, ufo, index, context.getLanguage(), changeDate, updateDateStamp);
             }
         } else {
             Element updatedMetada = applyChanges(id, htChanges, version);
             if (updatedMetada != null) {
-                result = dataManager.updateMetadata(context, id, updatedMetada, validate, ufo, index, context.getLanguage(), changeDate, updateDateStamp);
+                result = context.getBean(IMetadataManager.class).updateMetadata(context, id, updatedMetada, validate, ufo, index, context.getLanguage(), changeDate, updateDateStamp);
             }
         }
         if (result == null) {
@@ -206,7 +206,7 @@ class EditUtils {
 
         EditLib editLib = context.getBean(IMetadataManager.class).getEditLib();
 
-        String schema = dataManager.getMetadataSchema(id);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
         editLib.expandElements(schema, md);
         editLib.enumerateTree(md);
 
@@ -249,7 +249,7 @@ class EditUtils {
                 if (indexColon != -1) {
                     String prefix = attr.substring(0, indexColon);
                     String localname = attr.substring(indexColon + 5);
-                    String namespace = editLib.getNamespace(prefix + ":" + localname, md, dataManager.getSchema(schema));
+                    String namespace = editLib.getNamespace(prefix + ":" + localname, md, context.getBean(IMetadataSchemaUtils.class).getSchema(schema));
                     Namespace attrNS = Namespace.getNamespace(prefix, namespace);
                     if (el.getAttribute(localname, attrNS) != null) {
                         el.setAttribute(new Attribute(localname, val, attrNS));

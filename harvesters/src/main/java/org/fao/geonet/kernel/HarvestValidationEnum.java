@@ -23,14 +23,14 @@
 
 package org.fao.geonet.kernel;
 
-import org.fao.geonet.kernel.metadata.IMetadataValidator;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.jdom.Element;
 import jeeves.server.context.ServiceContext;
 
 public enum HarvestValidationEnum {
 
     NOVALIDATION {
-        public void validate(DataManager dataMan, ServiceContext context, Element xml) throws Exception {
+        public void validate(ServiceContext context, Element xml) throws Exception {
         }
     },
 
@@ -38,11 +38,11 @@ public enum HarvestValidationEnum {
      * Process validation against schema
      */
     XSDVALIDATION {
-        public void validate(DataManager dataMan, ServiceContext context, Element xml) throws Exception {
+        public void validate(ServiceContext context, Element xml) throws Exception {
             DataManager.setNamespacePrefix(xml);
 
             String schema = context.getBean(SchemaManager.class).autodetectSchema(xml);
-            context.getBean(IMetadataValidator.class).validateMetadata(schema, xml, context);
+            context.getBean(IMetadataValidator.class).validateMetadata(schema, xml, context, null);
 
         }
 
@@ -52,9 +52,9 @@ public enum HarvestValidationEnum {
      * Process validation against schematron and XSD
      */
     SCHEMATRONVALIDATION {
-        public void validate(DataManager dataMan, ServiceContext context, Element xml) throws Exception {
+        public void validate(ServiceContext context, Element xml) throws Exception {
             String schema = context.getBean(SchemaManager.class).autodetectSchema(xml);
-            DataManager.validateMetadata(schema, xml, context);
+            context.getBean(IMetadataValidator.class).validateMetadata(schema, xml, context, null);
         }
 
     };
@@ -78,8 +78,8 @@ public enum HarvestValidationEnum {
         return HarvestValidationEnum.NOVALIDATION;
     }
 
-    public void validate(DataManager dataMan, ServiceContext context, Element xml) throws Exception {
+    public void validate(ServiceContext context, Element xml) throws Exception {
       String schema = context.getBean(SchemaManager.class).autodetectSchema(xml);
-      context.getBean(IMetadataValidator.class).validateMetadata(schema, xml, context);
+      context.getBean(IMetadataValidator.class).validateMetadata(schema, xml, context, null);
  	  }
 }

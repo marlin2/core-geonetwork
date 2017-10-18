@@ -26,7 +26,6 @@ package org.fao.geonet.kernel.harvest.harvester.geonet;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -88,8 +87,8 @@ public class GeonetParams extends AbstractParams {
     //---
     //---------------------------------------------------------------------------
 
-    public GeonetParams(DataManager dm) {
-        super(dm);
+    public GeonetParams() {
+        super();
     }
 
     //---------------------------------------------------------------------------
@@ -172,7 +171,7 @@ public class GeonetParams extends AbstractParams {
     }
 
     public GeonetParams copy() {
-        GeonetParams copy = new GeonetParams(dm);
+        GeonetParams copy = new GeonetParams();
         copyTo(copy);
 
         copy.host = host;

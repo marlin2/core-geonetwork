@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.IMetadata;
@@ -10,8 +7,8 @@ import org.fao.geonet.domain.MetadataDraft;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.OperationAllowedId;
 import org.fao.geonet.events.md.sharing.MetadataShare;
-import org.fao.geonet.kernel.metadata.IMetadataIndexer;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
 import org.fao.geonet.utils.Log;
@@ -105,7 +102,7 @@ public class MetadataShared implements ApplicationListener<MetadataShare> {
 
                 }
 
-                indexer.indexMetadata(String.valueOf(original.getId()), true);
+                indexer.indexMetadata(String.valueOf(original.getId()), true, null);
             }
         } catch (Exception e) {
             Log.error(Geonet.DATA_MANAGER, e, e);

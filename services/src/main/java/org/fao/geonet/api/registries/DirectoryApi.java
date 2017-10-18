@@ -46,7 +46,10 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.Profile;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.mef.MEFLib;
 import org.fao.geonet.kernel.schema.MetadataSchema;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -258,7 +261,6 @@ public class DirectoryApi {
         // Check which records to analyse
         final Set<String> setOfUuidsToEdit = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, session);
 
-        DataManager dataMan = context.getBean(DataManager.class);
         AccessManager accessMan = context.getBean(AccessManager.class);
         SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
 
@@ -308,8 +310,8 @@ public class DirectoryApi {
         }
 
         if (save) {
-            dataMan.flush();
-            BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dataMan, listOfEntriesInternalId);
+            context.getBean(IMetadataManager.class).flush();
+            BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(context.getBean(IMetadataIndexer.class), context.getBean(IMetadataUtils.class), listOfEntriesInternalId);
             r.process();
             report.close();
             return new ResponseEntity<>((Object) report, HttpStatus.CREATED);
@@ -449,7 +451,6 @@ public class DirectoryApi {
         // Check which records to analyse
         final Set<String> setOfUuidsToEdit = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, session);
 
-        DataManager dataMan = context.getBean(DataManager.class);
         AccessManager accessMan = context.getBean(AccessManager.class);
 
         // List of identifier to check for duplicates
@@ -479,7 +480,7 @@ public class DirectoryApi {
                         // TODO: Only if there was a change
                         try {
                             // TODO: Should we update date stamp ?
-                            dataMan.updateMetadata(
+                            context.getBean(IMetadataManager.class).updateMetadata(
                                 context, "" + record.getId(),
                                 collectResults.getUpdatedRecord(),
                                 validate, ufo, index, context.getLanguage(),
@@ -502,9 +503,9 @@ public class DirectoryApi {
         }
 
         if (save) {
-            dataMan.flush();
+            context.getBean(IMetadataManager.class).flush();
             BatchOpsMetadataReindexer r =
-                new BatchOpsMetadataReindexer(dataMan, listOfRecordInternalId);
+                new BatchOpsMetadataReindexer(context.getBean(IMetadataIndexer.class), context.getBean(IMetadataUtils.class), listOfRecordInternalId);
             r.process();
             report.close();
             return new ResponseEntity<>((Object) report, HttpStatus.CREATED);
@@ -639,10 +640,9 @@ public class DirectoryApi {
 
         ServiceContext context = ApiUtils.createServiceContext(request);
         ApplicationContext applicationContext = ApplicationContextHolder.get();
-        DataManager dm = applicationContext.getBean(DataManager.class);
         SettingManager settingManager = applicationContext.getBean(SettingManager.class);
 
-        MetadataSchema metadataSchema = dm.getSchema(schema);
+        MetadataSchema metadataSchema = applicationContext.getBean(IMetadataSchemaUtils.class).getSchema(schema);
         Path xslProcessing = metadataSchema.getSchemaDir().resolve("process").resolve(process + ".xsl");
 
         File[] shapeFiles = unzipAndFilterShp(file);
@@ -712,7 +712,7 @@ public class DirectoryApi {
                 group,
                 false);
 
-            dm.flush();
+            applicationContext.getBean(IMetadataManager.class).flush();
 
             Set<Integer> listOfRecordInternalId = new HashSet<>();
             listOfRecordInternalId.addAll(
@@ -724,7 +724,7 @@ public class DirectoryApi {
                 listOfRecordInternalId.size()
             ));
 
-            BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dm, listOfRecordInternalId);
+            BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(applicationContext.getBean(IMetadataIndexer.class), applicationContext.getBean(IMetadataUtils.class), listOfRecordInternalId);
             r.process();
 
             errors.forEach((k, v) ->

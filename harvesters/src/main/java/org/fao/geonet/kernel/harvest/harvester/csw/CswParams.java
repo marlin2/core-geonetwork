@@ -26,7 +26,6 @@ package org.fao.geonet.kernel.harvest.harvester.csw;
 import org.fao.geonet.Constants;
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -74,8 +73,8 @@ public class CswParams extends AbstractParams {
      */
     public String xslfilter;
     public List<Element> eltSearches = new ArrayList<Element>();
-    public CswParams(DataManager dm) {
-        super(dm);
+    public CswParams() {
+        super();
     }
 
     /**
@@ -161,7 +160,7 @@ public class CswParams extends AbstractParams {
      * @return
      */
     public CswParams copy() {
-        CswParams copy = new CswParams(dm);
+        CswParams copy = new CswParams();
         copyTo(copy);
 
         copy.capabUrl = capabUrl;

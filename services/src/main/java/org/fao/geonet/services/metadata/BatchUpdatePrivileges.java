@@ -36,7 +36,9 @@ import org.fao.geonet.domain.Profile;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.SelectionManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.services.NotInReadOnlyModeService;
@@ -74,7 +76,6 @@ public class BatchUpdatePrivileges extends NotInReadOnlyModeService {
 
     public Element serviceSpecificExec(Element params, ServiceContext context) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
         AccessManager accessMan = gc.getBean(AccessManager.class);
         UserSession us = context.getUserSession();
 
@@ -110,7 +111,7 @@ public class BatchUpdatePrivileges extends NotInReadOnlyModeService {
                         skip = true;
                     }
 
-                    dm.deleteMetadataOper(context, "" + info.getId(), skip);
+                    gc.getBean(IMetadataOperations.class).deleteMetadataOper(context, "" + info.getId(), skip);
 
                     //--- set new ones
                     @SuppressWarnings("unchecked")
@@ -132,7 +133,7 @@ public class BatchUpdatePrivileges extends NotInReadOnlyModeService {
                                 continue;
                             }
 
-                            dm.setOperation(context, "" + info.getId(), groupId, operId);
+                            gc.getBean(IMetadataOperations.class).setOperation(context, "" + info.getId(), groupId, operId);
                         }
                     }
                     metadata.add(info.getId());
@@ -142,7 +143,7 @@ public class BatchUpdatePrivileges extends NotInReadOnlyModeService {
 
         //--- reindex metadata
         context.info("Re-indexing metadata");
-        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dm, metadata);
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(gc.getBean(IMetadataIndexer.class), gc.getBean(IMetadataUtils.class), metadata);
         r.process();
 
         // -- for the moment just return the sizes - we could return the ids

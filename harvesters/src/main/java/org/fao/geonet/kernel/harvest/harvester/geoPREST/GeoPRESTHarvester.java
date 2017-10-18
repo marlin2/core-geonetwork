@@ -58,7 +58,7 @@ public class GeoPRESTHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new GeoPRESTParams(dataMan);
+        params = new GeoPRESTParams();
         super.setParams(params);
         params.create(node);
     }
@@ -70,7 +70,7 @@ public class GeoPRESTHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new GeoPRESTParams(dataMan);
+        params = new GeoPRESTParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

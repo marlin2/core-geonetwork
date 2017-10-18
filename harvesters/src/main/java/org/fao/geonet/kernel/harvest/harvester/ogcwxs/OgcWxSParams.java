@@ -25,7 +25,6 @@ package org.fao.geonet.kernel.harvest.harvester.ogcwxs;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -73,8 +72,8 @@ public class OgcWxSParams extends AbstractParams {
     public boolean useLayerMd;
     public String datasetCategory;
     public String outputSchema;
-    public OgcWxSParams(DataManager dm) {
-        super(dm);
+    public OgcWxSParams() {
+        super();
     }
 
     public void create(Element node) throws BadInputEx {
@@ -115,7 +114,7 @@ public class OgcWxSParams extends AbstractParams {
     }
 
     public OgcWxSParams copy() {
-        OgcWxSParams copy = new OgcWxSParams(dm);
+        OgcWxSParams copy = new OgcWxSParams();
         copyTo(copy);
 
         copy.url = url;

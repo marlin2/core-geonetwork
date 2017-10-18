@@ -31,7 +31,9 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataDataInfo;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.MetadataIndexerProcessor;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.search.LuceneSearcher;
@@ -64,7 +66,8 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
     boolean isCaseInsensitive;
     String vacuumMode;
 
-    public MetadataSearchAndReplace(DataManager dm,
+    public MetadataSearchAndReplace(IMetadataIndexer mdIndexer,
+                                    IMetadataUtils mdUtils,
                                     String process,
                                     boolean isTesting,
                                     boolean isCaseInsensitive,
@@ -72,7 +75,7 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
                                     ServiceContext context,
                                     Set<String> records,
                                     MetadataReplacementProcessingReport report) {
-        super(dm);
+        super(mdIndexer, mdUtils);
         this.process = process;
         this.params = params;
         this.context = context;
@@ -87,7 +90,6 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
     public void process() throws Exception {
         GeonetContext gc = (GeonetContext) context
             .getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
 
         // Build replacements parameter for xslt process
         Element replacements = new Element("replacements");
@@ -120,7 +122,7 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
         //replacementsString = replacementsString.replaceAll("\\s","");
 
         for (String uuid : this.metadata) {
-            String id = dm.getMetadataId(uuid);
+            String id = gc.getBean(IMetadataUtils.class).getMetadataId(uuid);
             context.info("Processing metadata with id:" + id);
             processInternal(id, process, "replacements", replacementsString, context);
         }
@@ -137,7 +139,6 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
 
         GeonetContext gc = (GeonetContext) context
             .getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dataMan = gc.getBean(DataManager.class);
         SchemaManager schemaMan = gc.getBean(SchemaManager.class);
         AccessManager accessMan = gc.getBean(AccessManager.class);
 
@@ -181,7 +182,7 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
             Element processedMetadata = null;
 
             try {
-                Element md = dataMan.getMetadataNoInfo(context, id);
+                Element md = context.getBean(IMetadataUtils.class).getMetadataNoInfo(context, id);
                 processedMetadata = Xml.transformWithXmlParam(md, filePath, paramNameXml, paramXml);
 
                 // Get changes
@@ -224,7 +225,7 @@ public class MetadataSearchAndReplace extends MetadataIndexerProcessor {
                     }
 
 
-                    dataMan.updateMetadata(context, id, processedMetadata,
+                    context.getBean(IMetadataManager.class).updateMetadata(context, id, processedMetadata,
                         false, true, true,
                         context.getLanguage(),
                         new ISODate().toString(), true);

@@ -58,7 +58,7 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new ThreddsParams(dataMan);
+        params = new ThreddsParams();
         super.setParams(params);
 
         params.create(node);
@@ -71,7 +71,7 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new ThreddsParams(dataMan);
+        params = new ThreddsParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

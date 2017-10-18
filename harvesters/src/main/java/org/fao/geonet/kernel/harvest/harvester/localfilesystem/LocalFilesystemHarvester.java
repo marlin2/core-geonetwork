@@ -87,7 +87,7 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult> {
 
     @Override
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new LocalFilesystemParams(dataMan);
+        params = new LocalFilesystemParams();
         super.setParams(params);
 
         //--- retrieve/initialize information
@@ -146,7 +146,7 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult> {
                 }
                 if (!idsResultHs.contains(existingId)) {
                     log.debug("  Removing: " + existingId);
-                    dataMan.deleteMetadata(context, existingId.toString());
+                    mdManager.deleteMetadata(context, existingId.toString());
                     result.locallyRemoved++;
                 }
             }
@@ -158,7 +158,7 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult> {
         log.debug(String.format(
             "Starting indexing in batch thread pool of %d updated records ...",
             listOfRecordsToIndex.size()));
-        dataMan.batchIndexInThreadPool(context, listOfRecordsToIndex);
+        mdIndexer.batchIndexInThreadPool(context, listOfRecordsToIndex);
 
         log.debug("End of alignment for : " + params.getName());
         return result;
@@ -179,20 +179,20 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult> {
 
         String language = context.getLanguage();
 
-        final Metadata metadata = (Metadata) dataMan.updateMetadata(context, id, xml, false, false, false, language, changeDate,
+        final Metadata metadata = (Metadata) mdManager.updateMetadata(context, id, xml, false, false, false, language, changeDate,
             true);
 
         OperationAllowedRepository repository = context.getBean(OperationAllowedRepository.class);
         repository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
-        aligner.addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
         metadata.getMetadataCategories().clear();
         aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, true);
 
-        dataMan.flush();
+        mdManager.flush();
 
         if (indexAfterUpdate == true) {
-            dataMan.indexMetadata(id, true, null);
+            mdIndexer.indexMetadata(id, true, null);
         }
     }
 
@@ -234,16 +234,16 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult> {
 
         aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        aligner.addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
-        dataMan.flush();
+        mdManager.flush();
 
         if (index) {
-            dataMan.indexMetadata(id, true, null);
+            mdIndexer.indexMetadata(id, true, null);
         }
         return id;
     }
@@ -258,7 +258,7 @@ public class LocalFilesystemHarvester extends AbstractHarvester<HarvestResult> {
 
     @Override
     protected void doInit(Element entry, ServiceContext context) throws BadInputEx {
-        params = new LocalFilesystemParams(dataMan);
+        params = new LocalFilesystemParams();
         super.setParams(params);
         params.create(entry);
     }

@@ -38,7 +38,6 @@ import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.OperationAllowedId_;
 import org.fao.geonet.domain.Pair;
 import org.fao.geonet.exceptions.OperationAbortedEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.harvest.BaseAligner;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
@@ -91,7 +90,6 @@ public class Aligner extends BaseAligner {
     //---
     //--------------------------------------------------------------------------
     private CswParams params;
-    private DataManager dataMan;
 
     //--------------------------------------------------------------------------
     //---
@@ -120,7 +118,6 @@ public class Aligner extends BaseAligner {
         this.params = params;
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
         result = new HarvestResult();
 
         //--- setup get-record-by-id request
@@ -180,7 +177,7 @@ public class Aligner extends BaseAligner {
         localGroups = new GroupMapper(context);
         localUuids = new UUIDMapper(context.getBean(MetadataRepository.class), params.getUuid());
 
-        dataMan.flush();
+        mdManager.flush();
 
         Pair<String, Map<String, Object>> filter =
             HarvesterUtil.parseXSLFilter(params.xslfilter, log);
@@ -200,9 +197,9 @@ public class Aligner extends BaseAligner {
 
                 if (log.isDebugEnabled())
                     log.debug("  - Removing old metadata with local id:" + id);
-                dataMan.deleteMetadata(context, id);
+                mdManager.deleteMetadata(context, id);
 
-                dataMan.flush();
+                mdManager.flush();
 
                 result.locallyRemoved++;
             }
@@ -218,7 +215,7 @@ public class Aligner extends BaseAligner {
 
             try {
 
-                String id = dataMan.getMetadataId(ri.uuid);
+                String id = mdUtils.getMetadataId(ri.uuid);
 
                 if (id == null) addMetadata(ri);
                 else updateMetadata(ri, id);
@@ -231,7 +228,7 @@ public class Aligner extends BaseAligner {
                 result.originalMetadata++;
             }
         }
-        dataMan.forceIndexChanges();
+        mdIndexer.forceIndexChanges();
 
         log.info("End of alignment for : " + params.getName());
 
@@ -249,7 +246,7 @@ public class Aligner extends BaseAligner {
             return;
         }
 
-        String schema = dataMan.autodetectSchema(md, null);
+        String schema = mdSchemaUtils.autodetectSchema(md, null);
 
         if (schema == null) {
             if (log.isDebugEnabled()) {
@@ -299,13 +296,13 @@ public class Aligner extends BaseAligner {
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
-        dataMan.indexMetadata(id, Math.random() < 0.01, null);
+        mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
         result.addedMetadata++;
     }
 
@@ -336,7 +333,7 @@ public class Aligner extends BaseAligner {
                 if (md == null) {
                     return;
                 }
-                String schema = dataMan.autodetectSchema(md, null);
+                String schema = mdSchemaUtils.autodetectSchema(md, null);
                 if (!params.xslfilter.equals("")) {
                     md = processMetadata(context,
                         md, processName, processParams, log);
@@ -349,19 +346,20 @@ public class Aligner extends BaseAligner {
                 boolean ufo = false;
                 boolean index = false;
                 String language = context.getLanguage();
-                final Metadata metadata = dataMan.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate, true);
+                mdManager.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate, true);
+                final Metadata metadata = context.getBean(MetadataRepository.class).findOne(id);
 
                 OperationAllowedRepository repository = context.getBean(OperationAllowedRepository.class);
                 repository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
 
-                addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+                addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
                 metadata.getMetadataCategories().clear();
                 addCategories(metadata, params.getCategories(), localCateg, context, log, null, true);
 
-                dataMan.flush();
+                mdManager.flush();
 
-                dataMan.indexMetadata(id, Math.random() < 0.01, null);
+                mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
                 result.updatedMetadata++;
             }
         }
@@ -412,7 +410,7 @@ public class Aligner extends BaseAligner {
 
 
             try {
-                params.getValidate().validate(dataMan, context, response);
+                params.getValidate().validate(context, response);
             } catch (Exception e) {
                 log.info("Ignoring invalid metadata with uuid " + uuid);
                 result.doesNotValidate++;
@@ -455,7 +453,7 @@ public class Aligner extends BaseAligner {
      * @return true if a record with same resource identifier is found. false otherwise.
      */
     private boolean foundDuplicateForResource(String uuid, Element response) {
-        String schema = dataMan.autodetectSchema(response);
+        String schema = mdSchemaUtils.autodetectSchema(response);
 
         if (schema != null && schema.startsWith("iso19139")) {
             String resourceIdentifierXPath = "gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:identifier/*/gmd:code/gco:CharacterString";

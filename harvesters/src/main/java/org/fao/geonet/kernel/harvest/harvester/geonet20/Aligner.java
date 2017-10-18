@@ -23,12 +23,17 @@
 
 package org.fao.geonet.kernel.harvest.harvester.geonet20;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
-import jeeves.server.context.ServiceContext;
 
 import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Edit;
@@ -37,7 +42,13 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataCategory;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
 import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
@@ -48,12 +59,9 @@ import org.fao.geonet.repository.specification.MetadataCategorySpecs;
 import org.fao.geonet.utils.XmlRequest;
 import org.jdom.Element;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jeeves.server.context.ServiceContext;
 
 //=============================================================================
 
@@ -88,7 +96,20 @@ public class Aligner {
     //--------------------------------------------------------------------------
     //--- Privileges
     //--------------------------------------------------------------------------
-    private DataManager dataMan;
+    @Autowired
+    private IMetadataCategory mdCategory;
+    @Autowired
+    private IMetadataIndexer mdIndexer;
+    @Autowired
+    private IMetadataManager mdManager;
+    @Autowired
+    private IMetadataOperations mdOperations;
+    @Autowired
+    private IMetadataSchemaUtils mdSchemaUtils;
+    @Autowired
+    private IMetadataUtils mdUtils;
+    @Autowired
+    private IMetadataValidator mdValidator;
 
     //--------------------------------------------------------------------------
     //---
@@ -112,13 +133,11 @@ public class Aligner {
     //---
     //--------------------------------------------------------------------------
 
-    public Aligner(AtomicBoolean cancelMonitor, Logger log, XmlRequest req, GeonetParams params, DataManager dm,
-                   ServiceContext sc, CategoryMapper cm) {
+    public Aligner(AtomicBoolean cancelMonitor, Logger log, XmlRequest req, GeonetParams params, ServiceContext sc, CategoryMapper cm) {
         this.cancelMonitor = cancelMonitor;
         this.log = log;
         this.req = req;
         this.params = params;
-        this.dataMan = dm;
         this.context = sc;
         this.localCateg = cm;
     }
@@ -151,9 +170,9 @@ public class Aligner {
                 String id = localUuids.getID(uuid);
 
                 if (log.isDebugEnabled()) log.debug("  - Removing old metadata with id=" + id);
-                dataMan.deleteMetadata(context, id);
+                mdManager.deleteMetadata(context, id);
 
-                dataMan.flush();
+                mdManager.flush();
                 this.result.locallyRemoved++;
             }
         }
@@ -177,11 +196,11 @@ public class Aligner {
             if (log.isDebugEnabled())
                 log.debug("Obtained remote id=" + remoteId + ", changeDate=" + changeDate);
 
-            if (!dataMan.existsSchema(schema)) {
+            if (!mdSchemaUtils.existsSchema(schema)) {
                 if (log.isDebugEnabled()) log.debug("  - Skipping unsupported schema : " + schema);
                 this.result.schemaSkipped++;
             } else {
-                String id = dataMan.getMetadataId(remoteUuid);
+                String id = mdUtils.getMetadataId(remoteUuid);
 
                 if (id == null) {
                     id = addMetadata(info);
@@ -189,13 +208,13 @@ public class Aligner {
                     updateMetadata(siteId, info, id);
                 }
 
-                dataMan.flush();
+                mdManager.flush();
 
 
                 //--- maybe the metadata was unretrievable
 
                 if (id != null) {
-                    dataMan.indexMetadata(id, true, null);
+                    mdIndexer.indexMetadata(id, true, null);
                 }
             }
         }
@@ -246,7 +265,7 @@ public class Aligner {
         List<Element> categories = info.getChildren("category");
         addCategories(metadata, categories);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
@@ -290,8 +309,8 @@ public class Aligner {
 
     private void addPrivileges(String id) throws Exception {
         //--- set view privilege for both groups 'intranet' and 'all'
-        dataMan.setOperation(context, id, "0", "0");
-        dataMan.setOperation(context, id, "1", "0");
+        mdOperations.setOperation(context, id, "0", "0");
+        mdOperations.setOperation(context, id, "1", "0");
     }
 
     private void updateMetadata(String siteId, Element info, String id) throws Exception {
@@ -333,7 +352,7 @@ public class Aligner {
                 boolean ufo = false;
                 boolean index = false;
                 String language = context.getLanguage();
-                dataMan.updateMetadata(context, id, md, validate, ufo, index, language, changeDate, false);
+                mdManager.updateMetadata(context, id, md, validate, ufo, index, language, changeDate, false);
 
                 result.updatedMetadata++;
             }
@@ -347,7 +366,7 @@ public class Aligner {
         //--- remove old categories
 
         @SuppressWarnings("unchecked")
-        Collection<MetadataCategory> locCateg = dataMan.getCategories(id);
+        Collection<MetadataCategory> locCateg = mdCategory.getCategories(id);
 
         for (MetadataCategory el : locCateg) {
             int catId = el.getId();
@@ -357,7 +376,7 @@ public class Aligner {
                 if (log.isDebugEnabled()) {
                     log.debug("  - Unsetting category : " + catName);
                 }
-                dataMan.unsetCategory(context, id, catId);
+                mdCategory.unsetCategory(context, id, catId);
             }
         }
 
@@ -369,11 +388,11 @@ public class Aligner {
 
             if (catId != null) {
                 //--- it is not necessary to query the db. Anyway...
-                if (!dataMan.isCategorySet(id, Integer.valueOf(catId))) {
+                if (!mdCategory.isCategorySet(id, Integer.valueOf(catId))) {
                     if (log.isDebugEnabled()) {
                         log.debug("  - Setting category : " + catName);
                     }
-                    dataMan.setCategory(context, id, catId);
+                    mdCategory.setCategory(context, id, catId);
                 }
             }
         }
@@ -409,7 +428,7 @@ public class Aligner {
                 info.detach();
 
             try {
-                params.getValidate().validate(dataMan, context, md);
+                params.getValidate().validate(context, md);
                 return (Element) md.detach();
             } catch (Exception e) {
                 log.info("Ignoring invalid metadata: " + id);

@@ -35,7 +35,8 @@ import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.exceptions.ConcurrentUpdateEx;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.utils.IO;
 import org.jdom.Element;
@@ -80,7 +81,6 @@ public class Set {
     private static final String SMALL_SUFFIX = "_s";
     private static final String FNAME_PARAM = "fname=";
 
-
     @RequestMapping(value = {"/{lang}/md.thumbnail.upload"}, produces = {
         MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -108,11 +108,9 @@ public class Set {
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-        DataManager dataMan = gc.getBean(DataManager.class);
-
         //--- check if the metadata has been modified from last time
 
-        if (version != null && !StringUtils.isEmpty(version) && !dataMan.getVersion(id).equals(version))
+        if (version != null && !StringUtils.isEmpty(version) && !context.getBean(IMetadataUtils.class).getVersion(id).equals(version))
             throw new ConcurrentUpdateEx(id);
 
         //-----------------------------------------------------------------------
@@ -131,7 +129,7 @@ public class Set {
 
             removeOldThumbnail(context, id, "small", false);
             createThumbnail(file, outFile, smallScalingFactor, smallScalingDir);
-            dataMan.setThumbnail(context, id, true, smallFile.toString(), false);
+            context.getBean(IMetadataUtils.class).setThumbnail(context, id, true, smallFile.toString(), false);
         }
 
         //-----------------------------------------------------------------------
@@ -145,17 +143,17 @@ public class Set {
 
             createThumbnail(file, outFile, scalingFactor, scalingDir);
 
-            dataMan.setThumbnail(context, id, type.equals("small"), newFile.toString(), false);
+            context.getBean(IMetadataUtils.class).setThumbnail(context, id, type.equals("small"), newFile.toString(), false);
         } else {
             //--- move uploaded file to destination directory
             Files.copy(file.getInputStream(), metadataPublicDatadir.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
 
-            dataMan.setThumbnail(context, id, type.equals("small"), file.getOriginalFilename(), false);
+            context.getBean(IMetadataUtils.class).setThumbnail(context, id, type.equals("small"), file.getOriginalFilename(), false);
         }
 
-        dataMan.indexMetadata(id, true, null);
+        context.getBean(IMetadataIndexer.class).indexMetadata(id, true, null);
 
-        return new Response(id, dataMan.getNewVersion(id));
+        return new Response(id, context.getBean(IMetadataUtils.class).getNewVersion(id));
     }
 
     /**
@@ -172,10 +170,7 @@ public class Set {
     }
 
     // FIXME : not elegant
-    public Element execOnHarvest(
-        Element params,
-        ServiceContext context,
-        DataManager dataMan) throws Exception {
+    public Element execOnHarvest(Element params, ServiceContext context) throws Exception {
 
         String id = Util.getParam(params, Params.ID);
         Path dataDir = createDataDir(id, context);
@@ -200,16 +195,16 @@ public class Set {
             int smallScalingFactor = Util.getParam(params, Params.SMALL_SCALING_FACTOR, 0);
             // FIXME should be done before removeOldThumbnail(context, dbms, id, "small");
             createThumbnail(multipartFile, outFile, smallScalingFactor, smallScalingDir);
-            dataMan.setThumbnail(context, id, true, smallFile.toString(), false);
+            context.getBean(IMetadataUtils.class).setThumbnail(context, id, true, smallFile.toString(), false);
         }
 
         //-----------------------------------------------------------------------
         //--- create the requested thumbnail, removing the old one
         removeOldThumbnail(context, id, type, false);
-        saveThumbnail(scaling, file, type, dataDir, scalingDir, scalingFactor, dataMan, id, context);
+        saveThumbnail(scaling, file, type, dataDir, scalingDir, scalingFactor, id, context);
 
         //-----------------------------------------------------------------------
-        dataMan.indexMetadata(id, true, null);
+        context.getBean(IMetadataIndexer.class).indexMetadata(id, true, null);
         Element response = new Element("Response");
         response.addContent(new Element("id").setText(id));
 
@@ -223,7 +218,7 @@ public class Set {
     //--------------------------------------------------------------------------
 
     private void saveThumbnail(boolean scaling, String file, String type, Path dataDir, String scalingDir,
-                               int scalingFactor, DataManager dataMan, String id, ServiceContext context) throws Exception {
+                               int scalingFactor, String id, ServiceContext context) throws Exception {
         if (scaling) {
             Path newFile = getFileName(file, type.equals("small"));
             Path inFile = context.getUploadDir().resolve(file);
@@ -238,7 +233,7 @@ public class Set {
                 context.error("Error while deleting thumbnail : " + inFile);
             }
 
-            dataMan.setThumbnail(context, id, type.equals("small"), newFile.toString(), false);
+            context.getBean(IMetadataUtils.class).setThumbnail(context, id, type.equals("small"), newFile.toString(), false);
         } else {
             //--- move uploaded file to destination directory
             Path inFile = context.getUploadDir().resolve(file);
@@ -251,16 +246,14 @@ public class Set {
                 throw new Exception("Unable to move uploaded thumbnail to destination: " + outFile + ". Error: " + e.getMessage());
             }
 
-            dataMan.setThumbnail(context, id, type.equals("small"), file, false);
+            context.getBean(IMetadataUtils.class).setThumbnail(context, id, type.equals("small"), file, false);
         }
     }
 
     private void removeOldThumbnail(ServiceContext context, String id, String type, boolean indexAfterChange) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-        DataManager dataMan = gc.getBean(DataManager.class);
-
-        Element result = dataMan.getThumbnails(context, id);
+        Element result = context.getBean(IMetadataUtils.class).getThumbnails(context, id);
 
         if (result == null)
             throw new IllegalArgumentException("Metadata not found --> " + id);
@@ -275,7 +268,7 @@ public class Set {
         //-----------------------------------------------------------------------
         //--- remove thumbnail
 
-        dataMan.unsetThumbnail(context, id, type.equals("small"), indexAfterChange);
+        context.getBean(IMetadataUtils.class).unsetThumbnail(context, id, type.equals("small"), indexAfterChange);
 
         //--- remove file
 

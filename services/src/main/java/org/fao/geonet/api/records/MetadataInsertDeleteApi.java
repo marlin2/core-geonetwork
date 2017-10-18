@@ -44,7 +44,13 @@ import org.fao.geonet.domain.*;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.exceptions.XSDValidationErrorEx;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataCategory;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataStatus;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.mef.Importer;
@@ -162,7 +168,6 @@ public class MetadataInsertDeleteApi {
         IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
-        DataManager dataManager = appContext.getBean(DataManager.class);
         SearchManager searchManager = appContext.getBean(SearchManager.class);
 
         if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE &&
@@ -175,7 +180,7 @@ public class MetadataInsertDeleteApi {
             Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class),
                 String.valueOf(metadata.getId())));
 
-        dataManager.deleteMetadata(context, metadataUuid);
+        appContext.getBean(IMetadataManager.class).deleteMetadata(context, metadataUuid);
 
         searchManager.forceIndexChanges();
     }
@@ -222,7 +227,6 @@ public class MetadataInsertDeleteApi {
         throws Exception {
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
-        DataManager dataManager = appContext.getBean(DataManager.class);
         AccessManager accessMan = appContext.getBean(AccessManager.class);
         SearchManager searchManager = appContext.getBean(SearchManager.class);
 
@@ -247,7 +251,7 @@ public class MetadataInsertDeleteApi {
                     Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class),
                         String.valueOf(metadata.getId())));
 
-                dataManager.deleteMetadata(context, String.valueOf(metadata.getId()));
+                appContext.getBean(IMetadataManager.class).deleteMetadata(context, String.valueOf(metadata.getId()));
 
                 report.incrementProcessedRecords();
                 report.addMetadataId(metadata.getId());
@@ -616,9 +620,9 @@ public class MetadataInsertDeleteApi {
         throws Exception {
 
         IMetadata sourceMetadata = ApiUtils.getRecord(sourceUuid);
-        ApplicationContext applicationContext = ApplicationContextHolder.get();
+        ApplicationContext appContext = ApplicationContextHolder.get();
 
-        SettingManager sm = applicationContext.getBean(SettingManager.class);
+        SettingManager sm = appContext.getBean(SettingManager.class);
         boolean generateUuid = sm.getValueAsBool(Settings.SYSTEM_METADATACREATE_GENERATE_UUID);
 
 
@@ -653,7 +657,7 @@ public class MetadataInsertDeleteApi {
                 .and(UserGroupSpecs.hasUserId(user.getUserIdAsInt()))
                 .and(UserGroupSpecs.hasGroupId(Integer.valueOf(group)));
 
-            final List<UserGroup> userGroups = applicationContext.getBean(UserGroupRepository.class).findAll(spec);
+            final List<UserGroup> userGroups = appContext.getBean(UserGroupRepository.class).findAll(spec);
 
             if (userGroups.size() == 0) {
                 throw new SecurityException(String.format(
@@ -662,9 +666,8 @@ public class MetadataInsertDeleteApi {
             }
         }
 
-        DataManager dataManager = applicationContext.getBean(DataManager.class);
         ServiceContext context = ApiUtils.createServiceContext(request);
-        String newId = dataManager.createMetadata(context,
+        String newId = appContext.getBean(IMetadataManager.class).createMetadata(context,
             String.valueOf(sourceMetadata.getId()),
             group,
             sm.getSiteId(),
@@ -674,7 +677,7 @@ public class MetadataInsertDeleteApi {
             isVisibleByAllGroupMembers,
             metadataUuid);
 
-        dataManager.activateWorkflowIfConfigured(context, newId, group);
+        appContext.getBean(IMetadataStatus.class).activateWorkflowIfConfigured(context, newId, group);
 
         try {
             copyDataDir(context, sourceMetadata.getId(), newId, Params.Access.PUBLIC);
@@ -813,8 +816,8 @@ public class MetadataInsertDeleteApi {
         SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
         if (file != null) {
             ServiceContext context = ApiUtils.createServiceContext(request);
-            ApplicationContext applicationContext = ApplicationContextHolder.get();
-            SettingManager settingManager = applicationContext.getBean(SettingManager.class);
+            ApplicationContext appContext = ApplicationContextHolder.get();
+            SettingManager settingManager = appContext.getBean(SettingManager.class);
             for (MultipartFile f : file) {
                 if (MEFLib.isValidArchiveExtensionForMEF(f.getOriginalFilename())) {
                     Path tempFile = Files.createTempFile("mef-import", ".zip");
@@ -993,8 +996,8 @@ public class MetadataInsertDeleteApi {
         }
 
         ServiceContext context = ApiUtils.createServiceContext(request);
-        ApplicationContext applicationContext = ApplicationContextHolder.get();
-        GeonetworkDataDirectory dataDirectory = applicationContext.getBean(GeonetworkDataDirectory.class);
+        ApplicationContext appContext = ApplicationContextHolder.get();
+        GeonetworkDataDirectory dataDirectory = appContext.getBean(GeonetworkDataDirectory.class);
         String styleSheetWmc = dataDirectory.getWebappDir() + File.separator +
                                 Geonet.Path.IMPORT_STYLESHEETS + File.separator +
                                 "OGCWMC-OR-OWSC-to-ISO19139.xsl";
@@ -1030,9 +1033,8 @@ public class MetadataInsertDeleteApi {
 
         // 4. Inserts the metadata (does basically the same as the metadata.insert.paste service (see Insert.java)
         String uuid = UUID.randomUUID().toString();
-        SettingManager sm = applicationContext.getBean(SettingManager.class);
-        DataManager dm = applicationContext.getBean(DataManager.class);
-        SchemaManager schemaMan = applicationContext.getBean(SchemaManager.class);
+        SettingManager sm = appContext.getBean(SettingManager.class);
+        SchemaManager schemaMan = appContext.getBean(SchemaManager.class);
 
 
         String date = new ISODate().toString();
@@ -1065,7 +1067,7 @@ public class MetadataInsertDeleteApi {
             onlineSrcParams.put("name", filename);
             onlineSrcParams.put("desc", title);
             transformedMd = Xml.transform(transformedMd, schemaMan.getSchemaDir("iso19139").resolve("process").resolve("onlinesrc-add.xsl"), onlineSrcParams);
-            dm.updateMetadata(context, id.get(0), transformedMd, false, true, false, context.getLanguage(), null, true);
+            appContext.getBean(IMetadataManager.class).updateMetadata(context, id.get(0), transformedMd, false, true, false, context.getLanguage(), null, true);
         }
 
         if (StringUtils.isNotEmpty(overview) && StringUtils.isNotEmpty(overviewFilename)) {
@@ -1082,10 +1084,10 @@ public class MetadataInsertDeleteApi {
                 sm.getNodeURL() +
                     String.format("api/records/%s/attachments/%s", uuid, overviewFilename));
             transformedMd = Xml.transform(transformedMd, schemaMan.getSchemaDir("iso19139").resolve("process").resolve("thumbnail-add.xsl"), onlineSrcParams);
-            dm.updateMetadata(context, id.get(0), transformedMd, false, true, false, context.getLanguage(), null, true);
+            appContext.getBean(IMetadataManager.class).updateMetadata(context, id.get(0), transformedMd, false, true, false, context.getLanguage(), null, true);
         }
 
-        dm.indexMetadata(id);
+        appContext.getBean(IMetadataIndexer.class).indexMetadata(id);
         report.addMetadataInfos(Integer.parseInt(id.get(0)), uuid);
         report.incrementProcessedRecords();
         report.close();
@@ -1123,9 +1125,8 @@ public class MetadataInsertDeleteApi {
             }
         }
 
-        DataManager dataMan = appContext.getBean(DataManager.class);
         if (schema == null) {
-            schema = dataMan.autodetectSchema(xmlElement);
+            schema = appContext.getBean(IMetadataSchemaUtils.class).autodetectSchema(xmlElement);
             if (schema == null) {
                 throw new IllegalArgumentException(
                     "Can't detect schema for metadata automatically. " +
@@ -1139,7 +1140,7 @@ public class MetadataInsertDeleteApi {
 
         if (rejectIfInvalid) {
             try {
-                appContext.getBean(IMetadataValidator.class).validateMetadata(schema, xmlElement, context);
+                appContext.getBean(IMetadataValidator.class).validateMetadata(schema, xmlElement, context, null);
             } catch (XSDValidationErrorEx e) {
                 throw new IllegalArgumentException(e);
             }
@@ -1151,10 +1152,10 @@ public class MetadataInsertDeleteApi {
             metadataType == MetadataType.TEMPLATE_OF_SUB_TEMPLATE) {
             uuid = UUID.randomUUID().toString();
         } else {
-            uuid = dataMan.extractUUID(schema, xmlElement);
+            uuid = appContext.getBean(IMetadataUtils.class).extractUUID(schema, xmlElement);
             if (uuid.length() == 0) {
                 uuid = UUID.randomUUID().toString();
-                xmlElement = dataMan.setUUID(schema, uuid, xmlElement);
+                xmlElement = appContext.getBean(IMetadataUtils.class).setUUID(schema, uuid, xmlElement);
             }
         }
 
@@ -1197,13 +1198,13 @@ public class MetadataInsertDeleteApi {
 
 
         // Set template
-        dataMan.setTemplate(iId, metadataType, null);
+        appContext.getBean(IMetadataUtils.class).setTemplate(iId, metadataType, null);
 
-        dataMan.activateWorkflowIfConfigured(context, id.get(0), group);
+        appContext.getBean(IMetadataStatus.class).activateWorkflowIfConfigured(context, id.get(0), group);
 
         if (category != null) {
             for (String c : category) {
-                dataMan.setCategory(context, id.get(0), c);
+                appContext.getBean(IMetadataCategory.class).setCategory(context, id.get(0), c);
             }
         }
 
@@ -1218,7 +1219,7 @@ public class MetadataInsertDeleteApi {
             });
         }
 
-        dataMan.indexMetadata(id.get(0), true, null);
+        appContext.getBean(IMetadataIndexer.class).indexMetadata(id.get(0), true, null);
         return Pair.read(Integer.valueOf(id.get(0)), uuid);
     }
 }

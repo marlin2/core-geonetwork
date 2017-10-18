@@ -41,6 +41,8 @@ import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.kernel.*;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.metadata.StatusActions;
 import org.fao.geonet.kernel.metadata.StatusActionsFactory;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -149,9 +151,8 @@ public class MetadataEditingApi {
         ServiceContext context = ApiUtils.createServiceContext(request);
         ApplicationContext applicationContext = ApplicationContextHolder.get();
         if (starteditingsession) {
-            IMetadataManager dm = applicationContext.getBean(IMetadataManager.class);
-            Integer id = Integer.valueOf(dm.startEditingSession(context, String.valueOf(metadata.getId())));
-            metadata = dm.getMetadataObject(id);
+            Integer id = Integer.valueOf(applicationContext.getBean(IMetadataUtils.class).startEditingSession(context, String.valueOf(metadata.getId()), true));
+            metadata = applicationContext.getBean(IMetadataManager.class).getMetadataObject(id);
         }
 
         Element elMd = new AjaxEditUtils(context)

@@ -23,26 +23,6 @@
 
 package org.fao.geonet.kernel.harvest.harvester.localfilesystem;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import jeeves.server.context.ServiceContext;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.fao.geonet.Logger;
-import org.fao.geonet.constants.Geonet;
-import org.fao.geonet.domain.ISODate;
-import org.fao.geonet.domain.Metadata;
-import org.fao.geonet.kernel.DataManager;
-import org.fao.geonet.kernel.harvest.BaseAligner;
-import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
-import org.fao.geonet.kernel.harvest.harvester.GroupMapper;
-import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
-import org.fao.geonet.repository.MetadataRepository;
-import org.fao.geonet.utils.Xml;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -53,6 +33,31 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.fao.geonet.Logger;
+import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.domain.ISODate;
+import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
+import org.fao.geonet.kernel.harvest.BaseAligner;
+import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
+import org.fao.geonet.kernel.harvest.harvester.GroupMapper;
+import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
+import org.fao.geonet.repository.MetadataRepository;
+import org.fao.geonet.utils.Xml;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import jeeves.server.context.ServiceContext;
+
 /**
  * @author Jesse on 11/6/2014.
  */
@@ -60,7 +65,6 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
 
     private final Logger log;
     private final LocalFilesystemParams params;
-    private final DataManager dataMan;
     private final LocalFilesystemHarvester harvester;
     private final HarvestResult result = new HarvestResult();
     private final MetadataRepository repo;
@@ -74,6 +78,16 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
     private boolean transformIt = false;
     private Path thisXslt;
     private long startTime;
+
+    @Autowired
+    protected IMetadataManager mdManager;
+    @Autowired
+    protected IMetadataSchemaUtils mdSchemaUtils;
+    @Autowired
+    protected IMetadataUtils mdUtils;
+    @Autowired
+    protected IMetadataValidator mdValidator;
+
 
     public LocalFsHarvesterFileVisitor(AtomicBoolean cancelMonitor, ServiceContext context, LocalFilesystemParams params, Logger log, LocalFilesystemHarvester harvester) throws Exception {
         this.aligner = new BaseAligner(cancelMonitor) {
@@ -90,7 +104,6 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
         localGroups = new GroupMapper(context);
         this.log = log;
         this.params = params;
-        this.dataMan = context.getBean(DataManager.class);
         this.harvester = harvester;
         this.repo = context.getBean(MetadataRepository.class);
         this.startTime = System.currentTimeMillis();
@@ -150,14 +163,14 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
 
                 String schema = null;
                 try {
-                    schema = dataMan.autodetectSchema(xml, null);
+                    schema = mdSchemaUtils.autodetectSchema(xml, null);
                 } catch (Exception e) {
                     result.unknownSchema++;
                 }
 
                 if (schema != null) {
                     try {
-                        params.getValidate().validate(dataMan, context, xml);
+                        params.getValidate().validate(context, xml);
                     } catch (Exception e) {
                         log.debug("Cannot validate XML from file " + filePath + ", ignoring. Error was: " + e.getMessage());
                         result.doesNotValidate++;
@@ -166,7 +179,7 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
 
                     String uuid = null;
                     try {
-                        uuid = dataMan.extractUUID(schema, xml);
+                        uuid = mdUtils.extractUUID(schema, xml);
                     } catch (Exception e) {
                         log.debug("Failed to extract metadata UUID for file " + filePath +
                             " using XSL extract-uuid. The record is probably " +
@@ -190,7 +203,7 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
                     if (uuid == null || uuid.equals("")) {
                         result.badFormat++;
                     } else {
-                        String id = dataMan.getMetadataId(uuid);
+                        String id = mdUtils.getMetadataId(uuid);
                         if (id == null) {
                             // For new record change date will be the time of metadata xml date change or the date when
                             // the record was harvested (if can't be obtained the metadata xml date change)
@@ -200,7 +213,7 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
                                 createDate = new ISODate(Files.getLastModifiedTime(file).toMillis(), false).getDateAndTime();
                             } else {
                                 try {
-                                    createDate = dataMan.extractDateModified(schema, xml);
+                                    createDate = mdUtils.extractDateModified(schema, xml);
                                 } catch (Exception ex) {
                                     log.error("LocalFilesystemHarvester - addMetadata - can't get metadata modified date for metadata uuid= " +
 
@@ -249,7 +262,7 @@ class LocalFsHarvesterFileVisitor extends SimpleFileVisitor<Path> {
                                 String changeDate;
 
                                 try {
-                                    changeDate = dataMan.extractDateModified(schema, xml);
+                                    changeDate = mdUtils.extractDateModified(schema, xml);
                                 } catch (Exception ex) {
                                     log.error("LocalFilesystemHarvester - updateMetadata - can't get metadata modified date for " +
                                         "metadata id= " +

@@ -35,7 +35,8 @@ import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.SelectionManager;
 import org.fao.geonet.kernel.metadata.StatusActions;
 import org.fao.geonet.kernel.metadata.StatusActionsFactory;
@@ -73,7 +74,6 @@ public class BatchUpdateStatus extends NotInReadOnlyModeService {
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-        DataManager dm = gc.getBean(DataManager.class);
         AccessManager accessMan = gc.getBean(AccessManager.class);
         UserSession us = context.getUserSession();
 
@@ -88,7 +88,7 @@ public class BatchUpdateStatus extends NotInReadOnlyModeService {
         synchronized (sm.getSelection("metadata")) {
             for (Iterator<String> iter = sm.getSelection("metadata").iterator(); iter.hasNext(); ) {
                 String uuid = (String) iter.next();
-                String id = dm.getMetadataId(uuid);
+                String id = gc.getBean(IMetadataUtils.class).getMetadataId(uuid);
 
 
                 final Integer iId = Integer.valueOf(id);
@@ -114,7 +114,7 @@ public class BatchUpdateStatus extends NotInReadOnlyModeService {
 
         //--- reindex metadata
         context.info("Re-indexing metadata");
-        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dm, metadata);
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(gc.getBean(IMetadataIndexer.class), gc.getBean(IMetadataUtils.class), metadata);
         r.process();
 
         // -- for the moment just return the sizes - we could return the ids

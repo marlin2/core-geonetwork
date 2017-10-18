@@ -31,10 +31,14 @@ import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.exception.ResourceNotFoundException;
 import org.fao.geonet.api.processing.report.MetadataProcessingReport;
 import org.fao.geonet.api.processing.report.SimpleMetadataProcessingReport;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
+import org.fao.geonet.domain.MetadataDraft;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataCategory;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.repository.MetadataRepository;
 import org.springframework.context.ApplicationContext;
@@ -158,12 +162,11 @@ public class MetadataTagApi {
                 metadata.getId(), entity -> entity.getMetadataCategories().clear());
         }
 
-        DataManager dataManager = appContext.getBean(DataManager.class);
         MetadataCategoryRepository categoryRepository = appContext.getBean(MetadataCategoryRepository.class);
         for (int c : id) {
             final MetadataCategory category = categoryRepository.findOne(c);
             if (category != null) {
-                dataManager.setCategory(
+                 appContext.getBean(IMetadataCategory.class).setCategory(
                     ApiUtils.createServiceContext(request),
                     String.valueOf(metadata.getId()), String.valueOf(c));
             } else {
@@ -173,7 +176,7 @@ public class MetadataTagApi {
             }
         }
 
-        dataManager.indexMetadata(String.valueOf(metadata.getId()), true, null);
+         appContext.getBean(IMetadataIndexer.class).indexMetadata(String.valueOf(metadata.getId()), true, null);
     }
 
     @ApiOperation(
@@ -212,16 +215,15 @@ public class MetadataTagApi {
                 metadata.getId(), entity -> entity.getMetadataCategories().clear());
         }
 
-        DataManager dataManager = appContext.getBean(DataManager.class);
         if (id != null) {
             for (int c : id) {
-                dataManager.unsetCategory(
+                 appContext.getBean(IMetadataCategory.class).unsetCategory(
                     ApiUtils.createServiceContext(request),
                     String.valueOf(metadata.getId()), c);
             }
         }
 
-        dataManager.indexMetadata(String.valueOf(metadata.getId()), true, null);
+         appContext.getBean(IMetadataIndexer.class).indexMetadata(String.valueOf(metadata.getId()), true, null);
     }
 
 
@@ -279,11 +281,10 @@ public class MetadataTagApi {
             Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, ApiUtils.getUserSession(session));
             report.setTotalRecords(records.size());
 
-            final ApplicationContext context = ApplicationContextHolder.get();
-            final DataManager dataMan = context.getBean(DataManager.class);
-            final MetadataCategoryRepository categoryRepository = context.getBean(MetadataCategoryRepository.class);
-            final AccessManager accessMan = context.getBean(AccessManager.class);
-            final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
+            final ApplicationContext appContext = ApplicationContextHolder.get();
+            final MetadataCategoryRepository categoryRepository = appContext.getBean(MetadataCategoryRepository.class);
+            final AccessManager accessMan = appContext.getBean(AccessManager.class);
+            final MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
 
             List<String> listOfUpdatedRecords = new ArrayList<>();
             for (String uuid : records) {
@@ -316,8 +317,8 @@ public class MetadataTagApi {
                     }
                 }
             }
-            dataMan.flush();
-            dataMan.indexMetadata(listOfUpdatedRecords);
+            appContext.getBean(IMetadataManager.class).flush();
+            appContext.getBean(IMetadataIndexer.class).indexMetadata(listOfUpdatedRecords);
 
         } catch (Exception exception) {
             report.addError(exception);
@@ -371,11 +372,10 @@ public class MetadataTagApi {
             Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, ApiUtils.getUserSession(session));
             report.setTotalRecords(records.size());
 
-            final ApplicationContext context = ApplicationContextHolder.get();
-            final DataManager dataMan = context.getBean(DataManager.class);
-            final MetadataCategoryRepository categoryRepository = context.getBean(MetadataCategoryRepository.class);
-            final AccessManager accessMan = context.getBean(AccessManager.class);
-            final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
+            final ApplicationContext appContext = ApplicationContextHolder.get();
+            final MetadataCategoryRepository categoryRepository = appContext.getBean(MetadataCategoryRepository.class);
+            final AccessManager accessMan = appContext.getBean(AccessManager.class);
+            final MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
 
             List<String> listOfUpdatedRecords = new ArrayList<>();
             for (String uuid : records) {
@@ -391,8 +391,8 @@ public class MetadataTagApi {
                     report.incrementProcessedRecords();
                 }
             }
-            dataMan.flush();
-            dataMan.indexMetadata(listOfUpdatedRecords);
+            appContext.getBean(IMetadataManager.class).flush();
+            appContext.getBean(IMetadataIndexer.class).indexMetadata(listOfUpdatedRecords);
 
         } catch (Exception exception) {
             report.addError(exception);

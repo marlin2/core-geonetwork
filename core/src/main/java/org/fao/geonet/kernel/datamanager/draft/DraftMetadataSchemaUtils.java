@@ -1,10 +1,7 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import org.fao.geonet.domain.MetadataDraft;
-import org.fao.geonet.kernel.metadata.DefaultMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.base.BaseMetadataSchemaUtils;
 import org.fao.geonet.repository.MetadataDraftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +14,7 @@ import jeeves.server.context.ServiceContext;
  * 
  * 
  */
-public class DraftMetadataSchemaUtils extends DefaultMetadataSchemaUtils {
+public class DraftMetadataSchemaUtils extends BaseMetadataSchemaUtils {
     @Autowired
     private MetadataDraftRepository mdRepository;
 
@@ -25,13 +22,13 @@ public class DraftMetadataSchemaUtils extends DefaultMetadataSchemaUtils {
      * @param context
      */
     @Override
-    public void init(ServiceContext context) {
-        super.init(context);
+    public void init(ServiceContext context, Boolean force) throws Exception {
+        super.init(context, force);
         this.mdRepository = context.getBean(MetadataDraftRepository.class);
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataSchemaUtils#getMetadataSchema(java.lang.String)
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataSchemaUtils#getMetadataSchema(java.lang.String)
      * @param id
      * @return
      * @throws Exception

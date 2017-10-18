@@ -42,7 +42,8 @@ import org.fao.geonet.api.records.model.suggestion.SuggestionsType;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.exceptions.BadParameterEx;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.SelectionManager;
 import org.fao.geonet.kernel.schema.MetadataSchema;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -84,7 +85,10 @@ import static org.fao.geonet.api.ApiParams.*;
 public class MetadataIndexApi {
 
     @Autowired
-    DataManager dataManager;
+    IMetadataIndexer mdIndexer;
+
+    @Autowired
+    IMetadataUtils mdUtils;
 
     @ApiOperation(
         value = "Index a set of records",
@@ -135,7 +139,7 @@ public class MetadataIndexApi {
 
         for (String uuid : records) {
             try {
-                final String metadataId = dataManager.getMetadataId(uuid);
+                final String metadataId = mdUtils.getMetadataId(uuid);
                 if (metadataId != null) {
                     ids.add(Integer.valueOf(metadataId));
                 }
@@ -148,7 +152,7 @@ public class MetadataIndexApi {
             }
         }
         index = ids.size();
-        new BatchOpsMetadataReindexer(dataManager, ids).process();
+        new BatchOpsMetadataReindexer(mdIndexer, mdUtils, ids).process();
 
         JSONObject res = new JSONObject();
         res.put("success", true);

@@ -24,7 +24,6 @@ package org.fao.geonet.kernel.harvest.harvester.arcsde;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -56,8 +55,8 @@ public class ArcSDEParams extends AbstractParams {
     /** The ArcSDE database type */
     public String databaseType;
 
-    public ArcSDEParams(DataManager dm) {
-        super(dm);
+    public ArcSDEParams() {
+        super();
     }
 
     /**
@@ -111,7 +110,7 @@ public class ArcSDEParams extends AbstractParams {
      * @return a new instance with the same field values that the caller one.
      */
     public ArcSDEParams copy() {
-        ArcSDEParams copy = new ArcSDEParams(dm);
+        ArcSDEParams copy = new ArcSDEParams();
         copyTo(copy);
         copy.icon = icon;
         copy.server = server;

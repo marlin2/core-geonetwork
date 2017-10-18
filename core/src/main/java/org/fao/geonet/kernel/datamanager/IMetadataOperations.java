@@ -1,10 +1,14 @@
-    package org.fao.geonet.kernel.datamanager;
+package org.fao.geonet.kernel.datamanager;
+
+import java.util.List;
 
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.MetadataStatus;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.repository.UserGroupRepository;
+
+import org.springframework.context.ApplicationEventPublisher;
 
 import com.google.common.base.Optional;
 
@@ -13,6 +17,10 @@ import jeeves.server.context.ServiceContext;
 public interface IMetadataOperations {
 
         public void init(ServiceContext context, Boolean force) throws Exception;
+
+        void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher);
+
+        List<OperationAllowed> getAllOperations(Integer mdId);
 
         void deleteMetadataOper(ServiceContext context, String metadataId, boolean skipAllReservedGroup) throws Exception;
 
@@ -39,6 +47,8 @@ public interface IMetadataOperations {
         boolean isUserMetadataOwner(int userId) throws Exception;
 
         boolean existsUser(ServiceContext context, int id) throws Exception;
+
+        Boolean forceSetOperation(ServiceContext context, int mdId, int grpId, int opId) throws Exception; 
 }
 
   

@@ -60,7 +60,12 @@ import org.fao.geonet.exceptions.BadInputEx;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.exceptions.JeevesException;
 import org.fao.geonet.exceptions.OperationAbortedEx;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.MetadataIndexerProcessor;
 import org.fao.geonet.kernel.harvest.Common.OperResult;
@@ -178,7 +183,12 @@ public abstract class AbstractHarvester<T extends HarvestResult> {
      */
     protected void setContext(ServiceContext context) {
         this.context = context;
-        this.dataMan = context.getBean(DataManager.class);
+        this.mdManager = context.getBean(IMetadataManager.class);
+        this.mdIndexer = context.getBean(IMetadataIndexer.class);
+        this.mdOperations = context.getBean(IMetadataOperations.class);
+        this.mdSchemaUtils = context.getBean(IMetadataSchemaUtils.class);
+        this.mdUtils = context.getBean(IMetadataUtils.class);
+        this.mdValidator = context.getBean(IMetadataValidator.class);
         this.settingMan = context.getBean(HarvesterSettingsManager.class);
     }
 
@@ -341,7 +351,7 @@ public abstract class AbstractHarvester<T extends HarvestResult> {
                 Set<String> sources = new HashSet<String>();
                 for (Integer id : metadataRepository.findAllIdsBy(ownedByHarvester)) {
                     sources.add(metadataRepository.findOne(id).getSourceInfo().getSourceId());
-                    dataMan.deleteMetadata(context, "" + id);
+                    mdManager.deleteMetadata(context, "" + id);
                 }
                 
                 // Remove all sources related to the harvestUuid if they are not linked to any record anymore
@@ -636,8 +646,8 @@ public abstract class AbstractHarvester<T extends HarvestResult> {
          * @param dm
          * @param logger
          */
-        public HarvestWithIndexProcessor(DataManager dm, Logger logger) {
-            super(dm);
+        public HarvestWithIndexProcessor(IMetadataIndexer mdIndexer, IMetadataUtils mdUtils, Logger logger) {
+            super(mdIndexer, mdUtils);
             this.logger = logger;
         }
 
@@ -669,7 +679,7 @@ public abstract class AbstractHarvester<T extends HarvestResult> {
         
         // for harvesters created before owner was added to the harvester code,
         // or harvesters belonging to a user that no longer exists
-        if (user == null || StringUtils.isEmpty(ownerId) || !this.dataMan.existsUser(this.context, Integer.parseInt(ownerId))) {
+        if (user == null || StringUtils.isEmpty(ownerId) || !this.mdOperations.existsUser(this.context, Integer.parseInt(ownerId))) {
             // just pick any Administrator (they can all see all harvesters and groups anyway)
             user = repository.findAllByProfile(Profile.Administrator).get(0);
             getParams().setOwnerId(String.valueOf(user.getId()));
@@ -716,7 +726,7 @@ public abstract class AbstractHarvester<T extends HarvestResult> {
 
                         //--- proper harvesting
                         logger.info("Started harvesting from node : " + nodeName);
-                        HarvestWithIndexProcessor h = new HarvestWithIndexProcessor(dataMan, logger);
+                        HarvestWithIndexProcessor h = new HarvestWithIndexProcessor(mdIndexer, mdUtils, logger);
                         // todo check (was: processwithfastindexing)
                         h.process();
                         logger.info("Ended harvesting from node : " + nodeName);
@@ -1180,7 +1190,12 @@ public abstract class AbstractHarvester<T extends HarvestResult> {
 
     protected HarvesterSettingsManager settingMan;
 
-    protected DataManager dataMan;
+    protected IMetadataManager mdManager;
+    protected IMetadataOperations mdOperations;
+    protected IMetadataIndexer mdIndexer;
+    protected IMetadataSchemaUtils mdSchemaUtils;
+    protected IMetadataUtils mdUtils;
+    protected IMetadataValidator mdValidator;
 
     protected AbstractParams params;
     protected T result;

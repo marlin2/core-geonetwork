@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
 
@@ -41,8 +38,8 @@ import org.fao.geonet.kernel.HarvestInfoProvider;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.ThesaurusManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
-import org.fao.geonet.kernel.metadata.DefaultMetadataManager;
-import org.fao.geonet.kernel.metadata.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.base.BaseMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.schema.AssociatedResourcesSchemaPlugin;
 import org.fao.geonet.kernel.schema.SchemaPlugin;
 import org.fao.geonet.kernel.search.SearchManager;
@@ -77,7 +74,7 @@ import jeeves.server.context.ServiceContext;
  * 
  * 
  */
-public class DraftMetadataManager extends DefaultMetadataManager {
+public class DraftMetadataManager extends BaseMetadataManager {
 
   @Autowired
   private MetadataDraftRepository mdDraftRepository;
@@ -92,15 +89,15 @@ public class DraftMetadataManager extends DefaultMetadataManager {
    * @param context
    */
   @Override
-  public void init(ServiceContext context) {
-    super.init(context);
+  public void init(ServiceContext context, Boolean force) throws Exception {
+    super.init(context, force);
     this.mdDraftRepository = context.getBean(MetadataDraftRepository.class);
     this.mdIndexer = context.getBean(IMetadataIndexer.class);
     this.accessManager = context.getBean(AccessManager.class);
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#index(java.lang.Boolean,
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#index(java.lang.Boolean,
    *      java.util.Map, java.util.ArrayList)
    * @param force
    * @param docs
@@ -124,7 +121,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#deleteMetadata(jeeves.server.context.ServiceContext,
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#deleteMetadata(jeeves.server.context.ServiceContext,
    *      java.lang.String)
    * @param context
    * @param metadataId
@@ -132,7 +129,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
    */
   @Override
   public synchronized void deleteMetadata(ServiceContext context, String metadataId) throws Exception {
-    Metadata md = mdRepository.findOne(metadataId);
+    Metadata md = getMetadataRepository().findOne(metadataId);
     if (md != null) {
       MetadataDraft mdD = mdDraftRepository.findOneByUuid(md.getUuid());
       if (mdD != null) {
@@ -149,9 +146,9 @@ public class DraftMetadataManager extends DefaultMetadataManager {
       context.getBean(SearchManager.class).delete("_id", metadataId + "");
 
       // Make sure the original metadata knows it has been removed
-      Metadata originalMd = mdRepository.findOneByUuid(uuid);
+      Metadata originalMd = getMetadataRepository().findOneByUuid(uuid);
       if (originalMd != null) {
-        mdIndexer.indexMetadata(Integer.toString(originalMd.getId()), true);
+        mdIndexer.indexMetadata(Integer.toString(originalMd.getId()), true, null);
       } else {
         Log.error(Geonet.DATA_MANAGER, "Draft with uuid " + uuid + " was removed. No original metadata was found.");
 
@@ -160,159 +157,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#existsMetadata(int)
-   * @param id
-   * @return
-   * @throws Exception
-   */
-  @Override
-  public boolean existsMetadata(int id) throws Exception {
-    return super.existsMetadata(id) || mdDraftRepository.exists(id);
-  }
-
-  /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#existsMetadataUuid(java.lang.String)
-   * @param uuid
-   * @return
-   * @throws Exception
-   */
-  @Override
-  public boolean existsMetadataUuid(String uuid) throws Exception {
-    return super.existsMetadataUuid(uuid)
-        || !mdDraftRepository.findAllIdsBy(MetadataDraftSpecs.hasMetadataUuid(uuid)).isEmpty();
-  }
-
-  /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#startEditingSession(jeeves.server.context.ServiceContext,
-   *      java.lang.String)
-   * @param context
-   * @param id
-   * @throws Exception
-   */
-  @Override
-  public String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception {
-    Metadata md = mdRepository.findOne(Integer.valueOf(id));
-
-    if (md != null) {
-      boolean isPublished = loadOperationsAllowed(context,
-          where(OperationAllowedSpecs.hasMetadataId(id)).and(OperationAllowedSpecs.isPublic(ReservedOperation.view)))
-              .keySet().contains(Integer.valueOf(id));
-
-      // We need to create a draft to avoid modifying the published
-      // metadata
-      if (isPublished && mdDraftRepository.findOneByUuid(md.getUuid()) == null) {
-
-        // Get parent record from this record
-        String parentUuid = "";
-        String schemaIdentifier = metadataSchemaUtils.getMetadataSchema(id);
-        SchemaPlugin instance = SchemaManager.getSchemaPlugin(schemaIdentifier);
-        AssociatedResourcesSchemaPlugin schemaPlugin = null;
-        if (instance instanceof AssociatedResourcesSchemaPlugin) {
-          schemaPlugin = (AssociatedResourcesSchemaPlugin) instance;
-        }
-        if (schemaPlugin != null) {
-          Set<String> listOfUUIDs = schemaPlugin.getAssociatedParentUUIDs(md.getXmlData(false));
-          if (listOfUUIDs.size() > 0) {
-            // FIXME more than one parent? Is it even possible?
-            parentUuid = listOfUUIDs.iterator().next();
-          }
-        }
-
-        String groupOwner = null;
-        String source = null;
-        Integer owner = 1;
-
-        if (md.getSourceInfo() != null) {
-          if (md.getSourceInfo().getSourceId() != null) {
-            source = md.getSourceInfo().getSourceId().toString();
-          }
-          if (md.getSourceInfo().getGroupOwner() != null) {
-            groupOwner = md.getSourceInfo().getGroupOwner().toString();
-          }
-          owner = md.getSourceInfo().getOwner();
-        }
-
-        id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString,
-            false, md.getUuid());
-        // We don't want to lock because we are going to redirect
-        lock = false;
-      } else if (isPublished && mdDraftRepository.findOneByUuid(md.getUuid()) != null) {
-        // We already have a draft created
-        id = Integer.toString(mdDraftRepository.findOneByUuid(md.getUuid()).getId());
-      }
-    }
-
-    return super.startEditingSession(context, id, lock);
-  }
-
-  private String createDraft(ServiceContext context, String templateId, String groupOwner, String source, int owner,
-      String parentUuid, String isTemplate, boolean fullRightsForGroup, String uuid) throws Exception {
-    Metadata templateMetadata = mdRepository.findOne(templateId);
-    if (templateMetadata == null) {
-      throw new IllegalArgumentException("Template id not found : " + templateId);
-    }
-
-    String schema = templateMetadata.getDataInfo().getSchemaId();
-    String data = templateMetadata.getData();
-    Element xml = Xml.loadString(data, false);
-    if (templateMetadata.getDataInfo().getType() == MetadataType.METADATA) {
-      xml = updateFixedInfo(schema, Optional.<Integer>absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context);
-    }
-    final MetadataDraft newMetadata = new MetadataDraft();
-    newMetadata.setUuid(uuid);
-    newMetadata.getDataInfo().setChangeDate(new ISODate()).setCreateDate(new ISODate()).setSchemaId(schema)
-        .setType(MetadataType.lookup(isTemplate));
-    if (groupOwner != null) {
-      newMetadata.getSourceInfo().setGroupOwner(Integer.valueOf(groupOwner));
-    }
-    newMetadata.getSourceInfo().setOwner(owner);
-
-    if (source != null) {
-      newMetadata.getSourceInfo().setSourceId(source);
-    }
-    // If there is a default category for the group, use it:
-    if (groupOwner != null) {
-      Group group = groupRepository.findOne(Integer.valueOf(groupOwner));
-      if (group.getDefaultCategory() != null) {
-        newMetadata.getMetadataCategories().add(group.getDefaultCategory());
-      }
-    }
-    Collection<MetadataCategory> filteredCategories = Collections2.filter(templateMetadata.getMetadataCategories(),
-        new Predicate<MetadataCategory>() {
-          @Override
-          public boolean apply(@Nullable MetadataCategory input) {
-            return input != null;
-          }
-        });
-
-    newMetadata.getMetadataCategories().addAll(filteredCategories);
-
-    Integer finalId = insertMetadata(context, newMetadata, xml, false, true, true, UpdateDatestamp.YES,
-        fullRightsForGroup, true).getId();
-
-    // Copy privileges from original metadata
-    for (OperationAllowed op : metadataOperations.getAllOperations(templateMetadata.getId())) {
-      if(ReservedGroup.all.getId() != op.getId().getGroupId()) { //except for group All
-        try {
-          metadataOperations.setOperation(context, finalId, op.getId().getGroupId(), op.getId().getOperationId());
-        } catch(Throwable t) {
-          //On this particular case, we want to set up the operations
-          //even if the person creating the draft does not own the groups
-
-          metadataOperations.forceSetOperation(context, finalId, op.getId().getGroupId(), op.getId().getOperationId());
-        }
-      }
-    }
-    
-    mdIndexer.indexMetadata(String.valueOf(finalId), true);
-    
-    mdIndexer.indexMetadata(String.valueOf(templateId), true);
-
-    return String.valueOf(finalId);
-  }
-
-  /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#updateFixedInfo(java.lang.String,
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#updateFixedInfo(java.lang.String,
    *      com.google.common.base.Optional, java.lang.String, org.jdom.Element,
    *      java.lang.String, org.fao.geonet.kernel.UpdateDatestamp,
    *      jeeves.server.context.ServiceContext)
@@ -337,7 +182,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
 
       IMetadata metadata = null;
       if (metadataId.isPresent()) {
-        metadata = mdRepository.findOne(metadataId.get());
+        metadata = getMetadataRepository().findOne(metadataId.get());
         if (metadata == null) {
           metadata = mdDraftRepository.findOne(metadataId.get());
         }
@@ -408,7 +253,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#updateMetadata(jeeves.server.context.ServiceContext,
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#updateMetadata(jeeves.server.context.ServiceContext,
    *      java.lang.String, org.jdom.Element, boolean, boolean, boolean,
    *      java.lang.String, java.lang.String, boolean)
    * @param context
@@ -437,7 +282,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#updateMetadataOwner(int,
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#updateMetadataOwner(int,
    *      java.lang.String, java.lang.String)
    * @param id
    * @param owner
@@ -447,7 +292,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   @Override
   public synchronized void updateMetadataOwner(int id, final String owner, final String groupOwner) throws Exception {
 
-    if (mdRepository.exists(id)) {
+    if (getMetadataRepository().exists(id)) {
       super.updateMetadataOwner(id, owner, groupOwner);
     } else {
       mdDraftRepository.update(id, new Updater<MetadataDraft>() {
@@ -462,7 +307,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
 
   @Override
   protected Element buildInfoElem(ServiceContext context, String id, String version) throws Exception {
-    IMetadata metadata = mdRepository.findOne(id);
+    IMetadata metadata = getMetadataRepository().findOne(id);
     if (metadata == null) {
       metadata = mdDraftRepository.findOne(id);
     }
@@ -537,7 +382,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
      */
 
     // Add validity information
-    List<MetadataValidation> validationInfo = mdValidationRepository.findAllById_MetadataId(Integer.parseInt(id));
+    List<MetadataValidation> validationInfo = metadataValidationRepository.findAllById_MetadataId(Integer.parseInt(id));
     if (validationInfo == null || validationInfo.size() == 0) {
       addElement(info, Edit.Info.Elem.VALID, "-1");
     } else {
@@ -573,7 +418,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   protected Map<Integer, MetadataSourceInfo> getSourceInfos(Collection<Integer> metadataIds) {
-    Map<Integer, MetadataSourceInfo> findAllSourceInfo = mdRepository
+    Map<Integer, MetadataSourceInfo> findAllSourceInfo = getMetadataRepository()
         .findAllSourceInfo(MetadataSpecs.hasMetadataIdIn(metadataIds));
     findAllSourceInfo.putAll(mdDraftRepository.findAllSourceInfo(MetadataDraftSpecs.hasMetadataIdIn(metadataIds)));
 
@@ -581,7 +426,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#getMetadataObject(java.lang.Integer)
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#getMetadataObject(java.lang.Integer)
    * @param id
    * @return
    * @throws Exception
@@ -599,7 +444,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#getMetadataObject(java.lang.Integer)
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#getMetadataObject(java.lang.Integer)
    * @param id
    * @return
    * @throws Exception
@@ -617,7 +462,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#getMetadataObject(java.lang.String)
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#getMetadataObject(java.lang.String)
    * @param uuid
    * @return
    * @throws Exception
@@ -634,7 +479,7 @@ public class DraftMetadataManager extends DefaultMetadataManager {
   }
 
   /**
-   * @see org.fao.geonet.kernel.metadata.DefaultMetadataManager#save(org.fao.geonet.domain.IMetadata)
+   * @see org.fao.geonet.kernel.datamanager.BaseMetadataManager#save(org.fao.geonet.domain.IMetadata)
    * @param md
    */
   @Override

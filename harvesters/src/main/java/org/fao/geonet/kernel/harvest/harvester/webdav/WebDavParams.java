@@ -25,7 +25,6 @@ package org.fao.geonet.kernel.harvest.harvester.webdav;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -80,8 +79,8 @@ public class WebDavParams extends AbstractParams {
     //---
     //---------------------------------------------------------------------------
 
-    public WebDavParams(DataManager dm) {
-        super(dm);
+    public WebDavParams() {
+        super();
     }
 
     public void create(Element node) throws BadInputEx {
@@ -112,7 +111,7 @@ public class WebDavParams extends AbstractParams {
     }
 
     public WebDavParams copy() {
-        WebDavParams copy = new WebDavParams(dm);
+        WebDavParams copy = new WebDavParams();
         copyTo(copy);
 
         copy.url = url;

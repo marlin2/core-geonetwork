@@ -54,7 +54,8 @@ import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.ReservedOperation;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.mef.MEFLib;
@@ -234,7 +235,6 @@ public class MetadataApi implements ApplicationContextAware {
     )
         throws Exception {
         ApplicationContext appContext = ApplicationContextHolder.get();
-        DataManager dataManager = appContext.getBean(DataManager.class);
         IMetadata metadata;
         try {
             metadata = ApiUtils.canViewRecord(metadataUuid, request);
@@ -260,15 +260,15 @@ public class MetadataApi implements ApplicationContextAware {
         }
 
         if (increasePopularity) {
-            dataManager.increasePopularity(context, metadata.getId() + "");
+            appContext.getBean(IMetadataUtils.class).increasePopularity(context, metadata.getId() + "");
         }
 
 
         boolean withValidationErrors = false, keepXlinkAttributes = false, forEditing = false;
         Element xml  = withInfo ?
-            dataManager.getMetadata(context,
+            appContext.getBean(IMetadataManager.class).getMetadata(context,
             metadata.getId() + "", forEditing, withValidationErrors, keepXlinkAttributes) :
-            dataManager.getMetadataNoInfo(context, metadata.getId() + "");
+            appContext.getBean(IMetadataUtils.class).getMetadataNoInfo(context, metadata.getId() + "");
 
         if (addSchemaLocation) {
             Attribute schemaLocAtt = _schemaManager.getSchemaLocation(
@@ -474,7 +474,7 @@ public class MetadataApi implements ApplicationContextAware {
         HttpServletRequest request) throws Exception {
 
 
-        Metadata md;
+        IMetadata md;
         try{
             md = ApiUtils.canViewRecord(metadataUuid, request);
         } catch (SecurityException e) {

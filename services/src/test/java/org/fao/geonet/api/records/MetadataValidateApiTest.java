@@ -9,7 +9,8 @@ import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.MetadataValidation;
 import org.fao.geonet.domain.MetadataValidationStatus;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.search.MetaSearcher;
 import org.fao.geonet.kernel.search.SearchManager;
@@ -50,7 +51,9 @@ public class MetadataValidateApiTest extends AbstractServiceIntegrationTest {
     @Autowired
     private SchemaManager schemaManager;
     @Autowired
-    private DataManager dataManager;
+    private IMetadataIndexer mdIndexer;
+    @Autowired
+    private IMetadataManager mdManager;
     @Autowired
     private SourceRepository sourceRepository;
     @Autowired
@@ -177,7 +180,7 @@ public class MetadataValidateApiTest extends AbstractServiceIntegrationTest {
         return subTemplateOnLineResourceDbInsert(MetadataType.METADATA);
     }
 
-    private Metadata subTemplateOnLineResourceDbInsert(MetadataType type) throws Exception {
+    private IMetadata subTemplateOnLineResourceDbInsert(MetadataType type) throws Exception {
         loginAsAdmin(context);
 
         URL resource = AbstractCoreIntegrationTest.class.getResource("kernel/sub-OnlineResource.xml");
@@ -197,7 +200,7 @@ public class MetadataValidateApiTest extends AbstractServiceIntegrationTest {
         metadata.getHarvestInfo()
                 .setHarvested(false);
 
-        IMetadata dbInsertedMetadata = dataManager.insertMetadata(
+        IMetadata dbInsertedMetadata = mdManager.insertMetadata(
                 context,
                 metadata,
                 sampleMetadataXml,
@@ -208,7 +211,7 @@ public class MetadataValidateApiTest extends AbstractServiceIntegrationTest {
                 false,
                 false);
 
-        dataManager.indexMetadata("" + dbInsertedMetadata.getId(), true, null);
+        mdIndexer.indexMetadata("" + dbInsertedMetadata.getId(), true, null);
         assertEquals(1, countTemplateIndexed(dbInsertedMetadata.getUuid(), "-1", type == MetadataType.SUB_TEMPLATE ? "s" : "n"));
         return dbInsertedMetadata;
     }

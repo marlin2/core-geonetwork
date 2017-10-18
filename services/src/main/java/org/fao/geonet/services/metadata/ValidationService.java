@@ -31,7 +31,9 @@ import jeeves.server.context.ServiceContext;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.responses.StatusResponse;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.SelectionManager;
 import org.fao.geonet.repository.MetadataRepository;
 import org.jdom.Document;
@@ -101,8 +103,7 @@ public class ValidationService implements ApplicationContextAware {
         validateRecords(serviceContext, setOfUuidsToValidate);
 
         // index records
-        DataManager dataMan = context.getBean(DataManager.class);
-        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(dataMan, this.report.get("records"));
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(context.getBean(IMetadataIndexer.class), context.getBean(IMetadataUtils.class), this.report.get("records"));
         r.process();
 
         return new StatusResponse(String.format(
@@ -116,7 +117,6 @@ public class ValidationService implements ApplicationContextAware {
                                  Set<String> setOfUuidsToValidate) throws Exception {
 
 
-        DataManager dataMan = context.getBean(DataManager.class);
         AccessManager accessMan = context.getBean(AccessManager.class);
 
         final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
@@ -128,7 +128,7 @@ public class ValidationService implements ApplicationContextAware {
                 this.report.get("notOwnerRecords").add(record.getId());
             } else {
                 String idString = String.valueOf(record.getId());
-                boolean isValid = dataMan.doValidate(record.getDataInfo().getSchemaId(),
+                boolean isValid = context.getBean(IMetadataValidator.class).doValidate(record.getDataInfo().getSchemaId(),
                     idString,
                     new Document(record.getXmlData(false)),
                     serviceContext.getLanguage());

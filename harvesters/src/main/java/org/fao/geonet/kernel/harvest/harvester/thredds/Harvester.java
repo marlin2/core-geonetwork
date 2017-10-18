@@ -39,7 +39,6 @@ import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.exceptions.BadServerCertificateEx;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.harvest.BaseAligner;
@@ -186,7 +185,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     private Logger log;
     private ServiceContext context;
     private ThreddsParams params;
-    private DataManager dataMan;
     private SchemaManager schemaMan;
     private CategoryMapper localCateg;
     private GroupMapper localGroups;
@@ -232,7 +230,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         result = new HarvestResult();
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
         schemaMan = gc.getBean(SchemaManager.class);
 
         metadataGetService = "local://"+context.getNodeId()+"/api/records/";
@@ -292,7 +289,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
                     if (log.isDebugEnabled())
                         log.debug("  - Removing deleted metadata with id: " + record.id);
-                    dataMan.deleteMetadata(context, record.id);
+                    mdManager.deleteMetadata(context, record.id);
 
                     if (record.isTemplate.equals("s")) {
                         //--- Uncache xlinks if a subtemplate
@@ -305,7 +302,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             }
         }
 
-        dataMan.flush();
+        mdManager.flush();
 
         result.totalMetadata = result.serviceRecords + result.collectionDatasetRecords;
         return result;
@@ -533,7 +530,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         //--- strip the catalog namespace as it is not required
         md.removeNamespaceDeclaration(invCatalog);
 
-        String schema = dataMan.autodetectSchema(md, null); // should be iso19139
+        String schema = mdSchemaUtils.autodetectSchema(md, null); // should be iso19139
         if (schema == null) {
             log.warning("Skipping metadata with unknown schema.");
             result.unknownSchema++;
@@ -575,15 +572,15 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         	addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 				}
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
-        dataMan.indexMetadata(id, true, null);
+        mdIndexer.indexMetadata(id, true, null);
 
-        dataMan.flush();
+        mdManager.flush();
     }
 
     /**
@@ -788,7 +785,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         if (localRecords == null) return;
 
         for (RecordInfo record : localRecords) {
-            dataMan.deleteMetadata(context, record.id);
+            mdManager.deleteMetadata(context, record.id);
 
             if (record.isTemplate.equals("s")) {
                 //--- Uncache xlinks if a subtemplate
@@ -1478,7 +1475,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 	
             Element md = Xml.transform(cata, styleSheet, param);
 	
-            String schema = dataMan.autodetectSchema(md, null);
+            String schema = mdSchemaUtils.autodetectSchema(md, null);
             if (schema == null) {
                	log.warning("Skipping metadata with unknown schema.");
                	result.unknownSchema++;
@@ -1539,7 +1536,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 	
         Element md = Xml.transform(wmsResponse, styleSheet, param);
 	
-        String schema = dataMan.autodetectSchema(md, null);
+        String schema = mdSchemaUtils.autodetectSchema(md, null);
         if (schema == null) {
           log.warning("Skipping metadata with unknown schema.");
           result.unknownSchema++;

@@ -24,7 +24,6 @@ package org.fao.geonet.kernel.harvest.harvester.localfilesystem;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -43,8 +42,8 @@ public class LocalFilesystemParams extends AbstractParams {
     public String recordType;
     public String beforeScript;
 
-    public LocalFilesystemParams(DataManager dm) {
-        super(dm);
+    public LocalFilesystemParams() {
+        super();
     }
     //---------------------------------------------------------------------------
     //---
@@ -87,7 +86,7 @@ public class LocalFilesystemParams extends AbstractParams {
     }
 
     public LocalFilesystemParams copy() {
-        LocalFilesystemParams copy = new LocalFilesystemParams(dm);
+        LocalFilesystemParams copy = new LocalFilesystemParams();
         copyTo(copy);
         copy.icon = icon;
         copy.directoryname = directoryname;

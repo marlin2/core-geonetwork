@@ -57,7 +57,7 @@ public class CswHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new CswParams(dataMan);
+        params = new CswParams();
         super.setParams(params);
         params.create(node);
     }
@@ -72,7 +72,7 @@ public class CswHarvester extends AbstractHarvester<HarvestResult> {
      * TODO javadoc.
      */
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new CswParams(dataMan);
+        params = new CswParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

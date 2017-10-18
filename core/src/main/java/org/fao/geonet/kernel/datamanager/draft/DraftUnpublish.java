@@ -1,14 +1,11 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.MetadataDraft;
 import org.fao.geonet.events.md.MetadataUnpublished;
-import org.fao.geonet.kernel.metadata.IMetadataIndexer;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.repository.MetadataDraftRepository;
 import org.fao.geonet.utils.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +64,7 @@ public class DraftUnpublish
                             Integer.toString(draft.getId()));
 
                     indexer.indexMetadata(Integer.toString(draft.getId()),
-                            false);
+                            false, null);
                 } catch (Exception e) {
                     Log.error(Geonet.DATA_MANAGER, e);
                 }

@@ -120,7 +120,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 		}
 		catch(NoClassDefFoundError n) {
 	*/        // using the real ESRI ArcSDE libraries : continue
-        params = new ArcSDEParams(dataMan);
+        params = new ArcSDEParams();
         super.setParams(params);
 
         //--- retrieve/initialize information
@@ -184,7 +184,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
         CategoryMapper localCateg = new CategoryMapper(context);
         GroupMapper localGroups = new GroupMapper(context);
 
-        dataMan.flush();
+        mdManager.flush();
 
 
         Path ArcToISO19115Transformer = context.getAppPath().resolve(Geonet.Path.STYLESHEETS).resolve("conversion/import").resolve(ARC_TO_ISO19115_TRANSFORMER);
@@ -225,7 +225,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
                 String schema = null;
 
                 try {
-                    schema = dataMan.autodetectSchema(metadataElement, null);
+                    schema = mdSchemaUtils.autodetectSchema(metadataElement, null);
                 } catch (NoSchemaMatchesException ex) {
                     // Ignore
                 }
@@ -255,7 +255,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
                     log.info("Convert metadata to ISO19139 - end");
 
                     try {
-                        schema = dataMan.autodetectSchema(metadataElement, null);
+                        schema = mdSchemaUtils.autodetectSchema(metadataElement, null);
                     } catch (NoSchemaMatchesException ex) {
                         // Ignore
                     }
@@ -268,10 +268,10 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
                     log.info("Metadata schema: " + schema);
                     log.info("Assigning metadata uuid: " + uuid);
 
-                    metadataElement = dataMan.setUUID(schema, uuid, metadataElement);
+                    metadataElement = mdUtils.setUUID(schema, uuid, metadataElement);
 
                     // the xml is recognizable  format
-                    //String uuid = dataMan.extractUUID(schema, metadataElement);
+                    //String uuid = mdUtils.extractUUID(schema, metadataElement);
 
                     if (StringUtils.isEmpty(uuid)) {
                         log.info("No metadata uuid. Skipping.");
@@ -280,7 +280,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
                     } else {
 
                         try {
-                            params.getValidate().validate(dataMan, context, metadataElement);
+                            params.getValidate().validate(context, metadataElement);
                         } catch (Exception e) {
                             log.error("Ignoring invalid metadata with uuid " + uuid);
                             result.doesNotValidate++;
@@ -292,7 +292,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
                         //
                         // add / update the metadata from this harvesting result
                         //
-                        String id = dataMan.getMetadataId(uuid);
+                        String id = mdUtils.getMetadataId(uuid);
                         if (id == null) {
                             id = addMetadata(metadataElement, uuid, schema, localGroups, localCateg, aligner);
                             result.addedMetadata++;
@@ -330,7 +330,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
             }
             if (!idsResultHs.contains(existingId)) {
                 log.debug("  Removing: " + existingId);
-                dataMan.deleteMetadata(context, existingId.toString());
+                mdManager.deleteMetadata(context, existingId.toString());
                 result.locallyRemoved++;
             }
         }
@@ -349,27 +349,27 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         String changeDate = null;
         try {
-            String schema = dataMan.autodetectSchema(xml);
-            changeDate = dataMan.extractDateModified(schema, xml);
+            String schema = mdSchemaUtils.autodetectSchema(xml);
+            changeDate = mdUtils.extractDateModified(schema, xml);
         } catch (Exception ex) {
             log.error("ArcSDEHarverter - updateMetadata - can't get metadata modified date for metadata id= " + id +
                 ", using current date for modified date");
             changeDate = new ISODate().toString();
         }
 
-        final Metadata metadata = (Metadata) dataMan.updateMetadata(context, id, xml, validate, ufo, index, language, changeDate,
+        final Metadata metadata = (Metadata) mdManager.updateMetadata(context, id, xml, validate, ufo, index, language, changeDate,
             true);
 
         OperationAllowedRepository operationAllowedRepository = context.getBean(OperationAllowedRepository.class);
         operationAllowedRepository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
-        aligner.addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
         metadata.getMetadataCategories().clear();
         aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, true);
 
-        dataMan.flush();
+        mdManager.flush();
 
-        dataMan.indexMetadata(id, true, null);
+        mdIndexer.indexMetadata(id, true, null);
     }
 
     /**
@@ -384,7 +384,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
         //
         ISODate createDate = null;
         try {
-            createDate = new ISODate(dataMan.extractDateModified(schema, xml));
+            createDate = new ISODate(mdUtils.extractDateModified(schema, xml));
         } catch (Exception ex) {
             log.error("ArcSDEHarverter - addMetadata - can't get metadata modified date for metadata with uuid= " +
                 uuid + ", using current date for modified date");
@@ -409,20 +409,20 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        aligner.addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
-        dataMan.indexMetadata(id, true, null);
+        mdIndexer.indexMetadata(id, true, null);
 
         return id;
     }
 
     @Override
     protected void doInit(Element entry, ServiceContext context) throws BadInputEx {
-        params = new ArcSDEParams(dataMan);
+        params = new ArcSDEParams();
         super.setParams(params);
         params.create(entry);
     }
@@ -490,9 +490,9 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
             par.addContent(new Element("smallScalingDir").setText("width"));
 
             // Call the services
-            s.execOnHarvest(par, context, dataMan);
+            s.execOnHarvest(par, context);
 
-            dataMan.flush();
+            mdManager.flush();
 
             result.thumbnails++;
 

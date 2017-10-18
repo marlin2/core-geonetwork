@@ -44,7 +44,8 @@ package org.fao.geonet.services.metadata;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.MoreExecutors;
 
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.MetadataIndexerProcessor;
 import org.fao.geonet.util.ThreadUtils;
 
@@ -64,8 +65,8 @@ public class BatchOpsMetadataReindexer extends MetadataIndexerProcessor {
 
     Set<Integer> metadata;
 
-    public BatchOpsMetadataReindexer(DataManager dm, Set<Integer> metadata) {
-        super(dm);
+    public BatchOpsMetadataReindexer(IMetadataIndexer mdIndexer, IMetadataUtils mdUtils, Set<Integer> metadata) {
+        super(mdIndexer, mdUtils);
         this.metadata = metadata;
     }
 
@@ -124,25 +125,25 @@ public class BatchOpsMetadataReindexer extends MetadataIndexerProcessor {
     }
 
     protected BatchOpsCallable createCallable(int[] ids, int start, int count) {
-        return new BatchOpsCallable(ids, start, count, getDataManager());
+        return new BatchOpsCallable(ids, start, count, getMetadataIndexer());
     }
 
     public static final class BatchOpsCallable implements Callable<Void> {
         private final int ids[];
         private final int beginIndex, count;
-        private final DataManager dm;
+        private final IMetadataIndexer mdIndexer;
 
-        BatchOpsCallable(int ids[], int beginIndex, int count, DataManager dm) {
+        BatchOpsCallable(int ids[], int beginIndex, int count, IMetadataIndexer mdIndexer) {
             this.ids = ids;
             this.beginIndex = beginIndex;
             this.count = count;
-            this.dm = dm;
+            this.mdIndexer = mdIndexer;
         }
 
         public Void call() throws Exception {
             for (int i = beginIndex; i < beginIndex + count; i++) {
                 boolean doIndex = beginIndex + count - 1 == i;
-                dm.indexMetadata(ids[i] + "", doIndex, null);
+                mdIndexer.indexMetadata(ids[i] + "", doIndex, null);
             }
 
             return null;

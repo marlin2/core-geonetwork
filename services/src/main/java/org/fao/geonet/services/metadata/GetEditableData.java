@@ -30,8 +30,7 @@ import org.fao.geonet.Util;
 import org.fao.geonet.api.records.editing.AjaxEditUtils;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
-import org.fao.geonet.kernel.DataManager;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.services.Utils;
 import org.jdom.Element;
 
@@ -81,8 +80,8 @@ public class GetEditableData implements Service {
         boolean starteditingsession = Util.getParam(params, Params.START_EDITING_SESSION, "no").equals("yes");
         if (starteditingsession) {
             GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-            IMetadataManager dm = gc.getBean(IMetadataManager.class);
-            id = dm.startEditingSession(context, id);
+            IMetadataUtils dm = gc.getBean(IMetadataUtils.class);
+            id = dm.startEditingSession(context, id, true);
         }
 
         Element elMd = new AjaxEditUtils(context).getMetadataEmbedded(context, id, true, showValidationErrors);

@@ -37,7 +37,6 @@ import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.OperationAllowedId_;
 import org.fao.geonet.domain.Pair;
 import org.fao.geonet.exceptions.OperationAbortedEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.harvest.BaseAligner;
 import org.fao.geonet.kernel.harvest.harvester.*;
@@ -89,9 +88,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
     private OaiPmhParams params;
 
     //---------------------------------------------------------------------------
-    private DataManager dataMan;
-
-    //--------------------------------------------------------------------------
     private CategoryMapper localCateg;
 
     //--------------------------------------------------------------------------
@@ -121,7 +117,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         result = new HarvestResult();
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
     }
 
     //--------------------------------------------------------------------------
@@ -283,7 +278,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         String processName = filter.one();
         Map<String, Object> processParams = filter.two();
 
-        dataMan.flush();
+        mdManager.flush();
 
         //-----------------------------------------------------------------------
         //--- remove old metadata
@@ -299,9 +294,9 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
                 if (log.isDebugEnabled())
                     log.debug("  - Removing old metadata with local id:" + id);
-                dataMan.deleteMetadataGroup(context, id);
+                mdManager.deleteMetadataGroup(context, id);
 
-                dataMan.flush();
+                mdManager.flush();
 
                 result.locallyRemoved++;
             }
@@ -326,7 +321,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             }
         }
 
-        dataMan.forceIndexChanges();
+        mdIndexer.forceIndexChanges();
 
         log.info("End of alignment for : " + params.getName());
     }
@@ -351,14 +346,14 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         //--- schema handled check already done
 
-        String schema = dataMan.autodetectSchema(md);
+        String schema = mdSchemaUtils.autodetectSchema(md);
 
         if (log.isDebugEnabled()) log.debug("  - Adding metadata with remote id : " + ri.id);
 
 
         // Apply the xsl filter choosed by UI
         if (StringUtils.isNotEmpty(params.xslfilter)) {
-            md = HarvesterUtil.processMetadata(dataMan.getSchema(schema),
+            md = HarvesterUtil.processMetadata(mdSchemaUtils.getSchema(schema),
                 md, processName, processParams, log);
         }
 
@@ -383,15 +378,15 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
-        dataMan.flush();
+        mdManager.flush();
 
-        dataMan.indexMetadata(id, Math.random() < 0.01, null);
+        mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
         result.addedMetadata++;
     }
 
@@ -419,7 +414,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                     return null;
             }
 
-            String schema = dataMan.autodetectSchema(md, null);
+            String schema = mdSchemaUtils.autodetectSchema(md, null);
 
             if (schema == null) {
                 log.warning("Skipping metadata with unknown schema. Remote id : " + ri.id);
@@ -427,7 +422,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             } else {
 
                 try {
-                    params.getValidate().validate(dataMan, context, md);
+                    params.getValidate().validate(context, md);
                     return (Element) md.detach();
                 } catch (Exception e) {
                     log.info("Skipping metadata that does not validate. Remote id : " + ri.id);
@@ -495,11 +490,11 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
                 return;
 
             // The schema of the metadata
-            String schema = dataMan.autodetectSchema(md, null);
+            String schema = mdSchemaUtils.autodetectSchema(md, null);
 
             // Apply the xsl filter choosed by UI
             if (StringUtils.isNotEmpty(params.xslfilter)) {
-                md = HarvesterUtil.processMetadata(dataMan.getSchema(schema),
+                md = HarvesterUtil.processMetadata(mdSchemaUtils.getSchema(schema),
                     md, processName, processParams, log);
             }
 
@@ -510,7 +505,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             boolean ufo = false;
             boolean index = false;
             String language = context.getLanguage();
-            final Metadata metadata = (Metadata) dataMan.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate.toString(),
+            final Metadata metadata = (Metadata) mdManager.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate.toString(),
                 true);
 
             //--- the administrator could change privileges and categories using the
@@ -518,13 +513,13 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
             OperationAllowedRepository repository = context.getBean(OperationAllowedRepository.class);
             repository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
-            addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+            addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
 
             metadata.getMetadataCategories().clear();
             addCategories(metadata, params.getCategories(), localCateg, context, log, null, true);
 
-            dataMan.flush();
-            dataMan.indexMetadata(id, Math.random() < 0.01, null);
+            mdManager.flush();
+            mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
             result.updatedMetadata++;
         }
     }

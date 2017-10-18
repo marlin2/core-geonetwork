@@ -40,7 +40,7 @@ import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.MetadataLock;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.repository.MetadataLockRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

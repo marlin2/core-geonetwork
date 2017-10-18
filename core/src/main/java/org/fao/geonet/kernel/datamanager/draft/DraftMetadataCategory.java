@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import java.util.Collection;
 import java.util.Set;
@@ -12,7 +9,7 @@ import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataDraft;
 import org.fao.geonet.kernel.SvnManager;
-import org.fao.geonet.kernel.metadata.DefaultMetadataCategory;
+import org.fao.geonet.kernel.datamanager.base.BaseMetadataCategory;
 import org.fao.geonet.repository.MetadataDraftRepository;
 import org.fao.geonet.repository.Updater;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +23,13 @@ import jeeves.server.context.ServiceContext;
  * 
  * 
  */
-public class DraftMetadataCategory extends DefaultMetadataCategory {
+public class DraftMetadataCategory extends BaseMetadataCategory {
 
     @Autowired
     private MetadataDraftRepository mdDraftRepository;
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataCategory#getCategories(java.lang.String)
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataCategory#getCategories(java.lang.String)
      * @param mdId
      * @return
      * @throws Exception
@@ -40,7 +37,7 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     @Override
     public Collection<MetadataCategory> getCategories(String mdId)
             throws Exception {
-        Metadata md = mdRepository.findOne(mdId);
+        Metadata md = getMetadataRepository().findOne(mdId);
         if (md != null) {
             return super.getCategories(mdId);
         }
@@ -56,7 +53,7 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataCategory#isCategorySet(java.lang.String,
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataCategory#isCategorySet(java.lang.String,
      *      int)
      * @param mdId
      * @param categId
@@ -66,7 +63,7 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     @Override
     public boolean isCategorySet(String mdId, int categId) throws Exception {
 
-        Metadata md = mdRepository.findOne(mdId);
+        Metadata md = getMetadataRepository().findOne(mdId);
         if (md != null) {
             return super.isCategorySet(mdId, categId);
         }
@@ -82,7 +79,7 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataCategory#setCategory(jeeves.server.context.ServiceContext,
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataCategory#setCategory(jeeves.server.context.ServiceContext,
      *      java.lang.String, java.lang.String)
      * @param context
      * @param mdId
@@ -92,11 +89,11 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     @Override
     public void setCategory(ServiceContext context, String mdId, String categId)
             throws Exception {
-        Metadata md = mdRepository.findOne(mdId);
+        Metadata md = getMetadataRepository().findOne(mdId);
         if (md != null) {
             super.setCategory(context, mdId, categId);
         } else {
-            final MetadataCategory newCategory = categoryRepository
+            final MetadataCategory newCategory = getMetadataCategoryRepository()
                     .findOne(Integer.valueOf(categId));
             final boolean[] changed = new boolean[1];
             mdDraftRepository.update(Integer.valueOf(mdId),
@@ -119,7 +116,7 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataCategory#unsetCategory(jeeves.server.context.ServiceContext,
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataCategory#unsetCategory(jeeves.server.context.ServiceContext,
      *      java.lang.String, int)
      * @param context
      * @param mdId
@@ -129,7 +126,7 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     @Override
     public void unsetCategory(ServiceContext context, String mdId, int categId)
             throws Exception {
-        Metadata md = mdRepository.findOne(mdId);
+        Metadata md = getMetadataRepository().findOne(mdId);
         if (md != null) {
             super.unsetCategory(context, mdId, categId);
         } else {
@@ -159,12 +156,12 @@ public class DraftMetadataCategory extends DefaultMetadataCategory {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataCategory#init(jeeves.server.context.ServiceContext)
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataCategory#init(jeeves.server.context.ServiceContext)
      * @param context
      */
     @Override
-    public void init(ServiceContext context) {
-        super.init(context);
+    public void init(ServiceContext context, Boolean force) throws Exception {
+        super.init(context, force);
         this.mdDraftRepository = context.getBean(MetadataDraftRepository.class);
     }
 }

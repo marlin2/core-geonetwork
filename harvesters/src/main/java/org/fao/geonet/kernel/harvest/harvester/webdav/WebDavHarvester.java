@@ -49,7 +49,7 @@ public class WebDavHarvester extends AbstractHarvester<HarvestResult> {
     //---
     //--------------------------------------------------------------------------
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new WebDavParams(dataMan);
+        params = new WebDavParams();
         super.setParams(params);
 
         params.create(node);
@@ -61,7 +61,7 @@ public class WebDavHarvester extends AbstractHarvester<HarvestResult> {
     //---
     //---------------------------------------------------------------------------
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new WebDavParams(dataMan);
+        params = new WebDavParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

@@ -36,7 +36,6 @@ import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.OperationAllowedId_;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.harvest.BaseAligner;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
@@ -86,9 +85,6 @@ public class FragmentHarvester extends BaseAligner {
     private ServiceContext context;
 
     //---------------------------------------------------------------------------
-    private DataManager dataMan;
-
-    //---------------------------------------------------------------------------
     private FragmentParams params;
 
     //---------------------------------------------------------------------------
@@ -132,7 +128,6 @@ public class FragmentHarvester extends BaseAligner {
         this.params = params;
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
 
         SettingInfo si = context.getBean(SettingInfo.class);
         String siteUrl = si.getSiteUrl() + context.getBaseUrl();
@@ -200,7 +195,7 @@ public class FragmentHarvester extends BaseAligner {
     private void loadTemplate() {
         try {
             //--- Load template to be used to create metadata from fragments
-            metadataTemplate = dataMan.getMetadata(params.templateId);
+            metadataTemplate = mdManager.getMetadata(params.templateId);
 
             //--- Build a list of all Namespaces in the metadata document
             Namespace ns = metadataTemplate.getNamespace();
@@ -277,7 +272,7 @@ public class FragmentHarvester extends BaseAligner {
                 recUuid = UUID.randomUUID().toString();
             }
 
-            String id = dataMan.getMetadataId(recUuid);
+            String id = mdUtils.getMetadataId(recUuid);
             if (id == null) {
                 log.debug("Adding metadata " + recUuid);
                 createMetadata(recUuid, recordMetadata);
@@ -327,7 +322,7 @@ public class FragmentHarvester extends BaseAligner {
         if (setSchema == null || setSchema.trim().length() == 0) {
             fragment.setAttribute("schema", params.outputSchema);
         } else {
-            if (!dataMan.existsSchema(setSchema)) {
+            if (!mdSchemaUtils.existsSchema(setSchema)) {
                 log.warning("Skipping fragment with schema set to unknown schema: " + setSchema);
                 harvestSummary.fragmentsUnknownSchema++;
             }
@@ -371,7 +366,7 @@ public class FragmentHarvester extends BaseAligner {
         Element md = (Element) fragment.getChildren().get(0);
 
         String reference = metadataGetService+uuid;
-        String id = dataMan.getMetadataId(uuid);
+        String id = mdUtils.getMetadataId(uuid);
         if (id == null) {
             createSubtemplate(schema, md, uuid, title);
         } else {
@@ -426,16 +421,16 @@ public class FragmentHarvester extends BaseAligner {
 
         addCategories(metadata, params.categories, localCateg, context, log, null, false);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
         // Note: we use fragmentAllPrivs here because subtemplates need to be 
         // visible/accessible to all
-        addPrivileges(id, fragmentAllPrivs, localGroups, dataMan, context, log);
-        dataMan.indexMetadata(id, true, null);
+        addPrivileges(id, fragmentAllPrivs, localGroups, mdOperations, context, log);
+        mdIndexer.indexMetadata(id, true, null);
 
-        dataMan.flush();
+        mdManager.flush();
 
         harvestSummary.fragmentsAdded++;
     }
@@ -570,7 +565,7 @@ public class FragmentHarvester extends BaseAligner {
         if (log.isDebugEnabled()) {
             log.debug("	- Attempting to update metadata record " + id + " with links");
         }
-        template = dataMan.setUUID(params.outputSchema, recUuid, template);
+        template = mdUtils.setUUID(params.outputSchema, recUuid, template);
         update(id, template, null, false);
         harvestSummary.recordsUpdated++;
         harvestSummary.updatedMetadata.add(recUuid);
@@ -595,7 +590,7 @@ public class FragmentHarvester extends BaseAligner {
         boolean ufo = false;
         boolean index = false;
         String language = context.getLanguage();
-        dataMan.updateMetadata(context, id, template, validate, ufo, index, language, df.format(date), false);
+        mdManager.updateMetadata(context, id, template, validate, ufo, index, language, df.format(date), false);
 
         int iId = Integer.parseInt(id);
 
@@ -607,22 +602,22 @@ public class FragmentHarvester extends BaseAligner {
         if (isSubtemplate) {
           // Note: we use fragmentAllPrivs here because subtemplates need to be 
           // visible/accessible to all
-          addPrivileges(id, fragmentAllPrivs, localGroups, dataMan, context, log);
+          addPrivileges(id, fragmentAllPrivs, localGroups, mdOperations, context, log);
         } else {
-          addPrivileges(id, params.privileges, localGroups, dataMan, context, log);
+          addPrivileges(id, params.privileges, localGroups, mdOperations, context, log);
         }
 
         metadata.getMetadataCategories().clear();
         addCategories(metadata, params.categories, localCateg, context, log, null, true);
 
         if (isSubtemplate) { 
-            dataMan.setSubtemplateTypeAndTitleExt(iId, title);
+            mdUtils.setSubtemplateTypeAndTitleExt(iId, title);
         }
-        dataMan.setHarvestedExt(iId, params.uuid, Optional.of(harvestUri));
+        mdUtils.setHarvestedExt(iId, params.uuid, Optional.of(harvestUri));
 
-        dataMan.indexMetadata(id, true, null);
+        mdIndexer.indexMetadata(id, true, null);
 
-        dataMan.flush();
+        mdManager.flush();
     }
 
     /**
@@ -634,7 +629,7 @@ public class FragmentHarvester extends BaseAligner {
         // now add any record built from template with linked in fragments
         if (log.isDebugEnabled())
             log.debug("	- Attempting to insert metadata record with link");
-        template = dataMan.setUUID(params.outputSchema, recUuid, template);
+        template = mdUtils.setUUID(params.outputSchema, recUuid, template);
 
         //
         // insert metadata
@@ -660,22 +655,22 @@ public class FragmentHarvester extends BaseAligner {
             }
             metadata.getMetadataCategories().add(metadataCategory);
         }
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, template, true, false, false, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, template, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
         if (log.isDebugEnabled()) {
             log.debug("	- Set privileges, category, template and harvested");
         }
-        addPrivileges(id, params.privileges, localGroups, dataMan, context, log);
+        addPrivileges(id, params.privileges, localGroups, mdOperations, context, log);
 
-        dataMan.indexMetadata(id, true, null);
+        mdIndexer.indexMetadata(id, true, null);
 
         if (log.isDebugEnabled()) {
             log.debug("	- Commit " + id);
         }
 
-        dataMan.flush();
+        mdManager.flush();
 
         harvestSummary.recordsBuilt++;
     }

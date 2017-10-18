@@ -36,7 +36,10 @@ import org.fao.geonet.api.API;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.processing.report.XsltMetadataProcessingReport;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.MetadataIndexerProcessor;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.utils.Log;
@@ -155,21 +158,20 @@ public class XslProcessApi {
         try {
             Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, session);
             ApplicationContext context = ApplicationContextHolder.get();
-            DataManager dataMan = context.getBean(DataManager.class);
             SchemaManager schemaMan = context.getBean(SchemaManager.class);
 
             final String siteURL = request.getRequestURL().toString() + "?" + request.getQueryString();
             Element mergedDocuments = new Element("records");
             String schema = null;
             for (String uuid : records) {
-                String id = dataMan.getMetadataId(uuid);
+                String id = context.getBean(IMetadataUtils.class).getMetadataId(uuid);
                 Log.info("org.fao.geonet.services.metadata",
                     "Processing metadata for preview with id:" + id);
 
 
                 if (appendFirst) {
                     // Check that all metadata are in the same schema
-                    String currentSchema = dataMan.getMetadataSchema(id);
+                    String currentSchema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
                     if (schema != null && !currentSchema.equals(schema)) {
                         // We can't append and use a mix of schema.
                         throw new IllegalArgumentException(String.format(
@@ -179,7 +181,7 @@ public class XslProcessApi {
                     } else {
                         schema = currentSchema;
                     }
-                    mergedDocuments.addContent(dataMan.getMetadata(id));
+                    mergedDocuments.addContent(context.getBean(IMetadataManager.class).getMetadata(id));
                 } else {
                     // Save processed metadata
                     if (isText) {
@@ -270,7 +272,8 @@ public class XslProcessApi {
         try {
             Set<String> records = ApiUtils.getUuidsParameterOrSelection(uuids, bucket, session);
             ApplicationContext context = ApplicationContextHolder.get();
-            DataManager dataMan = context.getBean(DataManager.class);
+            IMetadataIndexer mdIndexer = context.getBean(IMetadataIndexer.class);
+            IMetadataUtils mdUtils = context.getBean(IMetadataUtils.class);
 
             final String siteURL = request.getRequestURL().toString() + "?" + request.getQueryString();
 
@@ -278,7 +281,7 @@ public class XslProcessApi {
 
             BatchXslMetadataReindexer m = new BatchXslMetadataReindexer(
                 ApiUtils.createServiceContext(request),
-                dataMan, records, process, httpSession, siteURL,
+                mdIndexer, mdUtils, records, process, httpSession, siteURL,
                 xslProcessingReport, request, index);
             m.process();
 
@@ -303,14 +306,15 @@ public class XslProcessApi {
         ServiceContext context;
 
         public BatchXslMetadataReindexer(ServiceContext context,
-                                         DataManager dm,
+                                         IMetadataIndexer mdIndexer,
+                                         IMetadataUtils mdUtils,
                                          Set<String> records,
                                          String process,
                                          HttpSession session,
                                          String siteURL,
                                          XsltMetadataProcessingReport xslProcessingReport,
                                          HttpServletRequest request, boolean index) {
-            super(dm);
+            super(mdIndexer, mdUtils);
             this.records = records;
             this.process = process;
             this.session = session;
@@ -324,7 +328,7 @@ public class XslProcessApi {
         @Override
         public void process() throws Exception {
             for (String uuid : this.records) {
-                String id = getDataManager().getMetadataId(uuid);
+                String id = getMetadataUtils().getMetadataId(uuid);
                 Log.info("org.fao.geonet.services.metadata",
                     "Processing metadata with id:" + id);
 

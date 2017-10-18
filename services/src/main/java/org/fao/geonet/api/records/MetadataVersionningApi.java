@@ -34,9 +34,10 @@ import org.fao.geonet.api.ApiUtils;
 import org.fao.geonet.api.processing.report.MetadataProcessingReport;
 import org.fao.geonet.api.processing.report.SimpleMetadataProcessingReport;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
+import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.repository.MetadataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -94,9 +95,7 @@ public class MetadataVersionningApi {
         IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
 
-        IMetadataUtils dataManager = appContext.getBean(IMetadataUtils.class);
-
-        dataManager.versionMetadata(ApiUtils.createServiceContext(request),
+        appContext.getBean(IMetadataIndexer.class).versionMetadata(ApiUtils.createServiceContext(request),
             String.valueOf(metadata.getId()), metadata.getXmlData(false));
 
         return new ResponseEntity(HttpStatus.CREATED);
@@ -141,7 +140,6 @@ public class MetadataVersionningApi {
             report.setTotalRecords(records.size());
 
             final ApplicationContext context = ApplicationContextHolder.get();
-            final DataManager dataMan = context.getBean(DataManager.class);
             final AccessManager accessMan = context.getBean(AccessManager.class);
             final MetadataRepository metadataRepository = context.getBean(MetadataRepository.class);
 
@@ -153,7 +151,7 @@ public class MetadataVersionningApi {
                     ApiUtils.createServiceContext(request), String.valueOf(metadata.getId()))) {
                     report.addNotEditableMetadataId(metadata.getId());
                 } else {
-                    dataMan.versionMetadata(ApiUtils.createServiceContext(request),
+                    context.getBean(IMetadataIndexer.class).versionMetadata(ApiUtils.createServiceContext(request),
                         String.valueOf(metadata.getId()), metadata.getXmlData(false));
                     report.incrementProcessedRecords();
                 }

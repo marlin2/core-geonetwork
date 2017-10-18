@@ -23,12 +23,17 @@
 
 package org.fao.geonet.services.metadata;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Maps;
 
-import jeeves.constants.Jeeves;
-import jeeves.server.ServiceConfig;
-import jeeves.server.context.ServiceContext;
-
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
@@ -37,7 +42,11 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.exceptions.BadParameterEx;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataStatus;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.mef.Importer;
 import org.fao.geonet.kernel.mef.MEFLib;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -48,13 +57,11 @@ import org.fao.geonet.utils.FilePathChecker;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import org.springframework.context.ApplicationContext;
 
-import javax.annotation.Nonnull;
+import jeeves.constants.Jeeves;
+import jeeves.server.ServiceConfig;
+import jeeves.server.context.ServiceContext;
 
 /**
  * Inserts a new metadata to the system (data is validated).
@@ -82,7 +89,7 @@ public class Insert extends NotInReadOnlyModeService {
     public Element serviceSpecificExec(Element params, final ServiceContext context) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-        DataManager dataMan = gc.getBean(DataManager.class);
+        ApplicationContext appContext = ApplicationContextHolder.get();
 
         String data = Util.getParam(params, Params.DATA);
         String group = Util.getParam(params, Params.GROUP);
@@ -109,12 +116,12 @@ public class Insert extends NotInReadOnlyModeService {
 
         String schema = Util.getParam(params, Params.SCHEMA, null);
         if (schema == null) {
-            schema = dataMan.autodetectSchema(xml);
+            schema = appContext.getBean(IMetadataSchemaUtils.class).autodetectSchema(xml);
             if (schema == null) {
                 throw new BadParameterEx("Can't detect schema for metadata automatically.", "schema is unknown");
             }
         }
-        if (validate) dataMan.validateMetadata(schema, xml, context);
+        if (validate) appContext.getBean(IMetadataValidator.class).validateMetadata(schema, xml, context, null);
 
         //-----------------------------------------------------------------------
         //--- if the uuid does not exist we generate it for metadata and templates
@@ -122,10 +129,10 @@ public class Insert extends NotInReadOnlyModeService {
         if (metadataType == MetadataType.SUB_TEMPLATE) {
             uuid = UUID.randomUUID().toString();
         } else {
-            uuid = dataMan.extractUUID(schema, xml);
+            uuid = appContext.getBean(IMetadataUtils.class).extractUUID(schema, xml);
             if (uuid.length() == 0) {
                 uuid = UUID.randomUUID().toString();
-                xml = dataMan.setUUID(schema, uuid, xml);
+                xml = appContext.getBean(IMetadataUtils.class).setUUID(schema, uuid, xml);
             }
         }
         String uuidAction = Util.getParam(params, Params.UUID_ACTION,
@@ -138,8 +145,6 @@ public class Insert extends NotInReadOnlyModeService {
         md.add(xml);
 
 
-        DataManager dm = gc.getBean(DataManager.class);
-
         // Import record
         Map<String, String> sourceTranslations = Maps.newHashMap();
         Importer.importRecord(uuid, MEFLib.UuidAction.parse(uuidAction), md, schema, 0,
@@ -150,9 +155,9 @@ public class Insert extends NotInReadOnlyModeService {
 
 
         // Set template
-        dm.setTemplate(iId, metadataType, null);
+        appContext.getBean(IMetadataUtils.class).setTemplate(iId, metadataType, null);
 
-        dm.activateWorkflowIfConfigured(context, id.get(0), group);
+        appContext.getBean(IMetadataStatus.class).activateWorkflowIfConfigured(context, id.get(0), group);
 
 
         // Import category
@@ -181,12 +186,12 @@ public class Insert extends NotInReadOnlyModeService {
         }
 
         // Index
-        dm.indexMetadata(id.get(0), true, null);
+        appContext.getBean(IMetadataIndexer.class).indexMetadata(id.get(0), true, null);
 
         // Return response
         Element response = new Element(Jeeves.Elem.RESPONSE);
         response.addContent(new Element(Params.ID).setText(String.valueOf(iId)));
-        response.addContent(new Element(Params.UUID).setText(String.valueOf(dm.getMetadataUuid(id.get(0)))));
+        response.addContent(new Element(Params.UUID).setText(String.valueOf(appContext.getBean(IMetadataUtils.class).getMetadataUuid(id.get(0)))));
 
         return response;
     }

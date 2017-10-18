@@ -23,8 +23,21 @@
 
 package org.fao.geonet.kernel.harvest.harvester.wfsfeatures;
 
-import jeeves.server.context.ServiceContext;
-import jeeves.xlink.Processor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.xml.stream.FactoryConfigurationError;
 
 import org.apache.jcs.access.exception.CacheException;
 import org.fao.geonet.GeonetContext;
@@ -32,8 +45,8 @@ import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.kernel.harvest.harvester.HarvestError;
 import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
 import org.fao.geonet.kernel.harvest.harvester.IHarvester;
@@ -53,21 +66,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.xml.stream.FactoryConfigurationError;
+import jeeves.server.context.ServiceContext;
+import jeeves.xlink.Processor;
 
 //=============================================================================
 
@@ -125,6 +127,8 @@ import javax.xml.stream.FactoryConfigurationError;
 class Harvester implements IHarvester<HarvestResult> {
     private final AtomicBoolean cancelMonitor;
 
+    @Autowired
+    protected IMetadataManager mdManager;
 
     //---------------------------------------------------------------------------
     private Logger log;
@@ -136,7 +140,6 @@ class Harvester implements IHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
     private ServiceContext context;
     private WfsFeaturesParams params;
-    private DataManager dataMan;
     private SchemaManager schemaMan;
     private HarvestResult result;
     private UUIDMapper localUuids;
@@ -170,7 +173,6 @@ class Harvester implements IHarvester<HarvestResult> {
         result = new HarvestResult();
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
         schemaMan = gc.getBean(SchemaManager.class);
         SettingInfo si = context.getBean(SettingInfo.class);
         String siteUrl = si.getSiteUrl() + context.getBaseUrl();
@@ -348,7 +350,7 @@ class Harvester implements IHarvester<HarvestResult> {
 
                 if (!updatedMetadata.contains(uuid)) {
                     String id = localUuids.getID(uuid);
-                    dataMan.deleteMetadata(context, id);
+                    mdManager.deleteMetadata(context, id);
 
                     if (isTemplate.equals("s")) {
                         result.subtemplatesRemoved++;
@@ -366,7 +368,7 @@ class Harvester implements IHarvester<HarvestResult> {
         }
 
         if (result.subtemplatesRemoved + result.locallyRemoved > 0) {
-            dataMan.flush();
+            mdManager.flush();
         }
     }
 

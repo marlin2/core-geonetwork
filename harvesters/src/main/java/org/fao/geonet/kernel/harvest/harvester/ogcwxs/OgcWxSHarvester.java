@@ -57,7 +57,7 @@ public class OgcWxSHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new OgcWxSParams(dataMan);
+        params = new OgcWxSParams();
         super.setParams(params);
 
         params.create(node);
@@ -70,7 +70,7 @@ public class OgcWxSHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new OgcWxSParams(dataMan);
+        params = new OgcWxSParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

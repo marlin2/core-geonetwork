@@ -39,7 +39,6 @@ import org.fao.geonet.exceptions.BadInputEx;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.exceptions.MissingParameterEx;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.HarvestValidationEnum;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.utils.Log;
@@ -66,7 +65,6 @@ public abstract class AbstractParams {
     //--- Variables
     //---
     //---------------------------------------------------------------------------
-    protected DataManager dm;
     private String name;
     private Map<String, String> translations = Maps.newHashMap();
     private String uuid;
@@ -93,9 +91,7 @@ public abstract class AbstractParams {
     //---
     //---------------------------------------------------------------------------
 
-    public AbstractParams(DataManager dm) {
-        this.dm = dm;
-    }
+    public AbstractParams() {}
 
     //---------------------------------------------------------------------------
     //---

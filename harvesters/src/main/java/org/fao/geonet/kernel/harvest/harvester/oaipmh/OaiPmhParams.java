@@ -25,7 +25,6 @@ package org.fao.geonet.kernel.harvest.harvester.oaipmh;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -73,8 +72,8 @@ public class OaiPmhParams extends AbstractParams {
     //---
     //---------------------------------------------------------------------------
 
-    public OaiPmhParams(DataManager dm) {
-        super(dm);
+    public OaiPmhParams() {
+        super();
     }
 
     //---------------------------------------------------------------------------
@@ -132,7 +131,7 @@ public class OaiPmhParams extends AbstractParams {
     }
 
     public OaiPmhParams copy() {
-        OaiPmhParams copy = new OaiPmhParams(dm);
+        OaiPmhParams copy = new OaiPmhParams();
         copyTo(copy);
 
         copy.url = url;

@@ -56,7 +56,7 @@ public class GeonetHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new GeonetParams(dataMan);
+        params = new GeonetParams();
         super.setParams(params);
         params.create(node);
     }
@@ -68,7 +68,7 @@ public class GeonetHarvester extends AbstractHarvester<HarvestResult> {
     //---------------------------------------------------------------------------
 
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new GeonetParams(dataMan);
+        params = new GeonetParams();
         super.setParams(params);
 
         //--- retrieve/initialize information

@@ -51,7 +51,6 @@ import org.fao.geonet.domain.OperationAllowedId_;
 import org.fao.geonet.domain.Pair;
 import org.fao.geonet.exceptions.NoSchemaMatchesException;
 import org.fao.geonet.kernel.AccessManager;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.harvest.BaseAligner;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
@@ -105,7 +104,6 @@ public class Aligner extends BaseAligner {
     //--------------------------------------------------------------------------
     private XmlRequest request;
     private GeonetParams params;
-    private DataManager dataMan;
 
     //--------------------------------------------------------------------------
     private HarvestResult result;
@@ -151,7 +149,6 @@ public class Aligner extends BaseAligner {
         this.params = params;
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        dataMan = gc.getBean(DataManager.class);
         result = new HarvestResult();
 
         //--- save remote categories and groups into hashmaps for a fast access
@@ -218,7 +215,7 @@ public class Aligner extends BaseAligner {
                     String id = localUuids.getID(uuid);
 
                     if (log.isDebugEnabled()) log.debug("  - Removing old metadata with id:" + id);
-                    dataMan.deleteMetadata(context, id);
+                    mdManager.deleteMetadata(context, id);
 
                     result.locallyRemoved++;
                 }
@@ -248,13 +245,13 @@ public class Aligner extends BaseAligner {
                 // Mef full format provides ISO19139 records in both the profile
                 // and ISO19139 so we could be able to import them as far as
                 // ISO19139 schema is installed by default.
-                if (!dataMan.existsSchema(ri.schema) && !ri.schema.startsWith("iso19139.")) {
+                if (!mdSchemaUtils.existsSchema(ri.schema) && !ri.schema.startsWith("iso19139.")) {
                     if (log.isDebugEnabled())
                         log.debug("  - Metadata skipped due to unknown schema. uuid:" + ri.uuid
                             + ", schema:" + ri.schema);
                     result.unknownSchema++;
                 } else {
-                    String id = dataMan.getMetadataId(ri.uuid);
+                    String id = mdUtils.getMetadataId(ri.uuid);
 
                     // look up value of localrating/enable
                     SettingManager settingManager = context.getBean(SettingManager.class);
@@ -273,7 +270,7 @@ public class Aligner extends BaseAligner {
             }
         }
 
-        dataMan.forceIndexChanges();
+        mdIndexer.forceIndexChanges();
 
         log.info("End of alignment for : " + params.getName());
 
@@ -318,7 +315,7 @@ public class Aligner extends BaseAligner {
                 try {
                     Path parent = file.getParent();
                     Path parent2 = parent.getParent();
-                    String metadataSchema = dataMan.autodetectSchema(metadata, null);
+                    String metadataSchema = mdSchemaUtils.autodetectSchema(metadata, null);
                     // If local node doesn't know metadata
                     // schema try to load next xml file.
                     if (metadataSchema == null) {
@@ -421,7 +418,7 @@ public class Aligner extends BaseAligner {
                 public void handleInfo(Element info, int index) throws Exception {
 
                     final Element metadata = md[index];
-                    String schema = dataMan.autodetectSchema(metadata, null);
+                    String schema = mdSchemaUtils.autodetectSchema(metadata, null);
                     if (info != null && info.getContentSize() != 0) {
                         Element general = info.getChild("general");
                         if (general != null && general.getContentSize() != 0) {
@@ -508,7 +505,7 @@ public class Aligner extends BaseAligner {
         if (log.isDebugEnabled()) log.debug("  - Adding metadata with remote uuid:" + ri.uuid);
 
         try {
-            params.getValidate().validate(dataMan, context, md);
+            params.getValidate().validate(context, md);
         } catch (Exception e) {
             log.info("Ignoring invalid metadata uuid: " + ri.uuid);
             result.doesNotValidate++;
@@ -516,7 +513,7 @@ public class Aligner extends BaseAligner {
         }
 
         if (!params.xslfilter.equals("")) {
-            md = HarvesterUtil.processMetadata(dataMan.getSchema(ri.schema),
+            md = HarvesterUtil.processMetadata(mdSchemaUtils.getSchema(ri.schema),
                 md, processName, processParams, log);
         }
         // insert metadata
@@ -540,7 +537,7 @@ public class Aligner extends BaseAligner {
 
         addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
 
-        metadata = (Metadata) dataMan.insertMetadata(context, metadata, md, true, false, ufo, UpdateDatestamp.NO, false, false);
+        metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, ufo, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
@@ -569,13 +566,13 @@ public class Aligner extends BaseAligner {
             }
         }
         if (((ArrayList<Group>) params.getGroupCopyPolicy()).size() == 0) {
-            addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+            addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
         } else {
             addPrivilegesFromGroupPolicy(id, info.getChild("privileges"));
         }
         context.getBean(MetadataRepository.class).save(metadata);
 
-        dataMan.indexMetadata(id, Math.random() < 0.01, null);
+        mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
         result.addedMetadata++;
 
         return id;
@@ -655,7 +652,7 @@ public class Aligner extends BaseAligner {
             //--- allow only: view, download, dynamic, featured
             if (opId == 0 || opId == 1 || opId == 5 || opId == 6) {
                 if (log.isDebugEnabled()) log.debug("       --> " + opName);
-                dataMan.setOperation(context, id, groupId, opId + "");
+                mdOperations.setOperation(context, id, groupId, opId + "");
             } else {
                 if (log.isDebugEnabled()) log.debug("       --> " + opName + " (skipped)");
             }
@@ -764,7 +761,7 @@ public class Aligner extends BaseAligner {
 
 
         try {
-            params.getValidate().validate(dataMan, context, md);
+            params.getValidate().validate(context, md);
         } catch (Exception e) {
             log.info("Ignoring invalid metadata uuid: " + ri.uuid);
             result.doesNotValidate++;
@@ -783,7 +780,7 @@ public class Aligner extends BaseAligner {
             }
         } else {
             if (!params.xslfilter.equals("")) {
-                md = HarvesterUtil.processMetadata(dataMan.getSchema(ri.schema),
+                md = HarvesterUtil.processMetadata(mdSchemaUtils.getSchema(ri.schema),
                     md, processName, processParams, log);
             }
             // update metadata
@@ -795,7 +792,7 @@ public class Aligner extends BaseAligner {
             boolean index = false;
             boolean updateDateStamp = true;
             String language = context.getLanguage();
-            dataMan.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate,
+            mdManager.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate,
                 updateDateStamp);
             metadata = metadataRepository.findOne(id);
             result.updatedMetadata++;
@@ -830,15 +827,15 @@ public class Aligner extends BaseAligner {
         OperationAllowedRepository repository = context.getBean(OperationAllowedRepository.class);
         repository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
         if (((ArrayList<Group>) params.getGroupCopyPolicy()).size() == 0) {
-            addPrivileges(id, params.getPrivileges(), localGroups, dataMan, context, log);
+            addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
         } else {
             addPrivilegesFromGroupPolicy(id, info.getChild("privileges"));
         }
 
         metadataRepository.save(metadata);
-//        dataMan.flush();
+//        mdManager.flush();
 
-        dataMan.indexMetadata(id, Math.random() < 0.01, null);
+        mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
     }
 
     private void updateFile(String id, String file, String dir, String changeDate,

@@ -1,7 +1,4 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import java.nio.file.Path;
 import java.util.LinkedList;
@@ -19,7 +16,8 @@ import org.fao.geonet.domain.MetadataDraft;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.events.md.MetadataIndexCompleted;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
-import org.fao.geonet.kernel.metadata.DefaultMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.base.BaseMetadataIndexer;
+import org.fao.geonet.kernel.search.ISearchManager;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.MetadataDraftRepository;
 import org.fao.geonet.repository.specification.MetadataDraftSpecs;
@@ -41,7 +39,7 @@ import jeeves.server.context.ServiceContext;
  * 
  * 
  */
-public class DraftMetadataIndexer extends DefaultMetadataIndexer {
+public class DraftMetadataIndexer extends BaseMetadataIndexer {
     
     @Autowired
     private MetadataDraftRepository mdDraftRepository;
@@ -50,13 +48,13 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
      * @param context
      */
     @Override
-    public void init(ServiceContext context) {
-        super.init(context);
+    public void init(ServiceContext context, Boolean force) throws Exception {
+        super.init(context, force);
         this.mdDraftRepository = context.getBean(MetadataDraftRepository.class);
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataIndexer#batchDeleteMetadataAndUpdateIndex(org.springframework.data.jpa.domain.Specification)
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataIndexer#batchDeleteMetadataAndUpdateIndex(org.springframework.data.jpa.domain.Specification)
      * @param specification
      * @return
      * @throws Exception
@@ -65,7 +63,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
     public int batchDeleteMetadataAndUpdateIndex(
             Specification<Metadata> specification) throws Exception {
         // Search for the ID of the drafts (if any) associated to that metadata
-        final List<Integer> idsOfMetadataToDelete = mdRepository
+        final List<Integer> idsOfMetadataToDelete = getMetadataRepository()
                 .findAllIdsBy(specification);
 
         List<Integer> mdDraftIds = new LinkedList<Integer>();
@@ -79,7 +77,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
             Path pb = Lib.resource.getMetadataDir(metadataDataDir, id + "");
             IO.deleteFileOrDirectory(pb);
 
-            Metadata md = mdRepository.findOne(id);
+            Metadata md = getMetadataRepository().findOne(id);
             MetadataDraft mdD = mdDraftRepository.findOneByUuid(md.getUuid());
             if (mdD != null) {
                 mdDraftIds.add(mdD.getId());
@@ -90,7 +88,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
                 .deleteAll(MetadataDraftSpecs.hasMetadataIdIn(mdDraftIds));
 
         // Remove draft records from the index
-        searchManager.delete("_id",
+        getSearchManager().delete("_id",
                 Lists.transform(mdDraftIds, new Function<Integer, String>() {
                     @Nullable
                     @Override
@@ -104,7 +102,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataIndexer#batchIndexInThreadPool(jeeves.server.context.ServiceContext,
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataIndexer#batchIndexInThreadPool(jeeves.server.context.ServiceContext,
      *      java.util.List)
      * @param context
      * @param metadataIds
@@ -116,7 +114,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
         List<Integer> ids = new LinkedList<Integer>();
 
         for (Object id : metadataIds) {
-            Metadata md = mdRepository.findOne(id.toString());
+            Metadata md = getMetadataRepository().findOne(id.toString());
             if (md != null) {
                 ids.add(md.getId());
                 MetadataDraft mdD = mdDraftRepository
@@ -136,7 +134,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataIndexer#indexMetadata(java.util.List)
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataIndexer#indexMetadata(java.util.List)
      * @param metadataIds
      * @throws Exception
      */
@@ -145,11 +143,11 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
 
         // Just in case, do the same for the related drafts
         for (String metadataId : metadataIds) {
-            Metadata md = mdRepository.findOne(metadataId);
+            Metadata md = getMetadataRepository().findOne(metadataId);
             if(md != null) {
                 MetadataDraft mdD = mdDraftRepository.findOneByUuid(md.getUuid());
                 if(mdD != null) {
-                    indexMetadata(Integer.toString(mdD.getId()), false);
+                    indexMetadata(Integer.toString(mdD.getId()), false, null);
                 }
             }
         }
@@ -158,16 +156,16 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
     }
 
     /**
-     * @see org.fao.geonet.kernel.metadata.DefaultMetadataIndexer#indexMetadata(java.lang.String,
+     * @see org.fao.geonet.kernel.datamanager.BaseMetadataIndexer#indexMetadata(java.lang.String,
      *      boolean)
      * @param metadataId
      * @param forceRefreshReaders
      * @throws Exception
      */
     @Override
-    public void indexMetadata(String metadataId, boolean forceRefreshReaders)
+    public void indexMetadata(String metadataId, boolean forceRefreshReaders, ISearchManager searchManager)
             throws Exception {
-        Metadata metaData = mdRepository.findOne(metadataId);
+        Metadata metaData = getMetadataRepository().findOne(metadataId);
         if (metaData != null) {
             //It is a normal metadata record
             MetadataDraft mdD = mdDraftRepository
@@ -234,8 +232,12 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
                         changeDate, source, metadataType, root, uuid, extra,
                         isHarvested, owner, groupOwner, popularity, rating,
                         displayOrder, draft);
-                
-                getSearchManager().index(getSchemaManager().getSchemaDir(schema), md, metadataId, moreFields, metadataType, root, forceRefreshReaders);
+               
+                if (searchManager == null) { 
+                    searchManager = getSearchManager();
+                }
+                searchManager.index(getSchemaManager().getSchemaDir(schema), md, metadataId, moreFields, metadataType, root, forceRefreshReaders);
+             
             } catch (Exception x) {
                 Log.error(Geonet.DATA_MANAGER, "The metadata document index with id=" + metadataId + " is corrupt/invalid - ignoring it. Error: " + x.getMessage(), x);
                 fullMd = null;
@@ -245,8 +247,8 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
                 } finally {
                 }
             }
-            if (fullMd != null) {
-                applicationEventPublisher.publishEvent(new MetadataIndexCompleted(fullMd));
+            if (fullMd != null && getApplicationEventPublisher() != null) {
+                getApplicationEventPublisher().publishEvent(new MetadataIndexCompleted(fullMd));
             }
         }
     }
@@ -287,7 +289,7 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
             // get metadata, extracting and indexing any xlinks
             Element md = processXLinks(metadataId, moreFields);
 
-            fullMd = mdRepository.findOne(id$);
+            fullMd = getMetadataRepository().findOne(id$);
 
             final String schema = fullMd.getDataInfo().getSchemaId();
             final String createDate = fullMd.getDataInfo().getCreateDate().getDateAndTime();
@@ -325,8 +327,8 @@ public class DraftMetadataIndexer extends DefaultMetadataIndexer {
             } finally {
             }
         }
-        if (fullMd != null) {
-            applicationEventPublisher.publishEvent(new MetadataIndexCompleted(fullMd));
+        if (fullMd != null && getApplicationEventPublisher() != null) {
+            getApplicationEventPublisher().publishEvent(new MetadataIndexCompleted(fullMd));
         }
     }
 }

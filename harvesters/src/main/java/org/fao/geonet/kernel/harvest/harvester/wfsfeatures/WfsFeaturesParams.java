@@ -25,7 +25,6 @@ package org.fao.geonet.kernel.harvest.harvester.wfsfeatures;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
@@ -76,8 +75,8 @@ public class WfsFeaturesParams extends AbstractParams {
     public boolean createSubtemplates;
     public String templateId;
     public String recordsCategory;
-    public WfsFeaturesParams(DataManager dm) {
-        super(dm);
+    public WfsFeaturesParams() {
+        super();
     }
 
     private String getQuery(Element params) {
@@ -129,7 +128,7 @@ public class WfsFeaturesParams extends AbstractParams {
     }
 
     public WfsFeaturesParams copy() {
-        WfsFeaturesParams copy = new WfsFeaturesParams(dm);
+        WfsFeaturesParams copy = new WfsFeaturesParams();
         copyTo(copy);
 
         copy.url = url;

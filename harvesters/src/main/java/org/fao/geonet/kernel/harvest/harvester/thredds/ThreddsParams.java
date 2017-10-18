@@ -25,7 +25,6 @@ package org.fao.geonet.kernel.harvest.harvester.thredds;
 
 import org.fao.geonet.Util;
 import org.fao.geonet.exceptions.BadInputEx;
-import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.jdom.Element;
 
@@ -67,8 +66,8 @@ public class ThreddsParams extends AbstractParams {
     public String datasetAbstract;
     public String datasetCategory;
     public String serviceCategory;
-    public ThreddsParams(DataManager dm) {
-        super(dm);
+    public ThreddsParams() {
+        super();
     }
 
     public void create(Element node) throws BadInputEx {
@@ -115,7 +114,7 @@ public class ThreddsParams extends AbstractParams {
     }
 
     public ThreddsParams copy() {
-        ThreddsParams copy = new ThreddsParams(dm);
+        ThreddsParams copy = new ThreddsParams();
         copyTo(copy);
 
         copy.url = url;

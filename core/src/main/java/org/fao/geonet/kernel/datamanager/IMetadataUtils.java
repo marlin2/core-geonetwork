@@ -1,9 +1,14 @@
     package org.fao.geonet.kernel.datamanager;
 
 import org.fao.geonet.domain.MetadataType;
+import org.fao.geonet.domain.OperationAllowed;
+import org.fao.geonet.domain.ReservedOperation;
 import org.jdom.Element;
 
+import com.google.common.collect.SetMultimap;
 import com.google.common.base.Optional;
+
+import org.springframework.data.jpa.domain.Specification;
 
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
@@ -16,7 +21,7 @@ public interface IMetadataUtils {
 
         String getMetadataUuid(String id) throws Exception;
 
-        void startEditingSession(ServiceContext context, String id) throws Exception;
+        String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception;
 
         void cancelEditingSession(ServiceContext context, String id) throws Exception;
 
@@ -78,9 +83,12 @@ public interface IMetadataUtils {
 
         void setMetadataManager(IMetadataManager metadataManager);
 
-        public String getMetadataTitle(String id) throws Exception;
+        String getMetadataTitle(String id) throws Exception;
 
-        public void setSubtemplateTypeAndTitleExt(int id, String title) throws Exception;
+        void setSubtemplateTypeAndTitleExt(int id, String title) throws Exception;
+
+        SetMultimap<Integer, ReservedOperation> loadOperationsAllowed(ServiceContext context,
+            Specification<OperationAllowed> operationAllowedSpec);
 }
 
   

@@ -76,7 +76,7 @@ public class Geonet20Harvester extends AbstractHarvester {
     //---------------------------------------------------------------------------
 
     protected void doInit(Element node, ServiceContext context) throws BadInputEx {
-        params = new GeonetParams(dataMan);
+        params = new GeonetParams();
         super.setParams(params);
         params.create(node);
     }
@@ -88,7 +88,7 @@ public class Geonet20Harvester extends AbstractHarvester {
     //---------------------------------------------------------------------------
 
     protected String doAdd(Element node) throws BadInputEx, SQLException {
-        params = new GeonetParams(dataMan);
+        params = new GeonetParams();
         super.setParams(params);
 
         //--- retrieve/initialize information
@@ -252,7 +252,7 @@ public class Geonet20Harvester extends AbstractHarvester {
 
         result = new GeonetResult();
 
-        Aligner aligner = new Aligner(cancelMonitor, log, req, params, dataMan, context,
+        Aligner aligner = new Aligner(cancelMonitor, log, req, params, context,
             localCateg);
 
         for (Search s : params.getSearches()) {
@@ -284,7 +284,7 @@ public class Geonet20Harvester extends AbstractHarvester {
             req.setAddress("/" + params.getServletPath() + "/srv/en/" + Geonet.Service.XML_LOGOUT);
         }
 
-        dataMan.flush();
+        mdManager.flush();
     }
 }
 

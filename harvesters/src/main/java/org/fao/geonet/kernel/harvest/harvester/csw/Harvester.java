@@ -23,7 +23,10 @@
 
 package org.fao.geonet.kernel.harvest.harvester.csw;
 
-import jeeves.server.context.ServiceContext;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Geonet;
@@ -34,7 +37,8 @@ import org.fao.geonet.csw.common.requests.GetRecordsRequest;
 import org.fao.geonet.exceptions.BadParameterEx;
 import org.fao.geonet.exceptions.BadXmlResponseEx;
 import org.fao.geonet.exceptions.OperationAbortedEx;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.harvest.harvester.HarvestError;
 import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
 import org.fao.geonet.kernel.harvest.harvester.IHarvester;
@@ -46,9 +50,9 @@ import org.fao.geonet.utils.Xml;
 import org.fao.geonet.utils.XmlRequest;
 import org.jdom.Element;
 
-import java.net.URL;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import jeeves.server.context.ServiceContext;
 
 //=============================================================================
 
@@ -92,6 +96,11 @@ class Harvester implements IHarvester<HarvestResult> {
     private Logger log;
     private CswParams params;
     private ServiceContext context;
+
+    @Autowired
+    private IMetadataSchemaUtils mdSchemaUtils;
+    @Autowired
+    private IMetadataUtils mdUtils;
 
     //---------------------------------------------------------------------------
     /**
@@ -658,21 +667,20 @@ class Harvester implements IHarvester<HarvestResult> {
 
         // get schema
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
 
         // get uuid and date modified
         try {
-            String schema = dm.autodetectSchema(record);
+            String schema = mdSchemaUtils.autodetectSchema(record);
             if (log.isDebugEnabled())
                 log.debug("getRecordInfo (schema): " + schema);
 
-            String identif = dm.extractUUID(schema, record);
+            String identif = mdUtils.extractUUID(schema, record);
             if (identif.length() == 0) {
                 log.warning("Record doesn't have a uuid : " + name);
                 return null; // skip this one
             }
 
-            String modified = dm.extractDateModified(schema, record);
+            String modified = mdUtils.extractDateModified(schema, record);
             if (modified.length() == 0) modified = null;
             if (log.isDebugEnabled())
                 log.debug("getRecordInfo: adding " + identif + " with modification date " + modified);

@@ -1,15 +1,12 @@
-/**
- * 
- */
-package org.fao.geonet.kernel.metadata.draft;
+package org.fao.geonet.kernel.datamanager.draft;
 
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataDraft;
 import org.fao.geonet.events.md.MetadataPublished;
-import org.fao.geonet.kernel.metadata.IMetadataIndexer;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.repository.MetadataDraftRepository;
 import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.utils.Log;
@@ -76,7 +73,7 @@ public class DraftPublish implements ApplicationListener<MetadataPublished> {
             // Remove the draft
             manager.deleteMetadata(serviceContext, Integer.toString(draft.getId()));
 
-            indexer.indexMetadata(Integer.toString(md.getId()), false);
+            indexer.indexMetadata(Integer.toString(md.getId()), false, null);
         } catch (Exception e) {
             Log.error(Geonet.DATA_MANAGER, e);
         }

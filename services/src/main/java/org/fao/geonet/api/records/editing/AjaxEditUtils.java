@@ -31,7 +31,11 @@ import jeeves.server.context.ServiceContext;
 import org.fao.geonet.api.exception.ResourceNotFoundException;
 import org.fao.geonet.kernel.AddElemValue;
 import org.fao.geonet.kernel.UpdateDatestamp;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.constants.Edit;
 import org.fao.geonet.constants.Geonet;
@@ -119,8 +123,8 @@ public class AjaxEditUtils extends EditUtils {
                                            Map<String, String> changes, String currVersion) throws Exception {
         Lib.resource.checkEditPrivilege(context, id);
 
-        String schema = dataManager.getMetadataSchema(id);
-        MetadataSchema metadataSchema = dataManager.getSchema(schema);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
+        MetadataSchema metadataSchema = context.getBean(IMetadataSchemaUtils.class).getSchema(schema);
         EditLib editLib = context.getBean(IMetadataManager.class).getEditLib();
 
         // --- check if the metadata has been modified from last time
@@ -254,7 +258,7 @@ public class AjaxEditUtils extends EditUtils {
      */
     public Element getMetadataEmbedded(ServiceContext srvContext, String id, boolean forEditing, boolean withValidationErrors) throws Exception {
         boolean keepXlinkAttributes = false;
-        Element md = dataManager.getMetadata(srvContext, id, forEditing, withValidationErrors, keepXlinkAttributes);
+        Element md = context.getBean(IMetadataManager.class).getMetadata(srvContext, id, forEditing, withValidationErrors, keepXlinkAttributes);
         UserSession session = srvContext.getUserSession();
         setMetadataIntoSession(session, md, id);
         return md;
@@ -265,7 +269,7 @@ public class AjaxEditUtils extends EditUtils {
      */
     public synchronized Element addElementEmbedded(UserSession session, String id, String ref, String name, String childName) throws Exception {
         Lib.resource.checkEditPrivilege(context, id);
-        String schema = dataManager.getMetadataSchema(id);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
         //--- get metadata from session
         Element md = getMetadataFromSession(session, id);
 
@@ -282,7 +286,7 @@ public class AjaxEditUtils extends EditUtils {
         md.removeChild(Edit.RootChild.INFO, Edit.NAMESPACE);
 
         Element child = null;
-        MetadataSchema mds = dataManager.getSchema(schema);
+        MetadataSchema mds = context.getBean(IMetadataSchemaUtils.class).getSchema(schema);
         if (childName != null) {
             if (childName.equals("geonet:attribute")) {
                 String defaultValue = "";
@@ -358,7 +362,7 @@ public class AjaxEditUtils extends EditUtils {
     public synchronized Element deleteElementEmbedded(UserSession session, String id, String ref, String parentRef) throws Exception {
         Lib.resource.checkEditPrivilege(context, id);
 
-        String schema = dataManager.getMetadataSchema(id);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
 
         //--- get metadata from session
         Element md = getMetadataFromSession(session, id);
@@ -476,8 +480,8 @@ public class AjaxEditUtils extends EditUtils {
         if (indexColon != -1) {
             String prefix = attributeName.substring(0, indexColon);
             localname = attributeName.substring(indexColon + separator.length());
-            String schema = dataManager.getMetadataSchema(id);
-            String namespace = editLib.getNamespace(prefix + ":" + localname, md, dataManager.getSchema(schema));
+            String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
+            String namespace = editLib.getNamespace(prefix + ":" + localname, md, context.getBean(IMetadataSchemaUtils.class).getSchema(schema));
             attrNS = Namespace.getNamespace(prefix, namespace);
         }
         return Pair.write(attrNS, localname);
@@ -489,7 +493,7 @@ public class AjaxEditUtils extends EditUtils {
     public synchronized void swapElementEmbedded(UserSession session, String id, String ref, boolean down) throws Exception {
         Lib.resource.checkEditPrivilege(context, id);
 
-        dataManager.getMetadataSchema(id);
+        context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
 
         //--- get metadata from session
         Element md = getMetadataFromSession(session, id);
@@ -531,21 +535,21 @@ public class AjaxEditUtils extends EditUtils {
      * For Ajax Editing : retrieves metadata from session and validates it.
      */
     public Element validateMetadataEmbedded(UserSession session, String id, String lang) throws Exception {
-        String schema = dataManager.getMetadataSchema(id);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
 
         //--- get metadata from session and clone it for validation
         Element realMd = getMetadataFromSession(session, id);
         Element md = (Element) realMd.clone();
 
         //--- remove editing info
-        EditLib editLib = dataManager.getEditLib();
+        EditLib editLib = context.getBean(IMetadataManager.class).getEditLib();
         editLib.removeEditingInfo(md);
         editLib.contractElements(md);
         String parentUuid = null;
-        md = dataManager.updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
+        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
 
         //--- do the validation on the metadata
-        return dataManager.doValidate(session, schema, id, md, lang, false).one();
+        return context.getBean(IMetadataValidator.class).doValidate(session, schema, id, md, lang, false).one();
 
     }
 
@@ -562,7 +566,7 @@ public class AjaxEditUtils extends EditUtils {
         if (md == null)
             return false;
 
-        String schema = dataManager.getMetadataSchema(id);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
         EditLib editLib = context.getBean(IMetadataManager.class).getEditLib();
         editLib.expandElements(schema, md);
         editLib.enumerateTree(md);
@@ -587,15 +591,15 @@ public class AjaxEditUtils extends EditUtils {
 
         editLib.contractElements(md);
         String parentUuid = null;
-        md = dataManager.updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
+        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
         String changeDate = null;
         xmlSerializer.update(id, md, changeDate, false, null, context);
 
         // Notifies the metadata change to metatada notifier service
-        dataManager.notifyMetadataChange(md, id);
+        context.getBean(IMetadataUtils.class).notifyMetadataChange(md, id);
 
         //--- update search criteria
-        dataManager.indexMetadata(id, true, null);
+        context.getBean(IMetadataIndexer.class).indexMetadata(id, true, null);
 
         return true;
     }
@@ -613,7 +617,7 @@ public class AjaxEditUtils extends EditUtils {
         if (md == null)
             return false;
 
-        String schema = dataManager.getMetadataSchema(id);
+        String schema = context.getBean(IMetadataSchemaUtils.class).getMetadataSchema(id);
         EditLib editLib = context.getBean(IMetadataManager.class).getEditLib();
         editLib.expandElements(schema, md);
         editLib.enumerateTree(md);
@@ -635,16 +639,16 @@ public class AjaxEditUtils extends EditUtils {
 
         editLib.contractElements(md);
         String parentUuid = null;
-        md = dataManager.updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
+        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
 
         String changeDate = null;
         xmlSerializer.update(id, md, changeDate, false, null, context);
 
         // Notifies the metadata change to metatada notifier service
-        dataManager.notifyMetadataChange(md, id);
+        context.getBean(IMetadataUtils.class).notifyMetadataChange(md, id);
 
         //--- update search criteria
-        dataManager.indexMetadata(id, true, null);
+        context.getBean(IMetadataIndexer.class).indexMetadata(id, true, null);
 
         return true;
     }

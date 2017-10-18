@@ -38,7 +38,10 @@ import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.metadata.StatusActions;
 import org.fao.geonet.kernel.metadata.StatusActionsFactory;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -87,7 +90,6 @@ public class Update extends NotInReadOnlyModeService {
         ajaxEditUtils.preprocessUpdate(params, context);
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dataMan = gc.getBean(DataManager.class);
         UserSession session = context.getUserSession();
 
         String id = Utils.getIdentifierFromParameters(params, context);
@@ -102,7 +104,7 @@ public class Update extends NotInReadOnlyModeService {
 
         if (!forget) {
             int iLocalId = Integer.parseInt(id);
-            dataMan.setTemplateExt(iLocalId, MetadataType.lookup(isTemplate));
+            gc.getBean(IMetadataUtils.class).setTemplateExt(iLocalId, MetadataType.lookup(isTemplate));
 
             //--- use StatusActionsFactory and StatusActions class to possibly
             //--- change status as a result of this edit (use onEdit method)
@@ -118,12 +120,12 @@ public class Update extends NotInReadOnlyModeService {
                 boolean updateDateStamp = !minor.equals("true");
                 boolean ufo = true;
                 boolean index = true;
-                dataMan.updateMetadata(context, id, md, validate, ufo, index, context.getLanguage(), changeDate, updateDateStamp);
+                gc.getBean(IMetadataManager.class).updateMetadata(context, id, md, validate, ufo, index, context.getLanguage(), changeDate, updateDateStamp);
             } else {
                 ajaxEditUtils.updateContent(params, false, true);
             }
         } else {
-            dataMan.cancelEditingSession(context, id);
+            gc.getBean(IMetadataUtils.class).cancelEditingSession(context, id);
         }
 
         //-----------------------------------------------------------------------
@@ -144,7 +146,7 @@ public class Update extends NotInReadOnlyModeService {
         if (finished) {
             ajaxEditUtils.removeMetadataEmbedded(session, id);
 
-            dataMan.endEditingSession(id, session);
+            gc.getBean(IMetadataUtils.class).endEditingSession(id, session);
         }
 
 		if (finished && !forget && !commit) {
@@ -159,7 +161,7 @@ public class Update extends NotInReadOnlyModeService {
 				final MetadataRepository metadataRepository = gc.getBean(MetadataRepository.class);
 				Metadata metadata = metadataRepository.findOne(id);
 
-				dataMan.doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
+				gc.getBean(IMetadataValidator.class).doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
 						new Document(metadata.getXmlData(false)), context.getLanguage());
 				reindex = true;
 			}
@@ -190,13 +192,13 @@ public class Update extends NotInReadOnlyModeService {
 			}
 
 			if (reindex) {
-				dataMan.indexMetadata(id, true, null);
+				gc.getBean(IMetadataIndexer.class).indexMetadata(id, true, null);
 			}
 
 
 		}
         if (!finished && !forget && commit) {
-            dataMan.startEditingSession(context, id);
+            gc.getBean(IMetadataUtils.class).startEditingSession(context, id, true);
         }
         return elResp;
     }

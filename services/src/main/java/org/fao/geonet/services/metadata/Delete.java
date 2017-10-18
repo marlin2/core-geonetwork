@@ -35,7 +35,8 @@ import org.fao.geonet.exceptions.OperationNotAllowedEx;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.mef.MEFLib;
-import org.fao.geonet.kernel.metadata.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.services.Utils;
 import org.fao.geonet.utils.IO;
@@ -72,9 +73,7 @@ public class Delete extends BackupFileService {
         //-----------------------------------------------------------------------
         //--- check access
 
-        IMetadataManager metadataManager = context.getBean(IMetadataManager.class);
-
-        if (metadataManager.existsMetadata(Integer.valueOf(id)))
+        if (context.getBean(IMetadataUtils.class).existsMetadata(Integer.valueOf(id)))
             throw new IllegalArgumentException("Metadata with identifier " + id + " not found.");
 
         if (!accessMan.canEdit(context, id))
@@ -83,6 +82,7 @@ public class Delete extends BackupFileService {
         //-----------------------------------------------------------------------
         //--- backup metadata in 'removed' folder
 
+        IMetadata metadata = context.getBean(IMetadataManager.class).getMetadataObject(Integer.valueOf(id));
         if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE && backupFile)
             backupFile(context, id, metadata.getUuid(), MEFLib.doExport(context, metadata.getUuid(), "full", false, true, false));
 
@@ -93,7 +93,7 @@ public class Delete extends BackupFileService {
         //-----------------------------------------------------------------------
         //--- delete metadata and return status
 
-        metadataManager.deleteMetadata(context, id);
+        context.getBean(IMetadataManager.class).deleteMetadata(context, id);
 
         Element elResp = new Element(Jeeves.Elem.RESPONSE);
         elResp.addContent(new Element(Geonet.Elem.ID).setText(id));
