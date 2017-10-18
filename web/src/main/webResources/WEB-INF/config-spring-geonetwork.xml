@@ -51,9 +51,8 @@
   <!-- Import the versioning configuration (subversion etc...) -->
   <import resource="config-versioning.xml"/>
 
-  <bean name="statusActionFactory"
-        class="org.fao.geonet.kernel.datamanager.StatusActionsFactory">
-    <constructor-arg name="className" value="org.fao.geonet.kernel.datamanager.DefaultStatusActions"/>
+  <bean name="statusActionFactory" class="org.fao.geonet.kernel.metadata.StatusActionsFactory">
+    <constructor-arg name="className" value="org.fao.geonet.kernel.metadata.DefaultStatusActions"/>
   </bean>
 
 
