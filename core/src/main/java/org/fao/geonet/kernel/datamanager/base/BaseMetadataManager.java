@@ -706,7 +706,7 @@ public class BaseMetadataManager implements IMetadataManager {
         setNamespacePrefixUsingSchemas(schema, metadataXml);
 
         // Notifies the metadata change to metatada notifier service
-        final IMetadata metadata = getMetadataRepository().findOne(metadataId);
+        final Metadata metadata = getMetadataRepository().findOne(metadataId);
 
         String uuid = null;
         if (schemaManager.getSchema(schema).isReadwriteUUID() && metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE
