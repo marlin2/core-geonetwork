@@ -145,6 +145,8 @@ public class BaseMetadataStatus implements IMetadataStatus {
                         String.format("Workflow automatically enabled for record in group %s. Record status is set to %s.", groupName,
                                 Params.Status.DRAFT));
             }
+        } else { // it isn't configured so its on by default!
+            setStatus(context, Integer.valueOf(newId), Integer.valueOf(Params.Status.DRAFT), new ISODate(), String.format("Workflow group selector is not configured so workflow is enabled for all records. Record status is set to %s.", Params.Status.DRAFT));
         }
     }
 
