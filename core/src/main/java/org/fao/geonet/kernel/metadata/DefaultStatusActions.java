@@ -30,7 +30,10 @@ import jeeves.server.context.ServiceContext;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.*;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.events.md.MetadataPublishDraft;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataStatus;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.MetadataRepository;
@@ -39,7 +42,9 @@ import org.fao.geonet.repository.StatusValueRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.util.MailSender;
 import org.fao.geonet.util.XslUtil;
+
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,7 +57,6 @@ public class DefaultStatusActions implements StatusActions {
     public static final Pattern metadataLuceneField = Pattern.compile("\\{\\{index:([^\\}]+)\\}\\}");
     protected ServiceContext context;
     protected String language;
-    protected DataManager dm;
     protected String siteUrl;
     protected String siteName;
     protected UserSession session;
@@ -63,10 +67,19 @@ public class DefaultStatusActions implements StatusActions {
     private boolean ignoreSslCertificateErrors;
     private StatusValueRepository _statusValueRepository;
 
+    private IMetadataManager mdManager;
+    private IMetadataOperations mdOperations;
+    private IMetadataStatus mdStatus;
+    private ApplicationEventPublisher eventPublisher;
+
     /**
      * Constructor.
      */
     public DefaultStatusActions() {
+    }
+
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.eventPublisher = applicationEventPublisher;
     }
 
     /**
@@ -78,6 +91,10 @@ public class DefaultStatusActions implements StatusActions {
         ApplicationContext applicationContext = ApplicationContextHolder.get();
         this._statusValueRepository = applicationContext.getBean(StatusValueRepository.class);
         this.language = context.getLanguage();
+       
+        this.mdStatus = applicationContext.getBean(IMetadataStatus.class);
+        this.mdOperations = applicationContext.getBean(IMetadataOperations.class);
+        this.mdManager = applicationContext.getBean(IMetadataManager.class);
 
         SettingManager sm = applicationContext.getBean(SettingManager.class);
 
@@ -118,30 +135,16 @@ public class DefaultStatusActions implements StatusActions {
             replyToDescr = fromDescr;
         }
 
-        dm = applicationContext.getBean(DataManager.class);
         siteUrl = sm.getSiteURL(context);
     }
 
     /**
-     * Called when a record is edited to set/reset status.
+     * Called when a record is edited.
      *
      * @param id        The metadata id that has been edited.
      * @param minorEdit If true then the edit was a minor edit.
      */
-    public void onEdit(int id, boolean minorEdit) throws Exception {
-        if (!minorEdit && dm.getCurrentStatus(id).equals(Params.Status.APPROVED)) {
-            ResourceBundle messages = ResourceBundle.getBundle("org.fao.geonet.api.Messages", new Locale(this.language));
-            String changeMessage = String.format(messages.getString("status_email_text"), replyToDescr, replyTo, id);
-            unsetAllOperations(id);
-            dm.setStatus(context, id, Integer.valueOf(Params.Status.DRAFT), new ISODate(), changeMessage);
-        }
-
-        if (!minorEdit && dm.getCurrentStatus(id).equals(Params.Status.REJECTED)) {
-            ResourceBundle messages = ResourceBundle.getBundle("org.fao.geonet.api.Messages", new Locale(this.language));
-            String changeMessage = String.format(messages.getString("status_email_text_rejected"), replyToDescr, replyTo, id);
-            dm.setStatus(context, id, Integer.valueOf(Params.Status.DRAFT), new ISODate(), changeMessage);
-        }
-    }
+    public void onEdit(int id, boolean minorEdit) throws Exception {}
 
     // -------------------------------------------------------------------------
     // Private methods
@@ -161,7 +164,7 @@ public class DefaultStatusActions implements StatusActions {
 
         // -- process the metadata records to set status
         for (Integer mid : metadataIds) {
-            String currentStatus = dm.getCurrentStatus(mid);
+            String currentStatus = mdStatus.getCurrentStatus(mid);
 
             // --- if the status is already set to value of status then do nothing
             if (status.equals(currentStatus)) {
@@ -171,13 +174,19 @@ public class DefaultStatusActions implements StatusActions {
             }
 
             if (status.equals(Params.Status.APPROVED)) {
-                // setAllOperations(mid); - this is a short cut that could be enabled
-            } else if ((status.equals(Params.Status.DRAFT) || status.equals(Params.Status.REJECTED)) || status.equals(Params.Status.RETIRED)) {
+                // set view privilege for 'all' group
+                setAllOperations(mid);
+                // send an event so that the draft version will replace/become the 
+                // approved version
+                this.eventPublisher.publishEvent(new MetadataPublishDraft(mdManager.getMetadataObject(mid)));
+                // TODO: make current user the owner of this record so that it can't be
+                // deleted by anyone else 
+            } else if (status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
             }
 
             // --- set status, indexing is assumed to take place later
-            dm.setStatusExt(context, mid, Integer.valueOf(status), changeDate, changeMessage);
+            mdStatus.setStatusExt(context, mid, Integer.valueOf(status), changeDate, changeMessage);
         }
 
         // --- inform content reviewers if the status is submitted
@@ -192,18 +201,32 @@ public class DefaultStatusActions implements StatusActions {
     }
 
     /**
-     * Unset all operations on 'All' Group. Used when status changes from approved to something
-     * else.
+     * Unset all operations on 'All' Group. Used when status changes from approved to 
+     * something else.
      *
      * @param mdId The metadata id to unset privileges on
      */
     private void unsetAllOperations(int mdId) throws Exception {
         int allGroup = 1;
         for (ReservedOperation op : ReservedOperation.values()) {
-            dm.forceUnsetOperation(context, mdId, allGroup, op.getId());
+            mdOperations.forceUnsetOperation(context, mdId, allGroup, op.getId());
         }
     }
 
+    /**
+     * Set all operations on 'All' Group. Used when status changes to approved from 
+     * something else.
+     *
+     * @param mdId The metadata id to set privileges on
+     */
+    private void setAllOperations(int mdId) throws Exception {
+        int allGroup = 1;
+        for (ReservedOperation op : ReservedOperation.values()) {
+            mdOperations.forceSetOperation(context, mdId, allGroup, op.getId());
+        }
+    }
+
+    /**
     /**
      * Inform content reviewers of metadata records in list that they need to review the record.
      *

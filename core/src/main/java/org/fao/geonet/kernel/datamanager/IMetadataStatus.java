@@ -11,8 +11,6 @@ public interface IMetadataStatus {
 
         boolean isUserMetadataStatus(int userId) throws Exception;
 
-        void activateWorkflowIfConfigured(ServiceContext context, String newId, String groupOwner) throws Exception;
-
         MetadataStatus setStatusExt(ServiceContext context, int id, int status, ISODate changeDate, String changeMessage) throws Exception;
 
         MetadataStatus setStatus(ServiceContext context, int id, int status, ISODate changeDate, String changeMessage) throws Exception;

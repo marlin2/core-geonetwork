@@ -609,11 +609,6 @@ public class DataManager {
     }
 
     @Deprecated
-    public void activateWorkflowIfConfigured(ServiceContext context, String newId, String groupOwner) throws Exception {
-        metadataStatus.activateWorkflowIfConfigured(context, newId, groupOwner);
-    }
-
-    @Deprecated
     public void setCategory(ServiceContext context, String mdId, String categId) throws Exception {
         metadataCategory.setCategory(context, mdId, categId);
     }

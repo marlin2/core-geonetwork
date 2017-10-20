@@ -361,12 +361,6 @@ public class BaseMetadataManager implements IMetadataManager {
         getXmlSerializer().delete(id, context);
     }
 
-    // --------------------------------------------------------------------------
-    // ---
-    // --- Metadata thumbnail API
-    // ---
-    // --------------------------------------------------------------------------
-
     private XmlSerializer getXmlSerializer() {
         return xmlSerializer;
     }
@@ -706,7 +700,7 @@ public class BaseMetadataManager implements IMetadataManager {
         setNamespacePrefixUsingSchemas(schema, metadataXml);
 
         // Notifies the metadata change to metatada notifier service
-        final Metadata metadata = getMetadataRepository().findOne(metadataId);
+        final IMetadata metadata = getMetadataObject(Integer.valueOf(metadataId));
 
         String uuid = null;
         if (schemaManager.getSchema(schema).isReadwriteUUID() && metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE

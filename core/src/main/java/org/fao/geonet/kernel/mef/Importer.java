@@ -617,8 +617,6 @@ public class Importer {
         String metadataId = dm.insertMetadata(context, schema, md.get(index), uuid,
             userid, groupId, source, isTemplate.codeString, docType, category, createDate, changeDate, ufo, indexImmediate);
 
-        dm.activateWorkflowIfConfigured(context, metadataId, groupId);
-
         id.add(index, metadataId);
 
     }

@@ -43,6 +43,8 @@ public class MetadataLockRepositoryImpl
         mdLock.setUser(user);
         mdLock.setTimestamp(new Date(System.currentTimeMillis()));
 
+        Thread.dumpStack();
+
         _entityManager.persist(mdLock);
         _entityManager.flush();
 
@@ -74,6 +76,8 @@ public class MetadataLockRepositoryImpl
      */
     @Override
     public synchronized boolean unlock(String id, User user) {
+        Thread.dumpStack();
+
         if (!isLocked(id, user)) {
             return false;
         }

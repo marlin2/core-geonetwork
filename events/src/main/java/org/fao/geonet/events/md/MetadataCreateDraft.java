@@ -26,15 +26,15 @@ package org.fao.geonet.events.md;
 import org.fao.geonet.domain.IMetadata;
 
 /**
- * Event launched when a metadata is published
+ * Event launched when a metadata is unpublished
  *
  * @author delawen
  */
-public class MetadataPublished extends MetadataEvent {
+public class MetadataCreateDraft extends MetadataEvent {
 
     private static final long serialVersionUID = 324534556246220509L;
 
-    public MetadataPublished(IMetadata md) {
+    public MetadataCreateDraft(IMetadata md) {
         super(md);
     }
 

@@ -14,7 +14,6 @@ import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.domain.UserGroup;
 import org.fao.geonet.domain.UserGroupId;
-import org.fao.geonet.events.md.MetadataPublished;
 import org.fao.geonet.exceptions.ServiceNotAllowedEx;
 import org.fao.geonet.kernel.SvnManager;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
@@ -316,16 +315,6 @@ public class BaseMetadataOperations implements IMetadataOperations {
         if (opAllowed.isPresent()) {
             opAllowedRepo.save(opAllowed.get());
             context.getBean(SvnManager.class).setHistory(mdId + "", context);
-            
-            //If it is published/unpublished, throw event
-            if(opId == ReservedOperation.view.getId() 
-                    && grpId == ReservedGroup.all.getId()) {
-                IMetadataManager mdManager = context
-                        .getBean(IMetadataManager.class);
-                this.eventPublisher.publishEvent(new MetadataPublished(
-                        mdManager.getMetadataObject(Integer.valueOf(mdId))));
-            }
-            
             return true;
         }
 

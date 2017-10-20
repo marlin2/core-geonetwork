@@ -4,7 +4,7 @@ import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataDraft;
-import org.fao.geonet.events.md.MetadataPublished;
+import org.fao.geonet.events.md.MetadataPublishDraft;
 import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.repository.MetadataDraftRepository;
@@ -24,7 +24,7 @@ import jeeves.server.context.ServiceContext;
  * 
  */
 @Component
-public class DraftPublish implements ApplicationListener<MetadataPublished> {
+public class DraftPublish implements ApplicationListener<MetadataPublishDraft> {
 
     @Autowired
     private IMetadataIndexer indexer;
@@ -43,7 +43,7 @@ public class DraftPublish implements ApplicationListener<MetadataPublished> {
      * @param event
      */
     @Override
-    public void onApplicationEvent(MetadataPublished event) {
+    public void onApplicationEvent(MetadataPublishDraft event) {
 
         if (event.getMd() instanceof MetadataDraft) {
             IMetadata draft = event.getMd();

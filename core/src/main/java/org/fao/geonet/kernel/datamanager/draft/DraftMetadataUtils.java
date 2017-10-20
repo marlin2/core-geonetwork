@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Group;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
@@ -22,6 +23,7 @@ import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
+import org.fao.geonet.exceptions.MetadataLockedException;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.datamanager.base.BaseMetadataUtils;
 import org.fao.geonet.kernel.datamanager.IMetadataOperations;
@@ -31,9 +33,11 @@ import org.fao.geonet.kernel.schema.AssociatedResourcesSchemaPlugin;
 import org.fao.geonet.kernel.schema.SchemaPlugin;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.MetadataDraftRepository;
+import org.fao.geonet.repository.MetadataLockRepository;
 import org.fao.geonet.repository.specification.MetadataDraftSpecs;
 import org.fao.geonet.repository.specification.OperationAllowedSpecs;
 import org.fao.geonet.repository.Updater;
+import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 
 import org.jdom.Element;
@@ -44,6 +48,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
+import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
 
 /**
@@ -66,6 +71,9 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
 
   @Autowired
   private IMetadataOperations metadataOperations;
+
+  @Autowired
+  protected MetadataLockRepository mdLockRepository;
 
   /**
    * @param context
@@ -247,14 +255,19 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
   public String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception {
     Metadata md = getMetadataRepository().findOne(Integer.valueOf(id));
 
-    if (md != null) {
-      boolean isPublished = loadOperationsAllowed(context,
-          where(OperationAllowedSpecs.hasMetadataId(id)).and(OperationAllowedSpecs.isPublic(ReservedOperation.view)))
-              .keySet().contains(Integer.valueOf(id));
+    // lock this metadata record
+    UserSession userSession = context.getUserSession();
+    synchronized (this) {
+        Log.error(Geonet.DATA_MANAGER, "Locking metadata with id "+id);
+        if (mdLockRepository.isLocked(id, userSession.getPrincipal())) {
+            throw new MetadataLockedException(id);
+        }
+        mdLockRepository.lock(id, userSession.getPrincipal());
+    }
 
-      // We need to create a draft to avoid modifying the published
-      // metadata
-      if (isPublished && mdDraftRepository.findOneByUuid(md.getUuid()) == null) {
+    if (md != null) {
+      // Create a draft if one doesn't already exist
+      if (mdDraftRepository.findOneByUuid(md.getUuid()) == null) {
 
         // Get parent record from this record
         String parentUuid = "";
@@ -288,18 +301,19 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
 
         id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString,
             false, md.getUuid());
-        // We don't want to lock because we are going to redirect
-        lock = false;
-      } else if (isPublished && mdDraftRepository.findOneByUuid(md.getUuid()) != null) {
+      } else if (mdDraftRepository.findOneByUuid(md.getUuid()) != null) {
         // We already have a draft created
         id = Integer.toString(mdDraftRepository.findOneByUuid(md.getUuid()).getId());
       }
     }
 
+    // now start the editing session on the draft record which doesn't need to be
+    // locked
+    lock = false; 
     return super.startEditingSession(context, id, lock);
   }
 
-  private String createDraft(ServiceContext context, String templateId, String groupOwner, String source, int owner,
+  public String createDraft(ServiceContext context, String templateId, String groupOwner, String source, int owner,
       String parentUuid, String isTemplate, boolean fullRightsForGroup, String uuid) throws Exception {
     Metadata templateMetadata = getMetadataRepository().findOne(templateId);
     if (templateMetadata == null) {

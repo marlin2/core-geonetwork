@@ -121,33 +121,4 @@ public class BaseMetadataStatus implements IMetadataStatus {
         return metadataStatusRepository.save(metatatStatus);
     }
 
-    /**
-     * If groupOwner match regular expression defined in setting metadata/workflow/draftWhenInGroup, then set status to draft to enable
-     * workflow.
-     */
-    @Override
-    public void activateWorkflowIfConfigured(ServiceContext context, String newId, String groupOwner) throws Exception {
-        if (StringUtils.isEmpty(groupOwner)) {
-            return;
-        }
-        String groupMatchingRegex = settingManager.getValue(Settings.METADATA_WORKFLOW_DRAFT_WHEN_IN_GROUP);
-        if (!StringUtils.isEmpty(groupMatchingRegex)) {
-            final Group group = groupRepository.findOne(Integer.valueOf(groupOwner));
-            String groupName = "";
-            if (group != null) {
-                groupName = group.getName();
-            }
-
-            final Pattern pattern = Pattern.compile(groupMatchingRegex);
-            final Matcher matcher = pattern.matcher(groupName);
-            if (matcher.find()) {
-                setStatus(context, Integer.valueOf(newId), Integer.valueOf(Params.Status.DRAFT), new ISODate(),
-                        String.format("Workflow automatically enabled for record in group %s. Record status is set to %s.", groupName,
-                                Params.Status.DRAFT));
-            }
-        } else { // it isn't configured so its on by default!
-            setStatus(context, Integer.valueOf(newId), Integer.valueOf(Params.Status.DRAFT), new ISODate(), String.format("Workflow group selector is not configured so workflow is enabled for all records. Record status is set to %s.", Params.Status.DRAFT));
-        }
-    }
-
 }
