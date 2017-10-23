@@ -30,9 +30,13 @@ import jeeves.server.context.ServiceContext;
 
 import java.lang.reflect.Constructor;
 
-public class StatusActionsFactory {
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 
+public class StatusActionsFactory implements ApplicationEventPublisherAware {
     Class<StatusActions> statusRules;
+
+    private ApplicationEventPublisher eventPublisher;
 
     private String className;
     private static final String DEFAULT_STATUS_ACTION_CLASS = "org.fao.geonet.kernel.metadata.DefaultStatusActions";
@@ -44,6 +48,11 @@ public class StatusActionsFactory {
     public StatusActionsFactory() {
         new StatusActionsFactory(DEFAULT_STATUS_ACTION_CLASS);
     }
+
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.eventPublisher = applicationEventPublisher;
+    }
+
     public StatusActionsFactory(String className) {
         this.className = className;
         try {
@@ -75,6 +84,7 @@ public class StatusActionsFactory {
         Constructor<StatusActions> ct = this.statusRules.getConstructor();
         StatusActions sa = ct.newInstance();
         sa.init(context);
+        sa.setApplicationEventPublisher(this.eventPublisher);
         return sa;
     }
 

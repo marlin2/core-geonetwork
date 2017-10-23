@@ -29,9 +29,13 @@ import java.util.Set;
 
 import org.fao.geonet.domain.ISODate;
 
+import org.springframework.context.ApplicationEventPublisher;
+
 public interface StatusActions {
 
     public void init(ServiceContext context) throws Exception;
+
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher);
 
     public void onEdit(int id, boolean minorEdit) throws Exception;
 

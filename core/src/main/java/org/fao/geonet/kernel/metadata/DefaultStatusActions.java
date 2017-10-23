@@ -46,6 +46,7 @@ import org.fao.geonet.util.XslUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
@@ -70,6 +71,7 @@ public class DefaultStatusActions implements StatusActions {
     private IMetadataManager mdManager;
     private IMetadataOperations mdOperations;
     private IMetadataStatus mdStatus;
+
     private ApplicationEventPublisher eventPublisher;
 
     /**
@@ -92,11 +94,10 @@ public class DefaultStatusActions implements StatusActions {
         this._statusValueRepository = applicationContext.getBean(StatusValueRepository.class);
         this.language = context.getLanguage();
        
-        this.mdStatus = applicationContext.getBean(IMetadataStatus.class);
-        this.mdOperations = applicationContext.getBean(IMetadataOperations.class);
-        this.mdManager = applicationContext.getBean(IMetadataManager.class);
-
         SettingManager sm = applicationContext.getBean(SettingManager.class);
+        mdManager = applicationContext.getBean(IMetadataManager.class);
+        mdOperations = applicationContext.getBean(IMetadataOperations.class);
+        mdStatus = applicationContext.getBean(IMetadataStatus.class);
 
         siteName = sm.getSiteName();
         host = sm.getValue(Settings.SYSTEM_FEEDBACK_MAILSERVER_HOST);

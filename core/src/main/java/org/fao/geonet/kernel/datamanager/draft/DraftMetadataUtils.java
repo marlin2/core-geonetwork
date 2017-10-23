@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.Group;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
@@ -27,6 +28,7 @@ import org.fao.geonet.exceptions.MetadataLockedException;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.datamanager.base.BaseMetadataUtils;
 import org.fao.geonet.kernel.datamanager.IMetadataOperations;
+import org.fao.geonet.kernel.datamanager.IMetadataStatus;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.UpdateDatestamp;
 import org.fao.geonet.kernel.schema.AssociatedResourcesSchemaPlugin;
@@ -71,6 +73,9 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
 
   @Autowired
   private IMetadataOperations metadataOperations;
+
+  @Autowired
+  private IMetadataStatus metadataStatus;
 
   @Autowired
   protected MetadataLockRepository mdLockRepository;
@@ -255,7 +260,7 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
   public String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception {
     Metadata md = getMetadataRepository().findOne(Integer.valueOf(id));
 
-    // lock this metadata record
+    // lock this metadata record - we do want to do this just in case....
     UserSession userSession = context.getUserSession();
     synchronized (this) {
         Log.error(Geonet.DATA_MANAGER, "Locking metadata with id "+id);
@@ -266,8 +271,11 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
     }
 
     if (md != null) {
-      // Create a draft if one doesn't already exist
-      if (mdDraftRepository.findOneByUuid(md.getUuid()) == null) {
+      boolean isApproved = (metadataStatus.getCurrentStatus(md.getId()).equals(Params.Status.APPROVED));
+      Log.error(Geonet.DATA_MANAGER, "Attempting to edit approved metadata with id "+id);
+
+      // Create a draft if the record is approved and a draft doesn't already exist
+      if (isApproved && mdDraftRepository.findOneByUuid(md.getUuid()) == null) {
 
         // Get parent record from this record
         String parentUuid = "";
@@ -299,17 +307,16 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
           owner = md.getSourceInfo().getOwner();
         }
 
-        id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString,
-            false, md.getUuid());
+        id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString, false, md.getUuid());
       } else if (mdDraftRepository.findOneByUuid(md.getUuid()) != null) {
-        // We already have a draft created
+        // We already have a draft created - shouldn't we delete it?
         id = Integer.toString(mdDraftRepository.findOneByUuid(md.getUuid()).getId());
       }
     }
 
-    // now start the editing session on the draft record which doesn't need to be
-    // locked
-    lock = false; 
+    lock = false;  // locking not required on draft record only the owner can edit
+                   // and all other editing will be locked above
+    // now start the editing session 
     return super.startEditingSession(context, id, lock);
   }
 
