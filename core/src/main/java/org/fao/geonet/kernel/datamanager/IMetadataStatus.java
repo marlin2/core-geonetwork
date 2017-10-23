@@ -18,6 +18,8 @@ public interface IMetadataStatus {
         String getCurrentStatus(int metadataId) throws Exception;
 
         MetadataStatus getStatus(int metadataId) throws Exception;
-}
 
-  
+        void activateWorkflowIfConfigured(ServiceContext context, String newId, String groupOwner) throws Exception;
+
+        public MetadataStatus getPreviousStatus(int metadataId) throws Exception;
+}

@@ -677,6 +677,8 @@ public class MetadataInsertDeleteApi {
             isVisibleByAllGroupMembers,
             metadataUuid);
 
+        appContext.getBean(IMetadataStatus.class).activateWorkflowIfConfigured(context, newId, group);
+
         try {
             copyDataDir(context, sourceMetadata.getId(), newId, Params.Access.PUBLIC);
             copyDataDir(context, sourceMetadata.getId(), newId, Params.Access.PRIVATE);

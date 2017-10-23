@@ -121,4 +121,55 @@ public class BaseMetadataStatus implements IMetadataStatus {
         return metadataStatusRepository.save(metatatStatus);
     }
 
+  /**
+   *
+   * @see org.fao.geonet.kernel.metadata.IMetadataStatus#activateWorkflowIfConfigured(jeeves.server.context.ServiceContext,
+   *      java.lang.String, java.lang.String)
+   * @param context
+   * @param newId
+   * @param groupOwner
+   * @throws Exception
+   */
+  @Override
+  public void activateWorkflowIfConfigured(ServiceContext context, String newId, String groupOwner) throws Exception {
+    if (StringUtils.isEmpty(groupOwner)) {
+      return;
+    }
+    String groupMatchingRegex = settingManager.getValue(Settings.METADATA_WORKFLOW_DRAFT_WHEN_IN_GROUP);
+    if (!StringUtils.isEmpty(groupMatchingRegex)) {
+      final Group group = groupRepository.findOne(Integer.valueOf(groupOwner));
+      String groupName = "";
+      if (group != null) {
+        groupName = group.getName();
+      }
+
+      final Pattern pattern = Pattern.compile(groupMatchingRegex);
+      final Matcher matcher = pattern.matcher(groupName);
+      if (matcher.find()) {
+        setStatus(context, Integer.valueOf(newId), Integer.valueOf(Params.Status.DRAFT), new ISODate(),
+            String.format("Workflow automatically enabled for record in group %s. Record status is set to %s.",
+                groupName, Params.Status.DRAFT));
+      }
+    } else { // it isn't configured so its on by default!
+      setStatus(context, Integer.valueOf(newId), Integer.valueOf(Params.Status.DRAFT), new ISODate(), String.format("Workflow group selector is not configured so workflow is enabled for all records. Record status is set to %s.", Params.Status.DRAFT));
+    }
+  }
+
+  @Override
+  public MetadataStatus getPreviousStatus(int metadataId) throws Exception {
+    String sortField = SortUtils.createPath(MetadataStatus_.id, MetadataStatusId_.changeDate);
+    List<MetadataStatus> status = metadataStatusRepository.findAllById_MetadataId(metadataId, new Sort(Sort.Direction.DESC, sortField));
+    if (status.size() <= 1) {
+      MetadataStatus metatataStatus = new MetadataStatus();
+
+      MetadataStatusId mdStatusId = new MetadataStatusId().setStatusId(Integer.parseInt(Params.Status.DRAFT)).setMetadataId(metadataId);
+
+      metatataStatus.setId(mdStatusId);
+
+      return metatataStatus;
+    } else {
+      return status.get(1);
+    }
+  }
+
 }

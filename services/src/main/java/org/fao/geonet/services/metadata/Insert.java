@@ -157,6 +157,8 @@ public class Insert extends NotInReadOnlyModeService {
         // Set template
         appContext.getBean(IMetadataUtils.class).setTemplate(iId, metadataType, null);
 
+        appContext.getBean(IMetadataStatus.class).activateWorkflowIfConfigured(context, id.get(0), group);
+
         // Import category
         final String category = Util.getParam(params, Params.CATEGORY, "");
 
