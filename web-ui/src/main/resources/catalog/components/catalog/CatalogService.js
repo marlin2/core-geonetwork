@@ -786,9 +786,6 @@
             //Status is unknown
             (!isNaN(st) && st != '0');
 
-        // draft copies also have workflow enabled...
-        res = (this.draft && this.draft === 'Y');
-
         //What if it is an array: gmd:MD_ProgressCode
         if (!res && Array.isArray(st)) {
           angular.forEach(st, function(s) {
@@ -797,6 +794,10 @@
             }
           });
         }
+
+        // draft copies also have workflow enabled...
+        if (!res && this.draft && this.draft === 'Y') res = true;
+
         return res;
       }
     };
