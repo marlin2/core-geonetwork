@@ -655,7 +655,7 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metada
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/workflow/allowPublishInvalidMd', 'true', 2, 100003, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/workflow/automaticUnpublishInvalidMd', 'false', 2, 100004, 'n');
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/workflow/forceValidationOnMdSave', 'false', 2, 100005, 'n');
-INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/lock', '-1', 1, 100006, 'n');
+INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/lock', '100000', 1, 100006, 'n');
 
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/backuparchive/enable', 'false', 2, 12000, 'n');
 
