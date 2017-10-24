@@ -34,6 +34,7 @@ import org.fao.geonet.events.md.MetadataPublishDraft;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
 import org.fao.geonet.kernel.datamanager.IMetadataOperations;
 import org.fao.geonet.kernel.datamanager.IMetadataStatus;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.repository.MetadataRepository;
@@ -71,6 +72,7 @@ public class DefaultStatusActions implements StatusActions {
     private IMetadataManager mdManager;
     private IMetadataOperations mdOperations;
     private IMetadataStatus mdStatus;
+    private IMetadataUtils mdUtils;
 
     private ApplicationEventPublisher eventPublisher;
 
@@ -98,6 +100,7 @@ public class DefaultStatusActions implements StatusActions {
         mdManager = applicationContext.getBean(IMetadataManager.class);
         mdOperations = applicationContext.getBean(IMetadataOperations.class);
         mdStatus = applicationContext.getBean(IMetadataStatus.class);
+        mdUtils = applicationContext.getBean(IMetadataUtils.class);
 
         siteName = sm.getSiteName();
         host = sm.getValue(Settings.SYSTEM_FEEDBACK_MAILSERVER_HOST);
@@ -163,6 +166,15 @@ public class DefaultStatusActions implements StatusActions {
 
         Set<Integer> unchanged = new HashSet<Integer>();
 
+        // -- get owners or content reviewers
+        List<User> users = null;
+        if (status.equals(Params.Status.SUBMITTED)) {
+          users = getContentReviewers(metadataIds);
+				} else if (status.equals(Params.Status.APPROVED)) {
+          users = getOwners(metadataIds);
+				}
+           
+
         // -- process the metadata records to set status
         for (Integer mid : metadataIds) {
             String currentStatus = mdStatus.getCurrentStatus(mid);
@@ -177,13 +189,20 @@ public class DefaultStatusActions implements StatusActions {
             if (status.equals(Params.Status.APPROVED)) {
                 // set view privilege for 'all' group
                 setAllOperations(mid);
-                // send an event so that the draft version will replace/become the 
-                // approved version
+                // send an event so that the draft version will replace/become 
+                // the approved version
+                IMetadata metadata = mdManager.getMetadataObject(mid);
                 this.eventPublisher.publishEvent(new MetadataPublishDraft(mdManager.getMetadataObject(mid)));
-                // TODO: make current user the owner of this record so that it can't be
-                // deleted by anyone else 
+                // make current user the owner of the approved record so
+                // original users cannot delete it - get its id by uuid because
+                // if draft-copy mid will no longer be present in draft-copy 
+                // repo
+                String approvedId = mdUtils.getMetadataId(metadata.getUuid());
+               	mdManager.updateMetadataOwner(Integer.parseInt(approvedId), session.getUserId(), metadata.getSourceInfo().getGroupOwner()+""); 
             } else if (status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
+            } else if (status.equals(Params.Status.SUBMITTED)) {
+                // make content reviewer the owner of the metadata record
             }
 
             // --- set status, indexing is assumed to take place later
@@ -192,10 +211,10 @@ public class DefaultStatusActions implements StatusActions {
 
         // --- inform content reviewers if the status is submitted
         if (status.equals(Params.Status.SUBMITTED)) {
-            informContentReviewers(metadataIds, changeDate.toString(), changeMessage);
+            informContentReviewers(metadataIds, users, changeDate.toString(), changeMessage);
             // --- inform owners if status is approved
         } else if (status.equals(Params.Status.APPROVED) || status.equals(Params.Status.REJECTED)) {
-            informOwners(metadataIds, changeDate.toString(), changeMessage, status);
+            informOwners(metadataIds, users, changeDate.toString(), changeMessage, status);
         }
 
         return unchanged;
@@ -228,19 +247,15 @@ public class DefaultStatusActions implements StatusActions {
     }
 
     /**
-    /**
-     * Inform content reviewers of metadata records in list that they need to review the record.
+     * Get list of content reviewers
      *
      * @param metadata      The selected set of metadata records
-     * @param changeDate    The date that of the change in status
-     * @param changeMessage Message supplied by the user that set the status
      */
-    protected void informContentReviewers(Set<Integer> metadata, String changeDate, String changeMessage) throws Exception {
+    private List<User> getContentReviewers(Set<Integer> metadata) throws Exception {
 
         // --- get content reviewers (sorted on content reviewer userid)
         UserRepository userRepository = context.getBean(UserRepository.class);
-        List<Pair<Integer, User>> results = userRepository.findAllByGroupOwnerNameAndProfile(metadata,
-            Profile.Reviewer, SortUtils.createSort(User_.name));
+        List<Pair<Integer, User>> results = userRepository.findAllByGroupOwnerNameAndProfile(metadata, Profile.Reviewer, SortUtils.createSort(User_.name));
 
         List<User> users = Lists.transform(results, new Function<Pair<Integer, User>, User>() {
             @Nullable
@@ -249,6 +264,20 @@ public class DefaultStatusActions implements StatusActions {
                 return input.two();
             }
         });
+
+        return users;
+    }
+     
+    /**
+     * Inform content reviewers of metadata records in list that they need to review the record.
+     *
+     * @param metadata      The selected set of metadata records
+     * @param users         The list of users to send the emails to
+     * @param changeDate    The date that of the change in status
+     * @param changeMessage Message supplied by the user that set the status
+     */
+    protected void informContentReviewers(Set<Integer> metadata, List<User> users, String changeDate, String changeMessage) throws Exception {
+
         String mdChanged = buildMetadataChangedMessage(metadata);
         String translatedStatusName = getTranslatedStatusName(Params.Status.SUBMITTED);
         ResourceBundle messages = ResourceBundle.getBundle("org.fao.geonet.api.Messages", new Locale(this.language));
@@ -331,13 +360,32 @@ public class DefaultStatusActions implements StatusActions {
     }
 
     /**
+     * Get list of metadata owners from selected set of metadata records.
+     *
+     * @param metadataIds   The selected set of metadata records
+     */
+    private List<User> getOwners(Set<Integer> metadataIds) throws Exception {
+        Iterable<Metadata> metadata = this.context.getBean(MetadataRepository.class).findAll(metadataIds);
+        List<User> owners = new ArrayList<User>();
+        UserRepository userRepo = this.context.getBean(UserRepository.class);
+
+        for (Metadata md : metadata) {
+            int ownerId = md.getSourceInfo().getOwner();
+            owners.add(userRepo.findOne(ownerId));
+        }
+
+        return owners;
+		}
+
+    /**
      * Inform owners of metadata records that the records have approved or rejected.
      *
      * @param metadataIds   The selected set of metadata records
+     * @param oeners        The list of metadata owners
      * @param changeDate    The date that of the change in status
      * @param changeMessage Message supplied by the user that set the status
      */
-    protected void informOwners(Set<Integer> metadataIds, String changeDate, String changeMessage, String status)
+    protected void informOwners(Set<Integer> metadataIds, List<User> owners, String changeDate, String changeMessage, String status)
         throws Exception {
 
         String translatedStatusName = getTranslatedStatusName(status);
@@ -349,14 +397,6 @@ public class DefaultStatusActions implements StatusActions {
         );
         String mdChanged = buildMetadataChangedMessage(metadataIds);
 
-        Iterable<Metadata> metadata = this.context.getBean(MetadataRepository.class).findAll(metadataIds);
-        List<User> owners = new ArrayList<User>();
-        UserRepository userRepo = this.context.getBean(UserRepository.class);
-
-        for (Metadata md : metadata) {
-            int ownerId = md.getSourceInfo().getOwner();
-            owners.add(userRepo.findOne(ownerId));
-        }
 
         processList(owners, subject, status, changeDate, changeMessage, mdChanged);
 
