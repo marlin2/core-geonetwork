@@ -417,7 +417,8 @@ public class DraftMetadataManager extends BaseMetadataManager {
     return info;
   }
 
-  protected Map<Integer, MetadataSourceInfo> getSourceInfos(Collection<Integer> metadataIds) {
+  @Override
+  public Map<Integer, MetadataSourceInfo> getSourceInfos(Collection<Integer> metadataIds) {
     Map<Integer, MetadataSourceInfo> findAllSourceInfo = getMetadataRepository()
         .findAllSourceInfo(MetadataSpecs.hasMetadataIdIn(metadataIds));
     findAllSourceInfo.putAll(mdDraftRepository.findAllSourceInfo(MetadataDraftSpecs.hasMetadataIdIn(metadataIds)));

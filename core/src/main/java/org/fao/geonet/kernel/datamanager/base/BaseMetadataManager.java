@@ -1038,6 +1038,12 @@ public class BaseMetadataManager implements IMetadataManager {
     // ---
     // ---------------------------------------------------------------------------
 
+    @Override
+		public Map<Integer, MetadataSourceInfo> getSourceInfos(Collection<Integer> metadataIds) {
+        final Map<Integer, MetadataSourceInfo> allSourceInfo = getMetadataRepository().findAllSourceInfo(MetadataSpecs.hasMetadataIdIn(metadataIds));
+	      return allSourceInfo;	
+    }
+
     /**
      * Add privileges information about metadata record which depends on context and usually could not be stored in db or Lucene index
      * because depending on the current user or current client IP address.
@@ -1064,8 +1070,7 @@ public class BaseMetadataManager implements IMetadataManager {
         final Set<Integer> downloadableByGuest = metadataUtils.loadOperationsAllowed(context,
                 where(operationAllowedSpec).and(OperationAllowedSpecs.hasGroupId(ReservedGroup.guest.getId()))
                         .and(OperationAllowedSpecs.hasOperation(ReservedOperation.download))).keySet();
-        final Map<Integer, MetadataSourceInfo> allSourceInfo = getMetadataRepository()
-                .findAllSourceInfo(MetadataSpecs.hasMetadataIdIn(metadataIds));
+        final Map<Integer, MetadataSourceInfo> allSourceInfo = getSourceInfos(metadataIds);
 
         for (Map.Entry<String, Element> entry : mdIdToInfoMap.entrySet()) {
             Element infoEl = entry.getValue();
