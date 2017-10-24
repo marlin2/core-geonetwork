@@ -221,6 +221,20 @@ public class ApiUtils {
     }
 
     /**
+     * Check if the current user owns this record.
+     */
+    static public IMetadata isOwner(String metadataUuid, HttpServletRequest request) throws Exception {
+        ApplicationContext appContext = ApplicationContextHolder.get();
+        IMetadata metadata = getRecord(metadataUuid);
+        AccessManager accessManager = appContext.getBean(AccessManager.class);
+        if (!accessManager.isOwner(createServiceContext(request), String.valueOf(metadata.getId()))) {
+            throw new SecurityException(String.format(
+                "You are not the owner of record with UUID %s", metadataUuid));
+        }
+        return metadata;
+    }
+
+    /**
      * Check if the current user can edit this record.
      */
     static public IMetadata canEditRecord(String metadataUuid, HttpServletRequest request) throws Exception {

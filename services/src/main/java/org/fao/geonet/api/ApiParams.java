@@ -67,6 +67,7 @@ public class ApiParams {
     public static final String API_RESPONSE_NOT_ALLOWED_ONLY_REVIEWER = "Operation not allowed. Only Reviewvers can access it.";
     public static final String API_RESPONSE_NOT_ALLOWED_ONLY_EDITOR = "Operation not allowed. Only Editors can access it.";
     public static final String API_RESPONSE_NOT_ALLOWED_CAN_EDIT = "Operation not allowed. User needs to be able to edit the resource.";
+    public static final String API_RESPONSE_NOT_ALLOWED_OWNER = "Operation not allowed. User needs to be able to owner of the resource.";
     public static final String API_RESPONSE_NOT_ALLOWED_CAN_VIEW = "Operation not allowed. User needs to be able to view the resource.";
     public static final String API_RESPONSE_NOT_ALLOWED_ONLY_AUTHENTICATED = "Operation not allowed. Only authenticated user can access it.";
     public static final String API_RESPONSE_RESOURCE_NOT_FOUND = "Resource not found.";

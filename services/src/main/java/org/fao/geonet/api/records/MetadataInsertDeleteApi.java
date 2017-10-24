@@ -136,7 +136,7 @@ public class MetadataInsertDeleteApi {
 
     @ApiOperation(
         value = "Delete a record",
-        notes = "User MUST be able to edit the record to delete it. " +
+        notes = "User MUST be the owner of the record to delete it. " +
             "By default, a backup is made in ZIP format. After that, " +
             "the record attachments are removed, the document removed " +
             "from the index and then from the database.",
@@ -146,7 +146,7 @@ public class MetadataInsertDeleteApi {
     )
     @ApiResponses(value = {
         @ApiResponse(code = 204, message = "Record deleted."),
-        @ApiResponse(code = 403, message = ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT)
+        @ApiResponse(code = 403, message = ApiParams.API_RESPONSE_NOT_ALLOWED_OWNER)
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRecord(
@@ -165,7 +165,7 @@ public class MetadataInsertDeleteApi {
         HttpServletRequest request
     )
         throws Exception {
-        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.isOwner(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
         SearchManager searchManager = appContext.getBean(SearchManager.class);
