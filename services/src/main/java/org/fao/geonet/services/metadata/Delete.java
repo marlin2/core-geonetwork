@@ -76,7 +76,7 @@ public class Delete extends BackupFileService {
         if (context.getBean(IMetadataUtils.class).existsMetadata(Integer.valueOf(id)))
             throw new IllegalArgumentException("Metadata with identifier " + id + " not found.");
 
-        if (!accessMan.canEdit(context, id))
+        if (!accessMan.isOwner(context, String.valueOf(id)))
             throw new OperationNotAllowedEx();
 
         //-----------------------------------------------------------------------
