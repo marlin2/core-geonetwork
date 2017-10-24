@@ -301,10 +301,12 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
           if (md.getSourceInfo().getSourceId() != null) {
             source = md.getSourceInfo().getSourceId().toString();
           }
-          if (md.getSourceInfo().getGroupOwner() != null) {
-            groupOwner = md.getSourceInfo().getGroupOwner().toString();
-          }
-          owner = md.getSourceInfo().getOwner();
+        }
+
+        // Now get user id of current user and set as owner, groupOwner is same
+        owner = Integer.parseInt(userSession.getUserId());
+        if (md.getSourceInfo().getGroupOwner() != null) {
+          groupOwner = md.getSourceInfo().getGroupOwner().toString();
         }
 
         id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString, false, md.getUuid());
