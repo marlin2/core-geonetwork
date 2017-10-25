@@ -192,7 +192,7 @@ public class DefaultStatusActions implements StatusActions {
                 // send an event so that the draft version will replace/become 
                 // the approved version
                 IMetadata metadata = mdManager.getMetadataObject(mid);
-                this.eventPublisher.publishEvent(new MetadataPublishDraft(mdManager.getMetadataObject(mid)));
+                this.eventPublisher.publishEvent(new MetadataPublishDraft(metadata));
                 // make current user the owner of the approved record so
                 // original users cannot delete it - get its id by uuid because
                 // if draft-copy mid will no longer be present in draft-copy 
@@ -201,8 +201,6 @@ public class DefaultStatusActions implements StatusActions {
                	mdManager.updateMetadataOwner(Integer.parseInt(approvedId), session.getUserId(), metadata.getSourceInfo().getGroupOwner()+""); 
             } else if (status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
-            } else if (status.equals(Params.Status.SUBMITTED)) {
-                // make content reviewer the owner of the metadata record
             }
 
             // --- set status, indexing is assumed to take place later
