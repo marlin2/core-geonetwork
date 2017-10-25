@@ -195,7 +195,7 @@
   <bean class="org.fao.geonet.kernel.datamanager.draft.DraftPublish" lazy-init="false" primary="true"/>
  <!--
   <bean class="org.fao.geonet.kernel.datamanager.draft.DraftUnpublish" lazy-init="false" primary="true"/>
--->
   <bean class="org.fao.geonet.kernel.datamanager.draft.MetadataShared" lazy-init="false" primary="true"/>
+-->
   <!-- Draft workspace/workflow -->
 </beans>
