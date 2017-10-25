@@ -260,22 +260,15 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
   public String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception {
     Metadata md = getMetadataRepository().findOne(Integer.valueOf(id));
 
-    // lock this metadata record - we do want to do this just in case....
-    UserSession userSession = context.getUserSession();
-    synchronized (this) {
-        Log.error(Geonet.DATA_MANAGER, "Locking metadata with id "+id);
-        if (mdLockRepository.isLocked(id, userSession.getPrincipal())) {
-            throw new MetadataLockedException(id);
-        }
-        mdLockRepository.lock(id, userSession.getPrincipal());
-    }
-
     if (md != null) {
       boolean isApproved = (metadataStatus.getCurrentStatus(md.getId()).equals(Params.Status.APPROVED));
       Log.error(Geonet.DATA_MANAGER, "Attempting to edit approved metadata with id "+id);
 
+      UserSession userSession = context.getUserSession();
+
+      MetadataDraft draftMd = mdDraftRepository.findOneByUuid(md.getUuid());
       // Create a draft if the record is approved and a draft doesn't already exist
-      if (isApproved && mdDraftRepository.findOneByUuid(md.getUuid()) == null) {
+      if (isApproved && (draftMd == null)) {
 
         // Get parent record from this record
         String parentUuid = "";
@@ -310,14 +303,18 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
         }
 
         id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString, false, md.getUuid());
-      } else if (mdDraftRepository.findOneByUuid(md.getUuid()) != null) {
-        // We already have a draft created - shouldn't we delete it?
+      } else if (draftMd != null) {
+        // draft exists so check whether it is owned by this user,
+        // if not then trip a locked exception as we don't want to overwrite someone
+        // else's draft that is going through the workflow
         id = Integer.toString(mdDraftRepository.findOneByUuid(md.getUuid()).getId());
+        if (!(userSession.getUserId().equals(draftMd.getSourceInfo().getOwner()))) {
+            throw new MetadataLockedException(id);
+        }
       }
     }
 
-    lock = false;  // locking not required on draft record only the owner can edit
-                   // and all other editing will be locked above
+    lock = false;  // locking handled later in editing session
     // now start the editing session 
     return super.startEditingSession(context, id, lock);
   }
