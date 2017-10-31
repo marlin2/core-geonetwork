@@ -259,17 +259,35 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
   @Override
   public String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception {
     Metadata md = getMetadataRepository().findOne(Integer.valueOf(id));
+    MetadataDraft draftMd = null;
+    boolean isApproved = false;
+    UserSession userSession = context.getUserSession();
 
-    if (md != null) {
-      boolean isApproved = (metadataStatus.getCurrentStatus(md.getId()).equals(Params.Status.APPROVED));
-      Log.error(Geonet.DATA_MANAGER, "Attempting to edit approved metadata with id "+id);
 
-      UserSession userSession = context.getUserSession();
+    // id is not a draft so get status and check whether we have a draft with
+    // this uuid
+    if (md != null) { 
+        draftMd = mdDraftRepository.findOneByUuid(md.getUuid());
+        isApproved = (metadataStatus.getCurrentStatus(md.getId()).equals(Params.Status.APPROVED));
 
-      MetadataDraft draftMd = mdDraftRepository.findOneByUuid(md.getUuid());
-      // Create a draft if the record is approved and a draft doesn't already exist
-      if (isApproved && (draftMd == null)) {
+    // check whether id is a draft
+		} else {  
+       draftMd = mdDraftRepository.findOne(Integer.valueOf(id));
+    }
 
+    // if the record is approved and a draft doesn't exist then create one
+    if (md != null && draftMd == null && isApproved) { 
+        Log.debug(Geonet.DATA_MANAGER, "Attempting to edit approved metadata with id "+id);
+
+
+        // lock the original record until the draft is destroyed
+        synchronized (this) {
+            if (mdLockRepository.isLocked(id, userSession.getPrincipal())) {
+                 throw new MetadataLockedException(id);
+            }
+            mdLockRepository.lock(id, userSession.getPrincipal());
+        }
+        
         // Get parent record from this record
         String parentUuid = "";
         String schemaIdentifier = metadataSchemaUtils.getMetadataSchema(id);
@@ -303,18 +321,16 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
         }
 
         id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString, false, md.getUuid());
-      } else if (draftMd != null) {
-        // draft exists so check whether it is owned by this user,
-        // if not then trip a locked exception as we don't want to overwrite someone
-        // else's draft that is going through the workflow
-        id = Integer.toString(mdDraftRepository.findOneByUuid(md.getUuid()).getId());
-        if (!(userSession.getUserId().equals(draftMd.getSourceInfo().getOwner()))) {
-            throw new MetadataLockedException(id);
-        }
-      }
+        lock = false;
     }
 
-    lock = false;  // locking handled later in editing session
+    // editing a draft record so make sure that the id is correct
+    if (md == null && draftMd != null) { 
+        id = Integer.toString(draftMd.getId());
+    }
+
+    System.out.println("CONDITIONS: "+md+" draftMd: "+draftMd+" isApproved: "+isApproved+" Lockk: "+lock);
+
     // now start the editing session 
     return super.startEditingSession(context, id, lock);
   }
@@ -361,8 +377,7 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
 
     newMetadata.getMetadataCategories().addAll(filteredCategories);
 
-    Integer finalId = metadataManager.insertMetadata(context, newMetadata, xml, false, true, true, UpdateDatestamp.YES,
-        fullRightsForGroup, true).getId();
+    Integer finalId = metadataManager.insertMetadata(context, newMetadata, xml, false, true, true, UpdateDatestamp.YES, fullRightsForGroup, true).getId();
 
     // Copy privileges from original metadata
     for (OperationAllowed op : metadataOperations.getAllOperations(templateMetadata.getId())) {

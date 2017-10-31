@@ -47,6 +47,7 @@ import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.lib.Lib;
 import org.fao.geonet.repository.MetadataDraftRepository;
+import org.fao.geonet.repository.MetadataLockRepository;
 import org.fao.geonet.repository.SortUtils;
 import org.fao.geonet.repository.Updater;
 import org.fao.geonet.repository.specification.MetadataDraftSpecs;
@@ -78,6 +79,9 @@ public class DraftMetadataManager extends BaseMetadataManager {
 
   @Autowired
   private MetadataDraftRepository mdDraftRepository;
+
+  @Autowired
+  private MetadataLockRepository mdLockRepository;
 
   @Autowired
   private IMetadataIndexer mdIndexer;
@@ -149,6 +153,8 @@ public class DraftMetadataManager extends BaseMetadataManager {
       Metadata originalMd = getMetadataRepository().findOneByUuid(uuid);
       if (originalMd != null) {
         mdIndexer.indexMetadata(Integer.toString(originalMd.getId()), true, null);
+        // remove any locks on the original metadata
+        mdLockRepository.unlock(Integer.toString(originalMd.getId()), context.getUserSession().getPrincipal());
       } else {
         Log.error(Geonet.DATA_MANAGER, "Draft with uuid " + uuid + " was removed. No original metadata was found.");
 
