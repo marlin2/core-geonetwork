@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.Logger;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
@@ -46,7 +47,7 @@ import org.fao.geonet.kernel.harvest.harvester.Privileges;
 import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.repository.MetadataRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import jeeves.server.context.ServiceContext;
 
@@ -63,23 +64,25 @@ import jeeves.server.context.ServiceContext;
 public abstract class BaseAligner {
 
     public final AtomicBoolean cancelMonitor;
-    @Autowired
+
     protected IMetadataCategory mdCategory;
-    @Autowired
     protected IMetadataIndexer mdIndexer;
-    @Autowired
     protected IMetadataManager mdManager;
-    @Autowired
     protected IMetadataOperations mdOperations;
-    @Autowired
     protected IMetadataSchemaUtils mdSchemaUtils;
-    @Autowired
     protected IMetadataUtils mdUtils;
-    @Autowired
     protected IMetadataValidator mdValidator;
 
     public BaseAligner(AtomicBoolean cancelMonitor) {
         this.cancelMonitor = cancelMonitor;
+        ApplicationContext applicationContext = ApplicationContextHolder.get();
+        mdCategory = applicationContext.getBean(IMetadataCategory.class);
+        mdIndexer = applicationContext.getBean(IMetadataIndexer.class);
+        mdManager = applicationContext.getBean(IMetadataManager.class);
+        mdOperations = applicationContext.getBean(IMetadataOperations.class);
+        mdSchemaUtils = applicationContext.getBean(IMetadataSchemaUtils.class);
+        mdUtils = applicationContext.getBean(IMetadataUtils.class);
+        mdValidator = applicationContext.getBean(IMetadataValidator.class);
     }
 
 
