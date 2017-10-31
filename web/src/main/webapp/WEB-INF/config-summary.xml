@@ -126,9 +126,24 @@
     <facet name="maintenanceAndUpdateFrequency" indexKey="cl_maintenanceAndUpdateFrequency"
            label="maintenanceAndUpdateFrequencies"/>
     <facet name="draft" indexKey="draft" label="draft"/>
+
+    <facet name="source" label="sources" indexKey="source"/>
+    <facet name="survey" label="surveys" indexKey="survey"/>
+    <facet name="project" label="projects" indexKey="project"/>
+    <facet name="gcmd" label="gcmds" indexKey="gcmd"/>
+    <facet name="otherkeyword" label="otherkeywords" indexKey="otherkeyword"/>
   </facets>
 
   <summaryTypes>
+    <summaryType name="csiro" format="DIMENSION">
+      <item facet="orgName" max="15"/>
+      <item facet="source" max="40"/>
+      <item facet="survey" max="40"/>
+      <item facet="project" max="15"/>
+      <item facet="gcmd" max="15"/>
+      <item facet="otherkeyword" max="15"/>
+    </summaryType>
+
     <summaryType name="details" format="DIMENSION">
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
       <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
@@ -221,6 +236,13 @@
       <item facet="keyword" max="100"/>
     </summaryType>
     <summaryType name="results_with_summary">
+      <item facet="orgName" max="15"/>
+      <item facet="source" max="40"/>
+      <item facet="survey" max="40"/>
+      <item facet="project" max="15"/>
+      <item facet="gcmd" max="15"/>
+      <item facet="otherkeyword" max="15"/>
+      <!--
       <item facet="keyword" max="15"/>
       <item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>
       <item facet="denominator" sortBy="value" sortOrder="asc" max="20"/>
@@ -231,6 +253,7 @@
       <item facet="serviceType"/>
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
       <item facet="createDateYear" sortOrder="asc" max="40"/>
+      -->
     </summaryType>
     <summaryType name="suggestions">
       <item facet="keyword"/>
