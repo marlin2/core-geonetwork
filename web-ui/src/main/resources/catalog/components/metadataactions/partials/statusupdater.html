@@ -29,7 +29,7 @@
         <label data-translate="">publishToGroup</label>
         <ul>
           <li data-ng-repeat="g in groups | filter:groupSearch | orderBy:'name'" class="list-group-item">
-            <input type="checkbox" id="group-{{g.id}}" data-ng-model="selectedPrivileges[g.id]"/>
+            <input type="checkbox" id="group-{{g.id}}" data-ng-model="selectedGroups[g.id]"/>
             <label for="group-{{g.id}}">{{g.label[lang]|empty:g.name}}</label>
           </li>
         </ul>

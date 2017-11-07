@@ -44,6 +44,7 @@
           scope.lang = scope.$parent.lang;
           var user = scope.$parent.user;
           scope.newStatus = {value: '0'};
+          scope.selectedGroups = [];
 
           var metadataId = scope.md.getId();
           function init() {
@@ -63,9 +64,19 @@
           };
 
           scope.updateStatus = function() {
+            // put selected groups into status update as publishGroups
+            var publishGroups = [];
+            if (scope.selectedGroups) {
+                for (var i = 0;i < scope.selectedGroups.length; i++) {
+                     if (scope.selectedGroups[i]) {
+                         publishGroups.push(i);
+                     }
+                }
+            }
             return $http.put('../api/records/' + metadataId +
                 '/status?status=' + scope.newStatus.value +
-                '&comment=' + (scope.changeMessage || '')
+                '&comment=' + (scope.changeMessage || '') +
+                '&publishGroups=' + publishGroups.join()
             ).then(
                 function(data) {
                   gnMetadataManager.updateMdObj(scope.md);
@@ -94,6 +105,14 @@
               .success(function(data) {
                 scope.groups = data;
               });
+
+          scope.groupSearch = function(group) {
+              if (group.id > 0) {
+                  return true;
+              } else {
+                  return false;
+              }
+          };
 
           init();
         }
