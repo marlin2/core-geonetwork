@@ -40,9 +40,14 @@ import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.MetadataType;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
-import org.fao.geonet.kernel.*;
+import org.fao.geonet.kernel.EditLib;
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
+import org.fao.geonet.kernel.SchemaManager;
+import org.fao.geonet.kernel.ThesaurusManager;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.metadata.StatusActions;
 import org.fao.geonet.kernel.metadata.StatusActionsFactory;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -150,6 +155,7 @@ public class MetadataEditingApi {
 
         ServiceContext context = ApiUtils.createServiceContext(request);
         ApplicationContext applicationContext = ApplicationContextHolder.get();
+        System.out.println("XStarting editing session "+starteditingsession);
         if (starteditingsession) {
             Integer id = Integer.valueOf(applicationContext.getBean(IMetadataUtils.class).startEditingSession(context, String.valueOf(metadata.getId()), true));
             metadata = applicationContext.getBean(IMetadataManager.class).getMetadataObject(id);
@@ -246,7 +252,11 @@ public class MetadataEditingApi {
 //        ajaxEditUtils.preprocessUpdate(allRequestParams, context);
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
-        DataManager dataMan = applicationContext.getBean(DataManager.class);
+        IMetadataUtils mdUtils = applicationContext.getBean(IMetadataUtils.class);
+        IMetadataIndexer mdIndexer = applicationContext.getBean(IMetadataIndexer.class);
+        IMetadataManager mdManager = applicationContext.getBean(IMetadataManager.class);
+        IMetadataValidator mdValidator = applicationContext.getBean(IMetadataValidator.class);
+
         UserSession session = ApiUtils.getUserSession(httpSession);
 
         String id = String.valueOf(metadata.getId());
@@ -267,7 +277,7 @@ public class MetadataEditingApi {
         }
 
         int iLocalId = Integer.parseInt(id);
-        dataMan.setTemplateExt(iLocalId, MetadataType.lookup(isTemplate));
+        mdUtils.setTemplateExt(iLocalId, MetadataType.lookup(isTemplate));
 
         //--- use StatusActionsFactory and StatusActions class to possibly
         //--- change status as a result of this edit (use onEdit method)
@@ -281,7 +291,7 @@ public class MetadataEditingApi {
             boolean updateDateStamp = !minor;
             boolean ufo = true;
             boolean index = true;
-            dataMan.updateMetadata(context, id, md,
+            mdManager.updateMetadata(context, id, md,
                 withValidationErrors, ufo, index,
                 context.getLanguage(), changeDate, updateDateStamp);
         } else {
@@ -313,7 +323,7 @@ public class MetadataEditingApi {
 
             // Save validation if the forceValidationOnMdSave is enabled
             if (forceValidationOnMdSave) {
-                dataMan.doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
+                mdValidator.doValidate(metadata.getDataInfo().getSchemaId(), metadata.getId() + "",
                     new Document(metadata.getXmlData(false)), context.getLanguage());
                 reindex = true;
             }
@@ -344,16 +354,16 @@ public class MetadataEditingApi {
             }
 
             if (reindex) {
-                dataMan.indexMetadata(id, true, null);
+                mdIndexer.indexMetadata(id, true, null);
             }
 
             ajaxEditUtils.removeMetadataEmbedded(session, id);
-            dataMan.endEditingSession(id, session);
+            mdUtils.endEditingSession(id, session);
             return null;
         }
 
 //        if (!finished && !forget && commit) {
-//            dataMan.startEditingSession(context, id);
+//            mdUtils.startEditingSession(context, id);
 //        }
         Element elMd = new AjaxEditUtils(context)
             .getMetadataEmbedded(
@@ -403,9 +413,9 @@ public class MetadataEditingApi {
         IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
-        DataManager dataMan = applicationContext.getBean(DataManager.class);
+        IMetadataUtils mdUtils = applicationContext.getBean(IMetadataUtils.class);
         ServiceContext context = ApiUtils.createServiceContext(request);
-        dataMan.cancelEditingSession(context, String.valueOf(metadata.getId()));
+        mdUtils.cancelEditingSession(context, String.valueOf(metadata.getId()));
     }
 
 
