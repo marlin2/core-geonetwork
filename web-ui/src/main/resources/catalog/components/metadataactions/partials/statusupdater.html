@@ -25,17 +25,33 @@
                   data-ng-model="changeMessage"></textarea>
       </div>
 
-
-      <div class="btn-toolbar">
-        <button class="btn btn-default"
-                data-gn-click-and-spin="updateStatus()">
-          <i class="fa fa-bell"></i>&nbsp;
-          <span data-translate="">updateStatus</span>
-        </button>
-
-        <div data-gn-need-help="user-guide/workflow/life-cycle.html"
-             data-icon-only="true"></div>
+      <div class="form-group" ng-if="newStatus.value == 2">
+        <label data-translate="">publishToGroup</label>
+        <ul>
+          <li data-ng-repeat="g in groups | filter:groupSearch | orderBy:'name'" class="list-group-item">
+            <input type="checkbox" id="group-{{g.id}}" data-ng-model="selectedPrivileges[g.id]"/>
+            <label for="group-{{g.id}}">{{g.label[lang]|empty:g.name}}</label>
+          </li>
+        </ul>
       </div>
+
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group mr-2">
+          <button class="btn btn-default"
+                  data-gn-click-and-spin="updateStatus()">
+            <i class="fa fa-bell"></i>&nbsp;
+            <span data-translate="">updateStatus</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="btn-toolbar" role="toolbar" style="margin-bottom: 15px;">
+        <div class="btn-group mr-2">
+          <div data-gn-need-help="user-guide/workflow/life-cycle.html"
+               data-icon-only="true"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </form>

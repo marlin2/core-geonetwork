@@ -90,6 +90,11 @@
                 !user.isReviewerOrMore());
           };
 
+          $http.get('../api/groups?withReservedGroup=true', {cache: true})
+              .success(function(data) {
+                scope.groups = data;
+              });
+
           init();
         }
       };
