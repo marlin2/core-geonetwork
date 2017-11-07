@@ -88,6 +88,7 @@ public class UpdateStatus extends NotInReadOnlyModeService {
 
         String status = Util.getParam(params, Params.STATUS);
         String changeMessage = Util.getParam(params, Params.CHANGE_MESSAGE);
+        String publishGroups = Util.getParam(params, Params.PUBLISH_GROUPS,"");
         ISODate changeDate = new ISODate();
 
         //--- use StatusActionsFactory and StatusActions class to
@@ -99,7 +100,7 @@ public class UpdateStatus extends NotInReadOnlyModeService {
         Set<Integer> metadataIds = new HashSet<Integer>();
         metadataIds.add(iLocalId);
 
-        sa.statusChange(status, metadataIds, changeDate, changeMessage);
+        sa.statusChange(status, metadataIds, changeDate, changeMessage, publishGroups);
 
         //--- reindex metadata
         dataMan.indexMetadata(id, true, null);

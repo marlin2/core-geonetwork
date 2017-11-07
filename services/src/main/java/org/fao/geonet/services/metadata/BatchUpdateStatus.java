@@ -71,6 +71,7 @@ public class BatchUpdateStatus extends NotInReadOnlyModeService {
     public Element serviceSpecificExec(Element params, ServiceContext context) throws Exception {
         String status = Util.getParam(params, Params.STATUS);
         String changeMessage = Util.getParam(params, Params.CHANGE_MESSAGE);
+        String publishGroups = Util.getParam(params, Params.PUBLISH_GROUPS, "");
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
@@ -109,8 +110,8 @@ public class BatchUpdateStatus extends NotInReadOnlyModeService {
         StatusActionsFactory saf = new StatusActionsFactory();
 
         StatusActions sa = saf.createStatusActions(context);
-
-        Set<Integer> noChange = sa.statusChange(status, metadata, changeDate, changeMessage);
+        
+        Set<Integer> noChange = sa.statusChange(status, metadata, changeDate, changeMessage, publishGroups);
 
         //--- reindex metadata
         context.info("Re-indexing metadata");

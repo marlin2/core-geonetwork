@@ -105,13 +105,21 @@ public class MetadataWorkflowApi {
         )
             Integer status,
         @ApiParam(
-            value = "coment",
+            value = "comment",
             required = true
         )
         @RequestParam(
             required = true
         )
             String comment,
+        @ApiParam(
+            value = "publishGroups",
+            required = false
+        )
+        @RequestParam(
+            required = false
+        )
+            String publishGroups,
         HttpServletRequest request
     )
         throws Exception {
@@ -140,7 +148,7 @@ public class MetadataWorkflowApi {
         Set<Integer> metadataIds = new HashSet<Integer>();
         metadataIds.add(metadata.getId());
 
-        sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment);
+        sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups);
 
         //--- reindex metadata
         IMetadataIndexer dataManager = appContext.getBean(IMetadataIndexer.class);

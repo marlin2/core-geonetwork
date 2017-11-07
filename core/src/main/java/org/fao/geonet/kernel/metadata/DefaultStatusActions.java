@@ -161,8 +161,9 @@ public class DefaultStatusActions implements StatusActions {
      * @param metadataIds   The set of metadata ids to set status on.
      * @param changeDate    The date the status was changed.
      * @param changeMessage The message explaining why the status has changed.
+     * @param publishGroups A set of groups associated with the status change.
      */
-    public Set<Integer> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage) throws Exception {
+    public Set<Integer> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups) throws Exception {
 
         Set<Integer> unchanged = new HashSet<Integer>();
 
@@ -187,8 +188,8 @@ public class DefaultStatusActions implements StatusActions {
             }
 
             if (status.equals(Params.Status.APPROVED)) {
-                // set view privilege for 'all' group
-                setAllOperations(mid);
+                // set privileges for each group in the list of publishGroups
+                setOperations(mid, publishGroups);
                 // send an event so that the draft version will replace/become 
                 // the approved version
                 IMetadata metadata = mdManager.getMetadataObject(mid);
@@ -232,15 +233,22 @@ public class DefaultStatusActions implements StatusActions {
     }
 
     /**
-     * Set all operations on 'All' Group. Used when status changes to approved from 
-     * something else.
+     * Set all operations on the list of groups supplied. Used when status 
+     * changes to approved from something else.
      *
      * @param mdId The metadata id to set privileges on
+     * @param publishGroups The list of groups to set privileges for
      */
-    private void setAllOperations(int mdId) throws Exception {
-        int allGroup = 1;
-        for (ReservedOperation op : ReservedOperation.values()) {
-            mdOperations.forceSetOperation(context, mdId, allGroup, op.getId());
+    private void setOperations(int mdId, String publishGroups) throws Exception {
+        String[] publishGroupsList = publishGroups.split(",");
+        for (int i = 0; i < publishGroupsList.length; i++) {
+            int theGroup = Integer.parseInt(publishGroupsList[i]);
+            if (context.isDebugEnabled())
+                context.debug("Metadata " + mdId + " group " + theGroup + " set");
+            System.out.println("XSMetadata " + mdId + " group " + theGroup + " set");
+            for (ReservedOperation op : ReservedOperation.values()) {
+                mdOperations.forceSetOperation(context, mdId, theGroup, op.getId());
+            }
         }
     }
 
