@@ -245,7 +245,6 @@ public class DefaultStatusActions implements StatusActions {
             int theGroup = Integer.parseInt(publishGroupsList[i]);
             if (context.isDebugEnabled())
                 context.debug("Metadata " + mdId + " group " + theGroup + " set");
-            System.out.println("XSMetadata " + mdId + " group " + theGroup + " set");
             for (ReservedOperation op : ReservedOperation.values()) {
                 mdOperations.forceSetOperation(context, mdId, theGroup, op.getId());
             }
