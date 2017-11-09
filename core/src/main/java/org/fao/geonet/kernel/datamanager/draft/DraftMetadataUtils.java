@@ -392,6 +392,10 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
         }
       }
     }
+
+    // Set status to draft
+    String changeMessage = "Draft created after editing approved metadata record";
+    metadataStatus.setStatusExt(context, finalId, Integer.valueOf(Params.Status.DRAFT), new ISODate(), changeMessage);
     
     metadataIndexer.indexMetadata(String.valueOf(finalId), true, null);
     
