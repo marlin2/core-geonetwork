@@ -546,6 +546,11 @@
       <artifactId>autolink</artifactId>
       <version>0.6.0</version>
     </dependency>
+
+    <dependency>
+        <groupId>com.github.isrsal</groupId>
+        <artifactId>spring-mvc-logger</artifactId>
+    </dependency>
   </dependencies>
 
 

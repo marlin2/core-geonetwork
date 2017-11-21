@@ -239,4 +239,8 @@
     <level value="OFF"></level>
     <appender-ref ref="consoleAppender"/>
   </root>
+
+  <logger name="com.github.isrsal.logging.LoggingFilter">
+      <level value="DEBUG"/>
+   </logger>
 </log4j:configuration>
