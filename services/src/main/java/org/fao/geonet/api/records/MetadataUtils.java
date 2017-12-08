@@ -36,7 +36,9 @@ import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.ReservedOperation;
-import org.fao.geonet.kernel.DataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
+import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.mef.MEFLib;
 import org.fao.geonet.kernel.schema.AssociatedResource;
@@ -91,7 +93,9 @@ public class MetadataUtils {
         final String to = "" + to_;
         final String fast = "" + fast_;
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-        DataManager dm = gc.getBean(DataManager.class);
+        IMetadataManager mdManager = gc.getBean(IMetadataManager.class);
+        IMetadataUtils mdUtils = gc.getBean(IMetadataUtils.class);
+        IMetadataSchemaUtils mdSchemaUtils = gc.getBean(IMetadataSchemaUtils.class);
         Element relatedRecords = new Element("relations");
         List<RelatedItemType> listOfTypes = new ArrayList<RelatedItemType>(Arrays.asList(type));
 
@@ -99,11 +103,11 @@ public class MetadataUtils {
         Element md = Show.getCached(context.getUserSession(), id);
         if (md == null) {
             // Get from DB
-            md = dm.getMetadata(context, id, forEditing, withValidationErrors,
+            md = mdManager.getMetadata(context, id, forEditing, withValidationErrors,
                 keepXlinkAttributes);
         }
 
-        String schemaIdentifier = dm.getMetadataSchema(id);
+        String schemaIdentifier = mdSchemaUtils.getMetadataSchema(id);
         SchemaPlugin instance = SchemaManager.getSchemaPlugin(schemaIdentifier);
         AssociatedResourcesSchemaPlugin schemaPlugin = null;
         if (instance instanceof AssociatedResourcesSchemaPlugin) {
@@ -135,7 +139,7 @@ public class MetadataUtils {
 
             if (listOfAssociatedResources != null) {
                 for (AssociatedResource resource : listOfAssociatedResources) {
-                    Element sibContent = getRecord(resource.getUuid(), context, dm);
+                    Element sibContent = getRecord(resource.getUuid(), context, mdUtils, mdManager);
                     if (sibContent != null) {
                         Element sibling = new Element("sibling");
                         sibling.setAttribute("initiative", resource.getInitiativeType());
@@ -313,12 +317,12 @@ public class MetadataUtils {
     /**
      * TODO-API : replace by ApiUtils.
      */
-    private static Element getRecord(String uuid, ServiceContext context, DataManager dm) {
+    private static Element getRecord(String uuid, ServiceContext context, IMetadataUtils mdUtils, IMetadataManager mdManager) {
         Element content = null;
         try {
-            String id = dm.getMetadataId(uuid);
+            String id = mdUtils.getMetadataId(uuid);
             Lib.resource.checkPrivilege(context, id, ReservedOperation.view);
-            content = dm.getMetadata(context, id, forEditing, withValidationErrors, keepXlinkAttributes);
+            content = mdManager.getMetadata(context, id, forEditing, withValidationErrors, keepXlinkAttributes);
         } catch (Exception e) {
             if (Log.isDebugEnabled(Geonet.SEARCH_ENGINE))
                 Log.debug(Geonet.SEARCH_ENGINE, "Metadata " + uuid + " record is not visible for user.");
