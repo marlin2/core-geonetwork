@@ -464,12 +464,12 @@ public class BaseMetadataUtils implements IMetadataUtils {
         // READONLYMODE
         if (!srvContext.getBean(NodeInfo.class).isReadOnly()) {
             // Update the popularity in database
-            int iId = Integer.parseInt(id);
-            getMetadataRepository().incrementPopularity(iId);
+            //int iId = Integer.parseInt(id);
+            //getMetadataRepository().incrementPopularity(iId);
 
             // And register the metadata to be indexed in the near future
-            final IndexingList list = srvContext.getBean(IndexingList.class);
-            list.add(iId);
+            //final IndexingList list = srvContext.getBean(IndexingList.class);
+            //list.add(iId);
         } else {
             if (Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
                 Log.debug(Geonet.DATA_MANAGER, "GeoNetwork is operating in read-only mode. IncreasePopularity is skipped.");
