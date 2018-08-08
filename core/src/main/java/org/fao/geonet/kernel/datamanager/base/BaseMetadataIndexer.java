@@ -85,7 +85,8 @@ import jeeves.xlink.Processor;
 
 public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPublisherAware {
 
-    private Lock indexLock = new ReentrantLock();
+    private Lock indexingLock = new ReentrantLock();
+    private Lock waitLoopLock = new ReentrantLock();
 
     @Autowired
     private SearchManager searchManager;
@@ -302,11 +303,11 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
 
     @Override
     public boolean isIndexing() {
-        indexLock.lock();
+        indexingLock.lock();
         try {
             return !indexing.isEmpty() || !batchIndex.isEmpty();
         } finally {
-            indexLock.unlock();
+            indexingLock.unlock();
         }
     }
 
@@ -321,7 +322,7 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
 
     @Override
     public void indexMetadata(final String metadataId, boolean forceRefreshReaders, ISearchManager searchManager) throws Exception {
-        indexLock.lock();
+        waitLoopLock.lock();
         try {
             if (waitForIndexing.contains(metadataId)) {
                 return;
@@ -330,16 +331,23 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
                 try {
                     waitForIndexing.add(metadataId);
                     // don't index the same metadata 2x
-                    wait(200);
+                    synchronized(this) {
+                      wait(200);
+                    }
                 } catch (InterruptedException e) {
                     return;
                 } finally {
                     waitForIndexing.remove(metadataId);
                 }
             }
-            indexing.add(metadataId);
+            indexingLock.lock();
+            try {
+              indexing.add(metadataId);
+            } finally {
+              indexingLock.unlock();
+            }
         } finally {
-            indexLock.unlock();
+            waitLoopLock.unlock();
         }
         Metadata fullMd;
 
@@ -390,11 +398,13 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
                     "The metadata document index with id=" + metadataId + " is corrupt/invalid - ignoring it. Error: " + x.getMessage(), x);
             fullMd = null;
         } finally {
-            indexLock.lock();
+            indexingLock.lock();
             try {
                 indexing.remove(metadataId);
+            } catch (Exception e) {
+                Log.warning(Geonet.INDEX_ENGINE, "Exception removing " + metadataId + " from indexing set", e);
             } finally {
-                indexLock.unlock();
+                indexingLock.unlock();
             }
         }
         if (fullMd != null) {
