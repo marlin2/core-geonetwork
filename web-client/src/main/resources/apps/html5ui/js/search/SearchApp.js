@@ -145,6 +145,9 @@ GeoNetwork.searchApp = function() {
                             Ext.getCmp('advanced-search-options-content-form')
                                     .fireEvent('search');
                         }
+                    },
+                    afterrender: function(field) {
+                        field.focus(false,200);
                     }
                 }
             });
