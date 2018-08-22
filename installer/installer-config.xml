@@ -132,19 +132,21 @@
 		</pack>
 
 
+    <!--
     <pack id="geoserver" name="GeoServer" required="no" preselected="yes">
       <description/>
       
       <fileset dir="../geoserver/target/geoserver" targetdir="$INSTALL_PATH/web/geoserver"/>
     	
-    	<!-- Unzipping when container start takes a long time on windows. 
+    	<!- - Unzipping when container start takes a long time on windows. 
         <singlefile target="$INSTALL_PATH/web/geoserver.war" src="../geoserver/target/geoserver.war"
         override="true"/>
-      -->
+      - ->
 
        <singlefile target="$INSTALL_PATH/web/GCMDFinder.war" src="../gcmdfinder/GCMDFinder.war" override="true"/>
 			 <fileset dir="../gcmdfinder/COPY_CONTENTS_TO_ROOT" targetdir="$INSTALL_PATH/COPY_CONTENTS_TO_ROOT"/>
     </pack>
+     -->
 
 
     <pack id="inspire" name="European Union INSPIRE Directive configuration pack" required="no" preselected="no">
