@@ -511,17 +511,17 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>schema-iso19139.anzlic</artifactId>
-      <version>${project.version}</version>
+      <version>${gn.schemas.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>schema-iso19139.mcp</artifactId>
-      <version>${project.version}</version>
+      <version>${gn.schemas.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>schema-iso19139.mcp20</artifactId>
-      <version>${project.version}</version>
+      <version>${gn.schemas.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
