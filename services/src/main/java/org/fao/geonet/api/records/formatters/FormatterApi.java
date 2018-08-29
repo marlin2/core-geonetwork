@@ -23,31 +23,16 @@
 
 package org.fao.geonet.api.records.formatters;
 
-import static com.google.common.io.Files.getNameWithoutExtension;
-import static org.fao.geonet.api.ApiParams.API_PARAM_RECORD_UUID;
-import static org.fao.geonet.api.records.formatters.FormatterConstants.SCHEMA_PLUGIN_FORMATTER_DIR;
-import static org.springframework.data.jpa.domain.Specifications.where;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
-import java.util.concurrent.Callable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.common.io.ByteStreams;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import jeeves.server.context.ServiceContext;
+import jeeves.server.dispatchers.ServiceManager;
+import jeeves.xlink.Processor;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.fao.geonet.ApplicationContextHolder;
@@ -115,18 +100,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.common.io.ByteStreams;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import jeeves.server.context.ServiceContext;
-import jeeves.server.dispatchers.ServiceManager;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.concurrent.Callable;
+
+import static com.google.common.io.Files.getNameWithoutExtension;
+import static org.fao.geonet.api.ApiParams.API_PARAM_RECORD_UUID;
+import static org.fao.geonet.api.records.formatters.FormatterConstants.SCHEMA_PLUGIN_FORMATTER_DIR;
+import static org.springframework.data.jpa.domain.Specifications.where;
 
 /**
  * Allows a user to display a metadata with a particular formatters
@@ -207,7 +205,8 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
         produces = {
             MediaType.TEXT_HTML_VALUE,
             MediaType.APPLICATION_XHTML_XML_VALUE,
-            "application/pdf"
+            "application/pdf",
+            MediaType.ALL_VALUE
             // TODO: PDF
         })
     @ApiOperation(
@@ -226,8 +225,7 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
             String acceptHeader,
         @PathVariable(
             value = "formatterId"
-        )
-        final String formatterId,
+        ) final String formatterId,
         @ApiParam(
             value = API_PARAM_RECORD_UUID,
             required = true)
@@ -235,18 +233,15 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
             String metadataUuid,
         @RequestParam(
             value = "width",
-            defaultValue = "_100")
-        final FormatterWidth width,
+            defaultValue = "_100") final FormatterWidth width,
         @RequestParam(
             value = "mdpath",
-            required = false)
-        final String mdPath,
+            required = false) final String mdPath,
         @RequestParam(
             value = "output",
             required = false)
-        FormatType formatType,
-        @ApiIgnore
-        final NativeWebRequest request,
+            FormatType formatType,
+        @ApiIgnore final NativeWebRequest request,
         final HttpServletRequest servletRequest) throws Exception {
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
@@ -259,21 +254,26 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
         // Force PDF ouutput when URL parameter is set.
         // This is useful when making GET link to PDF which
         // can not use headers.
-        if(formatType == null) {
+        if (MediaType.ALL_VALUE.equals(acceptHeader)) {
+            acceptHeader = MediaType.TEXT_HTML_VALUE;
+        }
+        if (formatType == null) {
             formatType = FormatType.find(acceptHeader);
         }
         if (formatType == null) {
             formatType = FormatType.xml;
         }
-
-        final ServiceContext context = createServiceContext(locale.getISO3Language(),
-            formatType, request.getNativeRequest(HttpServletRequest.class));
+        final String language = LanguageUtils.locale2gnCode(locale.getISO3Language());
+        final ServiceContext context = createServiceContext(
+            language,
+            formatType,
+            request.getNativeRequest(HttpServletRequest.class));
         IMetadata metadata = ApiUtils.canViewRecord(metadataUuid, servletRequest);
 
         Boolean hideWithheld = true;
 //        final boolean hideWithheld = Boolean.TRUE.equals(hide_withheld) ||
 //            !context.getBean(AccessManager.class).canEdit(context, resolvedId);
-        Key key = new Key(metadata.getId(), locale.getISO3Language(), formatType, formatterId, hideWithheld, width);
+        Key key = new Key(metadata.getId(), language, formatType, formatterId, hideWithheld, width);
         final boolean skipPopularityBool = false;
 
         ISODate changeDate = metadata.getDataInfo().getChangeDate();
@@ -282,7 +282,7 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
         if (changeDate != null) {
             final long changeDateAsTime = changeDate.toDate().getTime();
             long roundedChangeDate = changeDateAsTime / 1000 * 1000;
-            if (request.checkNotModified(locale.getLanguage(), roundedChangeDate) &&
+            if (request.checkNotModified(language, roundedChangeDate) &&
                 context.getBean(CacheConfig.class).allowCaching(key)) {
                 if (!skipPopularityBool) {
                     context.getBean(DataManager.class).increasePopularity(context, String.valueOf(metadata.getId()));
@@ -312,7 +312,7 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
             if (!skipPopularityBool) {
                 context.getBean(DataManager.class).increasePopularity(context, String.valueOf(metadata.getId()));
             }
-            writeOutResponse(context, locale.getISO3Language(), request.getNativeResponse(HttpServletResponse.class), formatType, bytes);
+            writeOutResponse(context, metadataUuid, locale.getISO3Language(), request.getNativeResponse(HttpServletResponse.class), formatType, bytes);
         }
     }
 
@@ -373,7 +373,7 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
         final String formattedMetadata = result.one().format(result.two());
         byte[] bytes = formattedMetadata.getBytes(Constants.CHARSET);
 
-        writeOutResponse(context, lang, request.getNativeResponse(HttpServletResponse.class), formatType, bytes);
+        writeOutResponse(context, "", lang, request.getNativeResponse(HttpServletResponse.class), formatType, bytes);
     }
 
     /**
@@ -479,13 +479,13 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
                 context.getBean(DataManager.class).increasePopularity(context, resolvedId);
             }
 
-            writeOutResponse(context, lang, request.getNativeResponse(HttpServletResponse.class), formatType, bytes);
+            writeOutResponse(context, resolvedId, lang, request.getNativeResponse(HttpServletResponse.class), formatType, bytes);
         }
     }
 
-    private void writeOutResponse(ServiceContext context, String lang, HttpServletResponse response, FormatType formatType, byte[] formattedMetadata) throws Exception {
+    private void writeOutResponse(ServiceContext context, String metadataUuid, String lang, HttpServletResponse response, FormatType formatType, byte[] formattedMetadata) throws Exception {
         response.setContentType(formatType.contentType);
-        String filename = "metadata." + formatType;
+        String filename = "metadata." + metadataUuid + formatType;
         response.addHeader("Content-Disposition", "inline; filename=\"" + filename + "\"");
         response.setStatus(HttpServletResponse.SC_OK);
         if (formatType == FormatType.pdf) {
@@ -645,9 +645,13 @@ public class FormatterApi extends AbstractFormatService implements ApplicationLi
     public Pair<Element, Metadata> getMetadata(ServiceContext context, int id,
                                                Boolean hide_withheld) throws Exception {
 
-        Metadata md = loadMetadata(context.getBean(MetadataRepository.class), id);
-        Element metadata = context.getBean(XmlSerializer.class).removeHiddenElements(false, md, false);
+        XmlSerializer serializer = context.getBean(XmlSerializer.class);
+        boolean doXLinks = serializer.resolveXLinks();
 
+        Metadata md = loadMetadata(context.getBean(MetadataRepository.class), id);
+
+        Element metadata = serializer.removeHiddenElements(false, md, false);
+        if (doXLinks) Processor.processXLink(metadata, context);
 
         boolean withholdWithheldElements = hide_withheld != null && hide_withheld;
         if (XmlSerializer.getThreadLocal(false) != null || withholdWithheldElements) {

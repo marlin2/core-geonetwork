@@ -86,10 +86,6 @@
                 or $service = 'embedded'
                 or $service = 'md.element.add'"/>
 
-  <!-- Display attributes in editor -->
-  <xsl:variable name="isDisplayingAttributes" select="/root/request/displayAttributes = 'true'"/>
-  <xsl:variable name="isDisplayingTooltips" select="/root/request/displayTooltips = 'true'"/>
-
   <xsl:variable name="withInlineEditing" select="false()"/>
 
   <xsl:variable name="withXPath" select="false()"/>
@@ -102,6 +98,7 @@
     <!-- TODO only load for ISO profiles -->
     <xsl:call-template name="get-iso19139-configuration"/>
   </xsl:variable>
+<<<<<<< HEAD
   
   <xsl:variable name="tab" select="if (/root/request/currTab) then /root/request/currTab 
                                    else if (/root/gui/currTab) then /root/gui/currTab 
@@ -177,6 +174,25 @@
   
   <xsl:variable name="isFlatMode" select="if (/root/request/flat) then /root/request/flat = 'true'
     else $tabConfig/@mode = 'flat'"/>
+
+  <xsl:variable name="isDisplayingAttributes"
+                select="if (/root/request/displayAttributes)
+                        then /root/request/displayAttributes = 'true'
+                        else if ($viewConfig/@displayAttributes)
+                        then $viewConfig/@displayAttributes = 'true'
+                        else false()"/>
+  <xsl:variable name="isDisplayingTooltips"
+                select="if (/root/request/displayTooltips)
+                        then /root/request/displayTooltips = 'true'
+                        else if ($viewConfig/@displayTooltips)
+                        then $viewConfig/@displayTooltips = 'true'
+                        else false()"/>
+  <xsl:variable name="displayTooltipsMode"
+                select="if (/root/request/displayTooltipsMode)
+                        then /root/request/displayTooltipsMode
+                        else if ($viewConfig/@displayTooltipsMode)
+                        then $viewConfig/@displayTooltipsMode
+                        else ''"/>
 
 
 </xsl:stylesheet>

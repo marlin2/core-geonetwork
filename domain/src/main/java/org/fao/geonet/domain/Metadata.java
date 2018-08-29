@@ -34,8 +34,11 @@ import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.lucene.document.Document;
 import org.fao.geonet.entitylistener.MetadataEntityListenerManager;
@@ -48,7 +51,10 @@ import org.fao.geonet.entitylistener.MetadataEntityListenerManager;
 @Table(name = Metadata.TABLENAME)
 @Access(AccessType.PROPERTY)
 @EntityListeners(MetadataEntityListenerManager.class)
+@SequenceGenerator(name = Metadata.ID_SEQ_NAME, initialValue = 100, allocationSize = 1)
 public class Metadata extends IMetadata {
+
+    private static final long serialVersionUID = -5557599895424227101L;
     public static final String TABLENAME = "Metadata";
 
     public Metadata() {

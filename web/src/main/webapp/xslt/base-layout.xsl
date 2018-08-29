@@ -34,11 +34,11 @@
               encoding="UTF-8"/>
 
   <xsl:include href="common/base-variables.xsl"/>
-
   <xsl:include href="base-layout-cssjs-loader.xsl"/>
+  <xsl:include href="skin/default/skin.xsl"/>
 
   <xsl:template match="/">
-    <html ng-app="{$angularModule}" lang="{$lang}" id="ng-app">
+    <html ng-app="{$angularModule}" lang="{$lang2chars}" id="ng-app">
       <head>
         <title>
           <xsl:value-of select="concat($env/system/site/name, ' - ', $env/system/site/organization)"
@@ -80,7 +80,9 @@
             </div>
           </xsl:when>
           <xsl:otherwise>
-
+            <xsl:if test="$isJsEnabled">
+              <xsl:call-template name="no-js-alert"/>
+            </xsl:if>
             <!-- AngularJS application -->
             <xsl:if test="$angularApp != 'gn_search' and $angularApp != 'gn_viewer' and $angularApp != 'gn_formatter_viewer'">
               <div class="navbar navbar-default gn-top-bar"
@@ -93,9 +95,6 @@
             <xsl:if test="$isJsEnabled">
               <xsl:call-template name="javascript-load"/>
             </xsl:if>
-            <xsl:if test="$isJsEnabled">
-              <xsl:call-template name="no-js-alert"/>
-            </xsl:if>
           </xsl:otherwise>
         </xsl:choose>
       </body>
@@ -105,13 +104,25 @@
 
   <xsl:template name="no-js-alert">
     <noscript>
-      <div class="alert" data-ng-hide="">
-        <strong>
-          <xsl:value-of select="$i18n/warning"/>
-        </strong>
-        <xsl:text> </xsl:text>
-        <xsl:copy-of select="$i18n/nojs"/>
+      <xsl:call-template name="header"/>
+      <div class="container-fluid">
+        <div class="row gn-row-main">
+          <div class="col-sm-8 col-sm-offset-2">
+            <h1><xsl:value-of select="$env/system/site/name"/></h1>
+            <p><xsl:value-of select="/root/gui/strings/mainpage2"/></p>
+            <p><xsl:value-of select="/root/gui/strings/mainpage1"/></p>
+            <br/><br/>
+            <div class="alert alert-warning" data-ng-hide="">
+              <strong>
+                <xsl:value-of select="$i18n/warning"/>
+              </strong>
+              <xsl:text> </xsl:text>
+              <xsl:copy-of select="$i18n/nojs"/>
+            </div>
+          </div>
+        </div>
       </div>
+      <xsl:call-template name="footer"/>
     </noscript>
   </xsl:template>
 

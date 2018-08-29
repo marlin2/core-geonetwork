@@ -39,6 +39,7 @@ import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.OperationAllowedId;
 import org.fao.geonet.domain.ReservedOperation;
 import org.fao.geonet.domain.User;
+import org.fao.geonet.domain.userfeedback.RatingsSetting;
 import org.fao.geonet.events.md.MetadataIndexCompleted;
 import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.IndexMetadataTask;
@@ -60,6 +61,7 @@ import org.fao.geonet.repository.MetadataStatusRepository;
 import org.fao.geonet.repository.MetadataValidationRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
 import org.fao.geonet.repository.UserRepository;
+import org.fao.geonet.repository.userfeedback.UserFeedbackRepository;
 import org.fao.geonet.resources.Resources;
 import org.fao.geonet.util.ThreadUtils;
 import org.fao.geonet.utils.IO;
@@ -117,6 +119,8 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
     @Autowired
     @Lazy
     private SettingManager settingManager;
+    @Autowired
+    private UserFeedbackRepository userFeedbackRepository;
 
     // FIXME remove when get rid of Jeeves
     private ServiceContext servContext;
@@ -142,6 +146,7 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
          inspireAtomFeedRepository = context.getBean(InspireAtomFeedRepository.class);
          xmlSerializer = context.getBean(XmlSerializer.class);
          settingManager = context.getBean(SettingManager.class);
+         userFeedbackRepository = context.getBean(UserFeedbackRepository.class);
 
         servContext = context;
     }
@@ -478,6 +483,11 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.DUMMY, "0", false, true));
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.POPULARITY, popularity, true, true));
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.RATING, rating, true, true));
+            if (RatingsSetting.ADVANCED.equals(settingManager.getValue(Settings.SYSTEM_LOCALRATING_ENABLE))) {
+                int nbOfFeedback = userFeedbackRepository.findByMetadata_Uuid(uuid).size();
+                moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.FEEDBACKCOUNT, nbOfFeedback + "", true, true));
+            }
+
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.DISPLAY_ORDER, displayOrder, true, false));
             moreFields.add(SearchManager.makeField(Geonet.IndexFieldNames.EXTRA, extra, false, true));
     }

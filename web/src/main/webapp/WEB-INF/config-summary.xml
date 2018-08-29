@@ -108,6 +108,7 @@
     <facet name="subTemplateType" indexKey="_root" label="subTemplateTypes"/>
     <facet name="groupOwner" indexKey="_groupOwner" label="groupOwners"/>
     <facet name="publishedForGroup" indexKey="_groupPublished" label="publishedForGroup"/>
+	  <facet name="isPublishedToAll" indexKey="_isPublishedToAll" label="isPublishedToAll" />
     <!--
     Example configuration for hierarchical facet based on
     the GeoNetwork region thesaurus or GEMET.
@@ -132,6 +133,7 @@
     <facet name="project" label="projects" indexKey="project"/>
     <facet name="gcmd" label="gcmds" indexKey="gcmd"/>
     <facet name="otherkeyword" label="otherkeywords" indexKey="otherkeyword"/>
+    <facet name="mdActions" indexKey="_mdActions" label="mdActions"/>
   </facets>
 
   <summaryTypes>
@@ -146,9 +148,10 @@
 
     <summaryType name="details" format="DIMENSION">
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
+      <item facet="mdActions"/>
       <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
       <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
-            translator="term:http://geonetwork-opensource.org/inspire-theme"/>
+            translator="term:http://inspire.ec.europa.eu/theme"/>
       <!--<item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>-->
       <!--<item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>-->
       <item facet="keyword" max="15"/>
@@ -164,7 +167,7 @@
       <item facet="status" translator="codelist:gmd:MD_ProgressCode"/>
       <item facet="serviceType"/>
       <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
-      <item facet="resolution" sortBy="numValue" sortOrder="desc"/>
+      <item facet="resolution" sortBy="value" sortOrder="desc"/>
       <!--
       <item facet="region"
             translator="term:http://geonetwork-opensource.org/thesaurus/naturalearth-and-seavox"/>
@@ -191,6 +194,7 @@
       <item facet="isHarvested" max="2" sortBy="value" translator="apploc:"/>
       <item facet="metadataType" max="3" sortBy="value" translator="apploc:recordType-"/>
       <item facet="draft"/>
+	    <item facet="isPublishedToAll" max="2" sortBy="value" translator="apploc:"/>
     </summaryType>
 
     <!-- (deprecated) old-style configuration supporting only
@@ -202,7 +206,7 @@
       <item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>
       <item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>
       <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35"
-            translator="term:http://geonetwork-opensource.org/inspire-theme"/>
+            translator="term:http://inspire.ec.europa.eu/theme"/>
       <item facet="keyword" max="15"/>
       <item facet="orgName" max="25"/>
       <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>

@@ -71,6 +71,8 @@ public class OgcWxSParams extends AbstractParams {
     public boolean useLayer;
     public boolean useLayerMd;
     public String datasetCategory;
+    public String serviceTemplateUuid;
+    public String datasetTemplateUuid;
     public String outputSchema;
     public OgcWxSParams() {
         super();
@@ -88,6 +90,8 @@ public class OgcWxSParams extends AbstractParams {
         lang = Util.getParam(opt, "lang", "");
         topic = Util.getParam(opt, "topic", "");
         createThumbnails = Util.getParam(opt, "createThumbnails", false);
+        serviceTemplateUuid = Util.getParam(opt, "serviceTemplateUuid", "");
+        datasetTemplateUuid = Util.getParam(opt, "datasetTemplateUuid", "");
         useLayer = Util.getParam(opt, "useLayer", false);
         useLayerMd = Util.getParam(opt, "useLayerMd", false);
         datasetCategory = Util.getParam(opt, "datasetCategory", "");
@@ -107,6 +111,8 @@ public class OgcWxSParams extends AbstractParams {
         lang = Util.getParam(opt, "lang", lang);
         topic = Util.getParam(opt, "topic", topic);
         createThumbnails = Util.getParam(opt, "createThumbnails", createThumbnails);
+        serviceTemplateUuid = Util.getParam(opt, "serviceTemplateUuid", serviceTemplateUuid);
+        datasetTemplateUuid = Util.getParam(opt, "datasetTemplateUuid", datasetTemplateUuid);
         useLayer = Util.getParam(opt, "useLayer", useLayer);
         useLayerMd = Util.getParam(opt, "useLayerMd", useLayerMd);
         datasetCategory = Util.getParam(opt, "datasetCategory", datasetCategory);
@@ -123,6 +129,8 @@ public class OgcWxSParams extends AbstractParams {
         copy.lang = lang;
         copy.topic = topic;
         copy.createThumbnails = createThumbnails;
+        copy.serviceTemplateUuid = serviceTemplateUuid;
+        copy.datasetTemplateUuid = datasetTemplateUuid;
         copy.useLayer = useLayer;
         copy.useLayerMd = useLayerMd;
         copy.datasetCategory = datasetCategory;

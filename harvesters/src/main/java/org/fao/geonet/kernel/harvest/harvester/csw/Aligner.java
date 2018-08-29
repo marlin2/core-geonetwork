@@ -24,9 +24,7 @@
 package org.fao.geonet.kernel.harvest.harvester.csw;
 
 import jeeves.server.context.ServiceContext;
-
 import org.fao.geonet.GeonetContext;
-import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.csw.common.CswOperation;
 import org.fao.geonet.csw.common.CswServer;
@@ -53,6 +51,7 @@ import org.fao.geonet.repository.OperationAllowedRepository;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,64 +60,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.fao.geonet.utils.AbstractHttpRequest.Method.GET;
 import static org.fao.geonet.utils.AbstractHttpRequest.Method.POST;
 
-//=============================================================================
+public class Aligner extends BaseAligner<CswParams> {
 
-public class Aligner extends BaseAligner {
-    //--------------------------------------------------------------------------
-    //---
-    //--- Constructor
-    //---
-    //--------------------------------------------------------------------------
+    private static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Geonet.HARVESTER);
 
-    private Logger log;
-
-    //--------------------------------------------------------------------------
-    //---
-    //--- Alignment method
-    //---
-    //--------------------------------------------------------------------------
     private ServiceContext context;
-
-    //--------------------------------------------------------------------------
-    //---
-    //--- Private methods : addMetadata
-    //---
-    //--------------------------------------------------------------------------
-    private CswParams params;
-
-    //--------------------------------------------------------------------------
-    //---
-    //--- Private methods
-    //---
-    //--------------------------------------------------------------------------
     private CategoryMapper localCateg;
-
-    //--------------------------------------------------------------------------
     private GroupMapper localGroups;
     private UUIDMapper localUuids;
-
-    //--------------------------------------------------------------------------
-    //---
-    //--- Variables
-    //---
-    //--------------------------------------------------------------------------
+    private MetadataRepository metadataManager;
     private HarvestResult result;
     private GetRecordByIdRequest request;
     private String processName;
     private Map<String, Object> processParams = new HashMap<String, Object>();
-    public Aligner(AtomicBoolean cancelMonitor, Logger log, ServiceContext sc, CswServer server, CswParams params) throws OperationAbortedEx {
+
+    public Aligner(AtomicBoolean cancelMonitor, ServiceContext sc, CswServer server, CswParams params) throws OperationAbortedEx {
         super(cancelMonitor);
-        this.log = log;
         this.context = sc;
         this.params = params;
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
+        metadataManager = gc.getBean(MetadataRepository.class);
         result = new HarvestResult();
+        result.unretrievable = 0;
+        result.uuidSkipped = 0;
+        result.couldNotInsert = 0;
 
         //--- setup get-record-by-id request
 
@@ -167,7 +139,7 @@ public class Aligner extends BaseAligner {
             return result;
         }
 
-        log.info("Start of alignment for : " + params.getName());
+        LOGGER.info("Start of alignment for : {}", params.getName());
 
         //-----------------------------------------------------------------------
         //--- retrieve all local categories and groups
@@ -179,8 +151,7 @@ public class Aligner extends BaseAligner {
 
         mdManager.flush();
 
-        Pair<String, Map<String, Object>> filter =
-            HarvesterUtil.parseXSLFilter(params.xslfilter, log);
+        Pair<String, Map<String, Object>> filter = HarvesterUtil.parseXSLFilter(params.xslfilter);
         processName = filter.one();
         processParams = filter.two();
 
@@ -194,11 +165,8 @@ public class Aligner extends BaseAligner {
 
             if (!exists(records, uuid)) {
                 String id = localUuids.getID(uuid);
-
-                if (log.isDebugEnabled())
-                    log.debug("  - Removing old metadata with local id:" + id);
+                LOGGER.debug("  - Removing old metadata with local id:{}", id);
                 mdManager.deleteMetadata(context, id);
-
                 mdManager.flush();
 
                 result.locallyRemoved++;
@@ -217,25 +185,54 @@ public class Aligner extends BaseAligner {
 
                 String id = mdUtils.getMetadataId(ri.uuid);
 
-                if (id == null) addMetadata(ri);
-                else updateMetadata(ri, id);
+                if (id == null) {
+                    //record doesn't exist (so it doesn't belong to this harvester)
+                    LOGGER.info("Adding record with uuid {}", ri.uuid);
+                    addMetadata(ri, getOwnerId(params), getOwnerGroupId(params), ri.uuid);
+                } else if (localUuids.getID(ri.uuid) == null) {
+                    //Record does not belong to this harvester
+                    result.datasetUuidExist++;
+
+                    switch (params.getOverrideUuid()) {
+                        case OVERRIDE:
+                            updateMetadata(ri, Integer.toString(metadataManager.findOneByUuid(ri.uuid).getId()), true);
+                            LOGGER.debug("Overriding record with uuid {}", ri.uuid);
+                            result.updatedMetadata++;
+                            break;
+                        case RANDOM:
+                            LOGGER.debug("Generating random uuid for remote record with uuid {}", ri.uuid);
+                            addMetadata(ri, getOwnerId(params), getOwnerGroupId(params), UUID.randomUUID().toString());
+                            break;
+                        case SKIP:
+                            LOGGER.debug("Skipping record with uuid {}", ri.uuid);
+                            result.uuidSkipped++;
+                        default:
+                            break;
+                    }
+                } else {
+                    //record exists and belongs to this harvester
+                    updateMetadata(ri, id, false);
+
+                }
+
                 result.totalMetadata++;
-            }catch(Throwable t) {
-                errors.add(new HarvestError(context, t, log));
-                log.error("Unable to process record from csw (" + this.params.getName() + ")");
-                log.error("   Record failed: " + ri.uuid + ". Error is: " + t.getMessage());
+            } catch (Throwable t) {
+                errors.add(new HarvestError(this.context, t));
+                LOGGER.error("Unable to process record from csw ({})",  this.params.getName());
+                LOGGER.error("   Record failed: {}. Error is: {}", ri.uuid, t.getMessage());
             } finally {
                 result.originalMetadata++;
             }
         }
         mdIndexer.forceIndexChanges();
 
-        log.info("End of alignment for : " + params.getName());
+        LOGGER.debug("End of alignment for : {}", params.getName());
 
         return result;
     }
 
-    private void addMetadata(RecordInfo ri) throws Exception {
+
+    private void addMetadata(RecordInfo ri, Integer ownerId, Integer groupId, String uuid) throws Exception {
         if (cancelMonitor.get()) {
             return;
         }
@@ -243,43 +240,38 @@ public class Aligner extends BaseAligner {
         Element md = retrieveMetadata(ri.uuid);
 
         if (md == null) {
+            result.unretrievable++;
             return;
         }
 
         String schema = mdSchemaUtils.autodetectSchema(md, null);
 
         if (schema == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("  - Metadata skipped due to unknown schema. uuid:" + ri.uuid);
-            }
+            LOGGER.debug("  - Metadata skipped due to unknown schema. uuid:{}", ri.uuid);
             result.unknownSchema++;
-
             return;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("  - Adding metadata with remote uuid:" + ri.uuid + " schema:" + schema);
-        }
+        LOGGER.info("  - Adding metadata with remote uuid:{} schema:{}", ri.uuid, schema);
 
+        String mdUuid = ri.uuid;
         if (!params.xslfilter.equals("")) {
-            md = processMetadata(context,
-                md, processName, processParams, log);
+            md = processMetadata(context, md, processName, processParams);
+            // Get new uuid if modified by XSLT process
+            mdUuid = mdUtils.extractUUID(schema, md);
+            if(mdUuid == null) {
+                mdUuid = ri.uuid;
+            }
         }
+        
         //
         // insert metadata
         //
-        final int ownerId;
-        if (params.getOwnerId() == null) {
-            if (context.getUserSession() != null) {
-                ownerId = context.getUserSession().getUserIdAsInt();
-            } else {
-                ownerId = 1;
-            }
-        } else {
-            ownerId = Integer.parseInt(params.getOwnerId());
-        }
+
+        ownerId = getOwner();
         Metadata metadata = new Metadata();
-        metadata.setUuid(ri.uuid);
+        metadata.setUuid(mdUuid);
+
         metadata.getDataInfo().
             setSchemaId(schema).
             setRoot(md.getQualifiedName()).
@@ -288,19 +280,23 @@ public class Aligner extends BaseAligner {
             setCreateDate(new ISODate(ri.changeDate));
         metadata.getSourceInfo().
             setSourceId(params.getUuid()).
-            setOwner(ownerId).
-            setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
+            setOwner(ownerId);
         metadata.getHarvestInfo().
             setHarvested(true).
             setUuid(params.getUuid());
 
-        addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
+        try {
+            metadata.getSourceInfo().setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
+        } catch (NumberFormatException e) {
+        }
+
+        addCategories(metadata, params.getCategories(), localCateg, context, null, false);
 
         metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
+        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context);
 
         mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
         result.addedMetadata++;
@@ -311,32 +307,25 @@ public class Aligner extends BaseAligner {
     //--- Private methods : updateMetadata
     //---
     //--------------------------------------------------------------------------
-    private void updateMetadata(RecordInfo ri, String id) throws Exception {
+    private void updateMetadata(RecordInfo ri, String id, Boolean force) throws Exception {
         String date = localUuids.getChangeDate(ri.uuid);
 
-        if (date == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("  - Skipped metadata managed by another harvesting node. uuid:" + ri.uuid + ", name:" + params.getName());
-            }
+        if (date == null && !force) {
+            LOGGER.debug("  - Skipped metadata managed by another harvesting node. uuid:{}, name:{}", ri.uuid, params.getName());
         } else {
-            if (!ri.isMoreRecentThan(date)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("  - Metadata XML not changed for uuid:" + ri.uuid);
-                }
+            if (!force && !ri.isMoreRecentThan(date)) {
+                LOGGER.debug("  - Metadata XML not changed for uuid:{}", ri.uuid);
                 result.unchangedMetadata++;
             } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("  - Updating local metadata for uuid:" + ri.uuid);
-                }
+                LOGGER.debug("  - Updating local metadata for uuid:{}", ri.uuid);
                 Element md = retrieveMetadata(ri.uuid);
 
                 if (md == null) {
+                    result.unchangedMetadata++;
                     return;
                 }
-                String schema = mdSchemaUtils.autodetectSchema(md, null);
                 if (!params.xslfilter.equals("")) {
-                    md = processMetadata(context,
-                        md, processName, processParams, log);
+                    md = processMetadata(context, md, processName, processParams);
                 }
 
                 //
@@ -348,18 +337,25 @@ public class Aligner extends BaseAligner {
                 String language = context.getLanguage();
                 mdManager.updateMetadata(context, id, md, validate, ufo, index, language, ri.changeDate, true);
                 final Metadata metadata = context.getBean(MetadataRepository.class).findOne(id);
+                if(force) {
+                    //change ownership of metadata to new harvester
+                    metadata.getHarvestInfo().setUuid(params.getUuid());
+                    metadata.getSourceInfo().setSourceId(params.getUuid());
+
+                    context.getBean(MetadataRepository.class).save(metadata);
+                }
 
                 OperationAllowedRepository repository = context.getBean(OperationAllowedRepository.class);
                 repository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
 
-                addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
+                addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context);
 
                 metadata.getMetadataCategories().clear();
-                addCategories(metadata, params.getCategories(), localCateg, context, log, null, true);
+                addCategories(metadata, params.getCategories(), localCateg, context, null, true);
 
                 mdManager.flush();
 
-                mdIndexer.indexMetadata(id, Math.random() < 0.01, null);
+                mdIndexer.indexMetadata(id, true, null);
                 result.updatedMetadata++;
             }
         }
@@ -388,12 +384,11 @@ public class Aligner extends BaseAligner {
         request.addId(uuid);
 
         try {
-            if (log.isDebugEnabled()) {
-                log.debug("Getting record from : " + request.getHost() + " (uuid:" + uuid + ")");
-            }
+            LOGGER.debug("Getting record from : {} (uuid:{})", request.getHost(), uuid);
+
             Element response = request.execute();
-            if (log.isDebugEnabled()) {
-                log.debug("Record got:\n" + Xml.getString(response));
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Record got:{}\n", Xml.getString(response));
             }
 
             @SuppressWarnings("unchecked")
@@ -412,20 +407,21 @@ public class Aligner extends BaseAligner {
             try {
                 params.getValidate().validate(context, response);
             } catch (Exception e) {
-                log.info("Ignoring invalid metadata with uuid " + uuid);
+                LOGGER.info("Ignoring invalid metadata with uuid {}", uuid);
                 result.doesNotValidate++;
                 return null;
             }
 
             if (params.rejectDuplicateResource) {
                 if (foundDuplicateForResource(uuid, response)) {
+                    result.unchangedMetadata++;
                     return null;
                 }
             }
 
             return response;
         } catch (Exception e) {
-            log.warning("Raised exception while getting record : " + e);
+            LOGGER.warn("Raised exception while getting record : {}", e);
             e.printStackTrace();
             result.unretrievable++;
 
@@ -471,20 +467,20 @@ public class Aligner extends BaseAligner {
                     // Check if the metadata to import has a resource identifier
                     // existing in current catalog for a record with a different UUID
 
-                    log.debug("  - Resource identifiers found : " + resourceIdentifiers.size());
+                    LOGGER.debug("  - Resource identifiers found : {}", resourceIdentifiers.size());
 
                     for (Element identifierNode : resourceIdentifiers) {
                         String identifier = identifierNode.getTextTrim();
-                        log.debug("    - Searching for duplicates for resource identifier: " + identifier);
+                        LOGGER.debug("    - Searching for duplicates for resource identifier: {}", identifier);
 
                         Map<String, Map<String, String>> values = LuceneSearcher.getAllMetadataFromIndexFor(defaultLanguage, resourceIdentifierLuceneIndexField,
                             identifier, Collections.singleton("_uuid"), true);
-                        log.debug("    - Number of resources with same identifier: " + values.size());
+                        LOGGER.debug("    - Number of resources with same identifier: {}", values.size());
                         for (Map<String, String> recordFieldValues : values.values()) {
                             String indexRecordUuid = recordFieldValues.get("_uuid");
                             if (!indexRecordUuid.equals(uuid)) {
-                                log.debug("      - UUID " + indexRecordUuid + " in index does not match harvested record UUID " + uuid);
-                                log.warning("      - Duplicates found. Skipping record with UUID " + uuid + " and resource identifier " + identifier);
+                                LOGGER.debug("      - UUID {} in index does not match harvested record UUID {}", indexRecordUuid, uuid);
+                                LOGGER.warn("      - Duplicates found. Skipping record with UUID {} and resource identifier {}", uuid, identifier);
 
                                 result.duplicatedResource++;
                                 return true;
@@ -493,7 +489,7 @@ public class Aligner extends BaseAligner {
                     }
                 }
             } catch (Throwable e) {
-                log.warning("      - Error when searching for resource duplicate " + uuid + ". Error is: " + e.getMessage());
+                LOGGER.warn("      - Error when searching for resource duplicate {}. Error is: {}", uuid, e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -509,26 +505,23 @@ public class Aligner extends BaseAligner {
      * @param md
      * @param processName
      * @param processParams
-     * @param log
      * @return
      */
     private Element processMetadata(ServiceContext context,
                                     Element md,
                                     String processName,
-                                    Map<String, Object> processParams,
-                                    Logger log) {
+                                    Map<String, Object> processParams) {
         Path filePath = context.getAppPath().resolve(Geonet.Path.STYLESHEETS).resolve("conversion/import").resolve(processName + ".xsl");
         if (!Files.exists(filePath)) {
-            log.info("     processing instruction  " + processName + ". Metadata not filtered.");
+            LOGGER.info("     processing instruction  {}. Metadata not filtered.", processName);
         } else {
             Element processedMetadata;
             try {
                 processedMetadata = Xml.transform(md, filePath, processParams);
-                if (log.isDebugEnabled()) log.debug("     metadata filtered.");
+                LOGGER.debug("     metadata filtered.");
                 md = processedMetadata;
             } catch (Exception e) {
-                log.warning("     processing error (" + processName + "): "
-                        + e.getMessage());
+                LOGGER.warn("     processing error ({}): {}", processName, e.getMessage());
             }
         }
         return md;

@@ -100,6 +100,7 @@
     <property name="keepExistingUserGroups" value="${ldap.privilege.keep.existing.usergroups}"/>
     <property name="ldapManager" ref="ldapUserDetailsService"/>
     <property name="contextSource" ref="contextSource"/>
+    <property name="ldapUsernameCaseInsensitive" value="${ldap.usernameCaseInsensitive:#{true}}"/>
   </bean>
 
 

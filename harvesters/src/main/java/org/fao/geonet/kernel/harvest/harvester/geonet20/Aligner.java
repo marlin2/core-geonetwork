@@ -34,7 +34,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
+import jeeves.server.context.ServiceContext;
 import org.fao.geonet.Logger;
 import org.fao.geonet.constants.Edit;
 import org.fao.geonet.constants.Geonet;
@@ -50,6 +50,7 @@ import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
 import org.fao.geonet.kernel.datamanager.IMetadataValidator;
 import org.fao.geonet.kernel.UpdateDatestamp;
+import org.fao.geonet.kernel.harvest.AbstractAligner;
 import org.fao.geonet.kernel.harvest.harvester.CategoryMapper;
 import org.fao.geonet.kernel.harvest.harvester.HarvestResult;
 import org.fao.geonet.kernel.harvest.harvester.UUIDMapper;
@@ -61,37 +62,19 @@ import org.jdom.Element;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import jeeves.server.context.ServiceContext;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-//=============================================================================
-
-public class Aligner {
-    //--------------------------------------------------------------------------
-    //---
-    //--- Constructor
-    //---
-    //--------------------------------------------------------------------------
+public class Aligner extends AbstractAligner<GeonetParams> {
 
     private final AtomicBoolean cancelMonitor;
 
-    //--------------------------------------------------------------------------
-    //---
-    //--- Alignment method
-    //---
-    //--------------------------------------------------------------------------
     private Logger log;
 
-    //--------------------------------------------------------------------------
-    //---
-    //--- Private methods : addMetadata
-    //---
-    //--------------------------------------------------------------------------
     private XmlRequest req;
-
-    //--------------------------------------------------------------------------
-    //--- Categories
-    //--------------------------------------------------------------------------
-    private GeonetParams params;
 
     //--------------------------------------------------------------------------
     //--- Privileges
@@ -111,20 +94,12 @@ public class Aligner {
     @Autowired
     private IMetadataValidator mdValidator;
 
-    //--------------------------------------------------------------------------
-    //---
-    //--- Private methods : updateMetadata
-    //---
-    //--------------------------------------------------------------------------
     private ServiceContext context;
 
-    //--------------------------------------------------------------------------
     private CategoryMapper localCateg;
 
-    //--------------------------------------------------------------------------
     private UUIDMapper localUuids;
 
-    //--------------------------------------------------------------------------
     private HarvestResult result;
 
     //--------------------------------------------------------------------------
@@ -255,11 +230,15 @@ public class Aligner {
             setCreateDate(new ISODate(createDate));
         metadata.getSourceInfo().
             setSourceId(params.getUuid()).
-            setOwner(Integer.parseInt(params.getOwnerId())).
-            setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
+            setOwner(getOwner());
         metadata.getHarvestInfo().
             setHarvested(true).
             setUuid(params.getUuid());
+
+        try {
+            metadata.getSourceInfo().setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
+        } catch (NumberFormatException e) {
+        }
 
         @SuppressWarnings("unchecked")
         List<Element> categories = info.getChildren("category");

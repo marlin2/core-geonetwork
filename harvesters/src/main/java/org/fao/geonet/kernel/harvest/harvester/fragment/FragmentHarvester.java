@@ -71,44 +71,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FragmentHarvester extends BaseAligner {
 
-    //---------------------------------------------------------------------------
-
     static private final Namespace xlink = Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink");
 
-    //---------------------------------------------------------------------------
     private static final String REPLACEMENT_GROUP = "replacementGroup";
-
-    //---------------------------------------------------------------------------
     private Logger log;
-
-    //---------------------------------------------------------------------------
     private ServiceContext context;
-
-    //---------------------------------------------------------------------------
     private FragmentParams params;
 
     //---------------------------------------------------------------------------
     private String metadataGetService;
-
-    //---------------------------------------------------------------------------
     private List<Namespace> metadataTemplateNamespaces = new ArrayList<Namespace>();
-
-    //---------------------------------------------------------------------------
     private Set<String> templateIdAtts = new HashSet<String>();
-
-    //---------------------------------------------------------------------------
     private Element metadataTemplate;
-
-    //---------------------------------------------------------------------------
     private String harvestUri;
-
-    //---------------------------------------------------------------------------
     private CategoryMapper localCateg;
-
-    //---------------------------------------------------------------------------
     private GroupMapper localGroups;
-
-    //---------------------------------------------------------------------------
     private HarvestSummary harvestSummary;
 
     //---------------------------------------------------------------------------
@@ -419,7 +396,7 @@ public class FragmentHarvester extends BaseAligner {
             setUuid(params.uuid).
             setUri(harvestUri);
 
-        addCategories(metadata, params.categories, localCateg, context, log, null, false);
+        addCategories(metadata, params.categories, localCateg, context, null, false);
 
         metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
@@ -427,7 +404,7 @@ public class FragmentHarvester extends BaseAligner {
 
         // Note: we use fragmentAllPrivs here because subtemplates need to be 
         // visible/accessible to all
-        addPrivileges(id, fragmentAllPrivs, localGroups, mdOperations, context, log);
+        addPrivileges(id, fragmentAllPrivs, localGroups, mdOperations, context);
         mdIndexer.indexMetadata(id, true, null);
 
         mdManager.flush();
@@ -602,13 +579,13 @@ public class FragmentHarvester extends BaseAligner {
         if (isSubtemplate) {
           // Note: we use fragmentAllPrivs here because subtemplates need to be 
           // visible/accessible to all
-          addPrivileges(id, fragmentAllPrivs, localGroups, mdOperations, context, log);
+          addPrivileges(id, fragmentAllPrivs, localGroups, mdOperations, context);
         } else {
-          addPrivileges(id, params.privileges, localGroups, mdOperations, context, log);
+          addPrivileges(id, params.privileges, localGroups, mdOperations, context);
         }
 
         metadata.getMetadataCategories().clear();
-        addCategories(metadata, params.categories, localCateg, context, log, null, true);
+        addCategories(metadata, params.categories, localCateg, context, null, true);
 
         if (isSubtemplate) { 
             mdUtils.setSubtemplateTypeAndTitleExt(iId, title);
@@ -662,7 +639,7 @@ public class FragmentHarvester extends BaseAligner {
         if (log.isDebugEnabled()) {
             log.debug("	- Set privileges, category, template and harvested");
         }
-        addPrivileges(id, params.privileges, localGroups, mdOperations, context, log);
+        addPrivileges(id, params.privileges, localGroups, mdOperations, context);
 
         mdIndexer.indexMetadata(id, true, null);
 

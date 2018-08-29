@@ -86,6 +86,7 @@ import org.fao.geonet.repository.UserSavedSelectionRepository;
 import org.fao.geonet.repository.specification.MetadataFileUploadSpecs;
 import org.fao.geonet.repository.specification.MetadataSpecs;
 import org.fao.geonet.repository.specification.OperationAllowedSpecs;
+import org.fao.geonet.repository.userfeedback.UserFeedbackRepository;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
@@ -340,6 +341,9 @@ public class BaseMetadataManager implements IMetadataManager {
         // --- remove operations
         metadataOperations.deleteMetadataOper(context, id, false);
 
+        //--- remove user comments
+        deleteMetadataUserFeedback_byMetadataId(context, metadataUtils.getMetadataUuid(id));
+
         int intId = Integer.parseInt(id);
         metadataRatingByIpRepository.deleteAllById_MetadataId(intId);
         metadataValidationRepository.deleteAllById_MetadataId(intId);
@@ -359,6 +363,14 @@ public class BaseMetadataManager implements IMetadataManager {
 
         // --- remove metadata
         getXmlSerializer().delete(id, context);
+    }
+
+    /**
+     * Removes all userfeedbacks associated with metadata.
+     */
+    public void deleteMetadataUserFeedback_byMetadataId(ServiceContext context, String metadataUUId) throws Exception {
+        UserFeedbackRepository userfeedbackRepository = context.getBean(UserFeedbackRepository.class);
+        userfeedbackRepository.deleteByMetadata_Uuid(metadataUUId);
     }
 
     private XmlSerializer getXmlSerializer() {
@@ -708,6 +720,8 @@ public class BaseMetadataManager implements IMetadataManager {
             uuid = metadataUtils.extractUUID(schema, metadataXml);
         }
 
+        checkMetadataWithSameUuidExist(uuid, metadata.getId());
+
         // --- write metadata to dbms
         getXmlSerializer().update(metadataId, metadataXml, changeDate, updateDateStamp, uuid, context);
         // Notifies the metadata change to metatada notifier service
@@ -745,6 +759,27 @@ public class BaseMetadataManager implements IMetadataManager {
         }
         // Return an up to date metadata record
         return getMetadataRepository().findOne(metadataId);
+    }
+
+    /**
+     * Check if another record exist with that UUID. This is not allowed
+     * and would return a DataIntegrityViolationException
+     *
+     * @param uuid  The UUID to check for
+     * @param id    The current record id to compare with other record which may be found
+     * @return      An exception if another record is found, false otherwise
+     */
+    private boolean checkMetadataWithSameUuidExist(String uuid, int id) {
+        // Check if another record exist with that UUID
+        IMetadata recordWithThatUuid = getMetadataRepository().findOneByUuid(uuid);
+        if (recordWithThatUuid != null &&
+            recordWithThatUuid.getId() != id) {
+            // If yes, this would have triggered a DataIntegrityViolationException
+            throw new IllegalArgumentException(String.format(
+                "Another record exist with UUID '%s'. This record as internal id '%d'. The record you're trying to update with id '%d' can not be saved.",
+                uuid, recordWithThatUuid.getId(), id));
+        }
+        return false;
     }
 
     /**

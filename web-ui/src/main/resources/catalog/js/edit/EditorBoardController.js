@@ -45,7 +45,11 @@
     'gnGlobalSettings',
     function($scope, $location, $rootScope, $translate, $q,
         gnSearchSettings, gnMetadataActions, gnGlobalSettings) {
-      $scope.onlyMyRecord = false;
+      $scope.onlyMyRecord = {
+        is: gnGlobalSettings.gnCfg.mods.editor.isUserRecordsOnly
+      };
+      $scope.isFilterTagsDisplayed =
+          gnGlobalSettings.gnCfg.mods.editor.isFilterTagsDisplayed;
       $scope.modelOptions = angular.copy(gnGlobalSettings.modelOptions);
       $scope.defaultSearchObj = {
         permalink: false,
@@ -62,21 +66,24 @@
       };
       angular.extend($scope.searchObj, $scope.defaultSearchObj);
 
-      $scope.toggleOnlyMyRecord = function() {
-        $scope.onlyMyRecord = !$scope.onlyMyRecord;
+
+      $scope.toggleOnlyMyRecord = function(callback) {
+        $scope.onlyMyRecord.is ? setOwner() : unsetOwner();
+        callback();
       };
+
       var setOwner = function() {
         $scope.searchObj.params['_owner'] = $scope.user.id;
       };
+
       var unsetOwner = function() {
         delete $scope.searchObj.params['_owner'];
       };
-      $scope.$watch('onlyMyRecord', function(value) {
-        if (!$scope.searchObj) {
-          return;
-        }
 
-        value ? setOwner() : unsetOwner();
+      $scope.$watch('user.id', function(newId) {
+        if (angular.isDefined(newId) && $scope.onlyMyRecord.is) {
+          setOwner();
+        }
       });
 
       $scope.deleteRecord = function(md) {
@@ -103,11 +110,20 @@
       };
     }
   ]);
+
   module.controller('GnEditorBoardController', [
     '$scope',
+    '$rootScope',
     '$location',
     'gnSearchSettings',
-    function($scope, $location, gnSearchSettings) {
+    function($scope, $rootScope, $location, gnSearchSettings) {
+
+      // Refresh list when privileges are updated
+      $scope.$on('PrivilegesUpdated', function(event, data) {
+        if(data && data===true) {
+          $rootScope.$broadcast('search');
+        }
+      });
 
       gnSearchSettings.resultViewTpls = [{
         tplUrl: '../../catalog/components/search/resultsview/' +
@@ -137,7 +153,77 @@
       gnSearchSettings.paginationInfo = {
         hitsPerPage: gnSearchSettings.hitsperpageValues[0]
       };
-
     }
   ]);
+
+
+  module.controller('GnEditorHotKeyController', [
+    '$scope',
+    '$location',
+    'gnSearchSettings',
+    'gnUtilityService',
+    '$timeout',
+    'hotkeys',
+    '$translate',
+    function($scope, $location, gnSearchSettings, gnUtilityService,
+             $timeout, hotkeys, $translate) {
+
+      $timeout(function() {
+        hotkeys.bindTo($scope)
+          .add({
+            combo: 'd',
+            description: $translate.instant('hotkeyDirectory'),
+            callback: function(event) {
+              $location.path('/directory');
+            }
+          }).add({
+          combo: 'i',
+          description: $translate.instant('hotkeyImportRecord'),
+          callback: function(event) {
+            $location.path('/import');
+          }
+        }).add({
+          combo: 'h',
+          description: $translate.instant('hotkeyEditorBoard'),
+          callback: function(event) {
+            $location.path('/board');
+          }
+        }).add({
+          combo: '+',
+          description: $translate.instant('hotkeyAddRecord'),
+          callback: function(event) {
+            $location.path('/create');
+          }
+        }).add({
+          combo: 't',
+          description: $translate.instant('hotkeyFocusToSearch'),
+          callback: function(event) {
+            event.preventDefault();
+            var anyField = $('#gn-any-field');
+            if (anyField) {
+              gnUtilityService.scrollTo();
+              $location.path('/board');
+              anyField.focus();
+            }
+          }
+        }).add({
+          combo: 'enter',
+          description: $translate.instant('hotkeySearchTheCatalog'),
+          allowIn: ['INPUT'],
+          callback: function() {
+            angular.element($('#gn-any-field'))
+              .scope().triggerSearch()
+          }
+        }).add({
+          combo: 'b',
+          description: $translate.instant('hotkeyBatchEdit'),
+          callback: function(event) {
+            $location.path('/batchedit');
+          }
+        });
+      }, 500);
+    }
+  ]);
+
+
 })();

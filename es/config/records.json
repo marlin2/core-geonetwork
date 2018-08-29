@@ -1098,12 +1098,6 @@
         "isAboveThreshold": {
           "type": "boolean"
         },
-        "inspireThemeFirst_syn": {
-          "type": "keyword"
-        },
-        "inspireTheme_syn": {
-          "type": "keyword"
-        },
         "isOpenData": {
           "type": "keyword"
         },
@@ -1150,9 +1144,6 @@
           "type": "keyword"
         },
         "resolutionDistance": {
-          "type": "keyword"
-        },
-        "resolutionScaleDenominator": {
           "type": "keyword"
         },
         "resourceAbstract": {
@@ -1218,18 +1209,10 @@
         "topic": {
           "type": "keyword"
         },
-        "validDate": {
-          "type": "date",
-          "format": "date_hour_minute_second"
-        },
         "validReport": {
           "type" : "string",
           "index" : "no",
           "doc_values": false
-        },
-        "schemaValidDate": {
-          "type": "date",
-          "format": "date_hour_minute_second"
         },
         "useLimitation": {
           "type": "text",
@@ -1241,12 +1224,6 @@
           }
         },
         "groupPublished": {
-          "type": "keyword"
-        },
-        "changeDate": {
-          "type": "keyword"
-        },
-        "createDate": {
           "type": "keyword"
         },
         "groupOwner": {

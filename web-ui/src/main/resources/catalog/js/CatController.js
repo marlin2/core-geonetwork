@@ -47,24 +47,28 @@
     var defaultConfig = {
       'langDetector': {
         'fromHtmlTag': false,
-        'regexp': '^\/[a-zA-Z0-9_\-]+\/[a-zA-Z0-9_\-]+\/([a-z]{3})\/',
+        'regexp': '^\/.+\/.+\/([a-z]{3})\/',
         'default': 'eng'
       },
       'nodeDetector': {
-        'regexp': '^\/[a-zA-Z0-9_\-]+\/([a-zA-Z0-9_\-]+)\/[a-z]{3}\/',
+        'regexp': '^\/.+\/.+\/([a-z]{3})\/',
         'default': 'srv'
+      },
+      'baseURLDetector': {
+        'regexp': '^\(/[a-zA-Z0-9_\-]+)\/[a-zA-Z0-9_\-]+\/[a-z]{3}\/',
+        'default': '/geonetwork'
       },
       'mods': {
         'header': {
           'enabled': true,
           'languages': {
             'eng': 'en',
-            'dut': 'du',
+            'dut': 'nl',
             'fre': 'fr',
-            'ger': 'ge',
+            'ger': 'de',
             'kor': 'ko',
             'spa': 'es',
-            'cze': 'cz',
+            'cze': 'cs',
             'cat': 'ca',
             'fin': 'fi',
             'ice': 'is',
@@ -129,7 +133,7 @@
           'formatter': {
             'list': [{
               'label': 'full',
-              'url' : '../api/records/{{md.getUuid()}}/' +
+              'url' : '../api/records/{{uuid}}/' +
                   'formatters/xsl-view?root=div&view=advanced'
             }]
           },
@@ -141,13 +145,15 @@
             'downloads': ['DOWNLOAD'],
             'layers': ['OGC'],
             'maps': ['ows']
-          }
+          },
+          'isFilterTagsDisplayedInSearch': false
         },
         'map': {
           'enabled': true,
           'appUrl': '../../srv/{{lang}}/catalog.search#/map',
           'is3DModeAllowed': true,
           'isSaveMapInCatalogAllowed': true,
+          'isExportMapAsImageEnabled': false,
           'storage': 'sessionStorage',
           'listOfServices': {
             'wms': [],
@@ -162,7 +168,16 @@
             'label': 'Google mercator (EPSG:3857)'
           }],
           'disabledTools': {
-            'processes': true
+            'processes': false,
+            'addLayers': false,
+            'layers': false,
+            'filter': false,
+            'contexts': false,
+            'print': false,
+            'mInteraction': false,
+            'graticule': false,
+            'syncAllLayers': false,
+            'drawVector': false
           },
           'graticuleOgcService': {},
           'map-viewer': {
@@ -171,24 +186,27 @@
             'layers': []
           },
           'map-search': {
-            'context': '',
+            'context': '../../map/config-viewer.xml',
             'extent': [0, 0, 0, 0],
-            'layers': [
-              { type: 'osm' }
-            ]
+            'layers': []
           },
           'map-editor': {
             'context': '',
             'extent': [0, 0, 0, 0],
-            'layers': [
-              { type: 'osm' }
-            ]
+            'layers': [{'type': 'osm'}]
           }
         },
-        'geocoder': 'https://secure.geonames.org/searchJSON',
+        'geocoder': {
+            'enabled': true,
+            'appUrl': 'https://secure.geonames.org/searchJSON'
+        },
         'editor': {
           'enabled': true,
-          'appUrl': '../../srv/{{lang}}/catalog.edit'
+          'appUrl': '../../srv/{{lang}}/catalog.edit',
+          'isUserRecordsOnly': false,
+          'isFilterTagsDisplayed': false,
+          'createPageTpl':
+              '../../catalog/templates/editor/new-metadata-horizontal.html'
         },
         'admin': {
           'enabled': true,
@@ -211,7 +229,7 @@
       requireProxy: [],
       gnCfg: angular.copy(defaultConfig),
       gnUrl: '',
-      docUrl: 'http://geonetwork-opensource.org/manuals/trunk/',
+      docUrl: 'http://geonetwork-opensource.org/manuals/3.4.x/',
       //docUrl: '../../doc/',
       modelOptions: {
         updateOn: 'default blur',
@@ -242,9 +260,9 @@
         angular.extend(gnSearchSettings, this.gnCfg.mods.search);
         this.isMapViewerEnabled = this.gnCfg.mods.map.enabled;
         gnViewerSettings.bingKey = this.gnCfg.mods.map.bingKey;
-        gnViewerSettings.owsContext = gnViewerSettings.owsContext ||
-            this.gnCfg.mods.map.context;
-        gnViewerSettings.geocoder = this.gnCfg.mods.geocoder;
+        gnViewerSettings.defaultContext =
+          gnViewerSettings.mapConfig['map-viewer'].context;
+        gnViewerSettings.geocoder = this.gnCfg.mods.geocoder.appUrl || defaultConfig.mods.geocoder.appUrl;
       },
       getDefaultConfig: function() {
         return angular.copy(defaultConfig);
@@ -255,6 +273,7 @@
       getMergeableDefaultConfig: function() {
         var copy = angular.copy(defaultConfig);
         copy.mods.header.languages = {};
+        copy.mods.search.grid.related = [];
         return copy;
       }
     };
@@ -388,8 +407,21 @@
         }
         return detector.default || 'srv';
       }
+
+      function detectBaseURL(detector) {
+        if (detector.regexp) {
+          var res = new RegExp(detector.regexp).exec(location.pathname);
+          if (angular.isArray(res)) {
+            return res[1];
+          }
+        }
+        return detector.default || 'geonetwork';
+      }
       $scope.nodeId = detectNode(gnGlobalSettings.gnCfg.nodeDetector);
       gnGlobalSettings.nodeId = $scope.nodeId;
+      gnConfig.env = gnConfig.env || {};
+      gnConfig.env.node = $scope.nodeId;
+      gnConfig.env.baseURL = detectBaseURL(gnGlobalSettings.gnCfg.baseURLDetector);
 
       // Lang names to be displayed in language selector
       $scope.langLabels = {'eng': 'English', 'dut': 'Nederlands',
@@ -465,6 +497,18 @@
 
       // login url for inline signin form in top toolbar
       $scope.signInFormAction = '../../signin#' + $location.path();
+
+      // when the login input have focus, do not close the dropdown/popup
+      $scope.focusLoginPopup = function() {
+        $('.signin-dropdown #inputUsername, .signin-dropdown #inputPassword')
+            .one('focus', function() {
+              $(this).parents('.dropdown-menu').addClass('show');
+            });
+        $('.signin-dropdown #inputUsername, .signin-dropdown #inputPassword')
+            .one('blur', function() {
+              $(this).parents('.dropdown-menu').removeClass('show');
+            });
+      };
 
       /**
        * Catalog facet summary providing
@@ -557,8 +601,10 @@
 
 
         // Retrieve user information if catalog is online
+        // append a random number to avoid caching in IE11
         var userLogin = catInfo.then(function(value) {
-          return $http.get('../api/me').
+          return $http.get('../api/me?_random=' +
+              Math.floor(Math.random() * 10000)).
               success(function(me, status) {
                 if (angular.isObject(me)) {
                   angular.extend($scope.user, me);

@@ -161,7 +161,7 @@ import javax.net.ssl.SSLHandshakeException;
  *
  * @author Simon Pigot
  */
-class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
+class Harvester extends BaseAligner<ThreddsParams> implements IHarvester<HarvestResult> {
 
 
 		// Namespaces needed here....
@@ -184,7 +184,6 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
 
     private Logger log;
     private ServiceContext context;
-    private ThreddsParams params;
     private SchemaManager schemaMan;
     private CategoryMapper localCateg;
     private GroupMapper localGroups;
@@ -551,7 +550,7 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
             setType(MetadataType.METADATA);
         metadata.getSourceInfo().
             setSourceId(params.getUuid()).
-            setOwner(Integer.parseInt(params.getOwnerId())).
+            setOwner(getOwner()).
             setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
         metadata.getHarvestInfo().
             setHarvested(true).
@@ -569,14 +568,14 @@ class Harvester extends BaseAligner implements IHarvester<HarvestResult> {
         	}
 				}
 				else {
-        	addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
+        	addCategories(metadata, params.getCategories(), localCateg, context, null, false);
 				}
 
         metadata = (Metadata) mdManager.insertMetadata(context, metadata, md, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
+        addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context);
 
         mdIndexer.indexMetadata(id, true, null);
 

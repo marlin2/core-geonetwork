@@ -83,7 +83,7 @@
         tabs:
             [{
               type: 'index',
-              label: 'indexAdmin',
+              label: 'catalogueAdminTools',
               icon: 'fa-search',
               href: '#/tools/index'
             },{
@@ -225,7 +225,7 @@
         var params = $scope.transfertList[sourceGroup];
 
         params.running = true;
-        $http.put('../api/users/owners', {
+        return $http.put('../api/users/owners', {
           sourceUser: parseInt($scope.editorSelectedId),
           sourceGroup: parseInt(sourceGroup),
           targetUser: params.targetGroup.userId,
@@ -572,19 +572,19 @@
 
       gnConfigService.loadPromise.then(function(settings) {
         $scope.isBackupArchiveEnabled =
-          settings['metadata.backuparchive.enable'];
+            settings['metadata.backuparchive.enable'];
       });
 
       $scope.triggerBackupArchive = function() {
         return $http({method: 'PUT', url: '../api/records/backups'}).
-        then(function(data) {
-          $rootScope.$broadcast('StatusUpdated', {
-            title: $translate.instant('generatingArchiveBackup'),
-            error: data,
-            timeout: 2,
-            type: 'success'
-          });
-        });
+            then(function(data) {
+              $rootScope.$broadcast('StatusUpdated', {
+                title: $translate.instant('generatingArchiveBackup'),
+                error: data,
+                timeout: 2,
+                type: 'success'
+              });
+            });
 
       };
 

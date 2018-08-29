@@ -90,8 +90,8 @@
         restrict: 'A',
         templateUrl: function(elem, attrs) {
           return attrs.template ||
-            '../../catalog/components/viewer/owscontext/' +
-            'partials/owscontext.html';
+              '../../catalog/components/viewer/owscontext/' +
+              'partials/owscontext.html';
         },
         scope: {
           user: '=',
@@ -106,14 +106,24 @@
                 '-c' + scope.map.getView().getCenter().join('-');
           };
 
-          function getMapAsImage($event) {
+          function getMapAsImage($event, scaleFactor) {
             var defer = $q.defer();
             if (scope.isExportMapAsImageEnabled) {
               scope.mapFileName = getMapFileName();
 
               scope.map.once('postcompose', function(event) {
                 var canvas = event.context.canvas;
-                var data = canvas.toDataURL('image/png');
+
+                var resizedCanvas = document.createElement('canvas');
+                var resizedContext = resizedCanvas.getContext('2d');
+                scaleFactor = scaleFactor || 1;
+                resizedCanvas.height = canvas.height * scaleFactor;
+                resizedCanvas.width = canvas.width * scaleFactor;
+
+                resizedContext.drawImage(canvas, 0, 0,
+                    resizedCanvas.width, resizedCanvas.height);
+
+                var data = resizedCanvas.toDataURL('image/png');
                 defer.resolve(data);
               });
               scope.map.renderSync();
@@ -152,9 +162,11 @@
 
 
           scope.isSaveMapInCatalogAllowed =
-              gnGlobalSettings.gnCfg.mods.map.isSaveMapInCatalogAllowed === true;
+              gnGlobalSettings.gnCfg.mods.map.
+              isSaveMapInCatalogAllowed === true;
           scope.isExportMapAsImageEnabled =
-              gnGlobalSettings.gnCfg.mods.map.isExportMapAsImageEnabled === true;
+              gnGlobalSettings.gnCfg.mods.map.
+              isExportMapAsImageEnabled === true;
 
           scope.mapUuid = null;
 
@@ -168,7 +180,7 @@
           scope.saveInCatalog = function($event) {
             var defer = $q.defer();
 
-            getMapAsImage($event).then(function(data) {
+            getMapAsImage($event, .66).then(function(data) {
               scope.mapUuid = null;
 
               // Map as OWS context
@@ -181,7 +193,7 @@
               if (scope.isExportMapAsImageEnabled) {
                 scope.mapProps.overviewFilename = getMapFileName() + '.png';
                 scope.mapProps.overview =
-                  data.replace('data:image/png;base64,', '');
+                    data.replace('data:image/png;base64,', '');
               }
 
               return $http.post('../api/records/importfrommap',
@@ -230,24 +242,6 @@
             }
             $('#owc-file-input')[0].value = '';
           });
-
-          // load context from url or from storage
-          var key = 'owsContext_' +
-              window.location.host + window.location.pathname;
-          var storage = gnViewerSettings.storage ?
-              window[gnViewerSettings.storage] : window.localStorage;
-          if (gnViewerSettings.owsContext) {
-            gnOwsContextService.loadContextFromUrl(gnViewerSettings.owsContext,
-                scope.map);
-          } else if (storage.getItem(key)) {
-            var c = storage.getItem(key);
-            gnOwsContextService.loadContext(c, scope.map);
-          } else if (gnViewerSettings.defaultContext) {
-            gnOwsContextService.loadContextFromUrl(
-                gnViewerSettings.defaultContext,
-                scope.map,
-                gnViewerSettings.additionalMapLayers);
-          }
 
           // store the current context in local storage to reload it
           // automatically on next connexion

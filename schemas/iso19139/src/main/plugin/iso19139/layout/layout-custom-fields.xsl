@@ -41,7 +41,7 @@
   <xsl:include href="layout-custom-fields-sds.xsl"/>
 
   <!-- Readonly elements -->
-  <xsl:template mode="mode-iso19139" priority="2000" match="gmd:fileIdentifier|gmd:dateStamp">
+  <xsl:template mode="mode-iso19139" priority="2100" match="gmd:fileIdentifier|gmd:dateStamp">
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
@@ -93,7 +93,7 @@
     </xsl:variable>
 
 
-    <div class="form-group gn-field gn-title {if ($isRequired) then 'gn-required' else ''}"
+    <div class="form-group gn-field gn-title {if ($isRequired) then 'gn-required' else ''} {if ($labelConfig/condition) then concat('gn-', $labelConfig/condition) else ''}"
          id="gn-el-{*/gn:element/@ref}"
          data-gn-field-highlight="">
       <label class="col-sm-2 control-label">
@@ -103,7 +103,7 @@
           (<xsl:value-of select="$labelMeasureType/label"/>)
         </xsl:if>
       </label>
-      <div class="col-sm-9 gn-value">
+      <div class="col-sm-9 gn-value nopadding-in-table">
         <xsl:variable name="elementRef"
                       select="gco:*/gn:element/@ref"/>
         <xsl:variable name="helper"
@@ -219,14 +219,27 @@
   <xsl:template mode="mode-iso19139" match="gmd:EX_GeographicBoundingBox" priority="2000">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
+    <xsl:param name="overrideLabel" select="''" required="no"/>
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
     <xsl:variable name="labelConfig" select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)"/>
 
+    <xsl:variable name="labelVal">
+      <xsl:choose>
+        <xsl:when test="$overrideLabel != ''">
+          <xsl:value-of select="$overrideLabel"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$labelConfig/label"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+
     <xsl:call-template name="render-boxed-element">
       <xsl:with-param name="label"
-                      select="$labelConfig/label"/>
+                      select="$labelVal"/>
       <xsl:with-param name="editInfo" select="../gn:element"/>
       <xsl:with-param name="cls" select="local-name()"/>
       <xsl:with-param name="subTreeSnippet">
@@ -281,7 +294,11 @@
       <xsl:with-param name="cls" select="local-name()"/>
       <xsl:with-param name="subTreeSnippet">
 
-        <xsl:variable name="geometry" select="gmd:polygon/gml:MultiSurface|gmd:polygon/gml:LineString"/>
+        <xsl:variable name="geometry">
+          <xsl:apply-templates select="gmd:polygon/gml:MultiSurface|gmd:polygon/gml:LineString"
+                               mode="gn-element-cleaner"/>
+        </xsl:variable>
+
         <xsl:variable name="identifier"
                       select="concat('_X', gmd:polygon/gn:element/@ref, '_replace')"/>
         <xsl:variable name="readonly" select="ancestor-or-self::node()[@xlink:href] != ''"/>
@@ -302,5 +319,14 @@
                        gmd:geographicElement[
                           $isFlatMode and
                           preceding-sibling::gmd:geographicElement/gmd:EX_GeographicBoundingBox
-                        ]/gmd:EX_GeographicDescription" priority="2000"/>
+                        ]/gmd:EX_GeographicDescription"
+                priority="2000"/>
+
+
+  <!-- Do not display other local declaring also the main language
+  which is added automatically by update-fixed-info. -->
+  <xsl:template mode="mode-iso19139"
+                match="gmd:locale[*/gmd:languageCode/*/@codeListValue =
+                                  ../gmd:language/*/@codeListValue]"
+                priority="2000"/>
 </xsl:stylesheet>

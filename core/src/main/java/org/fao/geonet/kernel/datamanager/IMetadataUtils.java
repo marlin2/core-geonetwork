@@ -59,6 +59,8 @@ public interface IMetadataUtils {
 
         int rateMetadata(int metadataId, String ipAddress, int rating) throws Exception;
 
+        void rateMetadata(final int metadataId, final int average);
+
         Element getMetadataNoInfo(ServiceContext srvContext, String id) throws Exception;
 
         Element getElementByRef(Element md, String ref);

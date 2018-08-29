@@ -84,6 +84,8 @@ public class BaseMetadataUtils implements IMetadataUtils {
     protected MetadataLockRepository mdLockRepository;
     @Autowired
     private SearchManager searchManager;
+    @Autowired
+    private IndexingList indexList;
     @Autowired(required = false)
     private XmlSerializer xmlSerializer;
 
@@ -108,6 +110,7 @@ public class BaseMetadataUtils implements IMetadataUtils {
          settingManager = context.getBean(SettingManager.class);
          xmlSerializer = context.getBean(XmlSerializer.class);
          mdLockRepository = context.getBean(MetadataLockRepository.class);
+         indexList = context.getBean(IndexingList.class);
 
         final GeonetworkDataDirectory dataDirectory = context.getBean(GeonetworkDataDirectory.class);
         stylePath = dataDirectory.resolveWebResource(Geonet.Path.STYLESHEETS);
@@ -486,15 +489,14 @@ public class BaseMetadataUtils implements IMetadataUtils {
      */
     @Override
     public int rateMetadata(final int metadataId, final String ipAddress, final int rating) throws Exception {
+        // Save rating for this IP
         MetadataRatingByIp ratingEntity = new MetadataRatingByIp();
         ratingEntity.setRating(rating);
         ratingEntity.setId(new MetadataRatingByIpId(metadataId, ipAddress));
 
         ratingByIpRepository.save(ratingEntity);
 
-        //
         // calculate new rating
-        //
         final int newRating = ratingByIpRepository.averageRating(metadataId);
 
         if (Log.isDebugEnabled(Geonet.DATA_MANAGER))
@@ -507,9 +509,44 @@ public class BaseMetadataUtils implements IMetadataUtils {
             }
         });
 
-        metadataIndexer.indexMetadata(Integer.toString(metadataId), true, null);
+        // Simon** - Might need to investigate IndexingList to make sure it does what we want here
+        // And register the metadata to be indexed in the near future
+        indexList.add(metadataId);
+        //metadataIndexer.indexMetadata(Integer.toString(metadataId), true, null);
 
         return rating;
+    }
+
+    /**
+     * Set global metadata rating.
+     *
+     * There is 2 rating mechanisms:
+     * <ul>
+     *     <li>{@link org.fao.geonet.domain.userfeedback.RatingsSetting#BASIC} which store rating by IP (@see {@link #rateMetadata(int, String, int)}</li>
+     *     <li>{@link org.fao.geonet.domain.userfeedback.RatingsSetting#ADVANCED} which store user feedback and compute an average rate</li>
+     * </ul>
+     *
+     * This method is use by the ADVANCED mode to store the global average value.
+     *
+     * @param metadataId
+     * @param average
+     * @return
+     * @throws Exception
+     */
+    public void rateMetadata(final int metadataId, final int average) {
+         if (Log.isDebugEnabled(Geonet.DATA_MANAGER))
+            Log.debug(Geonet.DATA_MANAGER, String.format(
+                "Setting rating in advanced mode for id: %d --> rating is: %d", metadataId , average));
+         getMetadataRepository().update(metadataId, new Updater<Metadata>() {
+            @Override
+            public void apply(Metadata entity) {
+                entity.getDataInfo().setRating(average);
+            }
+        });
+        // Simon** - Might need to investigate IndexingList to make sure it does what we want here
+        // And register the metadata to be indexed in the near future
+        indexList.add(metadataId);
+        //metadataIndexer.indexMetadata(Integer.toString(metadataId), true, null);
     }
 
     /**

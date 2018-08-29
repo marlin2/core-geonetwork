@@ -54,7 +54,7 @@
   <xsl:param name="thesauriDir"/>
   <xsl:param name="inspire">false</xsl:param>
 
-  <xsl:variable name="inspire-thesaurus" select="if ($inspire!='false') then document(concat('file:///', $thesauriDir, '/external/thesauri/theme/inspire-theme.rdf')) else ''"/>
+  <xsl:variable name="inspire-thesaurus" select="if ($inspire!='false') then document(concat('file:///', $thesauriDir, '/external/thesauri/theme/httpinspireeceuropaeutheme-theme.rdf')) else ''"/>
   <xsl:variable name="inspire-theme" select="if ($inspire!='false') then $inspire-thesaurus//skos:Concept else ''"/>
 
   <!-- ========================================================================================= -->
@@ -120,6 +120,18 @@
         </xsl:otherwise>
       </xsl:choose>
 
+
+      <xsl:variable name="_defaultAbstract">
+        <xsl:call-template name="defaultAbstract">
+          <xsl:with-param name="isoDocLangId" select="$isoDocLangId"/>
+        </xsl:call-template>
+      </xsl:variable>
+
+      <Field name="_defaultAbstract"
+             string="{string($_defaultAbstract)}"
+             store="true"
+             index="true"/>
+
       <xsl:apply-templates select="/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']"
                            mode="metadata">
         <xsl:with-param name="langId" select="$poundLangId"/>
@@ -146,6 +158,10 @@
   <xsl:template match="*" mode="metadata">
     <xsl:param name="langId"/>
     <xsl:param name="isoLangId"/>
+
+    <xsl:for-each select="gmd:dateStamp/*">
+      <Field name="changeDate" string="{string(.)}" store="true" index="true"/>
+    </xsl:for-each>
 
     <!-- === Data or Service Identification === -->
 
@@ -339,7 +355,8 @@
           <xsl:if test="count($keywordWithNoThesaurus) > 0">
             'keywords': [
             <xsl:for-each select="$keywordWithNoThesaurus/(gco:CharacterString|gmx:Anchor)">
-              <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>
+              {'value': <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>,
+              'link': '<xsl:value-of select="@xlink:href"/>'}
               <xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each>
             ]
@@ -352,7 +369,8 @@
 
             '<xsl:value-of select="replace(current-grouping-key(), '''', '\\''')"/>' :[
             <xsl:for-each select="gmd:keyword//gmd:LocalisedCharacterString[@locale = $langId and text() != '']">
-              <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>
+              {'value': <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>,
+              'link': '<xsl:value-of select="@xlink:href"/>'}
               <xsl:if test="position() != last()">,</xsl:if>
             </xsl:for-each>
             ]
@@ -584,11 +602,17 @@
           <xsl:if test="contains($protocol, 'WWW:DOWNLOAD') or contains($protocol, 'DB')
            or contains($protocol, 'FILE')  or contains($protocol, 'WFS')  or contains($protocol, 'WCS')  or contains($protocol, 'COPYFILE')">
             <Field name="download" string="true" store="false" index="true"/>
+            <Field name="_mdActions" string="mdActions-download" store="false" index="true"/>
           </xsl:if>
 
           <xsl:if test="contains($protocol, 'OGC:WMS') or contains($protocol, 'OGC:WMC') or contains($protocol, 'OGC:OWS')
                     or contains($protocol, 'OGC:OWS-C') or $wmsLinkNoProtocol">
             <Field name="dynamic" string="true" store="false" index="true"/>
+            <Field name="_mdActions" string="mdActions-view" store="false" index="true"/>
+          </xsl:if>
+
+          <xsl:if test="contains($protocol, 'OGC:WPS')">
+            <Field name="_mdActions" string="mdActions-process" store="false" index="true"/>
           </xsl:if>
 
           <!-- ignore WMS links without protocol (are indexed below with mimetype application/vnd.ogc.wms_xml) -->

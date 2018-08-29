@@ -146,6 +146,26 @@
              gnCurrentEdit.displayAttributes);
              return params.join('');
            },
+           load: function(url) {
+             var defer = $q.defer();
+             var scope = this;
+             $http.get(url,
+             {
+               headers: {'Content-Type':
+                 'application/x-www-form-urlencoded'}
+             }).success(function(data) {
+
+               var snippet = $(cleanData(data));
+               scope.refreshEditorForm(snippet);
+               gnCurrentEdit.working = false;
+               defer.resolve(snippet);
+             }).error(function(error) {
+               setStatus({msg: 'saveMetadataError', saving: false});
+               gnCurrentEdit.working = false;
+               defer.reject(error);
+             });
+             return defer.promise;
+           },
            /**
            * Save the metadata record currently in editing session.
            *
@@ -258,9 +278,9 @@
                // properly without removing them. There is maybe
                // references to DOM objects in the JS code which
                // make those objects not reachable by GC.
-               $(gnCurrentEdit.formId).find('*').remove();
+               $(gnCurrentEdit.containerId).find('*').remove();
 
-               $(gnCurrentEdit.formId).replaceWith(snippet);
+               $(gnCurrentEdit.containerId).replaceWith(snippet);
 
                if (gnCurrentEdit.compileScope) {
                  // Destroy previous scope
@@ -268,13 +288,17 @@
                    gnCurrentEdit.formScope.$destroy();
                  }
 
+                 // Update form values
+                 scope.onFormLoad();
+
                  // Compile against a new scope
                  gnCurrentEdit.formScope =
                  gnCurrentEdit.compileScope.$new();
                  $compile(snippet)(gnCurrentEdit.formScope);
+               } else {
+                 scope.onFormLoad();
                }
 
-               scope.onFormLoad();
              };
              if (form) {
                refreshForm(form);
@@ -309,6 +333,14 @@
                find('input[id="' + id + '"]').val();
              };
 
+             var extent = [], value = getInputValue('extent');
+             try {
+               extent = angular.fromJson(value);
+             } catch (e) {
+               console.warn(
+                 'Failed to parse the following extent as JSON: ' +
+               value);
+             }
              angular.extend(gnCurrentEdit, {
                isService: getInputValue('isService') == 'true',
                isTemplate: getInputValue('template'),
@@ -318,13 +350,18 @@
                showValidationErrors:
                getInputValue('showvalidationerrors') == 'true',
                uuid: getInputValue('uuid'),
+               displayAttributes:
+               getInputValue('displayAttributes') == 'true',
+               displayTooltips:
+               getInputValue('displayTooltips') == 'true',
+               displayTooltipsMode:
+               getInputValue('displayTooltipsMode') || '',
                schema: getInputValue('schema'),
                version: getInputValue('version'),
                tab: getInputValue('currTab'),
                geoPublisherConfig:
                angular.fromJson(getInputValue('geoPublisherConfig')),
-               extent:
-               angular.fromJson(getInputValue('extent')),
+               extent: extent,
                isMinor: getInputValue('minor') === 'true',
                layerConfig:
                angular.fromJson(getInputValue('layerConfig')),
@@ -357,6 +394,7 @@
 
              var defer = $q.defer();
              $http.put(this.buildEditUrlPrefix('editor/elements') +
+             '&displayAttributes=' + gnCurrentEdit.displayAttributes + 
              '&ref=' + ref + '&name=' + name + attributeAction)
               .success(function(data) {
                // Append HTML snippet after current element - compile Angular
@@ -394,6 +432,7 @@
            insertRef, position) {
              var defer = $q.defer();
              $http.put(this.buildEditUrlPrefix('editor/elements') +
+             '&displayAttributes=' + gnCurrentEdit.displayAttributes + 
              '&ref=' + ref +
              '&name=' + parent +
              '&child=' + name).success(function(data) {
@@ -423,7 +462,9 @@
              // Call service to remove element from metadata record in session
              var defer = $q.defer();
              $http.delete('../api/records/' + gnCurrentEdit.id +
-             '/editor/elements?ref=' + ref + '&parent=' + parent)
+             '/editor/elements?ref=' + ref + 
+             '&displayAttributes=' + gnCurrentEdit.displayAttributes + 
+             '&parent=' + parent)
               .success(function(data) {
                // For a fieldset, domref is equal to ref.
                // For an input, it may be different because

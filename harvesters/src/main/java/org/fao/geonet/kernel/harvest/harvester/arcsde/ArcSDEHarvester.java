@@ -95,15 +95,15 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
     protected void storeNodeExtra(AbstractParams params, String path, String siteId, String optionsId) throws SQLException {
         ArcSDEParams as = (ArcSDEParams) params;
         super.setParams(as);
-        settingMan.add("id:" + siteId, "icon", as.icon);
-        settingMan.add("id:" + siteId, "server", as.server);
-        settingMan.add("id:" + siteId, "port", as.port);
-        settingMan.add("id:" + siteId, "username", as.getUsername());
-        settingMan.add("id:" + siteId, "password", as.getPassword());
-        settingMan.add("id:" + siteId, "database", as.database);
-        settingMan.add("id:" + siteId, "version", as.version);
-        settingMan.add("id:" + siteId, "connectionType", as.connectionType);
-        settingMan.add("id:" + siteId, "databaseType", as.databaseType);
+        harvesterSettingsManager.add("id:" + siteId, "icon", as.icon);
+        harvesterSettingsManager.add("id:" + siteId, "server", as.server);
+        harvesterSettingsManager.add("id:" + siteId, "port", as.port);
+        harvesterSettingsManager.add("id:" + siteId, "username", as.getUsername());
+        harvesterSettingsManager.add("id:" + siteId, "password", as.getPassword());
+        harvesterSettingsManager.add("id:" + siteId, "database", as.database);
+        harvesterSettingsManager.add("id:" + siteId, "version", as.version);
+        harvesterSettingsManager.add("id:" + siteId, "connectionType", as.connectionType);
+        harvesterSettingsManager.add("id:" + siteId, "databaseType", as.databaseType);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
         //--- force the creation of a new uuid
         params.setUuid(UUID.randomUUID().toString());
 
-        String id = settingMan.add("harvesting", "node", getType());
+        String id = harvesterSettingsManager.add("harvesting", "node", getType());
         storeNode(params, "id:" + id);
 
         Source source = new Source(params.getUuid(), params.getName(), params.getTranslations(), true);
@@ -362,10 +362,10 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         OperationAllowedRepository operationAllowedRepository = context.getBean(OperationAllowedRepository.class);
         operationAllowedRepository.deleteAllByIdAttribute(OperationAllowedId_.metadataId, Integer.parseInt(id));
-        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
+        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context);
 
         metadata.getMetadataCategories().clear();
-        aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, true);
+        aligner.addCategories(metadata, params.getCategories(), localCateg, context, null, true);
 
         mdManager.flush();
 
@@ -401,19 +401,23 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
             setChangeDate(createDate);
         metadata.getSourceInfo().
             setSourceId(params.getUuid()).
-            setOwner(Integer.parseInt(params.getOwnerId())).
-            setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
+            setOwner(Integer.parseInt(params.getOwnerId()));
         metadata.getHarvestInfo().
             setHarvested(true).
             setUuid(params.getUuid());
 
-        aligner.addCategories(metadata, params.getCategories(), localCateg, context, log, null, false);
+        try {
+            metadata.getSourceInfo().setGroupOwner(Integer.valueOf(params.getOwnerIdGroup()));
+        } catch (NumberFormatException e) {
+        }
+
+        aligner.addCategories(metadata, params.getCategories(), localCateg, context, null, false);
 
         metadata = (Metadata) mdManager.insertMetadata(context, metadata, xml, true, false, false, UpdateDatestamp.NO, false, false);
 
         String id = String.valueOf(metadata.getId());
 
-        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context, log);
+        aligner.addPrivileges(id, params.getPrivileges(), localGroups, mdOperations, context);
 
         mdIndexer.indexMetadata(id, true, null);
 
@@ -436,7 +440,7 @@ public class ArcSDEHarvester extends AbstractHarvester<HarvestResult> {
 
         String path = "harvesting/id:" + id;
 
-        settingMan.removeChildren(path);
+        harvesterSettingsManager.removeChildren(path);
 
         //--- update database
         storeNode(copy, path);

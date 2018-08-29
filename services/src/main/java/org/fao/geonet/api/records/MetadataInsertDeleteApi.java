@@ -31,8 +31,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.ApplicationContextHolder;
-import org.fao.geonet.GeonetContext;
-import org.fao.geonet.Util;
 import org.fao.geonet.api.API;
 import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.ApiUtils;
@@ -47,6 +45,7 @@ import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.datamanager.IMetadataCategory;
 import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
+import org.fao.geonet.kernel.datamanager.IMetadataOperations;
 import org.fao.geonet.kernel.datamanager.IMetadataStatus;
 import org.fao.geonet.kernel.datamanager.IMetadataSchemaUtils;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
@@ -68,7 +67,6 @@ import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
-import org.jdom.IllegalAddException;
 import org.jdom.input.JDOMParseException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -89,6 +87,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -419,7 +418,7 @@ public class MetadataInsertDeleteApi {
             }
             Pair<Integer, String> pair = loadRecord(
                 metadataType, Xml.loadString(xml, false),
-                uuidProcessing, group, category, rejectIfInvalid, transformWith, schema, extra, request);
+                uuidProcessing, group, category, rejectIfInvalid, false, transformWith, schema, extra, request);
             report.addMetadataInfos(pair.one(), String.format(
                 "Metadata imported from XML with UUID '%s'", pair.two())
             );
@@ -436,7 +435,7 @@ public class MetadataInsertDeleteApi {
                 if (xmlContent != null) {
                     Pair<Integer, String> pair = loadRecord(
                         metadataType, xmlContent,
-                        uuidProcessing, group, category, rejectIfInvalid, transformWith, schema, extra, request);
+                        uuidProcessing, group, category, rejectIfInvalid, false, transformWith, schema, extra, request);
                     report.addMetadataInfos(pair.one(), String.format(
                         "Metadata imported from URL with UUID '%s'", pair.two())
                     );
@@ -501,7 +500,7 @@ public class MetadataInsertDeleteApi {
                     try {
                         Pair<Integer, String> pair = loadRecord(
                             metadataType, Xml.loadFile(f),
-                            uuidProcessing, group, category, rejectIfInvalid, transformWith, schema, extra, request);
+                            uuidProcessing, group, category, rejectIfInvalid, false, transformWith, schema, extra, request);
                         report.addMetadataInfos(pair.one(), String.format(
                             "Metadata imported from server folder with UUID '%s'", pair.two())
                         );
@@ -603,6 +602,16 @@ public class MetadataInsertDeleteApi {
         )
         final String[] category,
         @ApiParam(
+            value = "Copy categories from source?",
+            required = false,
+            defaultValue = "false"
+        )
+        @RequestParam(
+            required = false,
+            defaultValue = "false"
+        )
+        final boolean hasCategoryOfSource,
+        @ApiParam(
         value = "Is child of the record to copy?",
         required = false,
         defaultValue = "false"
@@ -687,6 +696,33 @@ public class MetadataInsertDeleteApi {
                 "Error while copying metadata resources. Error is %s. " +
                     "Metadata is created but without resources from the source record with id '%d':",
                     e.getMessage(), newId));
+        }
+        if (hasCategoryOfSource) {
+            final Collection<MetadataCategory> categories =
+                appContext.getBean(IMetadataCategory.class).getCategories(sourceMetadata.getId() + "");
+            try {
+                for (MetadataCategory c : categories) {
+                    appContext.getBean(IMetadataCategory.class).setCategory(context, newId, c.getId() + "");
+                }
+            } catch (Exception e) {
+                Log.warning(Geonet.DATA_MANAGER, String.format(
+                    "Error while copying source record category to new record. Error is %s. " +
+                        "Metadata is created but without the categories from the source record with id '%d':",
+                    e.getMessage(), newId));
+            }
+        }
+
+        if (category != null && category.length > 0) {
+            try {
+                for (String c : category) {
+                    appContext.getBean(IMetadataCategory.class).setCategory(context, newId, c);
+                }
+            } catch (Exception e) {
+                Log.warning(Geonet.DATA_MANAGER, String.format(
+                    "Error while setting record category to new record. Error is %s. " +
+                        "Metadata is created but without the requested categories.",
+                    e.getMessage(), newId));
+            }
         }
 
         return newId;
@@ -775,6 +811,14 @@ public class MetadataInsertDeleteApi {
         )
         final boolean rejectIfInvalid,
         @ApiParam(
+            value = "(XML file only) Publish record.",
+            required = false)
+        @RequestParam(
+            required = false,
+            defaultValue = "false"
+        )
+        final boolean publishToAll,
+        @ApiParam(
             value = "(MEF file only) Assign to current catalog.",
             required = false)
         @RequestParam(
@@ -849,7 +893,7 @@ public class MetadataInsertDeleteApi {
                 } else {
                     Pair<Integer, String> pair = loadRecord(
                         metadataType, Xml.loadStream(f.getInputStream()),
-                        uuidProcessing, group, category, rejectIfInvalid, transformWith, schema, extra, request);
+                        uuidProcessing, group, category, rejectIfInvalid, publishToAll, transformWith, schema, extra, request);
                     report.addMetadataInfos(pair.one(), String.format(
                         "Metadata imported with UUID '%s'", pair.two())
                     );
@@ -1101,7 +1145,8 @@ public class MetadataInsertDeleteApi {
         final MEFLib.UuidAction uuidProcessing,
         final String group,
         final String[] category,
-        boolean rejectIfInvalid,
+        final boolean rejectIfInvalid,
+        final boolean publishToAll,
         final String transformWith,
         String schema,
         final String extra,
@@ -1199,6 +1244,12 @@ public class MetadataInsertDeleteApi {
 
         // Set template
         appContext.getBean(IMetadataUtils.class).setTemplate(iId, metadataType, null);
+
+        if (publishToAll) {
+            appContext.getBean(IMetadataOperations.class).setOperation(context, iId, ReservedGroup.all.getId(), ReservedOperation.view.getId());
+            appContext.getBean(IMetadataOperations.class).setOperation(context, iId, ReservedGroup.all.getId(), ReservedOperation.download.getId());
+            appContext.getBean(IMetadataOperations.class).setOperation(context, iId, ReservedGroup.all.getId(), ReservedOperation.dynamic.getId());
+        }
 
         if (category != null) {
             for (String c : category) {

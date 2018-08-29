@@ -79,8 +79,9 @@
     'gnGlobalSettings',
     'gnMap',
     '$q',
+    '$translate',
     function($http, gnOwsCapabilities, gnUrlUtils, gnGlobalSettings,
-             gnMap, $q) {
+             gnMap, $q, $translate) {
 
       this.WMS_MIMETYPE_REGEX = /.*ogc-wms/;
 
@@ -272,7 +273,7 @@
           storeExecuteResponse: output.storeExecuteResponse || true,
           status: output.status || false,
           output: []
-        }
+        };
 
         // output selection based on form control
         angular.forEach(description.processOutputs.output,
@@ -280,7 +281,7 @@
               if (descOutput.identifier.value === output.identifier) {
                 responseDocument.output.push({
                   asReference: output.asReference !== undefined ?
-                    output.asReference : descOutput.asReference,
+                  output.asReference : descOutput.asReference,
                   mimeType: output.mimeType,
                   identifier: {
                     value: output.identifier
@@ -399,7 +400,7 @@
           outputs.forEach(function(output) {
             var outputId = output.identifier.value;
             var mimeTypes = output.complexOutput.supported.format;
-            mimeTypes.forEach(function (mimeType) {
+            mimeTypes.forEach(function(mimeType) {
               if (!result && me.WMS_MIMETYPE_REGEX.test(mimeType.mimeType)) {
                 result = {
                   mimeType: mimeType.mimeType,
@@ -409,7 +410,7 @@
             });
           });
         } catch (e) {
-          console.warn('Failed parsing WPS process description: ', e)
+          console.warn('Failed parsing WPS process description: ', e);
         }
         return result;
       };
@@ -424,10 +425,9 @@
        * @param {object} response excecuteProcess response object.
        * @param {ol.Map} map
        * @param {ol.layer.Base} parentLayer optional
-       * @param {object=} opt_options
        */
       this.extractWmsLayerFromResponse =
-          function(response, map, parentLayer, opt_options) {
+          function(response, map, parentLayer) {
 
         try {
           var ref = response.processOutputs.output[0].reference;
@@ -436,16 +436,30 @@
                 layers.forEach(function(l) {
                   l.set('fromWps', true);
                   l.set('wpsParent', parentLayer);
-                  if (opt_options &&
-                      !opt_options.exclude.test(l.get('label'))) {
-                    map.addLayer(l);
-                  }
+                  map.addLayer(l);
                 });
               });
         } catch (e) {
           console.warn('Error extracting WMS layers from response: ', e);
         }
       };
+
+      /**
+       * Returns a label normalized for the process description
+       * Field used: `labels[currentLang]` or `label`
+       * IF no label found, return nothing
+       * @param {Object} wpsLink object holding the process link
+       */
+      this.getProcessLabel = function (wpsLink) {
+        var currentLang = $translate.use();
+        if (wpsLink.labels) {
+          return wpsLink.labels[currentLang];
+        } else if (wpsLink.label) {
+          return wpsLink.label;
+        } else {
+          return null;
+        }
+      }
     }
   ]);
 

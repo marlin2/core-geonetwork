@@ -123,11 +123,22 @@
               }, angular.extend({
                 name: 'datasource',
                 displayKey: 'name',
-                source: engine.ttAdapter()
+                limit: Infinity,
+                source: (data?allOrSearchFn:engine.ttAdapter())
               }, config)).on('typeahead:selected', function(event, datum) {
                 field.typeahead('val', '');
                 $(element).tagsinput('add', datum);
               });
+
+              function allOrSearchFn(q, sync) {
+                if (q === '') {
+                  sync(engine.all());
+                  // This is the only change needed to get 'ALL'
+                  // items as the defaults
+                } else {
+                  engine.search(q, sync);
+                }
+              }
 
               /** Binds input content to model values */
               var stringValues = [];
@@ -271,6 +282,8 @@
             if (attrs.profile) {
               url = '../api/groups?profile=' + attrs.profile;
             }
+            var optional = attrs.hasOwnProperty('optional');
+
             $http.get(url, {cache: true}).
                 success(function(data) {
                   //data-ng-if is not correctly updating groups.
@@ -284,6 +297,12 @@
                     });
                   } else {
                     scope.groups = data;
+                  }
+                  if (optional) {
+                    scope.groups.unshift({
+                      id: 'undefined',
+                      name: ''
+                    });
                   }
 
                   // Select by default the first group.
@@ -332,8 +351,6 @@
               values: '=gnSortbyValues'
             },
             link: function(scope, element, attrs, searchFormCtrl) {
-              scope.params.sortBy = scope.params.sortBy ||
-                  scope.values[0].sortBy;
               scope.sortBy = function(v) {
                 angular.extend(scope.params, v);
                 searchFormCtrl.triggerSearch(true);
@@ -608,7 +625,7 @@
                 if (scope.type == 'codelist') {
                   gnSchemaManagerService.getCodelist(config).then(
                       function(data) {
-                        scope.infos = data.entry;
+                        scope.infos = angular.copy(data.entry);
                         addBlankValueAndSetDefault();
                       });
                 }
@@ -707,7 +724,9 @@
             scope: {
               crs: '=?',
               value: '=',
-              map: '='
+              required: '=',
+              map: '=',
+              readOnly: '<'
             },
             templateUrl: '../../catalog/components/search/formfields/' +
                 'partials/bboxInput.html',

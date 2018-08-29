@@ -27,11 +27,13 @@
 
   goog.require('gn_dashboard_render_controller');
   goog.require('gn_dashboard_status_controller');
+  goog.require('gn_dashboard_wfs_indexing_controller');
   goog.require('gn_vcs_controller');
 
   var module = angular.module('gn_dashboard_controller',
       ['gn_dashboard_status_controller',
        'gn_dashboard_render_controller',
+       'gn_dashboard_wfs_indexing_controller',
        'gn_vcs_controller']);
 
 
@@ -50,6 +52,11 @@
         label: 'status',
         icon: 'fa-dashboard',
         href: '#/dashboard/status'
+      },{
+        type: 'wfs-indexing',
+        label: 'wfs-indexing',
+        icon: 'fa-globe',
+        href: '#/dashboard/wfs-indexing'
       },{
         type: 'information',
         label: 'information',
@@ -86,7 +93,7 @@
       }];
 
       $scope.isDashboardAvailable = false;
-      $http.get('../../warninghealthcheck').success(function(data) {
+      function buildMenuBasedOnStatus(data) {
         angular.forEach(data, function(o) {
           if (o.name === 'DashboardAppHealthCheck' &&
               o.status === 'OK') {
@@ -98,13 +105,10 @@
             tabs: tabs
           };
         });
-      }).error(function(data) {
-        $scope.pageMenu = {
-          folder: 'dashboard/',
-          defaultTab: 'status',
-          tabs: tabs
-        };
-      });
+      };
+      $http.get('../../warninghealthcheck')
+          .success(buildMenuBasedOnStatus)
+          .error(buildMenuBasedOnStatus);
 
       $http.get('../api/site/info').
           success(function(data) {

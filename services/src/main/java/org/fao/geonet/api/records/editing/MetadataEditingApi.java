@@ -329,6 +329,7 @@ public class MetadataEditingApi {
             }
 
             boolean automaticUnpublishInvalidMd = sm.getValueAsBool("metadata/workflow/automaticUnpublishInvalidMd");
+            boolean isUnpublished = false;
 
             // Unpublish the metadata automatically if the setting automaticUnpublishInvalidMd is enabled and
             // the metadata becomes invalid
@@ -345,6 +346,7 @@ public class MetadataEditingApi {
                         (metadataValidationRepository.count(MetadataValidationSpecs.isInvalidAndRequiredForMetadata(Integer.parseInt(id))) > 0);
 
                     if (isInvalid) {
+                        isUnpublished = true;
                         operationAllowedRepo.deleteAll(where(hasMetadataId(id)).and(hasGroupId(ReservedGroup.all.getId())));
                     }
 
@@ -359,7 +361,14 @@ public class MetadataEditingApi {
 
             ajaxEditUtils.removeMetadataEmbedded(session, id);
             mdUtils.endEditingSession(id, session);
-            return null;
+            if (isUnpublished) {
+                throw new IllegalStateException(String.format(
+                    "Record saved but as it was invalid at the end of " +
+                        "the editing session. The public record '%s' was unpublished.",
+                metadata.getUuid()));
+            } else {
+                return null;
+            }
         }
 
 //        if (!finished && !forget && commit) {
@@ -461,6 +470,13 @@ public class MetadataEditingApi {
             required = false
         )
             String child,
+        @ApiParam(
+            value = "Should attributes be shown on the editor snippet?",
+            required = false)
+        @RequestParam(
+                defaultValue = "false"
+            )
+                boolean displayAttributes,
         @ApiIgnore
         @ApiParam(hidden = true)
         @RequestParam
@@ -540,6 +556,13 @@ public class MetadataEditingApi {
             required = true)
         @PathVariable
             Direction direction,
+        @ApiParam(
+            value = "Should attributes be shown on the editor snippet?",
+            required = false)
+        @RequestParam(
+                defaultValue = "false"
+            )
+                boolean displayAttributes,
         @ApiIgnore
         @ApiParam(hidden = true)
         @RequestParam
@@ -596,6 +619,13 @@ public class MetadataEditingApi {
             required = true)
         @RequestParam
             String parent,
+        @ApiParam(
+            value = "Should attributes be shown on the editor snippet?",
+            required = false)
+        @RequestParam(
+                defaultValue = "false"
+            )
+                boolean displayAttributes,
         HttpServletRequest request,
         @ApiIgnore
         @ApiParam(hidden = true)
@@ -641,6 +671,13 @@ public class MetadataEditingApi {
             required = true)
         @RequestParam
             String ref,
+        @ApiParam(
+            value = "Should attributes be shown on the editor snippet?",
+            required = false)
+        @RequestParam(
+                defaultValue = "false"
+            )
+                boolean displayAttributes,
         HttpServletRequest request,
         @ApiIgnore
         @ApiParam(hidden = true)

@@ -58,7 +58,7 @@
   <xsl:param name="inspire">false</xsl:param>
 
   <xsl:variable name="inspire-thesaurus"
-                select="if ($inspire!='false') then document(concat('file:///', replace($thesauriDir, '\\', '/'), '/external/thesauri/theme/inspire-theme.rdf')) else ''"/>
+                select="if ($inspire!='false') then document(concat('file:///', replace($thesauriDir, '\\', '/'), '/external/thesauri/theme/httpinspireeceuropaeutheme-theme.rdf')) else ''"/>
   <xsl:variable name="inspire-theme"
                 select="if ($inspire!='false') then $inspire-thesaurus//skos:Concept else ''"/>
 
@@ -110,6 +110,19 @@
       <xsl:if test="geonet:info/isTemplate != 's'">
         <Field name="_title" string="{string($_defaultTitle)}" store="true" index="true"/>
       </xsl:if>
+
+
+      <xsl:variable name="_defaultAbstract">
+        <xsl:call-template name="defaultAbstract">
+          <xsl:with-param name="isoDocLangId" select="$isoLangId"/>
+        </xsl:call-template>
+      </xsl:variable>
+
+      <Field name="_defaultAbstract"
+             string="{string($_defaultAbstract)}"
+             store="true"
+             index="true"/>
+
 
       <xsl:apply-templates select="*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']"
                            mode="metadata"/>
@@ -165,11 +178,11 @@
                 gmd:identificationInfo/srv:SV_ServiceIdentification">
 
       <xsl:for-each select="gmd:citation/gmd:CI_Citation">
-        <xsl:for-each select="gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString">
+        <xsl:for-each select="gmd:identifier/gmd:MD_Identifier/gmd:code/gco:CharacterString|gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor">
           <Field name="identifier" string="{string(.)}" store="true" index="true"/>
         </xsl:for-each>
 
-        <xsl:for-each select="gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString">
+        <xsl:for-each select="gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString|gmd:identifier/gmd:RS_Identifier/gmd:code/gmx:Anchor">
           <Field name="identifier" string="{string(.)}" store="true" index="true"/>
         </xsl:for-each>
 
@@ -410,7 +423,8 @@
         <xsl:if test="count($keywordWithNoThesaurus) > 0">
           'keywords': [
           <xsl:for-each select="$keywordWithNoThesaurus/(gco:CharacterString|gmx:Anchor)">
-            <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>
+            {'value': <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>,
+            'link': '<xsl:value-of select="@xlink:href"/>'}
             <xsl:if test="position() != last()">,</xsl:if>
           </xsl:for-each>
           ]
@@ -420,7 +434,8 @@
                             group-by="gmd:thesaurusName/*/gmd:title/*/text()">
           '<xsl:value-of select="replace(current-grouping-key(), '''', '\\''')"/>' :[
           <xsl:for-each select="gmd:keyword/(gco:CharacterString|gmx:Anchor)">
-            <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>
+            {'value': <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>,
+            'link': '<xsl:value-of select="@xlink:href"/>'}
             <xsl:if test="position() != last()">,</xsl:if>
           </xsl:for-each>
           ]
@@ -695,10 +710,16 @@
 
           <xsl:if test="contains($protocol, 'WWW:DOWNLOAD')">
             <Field name="download" string="true" store="false" index="true"/>
+            <Field name="_mdActions" string="mdActions-download" store="false" index="true"/>
           </xsl:if>
 
           <xsl:if test="contains($protocol, 'OGC:WMS') or $wmsLinkNoProtocol">
             <Field name="dynamic" string="true" store="false" index="true"/>
+            <Field name="_mdActions" string="mdActions-view" store="false" index="true"/>
+          </xsl:if>
+
+          <xsl:if test="contains($protocol, 'OGC:WPS')">
+            <Field name="_mdActions" string="mdActions-process" store="false" index="true"/>
           </xsl:if>
 
           <!-- ignore WMS links without protocol (are indexed below with mimetype application/vnd.ogc.wms_xml) -->
@@ -1043,9 +1064,5 @@
   </xsl:template>
 
   <!-- ========================================================================================= -->
-  <!-- xlinks -->
-  <xsl:template mode="index" match="@xlink:href">
-    <Field name="xlink" string="{string(.)}" store="true" index="true"/>
-  </xsl:template>
 
 </xsl:stylesheet>

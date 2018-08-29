@@ -47,6 +47,7 @@
   <!-- Used by SearchApi loading translation from JSON locale files. -->
   <xsl:variable name="t" select="/root/translations"/>
   <xsl:variable name="lang" select="/root/gui/language"/>
+  <xsl:variable name="lang2chars" select="/root/gui/lang2chars"/>
   <xsl:variable name="requestParameters" select="/root/request"/>
 
   <!-- XSL using this variable should be refactored to not rely on the
@@ -59,14 +60,10 @@
 
   <xsl:variable name="searchView"
                 select="if (/root/request/view) then /root/request/view else if(util:getSettingValue('system/ui/defaultView')) then util:getSettingValue('system/ui/defaultView') else 'default'"></xsl:variable>
-  <xsl:variable name="owsContext" select="/root/request/owscontext"/>
-  <xsl:variable name="wmsUrl" select="/root/request/wmsurl"/>
-  <xsl:variable name="layerName" select="/root/request/layername"/>
-  <xsl:variable name="layerGroup" select="/root/request/layergroup"/>
   <xsl:variable name="angularModule"
                 select="if ($angularApp = 'gn_search') then concat('gn_search_', $searchView) else $angularApp"></xsl:variable>
 
-  <xsl:variable name="shibbolethOn" 
+  <xsl:variable name="shibbolethOn"
                 select="util:existsBean('shibbolethConfiguration')"/>
 
   <!-- Define which JS module to load using Closure -->
@@ -82,10 +79,9 @@
     else if ($service = 'catalog.edit') then 'gn_editor'
     else if ($service = 'catalog.viewer') then 'gn_viewer'
     else if ($service = 'catalog.search'
-      or $service = 'catalog.search.nojs'
       or $service = 'search'
       or $service = 'md.format.html') then 'gn_search'
-    else if ($service = 'md.viewer') then 'gn_formatter_viewer'
+    else if ($service = 'display') then 'gn_formatter_viewer'
     else 'gn'"/>
 
   <xsl:variable name="customFilename" select="concat($angularApp, '_', $searchView)"></xsl:variable>
@@ -101,6 +97,9 @@
 
   <!-- URL for services - may not be defined FIXME or use fullURL instead -->
   <xsl:variable name="siteURL" select="/root/gui/siteURL"/>
+
+  <xsl:variable name="nodeUrl"
+                select="util:getSettingValue('nodeUrl')"/>
 
   <!-- URL for webapp root -->
   <xsl:variable name="baseURL" select="substring-before($siteURL,'/srv/')"/>

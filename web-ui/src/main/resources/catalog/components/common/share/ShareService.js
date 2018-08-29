@@ -39,7 +39,7 @@
       'editing': 'fa-pencil'},
     internalOperations: ['editing', 'notify'],
     internalGroups: [-1, 0, 1],
-    internalGroupsProfiles: ['Administrator', 'Reviewer'],
+    internalGroupsProfiles: ['Administrator', 'UserAdmin', 'Reviewer'],
     // Use topGroups to place those groups with internet, intranet groups
     // on top of the privileges panel.
     // TODO: Move config to DB using isTopGroups in groups table
@@ -76,7 +76,7 @@
           // Check if user is member of groupOwner
           // or check if user is Reviewer and can edit record
           var ownerGroupInfo = $.grep(privileges, function(g) {
-            return g.group === groupOwner ||
+            return g.group == groupOwner ||
                    (g.operations.editing &&
                     $.inArray('Reviewer', g.userProfiles) !== -1);
           });
@@ -179,7 +179,7 @@
             }
           }];
           return this.savePrivileges(
-              metadataId, bucket, privileges, user, !onOrOff);
+              metadataId, bucket, privileges, user, false);
         },
 
         /**

@@ -80,7 +80,7 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
         //--- force the creation of a new uuid
         params.setUuid(UUID.randomUUID().toString());
 
-        String id = settingMan.add("harvesting", "node", getType());
+        String id = harvesterSettingsManager.add("harvesting", "node", getType());
 
         storeNode(params, "id:" + id);
         Source source = new Source(params.getUuid(), params.getName(), params.getTranslations(), true);
@@ -101,7 +101,7 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
 
         String path = "harvesting/id:" + id;
 
-        settingMan.removeChildren(path);
+        harvesterSettingsManager.removeChildren(path);
 
         //--- update database
         storeNode(copy, path);
@@ -129,16 +129,16 @@ public class ThreddsHarvester extends AbstractHarvester<HarvestResult> {
         ThreddsParams params = (ThreddsParams) p;
         super.setParams(params);
 
-        settingMan.add("id:" + siteId, "url", params.url);
-        settingMan.add("id:" + siteId, "icon", params.icon);
-        settingMan.add("id:" + optionsId, "lang", params.lang);
-        settingMan.add("id:" + optionsId, "topic", params.topic);
-        settingMan.add("id:" + optionsId, "createServiceMd", params.createServiceMd);
-        settingMan.add("id:" + optionsId, "outputSchema", params.outputSchema);
-        settingMan.add("id:" + optionsId, "datasetTitle", params.datasetTitle);
-        settingMan.add("id:" + optionsId, "datasetAbstract", params.datasetAbstract);
-        settingMan.add("id:" + optionsId, "serviceCategory", params.serviceCategory);
-        settingMan.add("id:" + optionsId, "datasetCategory", params.datasetCategory);
+        harvesterSettingsManager.add("id:" + siteId, "url", params.url);
+        harvesterSettingsManager.add("id:" + siteId, "icon", params.icon);
+        harvesterSettingsManager.add("id:" + optionsId, "lang", params.lang);
+        harvesterSettingsManager.add("id:" + optionsId, "topic", params.topic);
+        harvesterSettingsManager.add("id:" + optionsId, "createServiceMd", params.createServiceMd);
+        harvesterSettingsManager.add("id:" + optionsId, "outputSchema", params.outputSchema);
+        harvesterSettingsManager.add("id:" + optionsId, "datasetTitle", params.datasetTitle);
+        harvesterSettingsManager.add("id:" + optionsId, "datasetAbstract", params.datasetAbstract);
+        harvesterSettingsManager.add("id:" + optionsId, "serviceCategory", params.serviceCategory);
+        harvesterSettingsManager.add("id:" + optionsId, "datasetCategory", params.datasetCategory);
     }
 
     //---------------------------------------------------------------------------
