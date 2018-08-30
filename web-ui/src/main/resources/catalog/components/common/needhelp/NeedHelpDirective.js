@@ -43,7 +43,7 @@
 
       // Help configuration TODO: move to an external file or db ?
       var helpLinks = {
-        helpBaseUrl: 'http://geonetwork-opensource.org/manuals/trunk/',
+        helpBaseUrl: 'http://geonetwork-opensource.org/manuals/2.10.4/',
         defaultLang: 'eng',
         pages: {
           editor: {
