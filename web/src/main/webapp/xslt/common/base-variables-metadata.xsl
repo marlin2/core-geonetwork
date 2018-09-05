@@ -98,7 +98,6 @@
     <!-- TODO only load for ISO profiles -->
     <xsl:call-template name="get-iso19139-configuration"/>
   </xsl:variable>
-<<<<<<< HEAD
   
   <xsl:variable name="tab" select="if (/root/request/currTab) then /root/request/currTab 
                                    else if (/root/gui/currTab) then /root/gui/currTab 
