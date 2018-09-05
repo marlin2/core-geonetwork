@@ -221,6 +221,8 @@
                   //  }
                   //  return defaultTab;
                   //}
+                  'iso19139.mcp': function(md) { return 'resourceCitation'; },
+                  'iso19139.mcp-2.0': function(md) { return 'resourceCitation'; }
                 };
                 if (schemaCustomConfig) {
                   var fn = schemaCustomConfig[$scope.mdSchema];
