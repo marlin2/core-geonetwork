@@ -313,7 +313,7 @@
     removeThumbnail: 'md.thumbnail.remove?_content_type=json&',
     removeOnlinesrc: 'resource.del.and.detach', // TODO: CHANGE
     suggest: 'suggest',
-    facetConfig: 'search/facet/config',
+    facetConfig: 'facet/config',
     selectionLayers: 'selection.layers',
 
     // wfs indexing

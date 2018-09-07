@@ -44,12 +44,12 @@ import java.util.Map;
  *
  * @author Jesse on 1/26/2015.
  */
-@Controller("search/facet/config")
+@Controller("facet/config")
 public class FacetsService {
     @Autowired
     private LuceneConfig luceneConfig;
 
-    @RequestMapping(value = "/{lang}/search/facet/config", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/{lang}/facet/config", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public Map<String, List<Facet>> getConfig() {
         Map<String, List<Facet>> results = Maps.newLinkedHashMap();
