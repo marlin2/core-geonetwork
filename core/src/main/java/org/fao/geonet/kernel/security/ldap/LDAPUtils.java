@@ -24,12 +24,14 @@ package org.fao.geonet.kernel.security.ldap;
 
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.domain.Language;
 import org.fao.geonet.domain.Group;
 import org.fao.geonet.domain.LDAPUser;
 import org.fao.geonet.domain.Profile;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.domain.UserGroup;
 import org.fao.geonet.repository.GroupRepository;
+import org.fao.geonet.repository.LanguageRepository;
 import org.fao.geonet.repository.UserGroupRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.repository.specification.UserGroupSpecs;
@@ -137,6 +139,11 @@ public class LDAPUtils {
 
             if (group == null && createNonExistingLdapGroup) {
                 group = new Group().setName(groupName);
+                LanguageRepository langRepository = ApplicationContextHolder.get().getBean(LanguageRepository.class);
+                java.util.List<Language> allLanguages = langRepository.findAll();
+                for (Language l : allLanguages) {
+                    group.getLabelTranslations().put(l.getId(),groupName);
+                }
                 group = groupRepo.save(group);
 
                 if (Log.isDebugEnabled(Geonet.LDAP)) {
