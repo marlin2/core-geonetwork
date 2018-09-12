@@ -269,6 +269,7 @@
     "metadataStatusUpdatedErrors": "Error occurs while updating status",
     "changeCategoryError": "Error occurs while updating category",
     "statusLogMessage": "Status message",
+    "noMessage": "No message",
     "publishToGroup": "Publish to group",
     "user": "User",
     "userDetails": "User details",
