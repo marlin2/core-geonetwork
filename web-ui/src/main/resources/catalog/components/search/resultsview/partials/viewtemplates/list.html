@@ -5,7 +5,7 @@
     <div class="media">
 
       <!--Edit button-->
-      <a class="pull-right  gn-md-edit-btn"
+      <a class="pull-right  gn-md-edit-btn" ng-disable="md.isLocked()"
          ng-href="catalog.edit#/metadata/{{md['geonet:info'].id}}"
          class="btn btn-link pull-right">
         <i class="fa fa-pencil"></i>

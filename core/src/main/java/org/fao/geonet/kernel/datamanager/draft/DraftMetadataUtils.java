@@ -250,33 +250,24 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
   }
 
   /**
-   * @see org.fao.geonet.kernel.datamanager.base.BaseMetadataUtils#startEditingSession(jeeves.server.context.ServiceContext,
+   * @see org.fao.geonet.kernel.datamanager.base.BaseMetadataUtils#createDraft(jeeves.server.context.ServiceContext,
    *      java.lang.String)
    * @param context
    * @param id
    * @throws Exception
    */
   @Override
-  public String startEditingSession(ServiceContext context, String id, Boolean lock) throws Exception {
+  public String createDraft(ServiceContext context, String id) throws Exception {
     Metadata md = getMetadataRepository().findOne(Integer.valueOf(id));
     MetadataDraft draftMd = null;
     boolean isApproved = false;
     UserSession userSession = context.getUserSession();
 
 
-    // id is not a draft so get status and check whether we have a draft with
-    // this uuid
-    if (md != null) { 
-        draftMd = mdDraftRepository.findOneByUuid(md.getUuid());
-        isApproved = (metadataStatus.getCurrentStatus(md.getId()).equals(Params.Status.APPROVED));
-
-    // check whether id is a draft
-		} else {  
-       draftMd = mdDraftRepository.findOne(Integer.valueOf(id));
-    }
+    isApproved = (metadataStatus.getCurrentStatus(md.getId()).equals(Params.Status.APPROVED));
 
     // if the record is approved and a draft doesn't exist then create one
-    if (md != null && draftMd == null && isApproved) { 
+    if (isApproved) { 
         Log.debug(Geonet.DATA_MANAGER, "Attempting to edit approved metadata with id "+id);
 
 
@@ -320,22 +311,15 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
           groupOwner = md.getSourceInfo().getGroupOwner().toString();
         }
 
-        id = createDraft(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString, false, md.getUuid());
-        lock = false;
+        id = createDraftRecord(context, id, groupOwner, source, owner, parentUuid, md.getDataInfo().getType().codeString, false, md.getUuid());
+        return id;
     }
 
-    // editing a draft record so make sure that the id is correct
-    if (md == null && draftMd != null) { 
-        id = Integer.toString(draftMd.getId());
-    }
+    throw new Exception("Creating a draft record on a record without APPROVED status is not allowed");
 
-    System.out.println("CONDITIONS: "+md+" draftMd: "+draftMd+" isApproved: "+isApproved+" Lockk: "+lock);
-
-    // now start the editing session 
-    return super.startEditingSession(context, id, lock);
   }
 
-  public String createDraft(ServiceContext context, String templateId, String groupOwner, String source, int owner,
+  private String createDraftRecord(ServiceContext context, String templateId, String groupOwner, String source, int owner,
       String parentUuid, String isTemplate, boolean fullRightsForGroup, String uuid) throws Exception {
     Metadata templateMetadata = getMetadataRepository().findOne(templateId);
     if (templateMetadata == null) {

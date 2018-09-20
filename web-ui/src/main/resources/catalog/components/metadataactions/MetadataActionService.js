@@ -111,6 +111,12 @@
         window.open(url, '_blank');
       };
 
+      this.editMetadata = function(id) {
+        var url = 'catalog.edit#/';
+        url += id;
+        window.open(url);
+      };
+
       /**
        * Export as PDF (one or selection). If params is search object, we check
        * for sortBy and sortOrder to process the print. If it is a string
@@ -224,6 +230,18 @@
           title: 'updateStatus',
           content: '<div data-gn-metadata-status-updater="md"></div>'
         }, scope, 'metadataStatusUpdated');
+      };
+
+      this.createDraft = function(md, scope) {
+        var defer = $q.defer();
+        $http.get('../api/records/' + md.getId() +'/createdraft')
+            .success(function(data) {
+              defer.resolve(data);
+            })
+            .error(function(data) {
+              defer.reject(data);
+            });
+        return defer.promise;
       };
 
       this.startWorkflow = function(md, scope) {

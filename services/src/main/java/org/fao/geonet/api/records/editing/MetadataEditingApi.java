@@ -105,6 +105,44 @@ public class MetadataEditingApi {
     LanguageUtils languageUtils;
 
 
+    @ApiOperation(value = "Create Draft",
+        notes = "Create a Draft or Working Copy of a metadata record.",
+        nickname = "createdraft")
+    @RequestMapping(value = "/{metadataUuid}/createdraft",
+        method = RequestMethod.GET,
+        consumes = {
+            MediaType.ALL_VALUE
+        },
+        produces = {
+            MediaType.TEXT_PLAIN_VALUE
+        })
+    @PreAuthorize("hasRole('Editor')")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "ID of created draft metadata record."),
+        @ApiResponse(code = 403, message = ApiParams.API_RESPONSE_NOT_ALLOWED_CAN_EDIT)
+    })
+    @ResponseBody
+    public String createDraft(
+        @ApiParam(value = API_PARAM_RECORD_UUID,
+            required = true)
+        @PathVariable
+            String metadataUuid,
+        @ApiParam(hidden = true)
+            HttpSession session,
+        @ApiIgnore
+        @ApiParam(hidden = true)
+        @RequestParam
+            Map<String,String> allRequestParams,
+        HttpServletRequest request
+        ) throws Exception {
+        ServiceContext context = ApiUtils.createServiceContext(request);
+        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        ApplicationContext applicationContext = ApplicationContextHolder.get();
+        
+        return applicationContext.getBean(IMetadataUtils.class).createDraft(context, String.valueOf(metadata.getId()));
+    };
+
     @ApiOperation(value = "Edit a record",
         notes = "Return HTML form for editing.",
         nickname = "editor")
@@ -155,7 +193,6 @@ public class MetadataEditingApi {
 
         ServiceContext context = ApiUtils.createServiceContext(request);
         ApplicationContext applicationContext = ApplicationContextHolder.get();
-        System.out.println("XStarting editing session "+starteditingsession);
         if (starteditingsession) {
             Integer id = Integer.valueOf(applicationContext.getBean(IMetadataUtils.class).startEditingSession(context, String.valueOf(metadata.getId()), true));
             metadata = applicationContext.getBean(IMetadataManager.class).getMetadataObject(id);

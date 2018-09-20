@@ -820,6 +820,11 @@ public class BaseMetadataUtils implements IMetadataUtils {
         }
     }
 
+    @Override
+    public String createDraft(ServiceContext context, String id) throws Exception {
+        throw new Exception("Not supported by BaseMetadataUtils!");
+    }
+
     public SetMultimap<Integer, ReservedOperation> loadOperationsAllowed(ServiceContext context,
             Specification<OperationAllowed> operationAllowedSpec) {
         final OperationAllowedRepository operationAllowedRepo = context.getBean(OperationAllowedRepository.class);

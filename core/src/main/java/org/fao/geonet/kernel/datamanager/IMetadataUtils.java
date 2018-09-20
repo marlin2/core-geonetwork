@@ -87,6 +87,8 @@ public interface IMetadataUtils {
 
         String getMetadataTitle(String id) throws Exception;
 
+        String createDraft(ServiceContext context, String id) throws Exception;
+
         void setSubtemplateTypeAndTitleExt(int id, String title) throws Exception;
 
         SetMultimap<Integer, ReservedOperation> loadOperationsAllowed(ServiceContext context,
