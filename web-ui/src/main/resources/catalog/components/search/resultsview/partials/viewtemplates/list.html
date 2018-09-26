@@ -4,12 +4,22 @@
       gn-fix-mdlinks="">
     <div class="media">
 
-      <!--Edit button-->
-      <a class="pull-right  gn-md-edit-btn" ng-disable="md.isLocked()"
+      <!--Edit button (create draft if status == 2 ie. approved) -->
+      <!--
+      <a class="pull-right  gn-md-edit-btn" ng-show="md.mdStatus !== '2'" 
+         ng-disable="md.isLocked()"
          ng-href="catalog.edit#/metadata/{{md['geonet:info'].id}}"
          class="btn btn-link pull-right">
         <i class="fa fa-pencil"></i>
       </a>
+      <a class="pull-right  gn-md-edit-btn" ng-show="md.mdStatus === '2'" 
+         ng-disable="md.isLocked()"
+         gn-confirm-click="{{'confirmCreateDraft' | translate}}"
+         ng-click="createDraftAndEditRecord(md)"
+         class="btn btn-link pull-right">
+        <i class="fa fa-pencil"></i>
+      </a>
+      -->
 
       <!-- Thumbnail -->
       <div class="pull-right gn-md-thumbnail" ng-if="md.getThumbnails().small">
