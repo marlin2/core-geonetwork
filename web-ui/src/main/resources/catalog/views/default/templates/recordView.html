@@ -78,14 +78,21 @@
       <span data-translate="" class="hidden-sm hidden-xs">delete</span>
     </a>
 
-       <!--
+    <a class="btn btn-primary gn-md-edit-btn pull-right" href
+       data-ng-show="user.canEditRecord(mdView.current.record) && mdView.current.record.mdStatus !== '2'"
+       data-ng-disabled="mdView.current.record.isLocked()"
        data-ng-href="catalog.edit#/metadata/{{mdView.current.record.getId()}}"
        data-ng-href="catalog.edit#/metadata/{{mdView.current.record.getId()}}?redirectUrl=catalog.search%23%2Fmetadata%2F{{mdView.current.record.getUuid()}}"
-       -->
-    <a class="btn btn-primary gn-md-edit-btn pull-right" href
-       data-ng-show="user.canEditRecord(mdView.current.record)"
+       title="{{'edit' | translate}}">
+      <i class="fa fa-pencil"></i>
+      <span data-translate="" class="hidden-sm hidden-xs">edit</span>
+    </a>
+
+    <a class="btn btn-primary gn-md-edit-btn pull-right"
+       data-ng-show="user.canEditRecord(mdView.current.record) && mdView.current.record.mdStatus === '2'"
        data-ng-disabled="mdView.current.record.isLocked()"
-       data-ng-click="editRecord(mdView.current.record)"
+       data-gn-confirm-click="{{'confirmCreateDraft' | translate}}"
+       data-ng-click="createDraftAndEditRecord(mdView.current.record)"
        title="{{'edit' | translate}}">
       <i class="fa fa-pencil"></i>
       <span data-translate="" class="hidden-sm hidden-xs">edit</span>
@@ -114,7 +121,6 @@
          id="gn-metadata-display"
          class="gn-metadata-display">
     </div>
-
 
     <div data-ng-show="!usingFormatter" class="gn-metadata-display">
 

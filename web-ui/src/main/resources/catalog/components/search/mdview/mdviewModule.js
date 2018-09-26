@@ -91,25 +91,17 @@
         });
       };
 
-      $scope.editRecord = function(md) {
-          if (md.mdStatus === '2') {
-              var r = confirm('This is an APPROVED record. Editing it will create a Draft/Working copy which must be submitted and reviewed. Press OK to continue or CANCEL.');
-              if (r === true) {
-                  // run the '/api/records/{{md.uuid}}/createdraft' service and get
-                  // the md draft id
-                  gnMetadataActions.createDraft(md).then(function(data) {
-                    console.log("Starting editor with "+data);
-                    gnMetadataActions.editMetadata(data);
-                  }, function(reason) {
-                    gnAlertService.addAlert({
-                      msg: reason.data,
-                      type: 'danger'
-                    });
-                  });
-              }
-          } else {
-             gnMetadataActions.editMetadata(md.getId());
-          }
+      $scope.createDraftAndEditRecord = function(md) {
+          // run the '/api/records/{{md.uuid}}/createdraft' service and get
+          // the md draft id
+          gnMetadataActions.createDraft(md).then(function(data) {
+              setTimeout(function() { gnMetadataActions.editMetadata(data); }.bind(gnMetadataActions), 2000);
+          }, function(reason) {
+              gnAlertService.addAlert({
+                  msg: reason.data,
+                  type: 'danger'
+              });
+          });
       };
 
       // activate the tabs in the advanded metadata view

@@ -112,9 +112,9 @@
       };
 
       this.editMetadata = function(id) {
-        var url = 'catalog.edit#/';
+        var url = 'catalog.edit#/metadata/';
         url += id;
-        window.open(url);
+        window.location.replace(url);
       };
 
       /**
