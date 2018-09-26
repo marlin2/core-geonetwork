@@ -200,8 +200,21 @@ public class DefaultStatusActions implements StatusActions {
                 // repo
                 String approvedId = mdUtils.getMetadataId(metadata.getUuid());
                	mdManager.updateMetadataOwner(Integer.parseInt(approvedId), session.getUserId(), metadata.getSourceInfo().getGroupOwner()+""); 
+                // but set editing permission on because we want users to be able to 
+                // edit it
+                setEditOperation(mid, metadata.getSourceInfo().getGroupOwner()+"");
             } else if (status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
+            } else if (status.equals(Params.Status.SUBMITTED)) {
+                // set owner to be the content reviewer if not already a reviewer
+                IMetadata metadata = mdManager.getMetadataObject(mid);
+                UserRepository userRepository = context.getBean(UserRepository.class);
+                User owner = userRepository.findOne(metadata.getSourceInfo().getOwner());
+                if (users.size() > 0) { // FIXME This is worrying! Seems that the repo query
+                                        // doesn't work here to find content reviewers
+                                        // for draft metadata records! FIXME
+                    mdManager.updateMetadataOwner(metadata.getId(), users.get(0).getId()+"", metadata.getSourceInfo().getGroupOwner()+"");
+                } 
             }
 
             // --- set status, indexing is assumed to take place later
@@ -249,6 +262,12 @@ public class DefaultStatusActions implements StatusActions {
                 mdOperations.forceSetOperation(context, mdId, theGroup, op.getId());
             }
         }
+    }
+
+    private void setEditOperation(int mdId, String editGroup) throws Exception {
+       int theGroup = Integer.parseInt(editGroup);
+       ReservedOperation eo = ReservedOperation.editing;
+       mdOperations.forceSetOperation(context, mdId, theGroup, eo.getId());
     }
 
     /**
