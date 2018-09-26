@@ -111,11 +111,6 @@
         window.open(url, '_blank');
       };
 
-      this.editMetadata = function(id) {
-        var url = 'catalog.edit#/metadata/';
-        url += id;
-        window.location.replace(url);
-      };
 
       /**
        * Export as PDF (one or selection). If params is search object, we check
@@ -243,6 +238,23 @@
             });
         return defer.promise;
       };
+
+      var editMetadata = function(id) {
+        var url = 'catalog.edit#/metadata/';
+        url += id;
+        window.location.replace(url);
+      };
+
+      this.createDraftAndEditRecord = function(md, scope) {
+          // run the '/api/records/{{md.uuid}}/createdraft' service and get
+          // the md draft id
+          this.createDraft(md).then(function(data) {
+              setTimeout(function() { editMetadata(data); }, 2000);
+          }, function(reason) {
+              alertResult(reason);
+          });
+      };
+
 
       this.startWorkflow = function(md, scope) {
         return $http.put('../api/records/' + md.getId() +

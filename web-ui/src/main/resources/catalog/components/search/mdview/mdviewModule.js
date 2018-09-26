@@ -91,19 +91,6 @@
         });
       };
 
-      $scope.createDraftAndEditRecord = function(md) {
-          // run the '/api/records/{{md.uuid}}/createdraft' service and get
-          // the md draft id
-          gnMetadataActions.createDraft(md).then(function(data) {
-              setTimeout(function() { gnMetadataActions.editMetadata(data); }.bind(gnMetadataActions), 2000);
-          }, function(reason) {
-              gnAlertService.addAlert({
-                  msg: reason.data,
-                  type: 'danger'
-              });
-          });
-      };
-
       // activate the tabs in the advanded metadata view
       $scope.activateTabs = function() {
 
