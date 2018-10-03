@@ -56,7 +56,8 @@
        'gn_directory_controller', 'gn_utility_directive',
        'gn_scroll_spy', 'gn_thesaurus', 'gn_topiccategory',
        'ui.bootstrap.datetimepicker',
-       'ngRoute', 'gn_mdactions_service', 'pascalprecht.translate']);
+       'ngRoute', 'gn_mdactions_service', 'pascalprecht.translate',
+       'gn_commons']);
 
   var tplFolder = '../../catalog/templates/editor/';
 
