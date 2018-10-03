@@ -210,11 +210,32 @@ public class DefaultStatusActions implements StatusActions {
                 IMetadata metadata = mdManager.getMetadataObject(mid);
                 UserRepository userRepository = context.getBean(UserRepository.class);
                 User owner = userRepository.findOne(metadata.getSourceInfo().getOwner());
-                if (users.size() > 0) { // FIXME This is worrying! Seems that the repo query
-                                        // doesn't work here to find content reviewers
-                                        // for draft metadata records! FIXME
+                
+                // now get the id of the approved record if the record is a draft and
+                // make sure the content reviewers are added
+                if (metadata instanceof MetadataDraft) {
+                  String mId = metadata.getDataInfo().getExtra();
+                  try {
+                    Integer metadataId = Integer.parseInt(mId);
+                    Set<Integer> extraIds = new HashSet<Integer>();
+                    extraIds.add(metadataId);
+                    List<User> extraReviewers = getContentReviewers(extraIds); 
+                    List<User> newUsers = new ArrayList<>(users);
+                    for (User u : extraReviewers) {
+                       if (!newUsers.contains(u)) newUsers.add(u);
+                    }
+                    users = newUsers;
+                  } catch (Exception e) {
+                    // No extra info with id of approved record so we flag this
+                    context.error("Could not find id of approved record in extra info for metadata "+mid+", "+e.getMessage());
+                    e.printStackTrace();
+                  }
+                }
+                if (users.size() > 0) { 
                     mdManager.updateMetadataOwner(metadata.getId(), users.get(0).getId()+"", metadata.getSourceInfo().getGroupOwner()+"");
-                } 
+                } else { // shouldn't happen now
+                    context.error("Nobody to inform about status change to approved for metadata record "+mid);
+                }
             }
 
             // --- set status, indexing is assumed to take place later

@@ -334,8 +334,7 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
     }
     final MetadataDraft newMetadata = new MetadataDraft();
     newMetadata.setUuid(uuid);
-    newMetadata.getDataInfo().setChangeDate(new ISODate()).setCreateDate(new ISODate()).setSchemaId(schema)
-        .setType(MetadataType.lookup(isTemplate));
+    newMetadata.getDataInfo().setChangeDate(new ISODate()).setCreateDate(new ISODate()).setSchemaId(schema).setType(MetadataType.lookup(isTemplate)).setExtra(templateId);
     if (groupOwner != null) {
       newMetadata.getSourceInfo().setGroupOwner(Integer.valueOf(groupOwner));
     }
