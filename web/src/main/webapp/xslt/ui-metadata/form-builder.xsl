@@ -162,7 +162,7 @@
         </div>
       </xsl:when>
       <xsl:otherwise>
-
+        <xsl:variable name="labelValue" select="if ($label/label) then $label/label else $label"/>
         <div
           class="form-group gn-field gn-{substring-after(name(), ':')} {if ($isRequired) then 'gn-required' else ''} {if ($label/condition) then concat('gn-', $label/condition) else ''} {if ($isFirst) then '' else 'gn-extra-field'}"
           id="gn-el-{$editInfo/@ref}"
@@ -170,7 +170,7 @@
           <label
             for="gn-field-{$editInfo/@ref}"
             class="col-sm-2 control-label">
-            <xsl:value-of select="$label/label"/>
+            <xsl:value-of select="$labelValue"/>
           </label>
 
           <div class="col-sm-9 gn-value nopadding-in-table">
