@@ -116,11 +116,11 @@ abstract class AbstractFormatService {
         }
 
         if (!Files.exists(formatDir)) {
-            throw new BadParameterEx(paramName, "Format bundle " + xslid + " does not exist");
+            throw new BadParameterEx(paramName, "Format bundle " + xslid + " does not exist in "+formatDir);
         }
 
         if (!Files.isDirectory(formatDir)) {
-            throw new BadParameterEx(paramName, "Format bundle " + xslid + " is not a directory");
+            throw new BadParameterEx(paramName, "Format bundle " + xslid + " is not a directory: should be "+formatDir);
         }
 
         if (!Files.exists(formatDir.resolve(VIEW_XSL_FILENAME)) &&
