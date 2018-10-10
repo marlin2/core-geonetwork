@@ -533,7 +533,6 @@
       };
 
       $scope.releaseLock = function(metadataId) {
-        if(confirm($translate('releaseLockMessage'))) {
           return $http.delete('../api/records/' + metadataId +
               '/releaseLock'
           ).then(
@@ -544,7 +543,6 @@
                       $scope.locks = response.data;
                       });
               });
-        }
       };
   
       $http.get('../api/records/all/locks'

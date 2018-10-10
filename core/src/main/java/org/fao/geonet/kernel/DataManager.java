@@ -142,12 +142,14 @@ public class DataManager {
             UserSession session = new UserSession();
             context.setUserSession(session);
             session.loginAs(new User().setUsername("admin").setId(-1).setProfile(Profile.Administrator));
+            /*
             try {
                 Log.debug(Geonet.DATA_MANAGER, "Hopefully this is cron job or routinely background task. Who called us?",
                         new Exception("Dummy Exception to know the stacktrace"));
             } catch (Exception e) {
                 // Silent. This is just to log the stacktrace here
             }
+            */
         }
     }
 

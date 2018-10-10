@@ -1116,7 +1116,7 @@
     "ui": "User interface",
     "logActivity" : "Activity",
     "releaseLock" : "Release Lock",
-    "releaseLockMessage" : "You are about to release a lock on this metadata editing session. This may cause problems to the current editing session. Are you sure?",
+    "releaseLockMessage" : "You are about to release a lock on this metadata editing session. This may cause problems for anyone editing this record. Are you sure?",
     "selectExistingLogo": "Select from existing logos",
     "serviceUrlHelp": "Web service URL without GetCapabilities parameters",
     "serviceTypeHelp": "Service type",

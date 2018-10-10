@@ -35,7 +35,15 @@
 
       var delay = 2000;
       this.addAlert = function(alert, d) {
-        gnAlertValue.push(alert);
+        if (angular.isObject(alert.msg)) {
+          var newAlert = {
+             msg: (alert.msg.description) ? alert.msg.description : 'Unknown message!',
+             type: alert.type
+          }
+          gnAlertValue.push(newAlert);
+        } else {
+          gnAlertValue.push(alert);
+        }
 
         $timeout(function() {
           gnAlertValue.splice(0, 1);
