@@ -175,6 +175,7 @@ public class GeonetLessCompilerProcessor extends Less4jProcessor {
                 final String customLessVariables = getCustomLessVariables();
                 final String stringReader = IOUtils.toString(reader) + customLessVariables;
                 final LessSource lessSource = new RelativeAwareLessSource(resource, stringReader, locatorFactory);
+                System.out.println("Processing : "+resource.getUri());
                 final CompilationResult result = compiler.compile(lessSource);
                 logWarnings(result);
                 writer.write(result.getCss());
