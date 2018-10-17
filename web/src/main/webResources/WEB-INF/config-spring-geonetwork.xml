@@ -116,6 +116,7 @@
     -->
   </util:map>
 
+  <!-- these are the wro4j urls that GN initializes at startup -->
   <util:list id="wro4jUrlsToInitialize" value-type="java.lang.String">
     <value>lib.js</value>
     <value>nv.d3.css</value>
