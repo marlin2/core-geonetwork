@@ -23,6 +23,7 @@
 
 package org.fao.geonet.domain;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -36,12 +37,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.lucene.document.Document;
 import org.fao.geonet.entitylistener.MetadataEntityListenerManager;
+import org.fao.geonet.domain.userfeedback.UserFeedback;
 
 /**
  * @See {@link IMetadata}
@@ -56,6 +59,7 @@ public class Metadata extends IMetadata {
 
     private static final long serialVersionUID = -5557599895424227101L;
     public static final String TABLENAME = "Metadata";
+    private List<UserFeedback> userFeedbacks;
 
     public Metadata() {
         super();
@@ -92,4 +96,14 @@ public class Metadata extends IMetadata {
     protected void setMetadataCategories(@Nonnull Set<MetadataCategory> categories) {
         this.metadataCategories = categories;
     }
+
+    @OneToMany(mappedBy="metadata", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<UserFeedback> getUserFeedbacks() {
+        return userFeedbacks;
+    }
+
+    public void setUserFeedbacks(@Nonnull List<UserFeedback> userFeedbacks) {
+        this.userFeedbacks = userFeedbacks;
+    }
+
 }

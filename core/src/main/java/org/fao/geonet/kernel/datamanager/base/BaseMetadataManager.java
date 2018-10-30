@@ -341,9 +341,6 @@ public class BaseMetadataManager implements IMetadataManager {
         // --- remove operations
         metadataOperations.deleteMetadataOper(context, id, false);
 
-        //--- remove user comments
-        deleteMetadataUserFeedback_byMetadataId(context, metadataUtils.getMetadataUuid(id));
-
         int intId = Integer.parseInt(id);
         metadataRatingByIpRepository.deleteAllById_MetadataId(intId);
         metadataValidationRepository.deleteAllById_MetadataId(intId);
@@ -363,14 +360,6 @@ public class BaseMetadataManager implements IMetadataManager {
 
         // --- remove metadata
         getXmlSerializer().delete(id, context);
-    }
-
-    /**
-     * Removes all userfeedbacks associated with metadata.
-     */
-    public void deleteMetadataUserFeedback_byMetadataId(ServiceContext context, String metadataUUId) throws Exception {
-        UserFeedbackRepository userfeedbackRepository = context.getBean(UserFeedbackRepository.class);
-        userfeedbackRepository.deleteByMetadata_Uuid(metadataUUId);
     }
 
     private XmlSerializer getXmlSerializer() {
