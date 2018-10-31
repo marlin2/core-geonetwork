@@ -28,10 +28,11 @@
 
   module.service('gnSearchLocation', [
     '$location',
+    '$window',
     '$rootScope',
     '$timeout',
     'gnGlobalSettings',
-    function($location, $rootScope, $timeout, gnGlobalSettings) {
+    function($location, $window, $rootScope, $timeout, gnGlobalSettings) {
 
       this.SEARCH = '/search';
       this.MAP = '/map';
@@ -113,6 +114,9 @@
         if (params) {
           $location.search(params);
         }
+        // Now refresh the page
+        $window.location.href = $location.absUrl();
+        $window.location.reload();
       };
       this.removeParams = function() {
         $location.search('');
