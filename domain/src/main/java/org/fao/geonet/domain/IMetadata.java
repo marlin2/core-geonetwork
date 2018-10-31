@@ -23,6 +23,7 @@
 package org.fao.geonet.domain;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,7 +69,7 @@ import com.vividsolutions.jts.util.Assert;
  * @author María Arias de Reyna
  */
 @MappedSuperclass 
-public class IMetadata extends GeonetEntity {
+public class IMetadata extends GeonetEntity implements Serializable {
     static final String ID_SEQ_NAME = "metadata_id_seq";
     public static final String METADATA_CATEG_JOIN_TABLE_NAME = "MetadataCateg";
     public static final String METADATA_CATEG_JOIN_TABLE_CATEGORY_ID = "categoryId";
