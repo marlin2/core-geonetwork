@@ -52,7 +52,7 @@
         </h4>
         <p class="text-justify" dd-text-collapse dd-text-collapse-max-length="350"
            dd-text-collapse-text="{{md.abstract || md.defaultAbstract}}"></p>
-        <div class="pull-left" ng-if="user.isEditorOrMore()">
+        <div ng-if="user.isEditorOrMore()">
         	<p class="text-justify" ng-if="md.mdStatus > 1">
             <b>Status: </b>
             <span ng-if="md.mdStatus==2">Approved</span>
@@ -60,6 +60,9 @@
         	  <span ng-if="md.mdStatus==4">Submitted</span>
         	  <span ng-if="md.mdStatus==5">Rejected</span>
           </p>
+        	<p class="text-justify">
+            <b>Owner: </b>
+            <span>{{md.getOwnername()}}</span>
         </div>
         <div class="pull-right" ng-if="user.isEditorOrMore()">
         	<p class="text-justify" ng-if="md.draft=='Y'"><i>Working Copy</i></p>
