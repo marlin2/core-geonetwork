@@ -42,6 +42,7 @@ import org.fao.geonet.repository.SortUtils;
 import org.fao.geonet.repository.StatusValueRepository;
 import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.util.MailSender;
+import org.fao.geonet.util.MailUtil;
 import org.fao.geonet.util.XslUtil;
 
 import org.springframework.context.ApplicationContext;
@@ -480,11 +481,25 @@ public class DefaultStatusActions implements StatusActions {
             changeMessage, mdChanged, siteUrl, status, changeDate);
 
         if (!emailNotes) {
-            context.info("Would send email \nTo: " + sendTo + "\nSubject: " + subject + "\n Message:\n" + message);
+            context.info("Would send email To: " + sendTo + 
+                         "\nSubject: " + subject + 
+                         "\nMessage:\n" + message);
         } else {
+            context.info("Would send email To: " + sendTo + 
+                         "\nFrom: " + from + " ("+fromDescr+")"+
+                         "\nReplyTo: " + replyTo + " ("+replyToDescr+")"+
+                         "\nSubject: " + subject + 
+                         "\nMessage:\n" + message);
+            List<String> toAddress = new ArrayList<String>();
+            toAddress.add(sendTo);
+            ApplicationContext applicationContext = ApplicationContextHolder.get();
+            SettingManager sm = applicationContext.getBean(SettingManager.class);
+            Boolean result = MailUtil.sendMail(toAddress, subject, message, null, sm, replyTo, replyToDescr);
+/*
             MailSender sender = new MailSender(context);
             sender.sendWithReplyTo(host, Integer.parseInt(port), username, password, useSSL, useTLS,
                 ignoreSslCertificateErrors, from, fromDescr, sendTo, null, replyTo, replyToDescr, subject, message);
+*/
         }
     }
 }
