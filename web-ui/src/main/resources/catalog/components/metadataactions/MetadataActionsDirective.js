@@ -75,7 +75,7 @@
             }
             return $http.put('../api/records/' + metadataId +
                 '/status?status=' + scope.newStatus.value +
-                '&comment=' + (scope.changeMessage || '') +
+                '&comment=' + (scope.changeMessage || 'No comment.') +
                 '&publishGroups=' + publishGroups.join()
             ).then(
                 function(data) {
