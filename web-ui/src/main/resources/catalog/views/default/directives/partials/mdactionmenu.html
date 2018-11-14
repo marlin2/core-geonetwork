@@ -25,7 +25,7 @@
         </a></li>
       <!-- TODO: Some installation only allows status update
       based on current status. -->
-      <li data-ng-class="((allowPublishInvalidMd() === true) || 
+      <li data-ng-if="md.isOwned()" data-ng-class="((allowPublishInvalidMd() === true) || 
             ((allowPublishInvalidMd() === false) &&
             (!md.hasValidation() || (md.hasValidation() && md.isValid())))) ? '' : 'disabled'">
         <a data-ng-href=""
@@ -49,12 +49,13 @@
         <i class="fa fa-copy"></i>&nbsp;
         <span data-translate="">duplicate</span>
       </a></li>
+      <!-- disable createChild
       <li><a data-ng-href=""
              data-ng-if="user.isEditorOrMore()"
              data-ng-click="mdService.createChild(md)">
         <i class="fa fa-sitemap"></i>&nbsp;
         <span data-translate="">createChild</span>
-      </a></li>
+      </a></li> -->
     </ul>
   </div>
   <div class="btn-group md-actions">
