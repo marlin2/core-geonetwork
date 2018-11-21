@@ -235,7 +235,7 @@ public class MEFLib {
         record.removeChildren("data");
         boolean forEditing = false;
         boolean withEditorValidationErrors = false;
-        Element metadata = dm.getMetadata(context, id, forEditing, withEditorValidationErrors, !removeXlinkAttribute);
+        Element metadata = dm.getMetadata(context, id, forEditing, withEditorValidationErrors, resolveXlink, !removeXlinkAttribute);
         metadata.removeChild("info", Edit.NAMESPACE);
         Element mdEl = new Element("data").setText(Xml.getString(metadata));
         record.addContent(mdEl);

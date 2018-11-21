@@ -1708,6 +1708,17 @@ public class DataManager {
         return getMetadata(srvContext, dbms, id, forEditing, withEditorValidationErrors, keepXlinkAttributes);
     }
 
+    public Element getMetadata(ServiceContext srvContext, String id, boolean forEditing, boolean withEditorValidationErrors, boolean resolveXLinks, boolean keepXlinkAttributes) throws Exception {
+        Dbms dbms = (Dbms) srvContext.getResourceManager().open(Geonet.Res.MAIN_DB);
+
+        return getMetadata(srvContext, dbms, id, forEditing, withEditorValidationErrors, resolveXLinks, keepXlinkAttributes);
+    }
+
+    public Element getMetadata(ServiceContext srvContext, Dbms dbms, String id, boolean forEditing, boolean withEditorValidationErrors, boolean keepXlinkAttributes) throws Exception {
+        boolean doXLinks = xmlSerializer.resolveXLinks();
+        return getMetadata(srvContext, dbms, id, forEditing, withEditorValidationErrors, doXLinks, keepXlinkAttributes);
+    }
+
     /**
      * Retrieves a metadata (in xml) given its id; adds editing information if requested and validation errors if
      * requested.
@@ -1721,8 +1732,12 @@ public class DataManager {
      * @return
      * @throws Exception
      */
-    public Element getMetadata(ServiceContext srvContext, Dbms dbms, String id, boolean forEditing, boolean withEditorValidationErrors, boolean keepXlinkAttributes) throws Exception {
+    public Element getMetadata(ServiceContext srvContext, Dbms dbms, String id, boolean forEditing, boolean withEditorValidationErrors, boolean resolveXLinks, boolean keepXlinkAttributes) throws Exception {
         boolean doXLinks = xmlSerializer.resolveXLinks();
+        if (resolveXLinks != doXLinks) {
+          Log.error(Geonet.DATA_MANAGER, "NOTE: Overriding xlink setting "+ doXLinks +" with "+resolveXLinks);
+          doXLinks = resolveXLinks; // override
+        }
         Element md = xmlSerializer.selectNoXLinkResolver(dbms, "Metadata", id, false);
         if (md == null) return null;
 
