@@ -104,6 +104,7 @@
     <entry key="hibernate.cache.region.factory_class"
            value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
     <entry key="hibernate.jdbc.batch_size" value="3"/>
+    <entry key="hibernate.jdbc.fetch_size" value="100"/>
     <entry key="hibernate.jdbc.batch_versioned_data" value="true"/>
     <entry key="hibernate.enable_lazy_load_no_trans" value="true"/>
     <!-- If a specific schema has to be used
