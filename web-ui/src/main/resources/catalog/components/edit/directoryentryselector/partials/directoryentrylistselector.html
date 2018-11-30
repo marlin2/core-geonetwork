@@ -52,13 +52,21 @@
     </div> -->
   </div>
   <div class="row bottom-bar">
-    <div class="col-md-12">
+    <div class="col-md-12" ng-if="!isContact">
       <div class="btn btn-default"
-           data-ng-hide="isContact"
+           data-ng-show="insertAsText"
            data-gn-click-and-spin="addSelectedEntry()"
            data-ng-class="{'disabled': (stateObj.selectRecords.length < 1)}">
         <i class="fa fa-plus"></i>
       </div>
+      <div class="btn btn-default"
+           data-ng-show="insertAsXlink"
+           data-gn-click-and-spin="addSelectedEntry(undefined, true)"
+           data-ng-class="{'disabled': (stateObj.selectRecords.length < 1)}">
+        <i class="fa fa-link"></i>
+      </div>
+    </div>
+    <div class="col-md-12" ng-if="isContact">
 
       <div class="btn btn-default"
            data-ng-show="isContact && !hasDynamicVariable"
@@ -108,6 +116,7 @@
 
 
       </div>
+
       <div data-ng-show="gnConfig[gnConfig.key.isXLinkEnabled]"
            title="{{'addContactAsLink-help' | translate}}"
            class="btn-group dropup">
