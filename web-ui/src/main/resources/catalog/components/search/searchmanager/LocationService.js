@@ -114,10 +114,16 @@
         if (params) {
           $location.search(params);
         }
+      };
+
+      this.setSearchAndRefresh = function(params) { 
+        this.setSearch(params);
+
         // Now refresh the page
         $window.location.href = $location.absUrl();
         $window.location.reload();
       };
+
       this.removeParams = function() {
         $location.search('');
       };
@@ -130,8 +136,12 @@
         $location.search({});
       };
 
-      this.restoreSearch = function() {
-        this.setSearch(state.lastSearchParams);
+      this.restoreSearch = function(refresh) {
+        if (refresh) {
+          this.setSearchAndRefresh(state.lastSearchParams);
+        } else {
+          this.setSearch(state.lastSearchParams);
+        }
 
         //Wait all location search are triggered
         $timeout(function() {

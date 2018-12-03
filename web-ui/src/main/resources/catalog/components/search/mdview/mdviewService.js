@@ -114,7 +114,7 @@
           gnSearchLocation.path(gnMdViewObj.from);
         }
         else {
-          gnSearchLocation.restoreSearch();
+          gnSearchLocation.restoreSearch(true);
         }
       };
 
