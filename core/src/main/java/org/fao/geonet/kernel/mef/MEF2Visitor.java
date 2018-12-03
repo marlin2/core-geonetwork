@@ -76,6 +76,7 @@ public class MEF2Visitor implements IVisitor {
                     for (Path file : paths) {
                         if (Files.isDirectory(file)) {
                             // Handle metadata file
+                            log.debug("Processing : "+file);
                             Path metadataDir = file.resolve("metadata");
 
                             if (IO.isEmptyDir(metadataDir)) {

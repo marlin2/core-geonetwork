@@ -618,7 +618,9 @@ public class Importer {
 
         String metadataId = mdManager.insertMetadata(context, schema, md.get(index), uuid, userid, groupId, source, isTemplate.codeString, docType, category, createDate, changeDate, ufo, indexImmediate);
 
-        mdStatus.activateWorkflowIfConfigured(context, metadataId, groupId);
+        // Disable as causes oracle to run out of cursors......records should have
+        // their status set manually in any case - assuming draft is not ideal
+        //mdStatus.activateWorkflowIfConfigured(context, metadataId, groupId);
 
         id.add(index, metadataId);
 
