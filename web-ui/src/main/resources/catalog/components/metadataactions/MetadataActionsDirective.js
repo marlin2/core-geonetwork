@@ -89,9 +89,8 @@
                 }, function(data) {
                   scope.$emit('metadataStatusUpdated', false);
                   scope.$emit('StatusUpdated', {
-                    title: $translate.instant('metadataStatusUpdatedErrors'),
-                    error: data,
-                    timeout: 0,
+                    msg: $translate.instant('metadataStatusUpdatedErrors'),
+                    timeout: 4,
                     type: 'danger'});
                 });
           };
