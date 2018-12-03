@@ -294,9 +294,15 @@
                   }
                 });
 
+                // stop the back button from destroying the editor session
+                $scope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+                     event.preventDefault();
+                });
+
                 window.onbeforeunload = function() {
                   // TODO: could be better to provide
-                  // cancelAndClose and saveAndClose button
+                  // cancelAndClose and saveAndClose button but won't work as you can't do
+                  // ajax etc from here. Also what we return here is often ignored.....
                   return $translate.instant('beforeUnloadEditor',
                       {timeAgo: moment(gnCurrentEdit.savedTime).fromNow()});
                 };
