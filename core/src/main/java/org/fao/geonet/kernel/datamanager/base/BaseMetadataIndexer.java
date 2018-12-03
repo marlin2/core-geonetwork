@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
@@ -64,6 +65,7 @@ import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.repository.userfeedback.UserFeedbackRepository;
 import org.fao.geonet.resources.Resources;
 import org.fao.geonet.util.ThreadUtils;
+import org.fao.geonet.Util;
 import org.fao.geonet.utils.IO;
 import org.fao.geonet.utils.Log;
 import org.jdom.Attribute;
@@ -371,7 +373,7 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
             final MetadataType metadataType = fullMd.getDataInfo().getType();
             final String root = fullMd.getDataInfo().getRoot();
             final String uuid = fullMd.getUuid();
-            final String extra = fullMd.getDataInfo().getExtra();
+            final Map<String,String> extra = fullMd.getDataInfo().getExtra();
             final String isHarvested = String.valueOf(Constants.toYN_EnabledChar(fullMd.getHarvestInfo().isHarvested()));
             final String owner = String.valueOf(fullMd.getSourceInfo().getOwner());
             final Integer groupOwner = fullMd.getSourceInfo().getGroupOwner();
@@ -387,7 +389,7 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
             }
 
             addMoreFields(fullMd, moreFields, id$, schema, createDate,
-                    changeDate, source, metadataType, root, uuid, extra,
+                    changeDate, source, metadataType, root, uuid, Util.mapToQueryStr(extra),
                     isHarvested, owner, groupOwner, popularity, rating,
                     displayOrder, draft);
 

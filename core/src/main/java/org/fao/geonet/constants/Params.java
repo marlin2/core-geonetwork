@@ -160,6 +160,9 @@ public final class Params {
 
     public static final String ENABLED = "enabled";
 
+    public static final String APPROVEDMID = "approvedmid";
+    public static final String PREVIOUSOWNER = "prevowner";
+
     /**
      * TODO javadoc.
      */

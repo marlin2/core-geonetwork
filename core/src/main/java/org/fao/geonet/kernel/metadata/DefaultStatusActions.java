@@ -184,7 +184,7 @@ public class DefaultStatusActions implements StatusActions {
             // --- if the status is already set to value of status then do nothing
             if (status.equals(currentStatus)) {
                 if (context.isDebugEnabled())
-                    context.debug("Metadata " + mid + " already has status " + mid);
+                    context.debug("Metadata " + mid + " already has status " + currentStatus);
                 unchanged.add(mid);
             }
 
@@ -204,18 +204,40 @@ public class DefaultStatusActions implements StatusActions {
                 // but set editing permission on because we want users to be able to 
                 // edit it
                 setEditOperation(mid, metadata.getSourceInfo().getGroupOwner()+"");
-            } else if (status.equals(Params.Status.REJECTED) || status.equals(Params.Status.RETIRED)) {
+            } else if (status.equals(Params.Status.REJECTED)) {
+                unsetAllOperations(mid);
+                IMetadata metadata = mdManager.getMetadataObject(mid);
+                UserRepository userRepository = context.getBean(UserRepository.class);
+                Map<String,String> extra = metadata.getDataInfo().getExtra();
+                String oldOwner = extra.get(Params.PREVIOUSOWNER);
+                if (oldOwner != null) {
+                   User owner = userRepository.findOne(oldOwner);
+                   if (users == null) users = new ArrayList<User>();
+                   mdManager.updateMetadataOwner(mid, owner.getId()+"", metadata.getSourceInfo().getGroupOwner()+"");
+                   users.add(owner); // for later when sending emails
+                } else {
+                   context.error("Could not find previous owner of metadata record "+ mid);
+                   continue;
+                }
+            } else if (status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
             } else if (status.equals(Params.Status.SUBMITTED)) {
                 // set owner to be the content reviewer if not already a reviewer
                 IMetadata metadata = mdManager.getMetadataObject(mid);
                 UserRepository userRepository = context.getBean(UserRepository.class);
                 User owner = userRepository.findOne(metadata.getSourceInfo().getOwner());
+                Map<String,String> extra = metadata.getDataInfo().getExtra();
+                if (extra == null) { 
+                  extra = new HashMap<String,String>();
+                }
+                extra.put(Params.PREVIOUSOWNER, owner.getId()+"");
+                metadata.getDataInfo().setExtra(extra);
+                mdManager.save(metadata);
                 
                 // now get the id of the approved record if the record is a draft and
                 // make sure the content reviewers are added
                 if (metadata instanceof MetadataDraft) {
-                  String mId = metadata.getDataInfo().getExtra();
+                  String mId = extra.get(Params.APPROVEDMID);
                   try {
                     Integer metadataId = Integer.parseInt(mId);
                     Set<Integer> extraIds = new HashSet<Integer>();
@@ -246,8 +268,8 @@ public class DefaultStatusActions implements StatusActions {
         // --- inform content reviewers if the status is submitted
         if (status.equals(Params.Status.SUBMITTED)) {
             informContentReviewers(metadataIds, users, changeDate.toString(), changeMessage);
-            // --- inform owners if status is approved
-        } else if (status.equals(Params.Status.APPROVED) || status.equals(Params.Status.REJECTED)) {
+            // --- inform owners if status is approved and someone is there to inform
+        } else if ((status.equals(Params.Status.APPROVED) || status.equals(Params.Status.REJECTED)) && users.size() > 0) {
             informOwners(metadataIds, users, changeDate.toString(), changeMessage, status);
         }
 

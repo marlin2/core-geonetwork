@@ -28,6 +28,14 @@ import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+import java.nio.charset.StandardCharsets;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 
 import org.fao.geonet.exceptions.BadInputEx;
 import org.fao.geonet.exceptions.BadParameterEx;
@@ -286,6 +294,19 @@ public final class Util {
                 element.setName(element.getName().toLowerCase());
             }
         }
+    }
+
+    public static String mapToQueryStr(Map<String,String> map) {
+        String result = null;
+        if (map != null && map.size() > 0) {
+          List<NameValuePair> nvpList = new ArrayList<>(map.size());
+
+          for (Map.Entry<String, String> entry : map.entrySet()) {
+             nvpList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+          }
+          result = URLEncodedUtils.format(nvpList, StandardCharsets.UTF_8);
+        } 
+        return result;
     }
 
 }

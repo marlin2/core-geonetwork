@@ -390,16 +390,10 @@ public class MetadataInsertDeleteApi {
             required = false
         )
         String schema,
-        @ApiParam(
-            value = "(experimental) Add extra information to the record.",
-            required = false)
-        @RequestParam(
-            required = false
-        )
-        final String extra,
         HttpServletRequest request
     )
         throws Exception {
+        String extra = null;
         if (url == null && xml == null && serverFolder == null) {
             throw new IllegalArgumentException(String.format(
                 "XML fragment or a URL or a server folder MUST be provided."));
@@ -843,16 +837,10 @@ public class MetadataInsertDeleteApi {
             required = false
         )
         String schema,
-        @ApiParam(
-            value = "(experimental) Add extra information to the record.",
-            required = false)
-        @RequestParam(
-            required = false
-        )
-        final String extra,
         HttpServletRequest request
     )
         throws Exception {
+        String extra = null;
         if (file == null) {
             throw new IllegalArgumentException(String.format(
                 "A file MUST be provided."));
@@ -1257,6 +1245,8 @@ public class MetadataInsertDeleteApi {
             }
         }
 
+        /* We are using extra for important parts of the workflow so we don't allow update
+           to extra through the api 
         if (extra != null) {
             context.getBean(MetadataRepository.class).update(iId, new Updater<Metadata>() {
                 @Override
@@ -1267,6 +1257,7 @@ public class MetadataInsertDeleteApi {
                 }
             });
         }
+        */
 
         appContext.getBean(IMetadataIndexer.class).indexMetadata(id.get(0), true, null);
         return Pair.read(Integer.valueOf(id.get(0)), uuid);

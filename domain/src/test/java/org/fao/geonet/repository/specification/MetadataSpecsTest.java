@@ -38,7 +38,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -256,13 +258,17 @@ public class MetadataSpecsTest extends AbstractSpringDataTest {
     @Test
     public void testHasExtra() throws Exception {
         final Metadata entity = newMetadata(_inc);
-        final String extra = "extra data";
+        final Map<String,String> extra = new HashMap<String,String>();
+        extra.put("extradata","2");
         entity.getDataInfo().setExtra(extra);
         Metadata md1 = _repository.save(entity);
 
         assertFindsCorrectMd(md1, hasExtra(extra), true);
 
-        assertEquals(0, _repository.count(hasExtra("wrong extra")));
+        
+        final Map<String,String> wextra = new HashMap<String,String>();
+        wextra.put("extradata","wrong");
+        assertEquals(0, _repository.count(hasExtra(wextra)));
     }
 
     private void assertFindsCorrectMd(Metadata md1, Specification<Metadata> spec, boolean addNewMetadata) {

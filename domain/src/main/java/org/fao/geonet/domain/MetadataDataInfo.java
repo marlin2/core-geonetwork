@@ -29,8 +29,11 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+
+import java.util.Map;
 
 /**
  * Encapsulates the metadata about a metadata document. (title, rating, schema etc...) This is a JPA
@@ -49,7 +52,8 @@ public class MetadataDataInfo implements Serializable {
     private char _template = Constants.YN_FALSE;
     private String _root;
     private String _doctype;
-    private String _extra;
+    @Convert (converter = ExtraConverter.class)
+    private Map<String,String> _extra;
     private Integer _displayOrder = 0;
     private int _rating = 0;
     private int _popularity = 0;
@@ -85,7 +89,7 @@ public class MetadataDataInfo implements Serializable {
      * application specific task.
      */
     @Column
-    public String getExtra() {
+    public Map<String,String> getExtra() {
         return _extra;
     }
 
@@ -99,7 +103,7 @@ public class MetadataDataInfo implements Serializable {
      * @param extra new value.
      * @return this data info object
      */
-    public MetadataDataInfo setExtra(String extra) {
+    public MetadataDataInfo setExtra(Map<String,String> extra) {
         this._extra = extra;
         return this;
     }

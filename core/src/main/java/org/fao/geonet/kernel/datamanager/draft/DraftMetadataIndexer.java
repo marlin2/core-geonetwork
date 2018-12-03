@@ -3,6 +3,7 @@ package org.fao.geonet.kernel.datamanager.draft;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.annotation.Nonnull;
@@ -19,6 +20,7 @@ import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.datamanager.base.BaseMetadataIndexer;
 import org.fao.geonet.kernel.search.ISearchManager;
 import org.fao.geonet.lib.Lib;
+import org.fao.geonet.Util;
 import org.fao.geonet.repository.MetadataDraftRepository;
 import org.fao.geonet.repository.specification.MetadataDraftSpecs;
 import org.fao.geonet.utils.IO;
@@ -213,7 +215,7 @@ public class DraftMetadataIndexer extends BaseMetadataIndexer {
                 final MetadataType metadataType = fullMd.getDataInfo().getType();
                 final String root = fullMd.getDataInfo().getRoot();
                 final String uuid = fullMd.getUuid();
-                final String extra = fullMd.getDataInfo().getExtra();
+                final Map<String,String> extra = fullMd.getDataInfo().getExtra();
                 final String isHarvested = String.valueOf(Constants.toYN_EnabledChar(fullMd.getHarvestInfo().isHarvested()));
                 final String owner = String.valueOf(fullMd.getSourceInfo().getOwner());
                 final Integer groupOwner = fullMd.getSourceInfo().getGroupOwner();
@@ -229,7 +231,7 @@ public class DraftMetadataIndexer extends BaseMetadataIndexer {
 
 
                 addMoreFields(fullMd, moreFields, id$, schema, createDate,
-                        changeDate, source, metadataType, root, uuid, extra,
+                        changeDate, source, metadataType, root, uuid, Util.mapToQueryStr(extra),
                         isHarvested, owner, groupOwner, popularity, rating,
                         displayOrder, draft);
                
@@ -298,7 +300,7 @@ public class DraftMetadataIndexer extends BaseMetadataIndexer {
             final MetadataType metadataType = fullMd.getDataInfo().getType();
             final String root = fullMd.getDataInfo().getRoot();
             final String uuid = fullMd.getUuid();
-            final String extra = fullMd.getDataInfo().getExtra();
+            final Map<String,String> extra = fullMd.getDataInfo().getExtra();
             final String isHarvested = String.valueOf(Constants.toYN_EnabledChar(fullMd.getHarvestInfo().isHarvested()));
             final String owner = String.valueOf(fullMd.getSourceInfo().getOwner());
             final Integer groupOwner = fullMd.getSourceInfo().getGroupOwner();
@@ -313,7 +315,7 @@ public class DraftMetadataIndexer extends BaseMetadataIndexer {
             }
 
             addMoreFields(fullMd, moreFields, id$, schema, createDate,
-                    changeDate, source, metadataType, root, uuid, extra,
+                    changeDate, source, metadataType, root, uuid, Util.mapToQueryStr(extra),
                     isHarvested, owner, groupOwner, popularity, rating,
                     displayOrder, draft);
             

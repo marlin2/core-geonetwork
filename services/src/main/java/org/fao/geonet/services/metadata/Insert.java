@@ -177,9 +177,12 @@ public class Insert extends NotInReadOnlyModeService {
                         Importer.addCategoriesToMetadata(metadata, categs, context);
                     }
 
+                    /* Don't allow extra info to be updated as we use this for the 
+                       workflow
                     if (extra != null) {
                         metadata.getDataInfo().setExtra(extra);
                     }
+                    */
                 }
             });
         }

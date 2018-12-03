@@ -23,11 +23,15 @@
 
 package org.fao.geonet.repository.specification;
 
+import org.fao.geonet.Util;
 import org.fao.geonet.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.nio.charset.StandardCharsets;
+
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -200,10 +204,11 @@ public final class MetadataSpecs {
         };
     }
 
-    public static Specification<Metadata> hasExtra(final String extra) {
+    public static Specification<Metadata> hasExtra(final Map<String,String> map) {
         return new Specification<Metadata>() {
             @Override
             public Predicate toPredicate(Root<Metadata> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                String extra = Util.mapToQueryStr(map);
                 return cb.equal(root.get(Metadata_.dataInfo).get(MetadataDataInfo_.extra), extra);
             }
         };

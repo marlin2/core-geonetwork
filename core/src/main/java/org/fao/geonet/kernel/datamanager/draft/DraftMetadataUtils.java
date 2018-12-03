@@ -5,7 +5,9 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -334,7 +336,10 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
     }
     final MetadataDraft newMetadata = new MetadataDraft();
     newMetadata.setUuid(uuid);
-    newMetadata.getDataInfo().setChangeDate(new ISODate()).setCreateDate(new ISODate()).setSchemaId(schema).setType(MetadataType.lookup(isTemplate)).setExtra(templateId);
+    
+    Map<String,String> extra = new HashMap<String,String>();
+    extra.put(Params.APPROVEDMID, templateId);
+    newMetadata.getDataInfo().setChangeDate(new ISODate()).setCreateDate(new ISODate()).setSchemaId(schema).setType(MetadataType.lookup(isTemplate)).setExtra(extra);
     if (groupOwner != null) {
       newMetadata.getSourceInfo().setGroupOwner(Integer.valueOf(groupOwner));
     }
