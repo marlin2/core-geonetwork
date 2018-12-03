@@ -79,8 +79,8 @@
           }
         },
         'home': {
-          'enabled': true,
-          'appUrl': '../../srv/{{lang}}/catalog.search#/home'
+          'enabled': false,
+          'appUrl': '../../srv/{{lang}}/catalog.search#/search'
         },
         'search': {
           'enabled': true,

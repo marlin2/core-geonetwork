@@ -131,7 +131,7 @@
       $scope.isFilterTagsDisplayedInSearch = gnGlobalSettings.gnCfg.mods.search.isFilterTagsDisplayedInSearch;
       $scope.gnWmsQueue = gnWmsQueue;
       $scope.$location = $location;
-      $scope.activeTab = '/home';
+      $scope.activeTab = '/search';
       $scope.resultTemplate = gnSearchSettings.resultTemplate;
       $scope.advandedSearchTemplate = gnSearchSettings.advancedSearchTemplate;
       $scope.facetsSummaryType = gnSearchSettings.facetsSummaryType;
@@ -147,7 +147,7 @@
             combo: 'h',
             description: $translate.instant('hotkeyHome'),
             callback: function(event) {
-              $location.path('/home');
+              $location.path('/search');
             }
           }).add({
             combo: 't',
@@ -369,9 +369,9 @@
       if (!$location.path()) {
         var m = gnGlobalSettings.gnCfg.mods;
         $location.path(
-          m.home.enabled ? '/home' :
+          m.home.enabled ? '/search' :
           m.search.enabled ? '/search' :
-          m.map.enabled ? '/map' : 'home'
+          m.map.enabled ? '/map' : 'search'
         );
       }
       var setActiveTab = function() {
