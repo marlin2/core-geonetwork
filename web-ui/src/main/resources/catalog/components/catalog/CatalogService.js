@@ -197,10 +197,13 @@
            * @param {string} metadataUuid , the uuid of the metadata to create
            *                 (when metadata uuid is set to manual)
            * @param {boolean} hasCategoryOfSource copy categories from source
+           * @param {boolean} isEditor is the user an editor? if true then redirect 
+           *                  back to search, otherwise to the editor board
            * @return {HttpPromise} Future object
            */
         create: function(id, groupId, withFullPrivileges,
-            isTemplate, isChild, tab, metadataUuid, hasCategoryOfSource) {
+            isTemplate, isChild, tab, metadataUuid, hasCategoryOfSource,
+            isEditor) {
 
           return this.copy(id, groupId, withFullPrivileges,
               isTemplate, isChild, metadataUuid, hasCategoryOfSource)
@@ -211,7 +214,7 @@
                 }
                 $location.path(path)
                 .search('justcreated')
-                .search('redirectUrl', 'catalog.edit');
+                .search('redirectUrl', isEditor ? 'catalog.search' : 'catalog.edit');
               });
         },
 

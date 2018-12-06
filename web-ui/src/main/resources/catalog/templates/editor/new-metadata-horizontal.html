@@ -99,7 +99,7 @@
       </div>
       <div class="btn-group">
         <button type="button" class="btn btn-success"
-                data-gn-click-and-spin="createNewMetadata()"
+                data-gn-click-and-spin="createNewMetadata(false, user.isEditor())"
                 data-ng-class="{'disabled': (!activeType || !activeTpl || !ownerGroup || ((!generateUuid) && (!isMdIdentifierFilled())) )}">
           <i class="fa fa-plus"/>
           <span data-translate="">createMetadata</span>

@@ -204,7 +204,7 @@
         $window.history.back();
       }
 
-      $scope.createNewMetadata = function(isPublic) {
+      $scope.createNewMetadata = function(isPublic, isEditor) {
         var metadataUuid = '';
 
         // If no auto-generated metadata identifier, get the value
@@ -236,7 +236,8 @@
             $routeParams.childOf ? true : false,
             undefined,
             metadataUuid,
-            true
+            true,
+            isEditor
         ).error(function(data) {
           $rootScope.$broadcast('StatusUpdated', {
             title: $translate.instant('createMetadataError'),
