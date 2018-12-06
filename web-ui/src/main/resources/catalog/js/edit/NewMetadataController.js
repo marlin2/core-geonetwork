@@ -33,13 +33,13 @@
    * Controller to create new metadata record.
    */
   module.controller('GnNewMetadataController', [
-    '$scope', '$routeParams', '$http', '$rootScope', '$translate', '$compile',
+    '$scope', '$routeParams', '$http', '$rootScope', '$translate', '$compile', '$window', 
     'gnSearchManagerService',
     'gnUtilityService',
     'gnMetadataManager',
     'gnConfigService',
     'gnConfig',
-    function($scope, $routeParams, $http, $rootScope, $translate, $compile,
+    function($scope, $routeParams, $http, $rootScope, $translate, $compile, $window,
             gnSearchManagerService,
             gnUtilityService,
             gnMetadataManager,
@@ -196,6 +196,12 @@
         $scope.title = $translate.instant('createCopyOf');
       } else {
         $scope.title = $translate.instant('createA');
+      }
+
+      // when user cancels the creation of a metadata record, send them back to
+      // wherever they came from....
+      $scope.goBack = function() {
+        $window.history.back();
       }
 
       $scope.createNewMetadata = function(isPublic) {

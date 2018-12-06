@@ -17,7 +17,7 @@
           <span data-translate="">createA</span>
           <strong>{{(activeType || '...') | translate}}</strong>
         </div>
-        <div class="panel-body">
+       <div class="panel-body">
           <div class="list-group gn-record-type">
             <a data-ng-repeat="type in mdTypes" href="" class="list-group-item"
                data-ng-click="getTemplateNamesByType(type)"
@@ -104,6 +104,8 @@
           <i class="fa fa-plus"/>
           <span data-translate="">createMetadata</span>
         </button>
+        <!-- Don't allow users to create and publish to a group -->
+        <!--
         <button type="button"
                 class="btn btn-success dropdown-toggle"
                 data-ng-class="{'disabled': (!activeType || !activeTpl || !ownerGroup || ((!generateUuid) && (!isMdIdentifierFilled())) )}"
@@ -117,11 +119,13 @@
             href="" data-translate="">
             createMetadataForGroup</a></li>
         </ul>
+        -->
       </div>
-      <a href="#/board" class="btn btn-default">
+      <!-- send them back to where they were before if they cancel -->
+      <button type="button" class="btn btn-default" ng-click="goBack()">
         <i class="fa fa-close"/>&nbsp;
         <span data-translate="">cancel</span>
-      </a>
+      </button>
     </div>
   </div>
 </div>
