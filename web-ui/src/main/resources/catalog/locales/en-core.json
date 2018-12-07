@@ -96,6 +96,7 @@
     "addThoseCategories": "Add selected",
     "replaceByThoseCategories": "Replace by selected",
     "categoriesBatchAlert": "When updating categories, user can choose to add the new categories to the existing ones or to replace them.",
+    "statusBatchAlert": "This will update the status of all selected records.",
     "editorBoard": "Add new record",
     "contribute": "Contribute",
     "email": "Email",

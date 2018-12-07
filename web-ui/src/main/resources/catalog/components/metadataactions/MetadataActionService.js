@@ -255,27 +255,6 @@
           });
       };
 
-
-      this.startWorkflow = function(md, scope) {
-        return $http.put('../api/records/' + md.getId() +
-            '/status?status=1&comment=Enable workflow').then(
-            function(data) {
-              gnMetadataManager.updateMdObj(md);
-              scope.$emit('metadataStatusUpdated', true);
-              scope.$emit('StatusUpdated', {
-                msg: $translate.instant('metadataStatusUpdatedWithNoErrors'),
-                timeout: 2,
-                type: 'success'});
-            }, function(data) {
-              scope.$emit('metadataStatusUpdated', false);
-              scope.$emit('StatusUpdated', {
-                title: $translate.instant('metadataStatusUpdatedErrors'),
-                error: data,
-                timeout: 0,
-                type: 'danger'});
-            });
-      };
-
       this.openPrivilegesBatchPanel = function(scope, bucket) {
         openModal({
           title: 'privileges',
@@ -284,6 +263,13 @@
               'selection-bucket="' + bucket + '"></div>',
           className: 'gn-privileges-popup'
         }, scope, 'PrivilegesUpdated');
+      };
+      this.openStatusBatchPanel = function(scope, bucket) {
+        openModal({
+          title: 'status',
+          content: '<div data-gn-metadata-status-updater="" ' +
+              'selection-bucket="' + bucket + '"></div>'
+        }, scope, 'metadataStatusUpdated');
       };
       this.openBatchEditing = function(scope) {
         $location.path('/batchediting');

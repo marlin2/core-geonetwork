@@ -35,7 +35,8 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu" data-ng-if="!operationOnSelectionInProgress">
-      <li data-ng-show="!excludePattern.test('exportMEF')">
+      <li data-ng-show="!excludePattern.test('exportMEF')"
+          data-ng-if="user.isReviewerOrMore()">
         <a href="" data-ng-disabled="operationOnSelectionInProgress"
            data-ng-click="mdService.metadataMEF(undefined, searchResults.selectionBucket)">
           <i class="fa fa-file-zip-o"></i>&nbsp;
@@ -64,26 +65,18 @@
           <i class="fa fa-key"></i>&nbsp;<span translate>updatePrivileges</span>
         </a>
       </li>
+      <li  data-ng-show="!excludePattern.test('updateStatus')"
+           data-ng-if="user.isEditorOrMore()">
+        <a href="" data-ng-click="mdService.openStatusBatchPanel(getCatScope(), searchResults.selectionBucket)">
+          <i class="fa fa-bell"></i>&nbsp;<span translate>updateStatus</span>
+        </a>
+      </li>
       <li  data-ng-show="!excludePattern.test('editRecords')"
-           data-ng-if="v.service === 'catalog.edit' && user.isEditorOrMore()">
+           data-ng-if="v.service === 'catalog.edit' && user.isReviewerOrMore()">
         <a href="" data-ng-click="mdService.openBatchEditing(getCatScope())">
           <i class="fa fa-pencil"></i>&nbsp;<span translate>editRecords</span>
         </a>
       </li>
-      <!--
-      <li  data-ng-show="!excludePattern.test('publish')"
-           data-ng-if="user.isReviewerOrMore()">
-        <a href="" data-ng-click="mdService.publish(undefined, searchResults.selectionBucket, 'on', getCatScope())">
-          <i class="fa fa-unlock"></i>&nbsp;<span translate>publish</span>
-        </a>
-      </li>
-      <li  data-ng-show="!excludePattern.test('unpublish')"
-           data-ng-if="user.isReviewerOrMore()">
-        <a href="" data-ng-click="mdService.publish(undefined, searchResults.selectionBucket, 'off', getCatScope())">
-          <i class="fa fa-lock"></i>&nbsp;<span translate>unpublish</span>
-        </a>
-      </li>
-      -->
       <li  data-ng-show="!excludePattern.test('transferOwnership')"
            data-ng-if="user.isUserAdminOrMore()">
         <a href=""
@@ -104,6 +97,7 @@
           <i class="fa fa-tags"></i>&nbsp;<span translate>updateCategories</span>
         </a>
       </li>
+      <!--
       <li  data-ng-show="!excludePattern.test('validate')"
            data-ng-if="user.isEditorOrMore()">
         <a href="" data-ng-click="mdService.validateMd(undefined, searchResults.selectionBucket)"
@@ -111,6 +105,7 @@
           <i class="fa fa-check"></i>&nbsp;<span translate>validate</span>
         </a>
       </li>
+      -->
       <li  data-ng-show="!excludePattern.test('delete')"
            data-ng-if="user.isEditorOrMore()">
         <a href="" data-ng-click="mdService.deleteMd(undefined, searchResults.selectionBucket)"

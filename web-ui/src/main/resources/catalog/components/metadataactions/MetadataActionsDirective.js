@@ -40,15 +40,24 @@
         scope: {
           md: '=gnMetadataStatusUpdater'
         },
-        link: function(scope) {
+        link: function(scope, element, attrs) {
+          scope.report = null;
           scope.lang = scope.$parent.lang;
           var user = scope.$parent.user;
           scope.newStatus = {value: '0'};
           scope.selectedGroups = [];
+          scope.batch = false;
+          if (attrs.selectionBucket) {
+             scope.batch = true;
+          }
 
-          var metadataId = scope.md.getId();
+          if (!scope.batch) {
+            var metadataId = scope.md.getId();
+          }
+
           function init() {
-            return $http.get('md.status.list?' +
+            if (!scope.batch) { // get status of specified metadata
+              return $http.get('md.status.list?' +
                 '_content_type=json&id=' + metadataId).
                 success(function(data) {
                   scope.status =
@@ -61,6 +70,12 @@
                     }
                   });
                 });
+            } else { // get status values from catalogue
+              $http.get('../api/status', {cache: true}).
+                  success(function(data) {
+                    scope.status = data;
+                  });
+            }
           };
 
           scope.updateStatus = function() {
@@ -73,11 +88,27 @@
                      }
                 }
             }
-            return $http.put('../api/records/' + metadataId +
+            if (scope.batch) {
+              var url = '../api/records/status?' +
+                          '&bucket=' + attrs.selectionBucket + 
+                          '&status=' + scope.newStatus.value +
+                          '&comment=' + (scope.changeMessage || 'No comment.') +
+                          '&publishGroups=' + publishGroups.join()
+              $http.put(url)
+                .success(function(data) {
+                  scope.report = data;
+                  defer.resolve(data);
+                }).error(function(data) {
+                  scope.report = data;
+                  defer.reject(data);
+                });
+              return defer.promise;
+            } else {
+              return $http.put('../api/records/' + metadataId +
                 '/status?status=' + scope.newStatus.value +
                 '&comment=' + (scope.changeMessage || 'No comment.') +
                 '&publishGroups=' + publishGroups.join()
-            ).then(
+              ).then(
                 function(data) {
                   gnMetadataManager.updateMdObj(scope.md);
                   scope.$emit('metadataStatusUpdated', true);
@@ -93,6 +124,7 @@
                     timeout: 4,
                     type: 'danger'});
                 });
+            }
           };
 
           scope.cantStatus = function(status) {

@@ -36,6 +36,11 @@
         </ul>
       </div>
 
+      <div data-ng-show="batch">
+        <p class="help-block"
+           data-translate="">statusBatchAlert</p>
+      </div>
+
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group mr-2">
           <button class="btn btn-default"
@@ -52,7 +57,15 @@
                data-icon-only="true"></div>
         </div>
       </div>
-
     </div>
+  </div>
+  <div class="row">
+      <div data-ng-show="report !== null" class="alert alert-info">
+        <ul>
+          <li data-ng-repeat="(key, value) in report">
+            <span data-translate>{{key}}</span>: {{value}}
+          </li>
+        </ul>
+      </div>
   </div>
 </form>
