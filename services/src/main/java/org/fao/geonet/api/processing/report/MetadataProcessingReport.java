@@ -72,6 +72,11 @@ public abstract class MetadataProcessingReport extends ProcessingReport {
     protected Set<Integer> notEditable = new HashSet<Integer>();
 
     /**
+     * The list of records identifiers the user who starts the process is not owner of 
+     */
+    protected Set<Integer> notOwner = new HashSet<Integer>();
+
+    /**
      * The list of records with error and exception details
      */
     protected Map<Integer, List<Report>> metadataErrors = new HashMap<Integer, List<Report>>();
@@ -162,6 +167,14 @@ public abstract class MetadataProcessingReport extends ProcessingReport {
 
     public synchronized void addNotEditableMetadataId(int metadataId) {
         this.notEditable.add(metadataId);
+    }
+
+    public synchronized void addNotOwnerMetadataId(int metadataId) {
+        this.notOwner.add(metadataId);
+    }
+
+    public synchronized int getNumberOfRecordsNotOwner(int metadataId) {
+        return this.notOwner.size();
     }
 
     public synchronized int getNumberOfRecordsNotEditable() {
