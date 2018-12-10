@@ -89,6 +89,12 @@
           var fillGrid = function(data) {
             scope.privileges = data.privileges;
             scope.operations = data.operations;
+            scope.filteredOperations = [];
+            angular.forEach(scope.operations, function(item) {
+               if (item === 'view' || item === 'editing') { 
+                 scope.filteredOperations.push(item); 
+               }
+            });
             scope.isAdminOrReviewer = data.isAdminOrReviewer;
           };
 
