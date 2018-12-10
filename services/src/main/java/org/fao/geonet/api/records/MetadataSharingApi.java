@@ -165,7 +165,7 @@ public class MetadataSharingApi {
         HttpServletRequest request
     )
         throws Exception {
-        IMetadata metadata = ApiUtils.canEditRecord(metadataUuid, request);
+        IMetadata metadata = ApiUtils.isOwner(metadataUuid, request);
         ApplicationContext appContext = ApplicationContextHolder.get();
         ServiceContext context = ApiUtils.createServiceContext(request);
 
@@ -259,9 +259,9 @@ public class MetadataSharingApi {
                 IMetadata metadata = metadataRepository.getMetadataObject(uuid);
                 if (metadata == null) {
                     report.incrementNullRecords();
-                } else if (!accessMan.canEdit(
+                } else if (!accessMan.isOwner(
                     ApiUtils.createServiceContext(request), String.valueOf(metadata.getId()))) {
-                    report.addNotEditableMetadataId(metadata.getId());
+                    report.addNotOwnerMetadataId(metadata.getId());
                 } else {
                     boolean skip = false;
                     if (us.getUserIdAsInt() == metadata.getSourceInfo().getOwner() &&

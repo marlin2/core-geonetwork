@@ -562,6 +562,12 @@
           isConnected: function() {
             return !this.isAnonymous();
           },
+          isOwner: function(md) {
+            if (!md || this.isAnonymous() || !md.isOwned()) {
+              return false;
+            }
+            return this.id === md.getOwnerId();
+          },
           canEditRecord: function(md) {
             if (!md || this.isAnonymous()) {
               return false;

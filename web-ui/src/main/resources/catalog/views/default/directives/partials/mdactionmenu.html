@@ -12,7 +12,7 @@
     </button>
     <ul class="dropdown-menu" role="menu">
       <li><a data-ng-href=""
-             data-ng-if="user.canEditRecord(md) && user.isEditorOrMore()"
+             data-ng-if="user.isAdmin() || user.isOwner(md)"
              data-ng-click="mdService.openPrivilegesPanel(md, getCatScope())">
         <i class="fa fa-key"></i>&nbsp;
         <span data-translate="">privileges</span>
@@ -23,25 +23,15 @@
           <i class="fa fa-user"></i>&nbsp;
           <span data-translate="">transferOwnership</span>
         </a></li>
-      <!-- TODO: Some installation only allows status update
-      based on current status. -->
-      <li data-ng-if="md.isOwned()" data-ng-class="((allowPublishInvalidMd() === true) || 
+      <!-- TODO: Some installation only allows status update based on current status. -->
+      <li data-ng-if="user.isOwner(md) || user.isReviewerOrMore()" data-ng-class="((allowPublishInvalidMd() === true) || 
             ((allowPublishInvalidMd() === false) &&
             (!md.hasValidation() || (md.hasValidation() && md.isValid())))) ? '' : 'disabled'">
         <a data-ng-href=""
-           data-ng-if="user.canEditRecord(md) &&
-                                md.isWorkflowEnabled()"
            data-ng-click="mdService.openUpdateStatusPanel(getScope())">
           <i class="fa fa-bell"></i>&nbsp;
           <span data-translate="">updateStatus</span>
         </a></li>
-      <li><a data-ng-href=""
-             data-ng-if="user.canEditRecord(md) &&
-                                  !md.isWorkflowEnabled()"
-             data-ng-click="mdService.startWorkflow(md, getCatScope())">
-        <i class="fa fa-bell"></i>&nbsp;
-        <span data-translate="">enableWorkflow</span>
-      </a></li>
       <li class="divider" data-ng-if="user.isConnected()"></li>
       <li><a data-ng-href=""
              data-ng-if="user.isEditorOrMore()"
