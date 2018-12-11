@@ -56,12 +56,20 @@
           }
 
           function init() {
+            // skip unknown ie. status value with id = 0
+            var filterData = function(data) {
+              var out = [];
+              angular.forEach(data, function(d) {
+                if (d.id != '0') out.push(d);
+              });
+              return out;
+            };
             if (!scope.batch) { // get status of specified metadata
               return $http.get('md.status.list?' +
                 '_content_type=json&id=' + metadataId).
                 success(function(data) {
                   scope.status =
-                     data !== 'null' ? data.statusvalue : null;
+                     data !== 'null' ? filterData(data.statusvalue) : null;
 
                   angular.forEach(scope.status, function(s) {
                     if (s.on) {
@@ -73,7 +81,7 @@
             } else { // get status values from catalogue
               $http.get('../api/status', {cache: true}).
                   success(function(data) {
-                    scope.status = data;
+                    scope.status = filterData(data);
                   });
             }
           };
