@@ -162,9 +162,10 @@ public class DefaultStatusActions implements StatusActions {
      * @param metadataIds   The set of metadata ids to set status on.
      * @param changeDate    The date the status was changed.
      * @param changeMessage The message explaining why the status has changed.
-     * @param publishGroups A set of groups associated with the status change.
+     * @param publishGroups A set of groups to set view rights on as part of status change.
+     * @param editingGroups A set of groups to set edit rights on as part of status change.
      */
-    public Set<Integer> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups) throws Exception {
+    public Set<Integer> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups, String editingGroups) throws Exception {
 
         Set<Integer> unchanged = new HashSet<Integer>();
 
@@ -189,8 +190,9 @@ public class DefaultStatusActions implements StatusActions {
             }
 
             if (status.equals(Params.Status.APPROVED)) {
-                // set privileges for each group in the list of publishGroups
-                setOperations(mid, publishGroups);
+                // set view and edit privileges for each group in the list of 
+                // publishGroups and editingGroups
+                setOperations(mid, publishGroups, editingGroups);
                 // send an event so that the draft version will replace/become 
                 // the approved version
                 IMetadata metadata = mdManager.getMetadataObject(mid);
@@ -201,9 +203,6 @@ public class DefaultStatusActions implements StatusActions {
                 // repo
                 String approvedId = mdUtils.getMetadataId(metadata.getUuid());
                	mdManager.updateMetadataOwner(Integer.parseInt(approvedId), session.getUserId(), metadata.getSourceInfo().getGroupOwner()+""); 
-                // but set editing permission on because we want users to be able to 
-                // edit it
-                setEditOperation(mid, metadata.getSourceInfo().getGroupOwner()+"");
             } else if (status.equals(Params.Status.REJECTED)) {
                 unsetAllOperations(mid);
                 IMetadata metadata = mdManager.getMetadataObject(mid);
@@ -294,23 +293,28 @@ public class DefaultStatusActions implements StatusActions {
      * changes to approved from something else.
      *
      * @param mdId The metadata id to set privileges on
-     * @param publishGroups The list of groups to set privileges for
+     * @param publishGroups The list of groups to set view privileges for
+     * @param editingGroups The list of groups to set editing privileges for
      */
-    private void setOperations(int mdId, String publishGroups) throws Exception {
-        String[] publishGroupsList = publishGroups.split(",");
-        for (int i = 0; i < publishGroupsList.length; i++) {
-            int theGroup = Integer.parseInt(publishGroupsList[i]);
-            if (context.isDebugEnabled())
-                context.debug("Metadata " + mdId + " group " + theGroup + " set");
-            for (ReservedOperation op : ReservedOperation.values()) {
-                mdOperations.forceSetOperation(context, mdId, theGroup, op.getId());
-            }
+    private void setOperations(int mdId, String publishGroups, String editingGroups) throws Exception {
+        if (publishGroups != null) {
+          String[] publishGroupsList = publishGroups.split(",");
+          for (int i = 0; i < publishGroupsList.length; i++) {
+              setOperation(mdId, publishGroupsList[i], ReservedOperation.view);
+          }
+        }
+        if (editingGroups != null) {
+          String[] editingGroupsList = editingGroups.split(",");
+          for (int i = 0; i < editingGroupsList.length; i++) {
+              setOperation(mdId, editingGroupsList[i], ReservedOperation.editing);
+          }
         }
     }
 
-    private void setEditOperation(int mdId, String editGroup) throws Exception {
-       int theGroup = Integer.parseInt(editGroup);
-       ReservedOperation eo = ReservedOperation.editing;
+    private void setOperation(int mdId, String strGroup, ReservedOperation eo) throws Exception {
+       if (context.isDebugEnabled())
+         context.debug("Metadata " + mdId + " group " + strGroup + " set "+ eo);
+       int theGroup = Integer.parseInt(strGroup);
        mdOperations.forceSetOperation(context, mdId, theGroup, eo.getId());
     }
 

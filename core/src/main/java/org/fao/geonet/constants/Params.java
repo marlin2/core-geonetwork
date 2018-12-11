@@ -99,6 +99,7 @@ public final class Params {
     public static final String NOTHING = "nothing";
     public static final String PROCESS = "process";
     public static final String PUBLISH_GROUPS = "publishGroups";
+    public static final String EDITING_GROUPS = "editingGroups";
 
     public static final String SCALING = "scaling";
     public static final String SCALING_DIR = "scalingDir";

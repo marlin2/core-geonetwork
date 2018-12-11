@@ -562,7 +562,8 @@ public class BaseMetadataManager implements IMetadataManager {
         if (groupIdI != null) {
             groupId = String.valueOf(groupIdI);
         }
-        metadataOperations.copyDefaultPrivForGroup(context, stringId, groupId, fullRightsForGroup);
+        // Simon: December 2018: Don't put any group privileges on new metadata
+        //metadataOperations.copyDefaultPrivForGroup(context, stringId, groupId, fullRightsForGroup);
 
         if (index) {
             metadataIndexer.indexMetadata(stringId, forceRefreshReaders, null);

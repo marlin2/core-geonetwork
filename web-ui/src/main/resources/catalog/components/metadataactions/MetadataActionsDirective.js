@@ -25,12 +25,13 @@
   goog.provide('gn_mdactions_directive');
 
   goog.require('gn_mdactions_service');
+  goog.require('gn_share_service');
 
   var module = angular.module('gn_mdactions_directive', []);
 
   module.directive('gnMetadataStatusUpdater', ['$translate', '$http',
-    'gnMetadataManager',
-    function($translate, $http, gnMetadataManager) {
+    'gnMetadataManager', 'gnShareConstants',
+    function($translate, $http, gnMetadataManager, gnShareConstants) {
 
       return {
         restrict: 'A',
@@ -45,8 +46,10 @@
           scope.lang = scope.$parent.lang;
           var user = scope.$parent.user;
           scope.newStatus = {value: '0'};
-          scope.selectedGroups = [];
+          scope.pubGroups = [];
+          scope.edtGroups = [];
           scope.batch = false;
+          scope.internalGroups = gnShareConstants.internalGroups;
           if (attrs.selectionBucket) {
              scope.batch = true;
           }
@@ -87,12 +90,21 @@
           };
 
           scope.updateStatus = function() {
-            // put selected groups into status update as publishGroups
+            // put pubGroups model into status update as publishGroups
             var publishGroups = [];
-            if (scope.selectedGroups) {
-                for (var i = 0;i < scope.selectedGroups.length; i++) {
-                     if (scope.selectedGroups[i]) {
+            if (scope.pubGroups) {
+                for (var i = 0;i < scope.pubGroups.length; i++) {
+                     if (scope.pubGroups[i]) {
                          publishGroups.push(i);
+                     }
+                }
+            }
+            // put edtGroups model into status update as editingGroups
+            var editingGroups = [];
+            if (scope.edtGroups) {
+                for (var i = 0;i < scope.edtGroups.length; i++) {
+                     if (scope.edtGroups[i]) {
+                         editingGroups.push(i);
                      }
                 }
             }
@@ -101,7 +113,8 @@
                           '&bucket=' + attrs.selectionBucket + 
                           '&status=' + scope.newStatus.value +
                           '&comment=' + (scope.changeMessage || 'No comment.') +
-                          '&publishGroups=' + publishGroups.join()
+                          '&publishGroups=' + publishGroups.join() +
+                          '&editingGroups=' + editingGroups.join()
               $http.put(url)
                 .success(function(data) {
                   scope.report = data;
@@ -115,7 +128,8 @@
               return $http.put('../api/records/' + metadataId +
                 '/status?status=' + scope.newStatus.value +
                 '&comment=' + (scope.changeMessage || 'No comment.') +
-                '&publishGroups=' + publishGroups.join()
+                '&publishGroups=' + publishGroups.join() +
+                '&editingGroups=' + editingGroups.join()
               ).then(
                 function(data) {
                   gnMetadataManager.updateMdObj(scope.md);

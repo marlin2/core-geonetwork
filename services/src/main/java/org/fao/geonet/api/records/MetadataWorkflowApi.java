@@ -131,6 +131,14 @@ public class MetadataWorkflowApi {
             required = false
         )
             String publishGroups,
+        @ApiParam(
+            value = "editingGroups",
+            required = false
+        )
+        @RequestParam(
+            required = false
+        )
+            String editingGroups,
         HttpServletRequest request
     )
         throws Exception {
@@ -159,7 +167,7 @@ public class MetadataWorkflowApi {
         Set<Integer> metadataIds = new HashSet<Integer>();
         metadataIds.add(metadata.getId());
 
-        sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups);
+        sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
 
         //--- reindex metadata
         appContext.getBean(IMetadataIndexer.class).indexMetadata(String.valueOf(metadata.getId()), true, null);
@@ -219,6 +227,14 @@ public class MetadataWorkflowApi {
             required = false
         )
             String publishGroups,
+        @ApiParam(
+            value = "editingGroups",
+            required = false
+        )
+        @RequestParam(
+            required = false
+        )
+            String editingGroups,
         HttpServletRequest request,
         @ApiIgnore
             HttpSession session
@@ -259,7 +275,7 @@ public class MetadataWorkflowApi {
             }
 
             // now do the status change
-            sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups);
+            sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
 
             appContext.getBean(IMetadataIndexer.class).indexMetadata(listOfUpdatedRecords);
 
