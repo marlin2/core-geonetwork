@@ -239,17 +239,19 @@
         return defer.promise;
       };
 
-      var editMetadata = function(id) {
+      var editMetadata = function(id, isReviewer) {
         var url = 'catalog.edit#/metadata/';
-        url += id;
+        url += id+'?redirectUrl=';
+        var service = isReviewer ? 'catalog.edit' : 'catalog.search';
+        url += service;
         window.location.replace(url);
       };
 
-      this.createDraftAndEditRecord = function(md, scope) {
+      this.createDraftAndEditRecord = function(md, isReviewer, scope) {
           // run the '/api/records/{{md.uuid}}/createdraft' service and get
           // the md draft id
           this.createDraft(md).then(function(data) {
-              setTimeout(function() { editMetadata(data); }, 2000);
+              setTimeout(function() { editMetadata(data, isReviewer); }, 2000);
           }, function(reason) {
               alertResult(reason);
           });

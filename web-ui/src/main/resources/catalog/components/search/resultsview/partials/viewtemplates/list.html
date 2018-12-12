@@ -10,7 +10,7 @@
          ng-show="md.mdStatus !== '2' && user.canEditRecord(md)" 
          ng-disable="md.isLocked()"
          ng-show="user.canEditRecord(md)"
-         ng-href="catalog.edit#/metadata/{{md['geonet:info'].id}}"
+         ng-href="catalog.edit#/metadata/{{md['geonet:info'].id}}?redirectUrl={{user.isReviewerOrMore() ? 'catalog.edit' : 'catalog.search'}}"
          class="btn btn-link pull-right">
         <i class="fa fa-pencil"></i>
       </a>
@@ -18,7 +18,7 @@
          ng-show="md.mdStatus === '2' && user.canEditRecord(md)" 
          ng-disable="md.isLocked()"
          gn-confirm-click="{{'confirmCreateDraft' | translate}}"
-         ng-click="mdService.createDraftAndEditRecord(md)"
+         ng-click="mdService.createDraftAndEditRecord(md, user.isReviewerOrMore())"
          class="btn btn-link pull-right">
         <i class="fa fa-pencil"></i>
       </a>
