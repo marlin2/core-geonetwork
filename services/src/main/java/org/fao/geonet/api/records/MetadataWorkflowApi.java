@@ -270,6 +270,7 @@ public class MetadataWorkflowApi {
                     report.addNotOwnerMetadataId(info.getId());
                 } else {
                     metadataIds.add(info.getId());
+                    listOfUpdatedRecords.add(String.valueOf(info.getId()));
                     report.incrementProcessedRecords();
                 }
             }
