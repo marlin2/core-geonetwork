@@ -31,6 +31,8 @@ import org.fao.geonet.domain.ISODate;
 
 import org.springframework.context.ApplicationEventPublisher;
 
+import org.fao.geonet.domain.Pair;
+
 public interface StatusActions {
 
     public void init(ServiceContext context) throws Exception;
@@ -39,6 +41,6 @@ public interface StatusActions {
 
     public void onEdit(int id, boolean minorEdit) throws Exception;
 
-    public Set<Integer> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups, String editingGroups) throws Exception;
+    public Pair<Set<Integer>,Set<Integer>> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups, String editingGroups) throws Exception;
 
 }

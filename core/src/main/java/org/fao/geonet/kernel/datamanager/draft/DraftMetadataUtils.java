@@ -368,6 +368,9 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
     Integer finalId = metadataManager.insertMetadata(context, newMetadata, xml, false, true, true, UpdateDatestamp.YES, fullRightsForGroup, true).getId();
 
     // Copy privileges from original metadata
+    /* Don't do this - the metadata should be created with no permissions by 
+       insertMetadata above. If the user wants to allow others to look at the
+       metadata and/or edit it, they can do that using the privileges function.*/
     for (OperationAllowed op : metadataOperations.getAllOperations(templateMetadata.getId())) {
       if(ReservedGroup.all.getId() != op.getId().getGroupId()) { //except for group All
         try {

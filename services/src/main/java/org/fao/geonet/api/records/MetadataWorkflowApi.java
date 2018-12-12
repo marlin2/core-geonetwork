@@ -34,6 +34,7 @@ import org.fao.geonet.api.processing.report.SimpleMetadataProcessingReport;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.Metadata;
+import org.fao.geonet.domain.Pair;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.metadata.StatusActions;
@@ -166,11 +167,10 @@ public class MetadataWorkflowApi {
 
         Set<Integer> metadataIds = new HashSet<Integer>();
         metadataIds.add(metadata.getId());
-
-        sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
+        Pair<Set<Integer>,Set<Integer>> results = sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
 
         //--- reindex metadata
-        appContext.getBean(IMetadataIndexer.class).indexMetadata(String.valueOf(metadata.getId()), true, null);
+        appContext.getBean(IMetadataIndexer.class).indexMetadata(results.one());
     }
 
     @ApiOperation(
@@ -259,8 +259,6 @@ public class MetadataWorkflowApi {
             StatusActions sa = saf.createStatusActions(context);
 
             Set<Integer> metadataIds = new HashSet<Integer>();
-
-            List<String> listOfUpdatedRecords = new ArrayList<>();
             for (String uuid : records) {
                 Metadata info = metadataRepository.findOneByUuid(uuid);
                 if (info == null) {
@@ -270,15 +268,14 @@ public class MetadataWorkflowApi {
                     report.addNotOwnerMetadataId(info.getId());
                 } else {
                     metadataIds.add(info.getId());
-                    listOfUpdatedRecords.add(String.valueOf(info.getId()));
                     report.incrementProcessedRecords();
                 }
             }
 
             // now do the status change
-            sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
+            Pair<Set<Integer>,Set<Integer>> results = sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
 
-            appContext.getBean(IMetadataIndexer.class).indexMetadata(listOfUpdatedRecords);
+            appContext.getBean(IMetadataIndexer.class).indexMetadata(results.one());
 
         } catch (Exception exception) {
             report.addError(exception);

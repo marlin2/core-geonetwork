@@ -34,6 +34,7 @@ import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.ISODate;
+import org.fao.geonet.domain.Pair;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.datamanager.IMetadataIndexer;
 import org.fao.geonet.kernel.datamanager.IMetadataUtils;
@@ -112,19 +113,19 @@ public class BatchUpdateStatus extends NotInReadOnlyModeService {
 
         StatusActions sa = saf.createStatusActions(context);
         
-        Set<Integer> noChange = sa.statusChange(status, metadata, changeDate, changeMessage, publishGroups, editingGroups);
+        Pair<Set<Integer>,Set<Integer>> results = sa.statusChange(status, metadata, changeDate, changeMessage, publishGroups, editingGroups);
 
         //--- reindex metadata
         context.info("Re-indexing metadata");
-        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(gc.getBean(IMetadataIndexer.class), gc.getBean(IMetadataUtils.class), metadata);
+        BatchOpsMetadataReindexer r = new BatchOpsMetadataReindexer(gc.getBean(IMetadataIndexer.class), gc.getBean(IMetadataUtils.class), results.one());
         r.process();
 
         // -- for the moment just return the sizes - we could return the ids
         // -- at a later stage for some sort of result display
         return new Element(Jeeves.Elem.RESPONSE)
-            .addContent(new Element("done").setText(metadata.size() + ""))
+            .addContent(new Element("done").setText(results.one().size() + ""))
             .addContent(new Element("notOwner").setText(notOwner.size() + ""))
             .addContent(new Element("notFound").setText(notFound.size() + ""))
-            .addContent(new Element("noChange").setText(noChange.size() + ""));
+            .addContent(new Element("noChange").setText(results.two().size() + ""));
     }
 }

@@ -34,6 +34,7 @@ import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.ISODate;
+import org.fao.geonet.domain.Pair;
 import org.fao.geonet.exceptions.UnAuthorizedException;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.DataManager;
@@ -101,10 +102,13 @@ public class UpdateStatus extends NotInReadOnlyModeService {
         Set<Integer> metadataIds = new HashSet<Integer>();
         metadataIds.add(iLocalId);
 
-        sa.statusChange(status, metadataIds, changeDate, changeMessage, publishGroups, editingGroups);
+        Pair<Set<Integer>,Set<Integer>> results = sa.statusChange(status, metadataIds, changeDate, changeMessage, publishGroups, editingGroups);
 
         //--- reindex metadata
-        dataMan.indexMetadata(id, true, null);
+        if (!results.one().isEmpty()) {
+          int idToIndex = results.one().iterator().next();
+          dataMan.indexMetadata(String.valueOf(idToIndex), true, null);
+        }
 
         //--- return id for showing
         return new Element(Jeeves.Elem.RESPONSE).addContent(new Element(Geonet.Elem.ID).setText(id));

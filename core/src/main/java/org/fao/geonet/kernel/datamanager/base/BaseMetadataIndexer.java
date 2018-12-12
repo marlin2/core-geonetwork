@@ -328,6 +328,15 @@ public class BaseMetadataIndexer implements IMetadataIndexer, ApplicationEventPu
     }
 
     @Override
+    public void indexMetadata(final Set<Integer> metadataIds) throws Exception {
+        for (Integer metadataId : metadataIds) {
+            indexMetadata(metadataId+"", false, null);
+        }
+
+        searchManager.forceIndexChanges();
+    }
+
+    @Override
     public void indexMetadata(final String metadataId, boolean forceRefreshReaders, ISearchManager searchManager) throws Exception {
         waitLoopLock.lock();
         try {

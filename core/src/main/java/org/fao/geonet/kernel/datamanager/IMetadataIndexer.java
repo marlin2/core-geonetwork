@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.kernel.search.ISearchManager;
@@ -28,6 +29,8 @@ public interface IMetadataIndexer {
         boolean isIndexing();
 
         void indexMetadata(List<String> metadataIds) throws Exception;
+
+        void indexMetadata(Set<Integer> metadataIds) throws Exception;
 
         void indexMetadata(String metadataId, boolean forceRefreshReaders, ISearchManager searchManager) throws Exception;
 

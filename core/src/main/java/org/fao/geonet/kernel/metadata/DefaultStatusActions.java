@@ -27,6 +27,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.*;
@@ -164,19 +165,20 @@ public class DefaultStatusActions implements StatusActions {
      * @param changeMessage The message explaining why the status has changed.
      * @param publishGroups A set of groups to set view rights on as part of status change.
      * @param editingGroups A set of groups to set edit rights on as part of status change.
+     * @returns two hashsets as a Pair structure: the first is the list of ids to index, the second is the list of ids that didn't change
      */
-    public Set<Integer> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups, String editingGroups) throws Exception {
+    public Pair<Set<Integer>,Set<Integer>> statusChange(String status, Set<Integer> metadataIds, ISODate changeDate, String changeMessage, String publishGroups, String editingGroups) throws Exception {
 
         Set<Integer> unchanged = new HashSet<Integer>();
+        Set<Integer> toIndex = new HashSet<Integer>();
 
         // -- get owners or content reviewers
         List<User> users = null;
         if (status.equals(Params.Status.SUBMITTED)) {
           users = getContentReviewers(metadataIds);
-				} else if (status.equals(Params.Status.APPROVED)) {
-          users = getOwners(metadataIds);
 				}
            
+        int idToOperateOnAndIndex;
 
         // -- process the metadata records to set status
         for (Integer mid : metadataIds) {
@@ -187,36 +189,63 @@ public class DefaultStatusActions implements StatusActions {
                 if (context.isDebugEnabled())
                     context.debug("Metadata " + mid + " already has status " + currentStatus);
                 unchanged.add(mid);
+                continue;
             }
 
+            idToOperateOnAndIndex = mid; // can be reset below if working with a 'working copy'
             if (status.equals(Params.Status.APPROVED)) {
+                IMetadata metadata = mdManager.getMetadataObject(mid);
+                if (metadata instanceof MetadataDraft) {
+                  // send an event so that the 'working copy' will replace/become 
+                  // the approved version (if we are approving a 'working copy')
+                  this.eventPublisher.publishEvent(new MetadataPublishDraft(metadata));
+                }
+                // approvedId = mid for records that aren't an instance of MetadataDraft
+                Integer approvedId = Integer.parseInt(mdUtils.getMetadataId(metadata.getUuid()));
+                idToOperateOnAndIndex = approvedId;
+
                 // set view and edit privileges for each group in the list of 
                 // publishGroups and editingGroups
-                setOperations(mid, publishGroups, editingGroups);
-                // send an event so that the draft version will replace/become 
-                // the approved version
-                IMetadata metadata = mdManager.getMetadataObject(mid);
-                this.eventPublisher.publishEvent(new MetadataPublishDraft(metadata));
-                // make current user the owner of the approved record so
-                // original users cannot delete it - get its id by uuid because
-                // if draft-copy mid will no longer be present in draft-copy 
-                // repo
-                String approvedId = mdUtils.getMetadataId(metadata.getUuid());
-               	mdManager.updateMetadataOwner(Integer.parseInt(approvedId), session.getUserId(), metadata.getSourceInfo().getGroupOwner()+""); 
+                setOperations(approvedId, publishGroups, editingGroups);
+
+                // make content reviewer the owner of the approved record (should be 
+                // anyway but just in case an admin is approving)
+                Set<Integer> mIds = new HashSet<Integer>();
+                mIds.add(approvedId);
+                List<User> reviewers = getContentReviewers(mIds); 
+                // should only be 1 reviewer according to our rules so we choose the
+                // first item in the list
+                String ownerId = null;
+                if (reviewers != null && reviewers.size() > 0) {
+                  ownerId = reviewers.get(0).getId()+"";
+                  if (ownerId != session.getUserId()) {
+                    // approver is not the content reviewer, could be admin, so send 
+                    // email to content reviewer so they know that the record is 
+                    // approved
+                    if (users == null) users = new ArrayList<User>();
+                    users.add(reviewers.get(0));
+                  }
+                } else {
+                  context.error("Could not find content reviewer for metadata "+mid+", will set owner of the approved record to the current user "+session.getUserId());
+                  ownerId = session.getUserId();
+                }
+               	mdManager.updateMetadataOwner(approvedId, ownerId, metadata.getSourceInfo().getGroupOwner()+""); 
+
+                // now get the previous owner and add that to users to notify that
+                // record is approved
+                User previousOwner = getPreviousOwner(context, metadata);
+                if (previousOwner != null) {
+                  if (users == null) users = new ArrayList<User>();
+                  users.add(previousOwner);
+                }
             } else if (status.equals(Params.Status.REJECTED)) {
                 unsetAllOperations(mid);
                 IMetadata metadata = mdManager.getMetadataObject(mid);
-                UserRepository userRepository = context.getBean(UserRepository.class);
-                Map<String,String> extra = metadata.getDataInfo().getExtra();
-                String oldOwner = extra.get(Params.PREVIOUSOWNER);
-                if (oldOwner != null) {
-                   User owner = userRepository.findOne(oldOwner);
-                   if (users == null) users = new ArrayList<User>();
-                   mdManager.updateMetadataOwner(mid, owner.getId()+"", metadata.getSourceInfo().getGroupOwner()+"");
-                   users.add(owner); // for later when sending emails
-                } else {
-                   context.error("Could not find previous owner of metadata record "+ mid);
-                   continue;
+                User previousOwner = getPreviousOwner(context, metadata);
+                if (previousOwner != null) {
+                  if (users == null) users = new ArrayList<User>();
+                  users.add(previousOwner);
+                  mdManager.updateMetadataOwner(mid, previousOwner.getId()+"", metadata.getSourceInfo().getGroupOwner()+"");
                 }
             } else if (status.equals(Params.Status.RETIRED)) {
                 unsetAllOperations(mid);
@@ -232,9 +261,12 @@ public class DefaultStatusActions implements StatusActions {
                 extra.put(Params.PREVIOUSOWNER, owner.getId()+"");
                 metadata.getDataInfo().setExtra(extra);
                 mdManager.save(metadata);
+
+                // remove the submitters editing rights
+                //unsetOperation(mid, metadata.getSourceInfo().getGroupOwner()+"", ReservedOperation.editing);
                 
-                // now get the id of the approved record if the record is a draft and
-                // make sure the content reviewers are added
+                // now get the id of the approved record if the record is a 'working copy' 
+                // and make sure the content reviewers for the approved record are added
                 if (metadata instanceof MetadataDraft) {
                   String mId = extra.get(Params.APPROVEDMID);
                   try {
@@ -261,7 +293,8 @@ public class DefaultStatusActions implements StatusActions {
             }
 
             // --- set status, indexing is assumed to take place later
-            mdStatus.setStatusExt(context, mid, Integer.valueOf(status), changeDate, changeMessage);
+            mdStatus.setStatusExt(context, idToOperateOnAndIndex, Integer.valueOf(status), changeDate, changeMessage);
+            toIndex.add(idToOperateOnAndIndex);
         }
 
         // --- inform content reviewers if the status is submitted
@@ -272,7 +305,26 @@ public class DefaultStatusActions implements StatusActions {
             informOwners(metadataIds, users, changeDate.toString(), changeMessage, status);
         }
 
-        return unchanged;
+        return Pair.read(toIndex,unchanged);
+    }
+
+    /**
+     * Get the previous owner id from the metadata extra info. If not present return null.
+     *
+     * @param context
+     * @param metadata The metadata we want to find the previous owner id for
+     */
+    private User getPreviousOwner(ServiceContext context, IMetadata metadata) {
+      UserRepository userRepository = context.getBean(UserRepository.class);
+      Map<String,String> extra = metadata.getDataInfo().getExtra();
+      String oldOwner = extra.get(Params.PREVIOUSOWNER);
+      if (oldOwner != null) {
+        User owner = userRepository.findOne(oldOwner);
+        return owner;
+      } else {
+        context.error("Cannot find previous owner of metadata record "+ metadata.getId());
+        return null;
+      }
     }
 
     /**
@@ -290,20 +342,21 @@ public class DefaultStatusActions implements StatusActions {
 
     /**
      * Set all operations on the list of groups supplied. Used when status 
-     * changes to approved from something else.
+     * changes to approved from something else. If not specified then permissions will
+     * be unchanged.
      *
      * @param mdId The metadata id to set privileges on
      * @param publishGroups The list of groups to set view privileges for
      * @param editingGroups The list of groups to set editing privileges for
      */
     private void setOperations(int mdId, String publishGroups, String editingGroups) throws Exception {
-        if (publishGroups != null) {
+        if (StringUtils.isNotBlank(publishGroups)) {
           String[] publishGroupsList = publishGroups.split(",");
           for (int i = 0; i < publishGroupsList.length; i++) {
               setOperation(mdId, publishGroupsList[i], ReservedOperation.view);
           }
         }
-        if (editingGroups != null) {
+        if (StringUtils.isNotBlank(editingGroups)) {
           String[] editingGroupsList = editingGroups.split(",");
           for (int i = 0; i < editingGroupsList.length; i++) {
               setOperation(mdId, editingGroupsList[i], ReservedOperation.editing);
@@ -316,6 +369,13 @@ public class DefaultStatusActions implements StatusActions {
          context.debug("Metadata " + mdId + " group " + strGroup + " set "+ eo);
        int theGroup = Integer.parseInt(strGroup);
        mdOperations.forceSetOperation(context, mdId, theGroup, eo.getId());
+    }
+
+    private void unsetOperation(int mdId, String strGroup, ReservedOperation eo) throws Exception {
+       if (context.isDebugEnabled())
+         context.debug("Metadata " + mdId + " group " + strGroup + " unset "+ eo);
+       int theGroup = Integer.parseInt(strGroup);
+       mdOperations.forceUnsetOperation(context, mdId, theGroup, eo.getId());
     }
 
     /**
