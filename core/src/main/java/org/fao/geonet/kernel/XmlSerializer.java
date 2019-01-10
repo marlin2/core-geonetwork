@@ -166,7 +166,12 @@ public abstract class XmlSerializer {
     protected Element internalSelect(String id, boolean isIndexingTask, boolean forEditing) throws Exception {
         IMetadataManager mm = ApplicationContextHolder.get().getBean(IMetadataManager.class);
 
-        IMetadata metadata = mm.getMetadataObject(Integer.valueOf(id));
+        IMetadata metadata;
+        if (isIndexingTask) {   // we don't care who indexes the metadata - this is needed during status change ops as the owner might change
+            metadata = mm.getMetadataObjectNoPriv(Integer.valueOf(id));
+        } else {
+        	metadata = mm.getMetadataObject(Integer.valueOf(id));
+        }
 
         if (metadata == null)
             return null;
