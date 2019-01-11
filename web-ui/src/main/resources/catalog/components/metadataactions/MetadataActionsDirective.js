@@ -25,13 +25,14 @@
   goog.provide('gn_mdactions_directive');
 
   goog.require('gn_mdactions_service');
+  goog.require('gn_mdview');
   goog.require('gn_share_service');
 
   var module = angular.module('gn_mdactions_directive', []);
 
   module.directive('gnMetadataStatusUpdater', ['$translate', '$http',
-    'gnMetadataManager', 'gnShareConstants', 
-    function($translate, $http, gnMetadataManager, gnShareConstants) {
+    'gnMetadataManager', 'gnShareConstants', 'gnMdView',
+    function($translate, $http, gnMetadataManager, gnShareConstants, gnMdView) {
 
       return {
         restrict: 'A',
@@ -91,7 +92,7 @@
 
           scope.updateStatus = function() {
             if (scope.user.isEditor()) {
-              scope.newStatus.value = 4; // editors can only submit....
+              scope.newStatus.value = '4'; // editors can only submit....
             }
             // put pubGroups model into status update as publishGroups
             var publishGroups = [];
@@ -142,6 +143,11 @@
                        'metadataStatusUpdatedWithNoErrors'),
                     timeout: 2,
                     type: 'success'});
+                  // submitted or rejected causes owner to change so close viewer
+                  if (scope.newStatus.value === '4' ||
+                      scope.newStatus.value === '5') { 
+                      gnMdView.removeLocationUuid();
+                  }
                 }, function(data) {
                   scope.$emit('metadataStatusUpdated', false);
                   scope.$emit('StatusUpdated', {
