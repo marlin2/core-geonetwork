@@ -242,6 +242,7 @@ public class DraftMetadataIndexer extends BaseMetadataIndexer {
              
             } catch (Exception x) {
                 Log.error(Geonet.DATA_MANAGER, "The metadata document index with id=" + metadataId + " is corrupt/invalid - ignoring it. Error: " + x.getMessage(), x);
+                x.printStackTrace();
                 fullMd = null;
             } finally {
                 try {
