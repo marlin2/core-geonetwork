@@ -30,7 +30,7 @@
   var module = angular.module('gn_mdactions_directive', []);
 
   module.directive('gnMetadataStatusUpdater', ['$translate', '$http',
-    'gnMetadataManager', 'gnShareConstants',
+    'gnMetadataManager', 'gnShareConstants', 
     function($translate, $http, gnMetadataManager, gnShareConstants) {
 
       return {
@@ -44,7 +44,7 @@
         link: function(scope, element, attrs) {
           scope.report = null;
           scope.lang = scope.$parent.lang;
-          var user = scope.$parent.user;
+          scope.user = scope.$parent.user;
           scope.newStatus = {value: '0'};
           scope.pubGroups = [];
           scope.edtGroups = [];
@@ -90,6 +90,9 @@
           };
 
           scope.updateStatus = function() {
+            if (scope.user.isEditor()) {
+              scope.newStatus.value = 4; // editors can only submit....
+            }
             // put pubGroups model into status update as publishGroups
             var publishGroups = [];
             if (scope.pubGroups) {
@@ -151,7 +154,7 @@
 
           scope.cantStatus = function(status) {
             return ((status == 5 || status == 2 || status == 3) &&
-                !user.isReviewerOrMore());
+                !scope.user.isReviewerOrMore());
           };
 
           $http.get('../api/groups?withReservedGroup=true', {cache: true})

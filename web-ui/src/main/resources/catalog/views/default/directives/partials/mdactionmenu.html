@@ -30,7 +30,8 @@
         <a data-ng-href=""
            data-ng-click="mdService.openUpdateStatusPanel(getScope())">
           <i class="fa fa-bell"></i>&nbsp;
-          <span data-translate="">updateStatus</span>
+          <span ng-if="user.isReviewerOrMore()" data-translate="">updateStatus</span>
+          <span ng-if="user.isEditor()" data-translate="">submitToReviewer</span>
         </a></li>
       <li class="divider" data-ng-if="user.isConnected()"></li>
       <li><a data-ng-href=""

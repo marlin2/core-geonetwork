@@ -1,7 +1,7 @@
 <form name="myForm">
               <input type="hidden" name="_csrf" value="{{csrf}}"/>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" data-ng-if="user.isReviewerOrMore()">
       <!-- TODO: Status are disabled based on profiles and
       previous values. See https://github.com/geonetwork/core-geonetwork/blob/develop/web/src/main/webapp/xsl/metadata-status.xsl#L15 -->
       <div class="radio"
@@ -16,10 +16,12 @@
         </label>
       </div>
     </div>
-    <div class="col-md-8">
+    <div ng-class="user.isReviewerOrMore() ? 'col-md-8' : 'col-md-12'">
       <div class="form-group">
         <label for="gn-change-message"
-               data-translate="">statusLogMessage</label>
+               data-translate="" ng-if="user.isReviewerOrMore()">statusLogMessage</label>
+        <label for="gn-change-message"
+               data-translate="" ng-if="user.isEditor()">submitLogMessage</label>
         <textarea class="form-control"
                   id="gn-change-message"
                   data-ng-model="changeMessage" 
@@ -61,8 +63,10 @@
       </div>
 
       <div data-ng-show="batch">
-        <p class="help-block"
+        <p class="help-block" ng-if="user.isReviewerOrMore()"
            data-translate="">statusBatchAlert</p>
+        <p class="help-block" ng-if="user.isEditor()"
+           data-translate="">statusSubmitAlert</p>
       </div>
 
       <div class="btn-toolbar" role="toolbar">
@@ -70,7 +74,8 @@
           <button class="btn btn-default"
                   data-gn-click-and-spin="updateStatus()">
             <i class="fa fa-bell"></i>&nbsp;
-            <span data-translate="">updateStatus</span>
+            <span ng-if="user.isReviewerOrMore()" data-translate="">updateStatus</span>
+            <span ng-if="user.isEditor()" data-translate="">submitToReviewer</span>
           </button>
         </div>
       </div>

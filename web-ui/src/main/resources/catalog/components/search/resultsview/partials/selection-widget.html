@@ -68,7 +68,7 @@
       <li  data-ng-show="!excludePattern.test('updateStatus')"
            data-ng-if="user.isEditorOrMore()">
         <a href="" data-ng-click="mdService.openStatusBatchPanel(getCatScope(), searchResults.selectionBucket)">
-          <i class="fa fa-bell"></i>&nbsp;<span translate>updateStatus</span>
+          <i class="fa fa-bell"></i>&nbsp;<span ng-if="user.isReviewerOrMore()" translate>updateStatus</span><span ng-if="user.isEditor()" translate>submitToReviewer</span>
         </a>
       </li>
       <li  data-ng-show="!excludePattern.test('editRecords')"
