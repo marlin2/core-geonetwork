@@ -273,10 +273,11 @@ public class MetadataWorkflowApi {
             }
 
             // now do the status change
-            Pair<Set<Integer>,Set<Integer>> results = sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
+            if (metadataIds.size() > 0) {
+              Pair<Set<Integer>,Set<Integer>> results = sa.statusChange(String.valueOf(status), metadataIds, changeDate, comment, publishGroups, editingGroups);
 
-            appContext.getBean(IMetadataIndexer.class).indexMetadata(results.one());
-
+              appContext.getBean(IMetadataIndexer.class).indexMetadata(results.one());
+            }
         } catch (Exception exception) {
             report.addError(exception);
         } finally {
