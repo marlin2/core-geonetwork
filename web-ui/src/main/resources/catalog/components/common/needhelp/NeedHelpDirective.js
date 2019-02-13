@@ -59,7 +59,9 @@
 
           scope.showHelp = function() {
             var page = attrs.gnNeedHelp;
-            var helpPageUrl = helpBaseUrl + gnGlobalSettings.lang + '/' + page;
+            var helpPageUrl =
+                 gnGlobalSettings.docUrl ? helpBaseUrl + page : 
+                       helpBaseUrl + gnGlobalSettings.lang + '/' + page;
             window.open(helpPageUrl, 'gn-documentation');
             return true;
           };

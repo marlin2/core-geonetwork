@@ -230,7 +230,7 @@
       requireProxy: [],
       gnCfg: angular.copy(defaultConfig),
       gnUrl: '',
-      docUrl: 'http://geonetwork-opensource.org/manuals/3.4.x/',
+      docUrl: 'https://confluence.csiro.au/display/DataCentreShared/',
       //docUrl: '../../doc/',
       modelOptions: {
         updateOn: 'default blur',
