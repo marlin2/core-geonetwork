@@ -4,7 +4,7 @@
     <span
       data-translate="">associatedResources</span>
 
-    <div data-gn-need-help="user-guide/associating-resources/index.html"
+    <div data-gn-need-help="MARLIN3+HELP+-+AssociatedResources"
          data-icon-only="true"
          class="pull-right"></div>
   </div>
@@ -27,6 +27,7 @@
             <span data-translate="">addOnlinesrcTitle</span>
           </a>
         </li>
+<!--
         <li class="dropdown-header"
             data-translate>linkMetadata
         </li>
@@ -78,6 +79,7 @@
             <span data-translate="">linkToSibling</span>
           </a>
         </li>
+-->
       </ul>
     </div>
     <div class="gn-onlinesrc-panel">
@@ -110,12 +112,15 @@
       <!-- ******* List of online resources ******* -->
       <h4 class="onlinesrc-title"
           data-ng-show="::isCategoryEnable('onlinesrc') && relations.onlines && relations.onlines.length > 0">
+          <span data-translate="">onlinesrc</span>&nbsp;
+<!--
         <a href=""
            data-ng-click="onlinesrcService.onOpenPopup('onlinesrc')">
           <i class="fa fa-link"></i><i class="icon-external-link"></i>&nbsp;
           <span data-translate="">onlinesrc</span>&nbsp;
           <i class="fa fa-plus"></i>
         </a>
+-->
       </h4>
       <ul class="list-group"
           data-ng-show="::isCategoryEnable('onlinesrc') && relations.onlines && relations.onlines.length > 0">
