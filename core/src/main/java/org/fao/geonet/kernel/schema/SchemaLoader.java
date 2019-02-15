@@ -701,7 +701,7 @@ public class SchemaLoader {
                 //--- we must try to resolve imports from the web using the
                 //--- oasis catalog
                 Path scFile;
-                if (schemaLoc.startsWith("http:")) {
+                if (schemaLoc.startsWith("http")) {
                     Resolver resolver = ResolverWrapper.getInstance();
                     final String scPath = resolver.getXmlResolver().resolveURI(schemaLoc);
 
