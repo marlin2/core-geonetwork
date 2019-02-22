@@ -52,12 +52,12 @@
            link: function(scope, element, attrs) {
              scope.snippet = null;
              scope.crsResults = [];
-             scope.snippetRef = gnEditor.
+             scope.snippetRef = gnEditor.buildXMLFieldName(scope.elementRef, scope.elementName);
              // If true, display button to add the element
              // without using the crs selector.
-             scope.templateAddAction = attrs.templateAddAction == 'true';
+             scope.templateAddAction = false;
+             if (attrs.templateAddAction) scope.templateAddAction = (attrs.templateAddAction == 'true');
 
-             buildXMLFieldName(scope.elementRef, scope.elementName);
 
              // Replace the name attribute with id since this textarea is
              // used only to store the template, we don't wanna submit it
