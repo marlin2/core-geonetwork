@@ -60,9 +60,10 @@ GeoNetwork.Settings.facetListConfig = [
                                     {name: 'projects'},
                                     {name: 'gcmds'}, 
                                     {name: 'otherkeywords'}, 
+                                    {name: 'equipment'}, 
                                     {name: 'orgNames'}
 																		];
-GeoNetwork.Settings.facetMaxItems = 7;
+GeoNetwork.Settings.facetMaxItems = 8;
 
 GeoNetwork.Settings.HITSPERPAGE = 10;
 
