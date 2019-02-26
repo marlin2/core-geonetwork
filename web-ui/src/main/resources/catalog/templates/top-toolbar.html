@@ -22,7 +22,7 @@
                data-ng-src="{{gnUrl}}../images/logos/{{info['system/site/siteId']}}.png?random{{info['system/site/lastUpdate']}}"/>
           </a>
         <a class="gn-nopadding-left hidden-sm hidden-md pull-left" data-gn-active-tb-item="{{gnCfg.mods.home.appUrl}}">
-          <span class="gn-name" 
+          <span class="gn-name"
                 data-ng-class="authenticated && user.isEditorOrMore() ? 'gn-truncate' : ''"
                 title="{{info['system/site/name']}}">{{info['system/site/name']}}</span>
         </a>
@@ -98,6 +98,13 @@
             </a>
           </li>
         </ul>
+      </li>
+      <li>
+        <a href="https://confluence.csiro.au/display/DataCentreShared/MARLIN"
+           target="_blank">
+          <i class="fa fa-fw fa-question-circle hidden-sm"></i>
+          <span data-translate="">help</span>
+        </a>
       </li>
     </ul>
 
