@@ -75,23 +75,11 @@ public class FilesystemStore implements PersistentStore {
     private static final String NAME = "name";
     private static final String CURRENT_SIZE = "currentsize";
     private static final String VALUE = "value";
-    public static final String QUERY_SETCURRENT_SIZE = 
-      "INSERT INTO " + STATS_TABLE + " (" + NAME + ", " + VALUE + ")" +
-      " VALUES ('" + CURRENT_SIZE + "', ?) ON CONFLICT(" + NAME +") DO UPDATE SET" +
-      " " + NAME + " = excluded." + NAME + "," +
-      " " + VALUE + " = excluded." + VALUE ;
+    public static final String QUERY_SETCURRENT_SIZE = "MERGE INTO " + STATS_TABLE + " (" + NAME + ", " + VALUE + ") VALUES ('" + CURRENT_SIZE + "', ?)";
     public static final String QUERY_GETCURRENT_SIZE = "SELECT " + VALUE + " FROM " + STATS_TABLE + " WHERE " + NAME + " = '" + CURRENT_SIZE + "'";
     private static final String QUERY_GET_INFO = "SELECT * FROM " + INFO_TABLE + " WHERE " + KEY + "=?";
     private static final String QUERY_GET_INFO_FOR_RESIZE = "SELECT " + KEY + "," + PATH + " FROM " + INFO_TABLE + " ORDER BY " + CHANGE_DATE + " ASC";
-    private static final String QUERY_PUT = 
-      "INSERT INTO " + INFO_TABLE + 
-      " (" + KEY + "," + CHANGE_DATE + "," + PUBLISHED + "," + PATH + ")" +
-      " VALUES (?,?,?, ?)" +
-      " ON CONFLICT(" + KEY + ") DO UPDATE SET" +
-      " " + KEY + " = excluded." + KEY + "," +
-      " " + CHANGE_DATE + " = excluded." + CHANGE_DATE + "," +
-      " " + PUBLISHED + " = excluded." + PUBLISHED + "," +
-      " " + PATH + " = excluded." + PATH;
+    private static final String QUERY_PUT = "MERGE INTO " + INFO_TABLE + " (" + KEY + "," + CHANGE_DATE + "," + PUBLISHED + "," + PATH + ") VALUES (?,?,?, ?)";
     private static final String QUERY_REMOVE = "DELETE FROM " + INFO_TABLE + " WHERE " + KEY + "=?";
     private static final String QUERY_CLEAR_INFO = "DELETE FROM " + INFO_TABLE;
     private static final String QUERY_CLEAR_STATS = "DELETE FROM " + STATS_TABLE;
@@ -106,32 +94,24 @@ public class FilesystemStore implements PersistentStore {
 
     private synchronized void init() throws SQLException {
         if (!initialized) {
-            // using a sqlite database and not normal geonetwork DB to ensure that the accesses are always on localhost and therefore
+            // using a h2 database and not normal geonetwork DB to ensure that the accesses are always on localhost and therefore
             // hopefully quick.
             try {
-                Class.forName("org.sqlite.JDBC");
+                Class.forName("org.h2.Driver");
             } catch (ClassNotFoundException e) {
                 throw new Error(e);
             }
 
-            String initSql[] = {
-                //"CREATE SCHEMA IF NOT EXISTS " + INFO_TABLE,
+            String[] initSql = {
+                "CREATE SCHEMA IF NOT EXISTS " + INFO_TABLE,
                 "CREATE TABLE IF NOT EXISTS " + INFO_TABLE + "(" + KEY + " INT PRIMARY KEY, " + CHANGE_DATE + " BIGINT NOT NULL, " +
                     PUBLISHED + " BOOL NOT NULL, " + PATH + " CLOB  NOT NULL)",
                 "CREATE TABLE IF NOT EXISTS " + STATS_TABLE + " (" + NAME + " VARCHAR(64) PRIMARY KEY, " + VALUE + " VARCHAR(32) NOT NULL)"
 
             };
-            String dbPath = getBaseCacheDir().resolve("info-store.sqlite.db").toString();
-            try {
-              metadataDb = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
-              for (String sql : initSql) {
-                Statement stmt = metadataDb.createStatement();
-                stmt.execute(sql);
-              }
-            } catch (SQLException e) {
-              throw new Error(e);
-            } 
-            
+            String init = ";INIT=" + Joiner.on("\\;").join(initSql) + ";DB_CLOSE_DELAY=-1";
+            String dbPath = testing ? "mem:" + UUID.randomUUID() : getBaseCacheDir().resolve("info-store").toString();
+            metadataDb = DriverManager.getConnection("jdbc:h2:" + dbPath + init, "fsStore", "");
 
             try (
                 Statement statement = metadataDb.createStatement();

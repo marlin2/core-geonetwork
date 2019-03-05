@@ -37,16 +37,9 @@ public class DiskbackedCache implements CacheStrategy<CacheKey, CacheValue>, Clo
     private static final String TYPE = "type";
     private static final String HASH = "hash";
     private static final String RAW_DATA = "rawdata";
-    // sqllite upsert
-    public static final String SQL_PUT_CACHE_VALUE = "INSERT INTO " + TABLE 
-        + " (" + GROUPNAME + ", " + TYPE + ", " + HASH + ", " + RAW_DATA + ")"  
-        + " VALUES (?,?,?,?)" 
-        + " ON CONFLICT(" + GROUPNAME + ", " + TYPE + ") DO UPDATE SET" 
-        + " " + GROUPNAME + " = excluded." + GROUPNAME + "," 
-        + " " + TYPE + " = excluded." + TYPE + "," 
-        + " " + HASH + " = excluded." + HASH + "," 
-        + " " + RAW_DATA + " = excluded." + RAW_DATA ;
-       
+    public static final String SQL_PUT_CACHE_VALUE = "MERGE INTO " + TABLE + " (" + GROUPNAME + ", " + TYPE + ", " + HASH + ", " +
+        RAW_DATA + ") VALUES"
+        + " (?,?,?,?)";
     public static final String SQL_GET_QUERY = "SELECT " + HASH + "," + RAW_DATA + " FROM " + TABLE + " WHERE " +
         GROUPNAME + "=? and " + TYPE + " = ?";
     private final String dbPathString;
@@ -74,25 +67,23 @@ public class DiskbackedCache implements CacheStrategy<CacheKey, CacheValue>, Clo
         if (path == null) {
             if (ApplicationContextHolder.get() != null) {
                 GeonetworkDataDirectory geonetworkDataDirectory = ApplicationContextHolder.get().getBean(GeonetworkDataDirectory.class);
-                path = geonetworkDataDirectory.getSystemDataDir().resolve("wro4j-cache.sqlite.db").toString();
+                path = geonetworkDataDirectory.getSystemDataDir().resolve("wro4j-cache").toString();
             }
         }
 
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException e) {
             throw new Error(e);
         }
-        String initSql =
+        String[] initSql = {
             "CREATE TABLE IF NOT EXISTS " + TABLE + "(" + GROUPNAME + "  VARCHAR(128) NOT NULL, " + TYPE + " VARCHAR(3) NOT NULL, " +
                 HASH + " VARCHAR(256) NOT NULL, " + RAW_DATA + " CLOB NOT NULL, PRIMARY KEY (" + GROUPNAME + ", " + TYPE + "))"
-        ;
-
+        };
+        String init = ";INIT=" + Joiner.on("\\;").join(initSql) + ";DB_CLOSE_ON_EXIT=FALSE;";
 
         try {
-            this.dbConnection = DriverManager.getConnection("jdbc:sqlite:" + path);
-            Statement stmt = this.dbConnection.createStatement();
-            stmt.execute(initSql);
+            this.dbConnection = DriverManager.getConnection("jdbc:h2:" + path + init, "wro4jcache", "");
         } catch (SQLException e) {
             throw new WroRuntimeException("Error creating the wro4j disk-cache", e);
         }
@@ -154,6 +145,7 @@ public class DiskbackedCache implements CacheStrategy<CacheKey, CacheValue>, Clo
     public void destroy() {
         try {
             if (dbConnection != null) {
+                dbConnection.createStatement().execute(SQL_SHUTDOWN);
                 dbConnection.close();
             }
         } catch (SQLException e) {
