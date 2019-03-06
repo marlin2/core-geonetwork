@@ -76,7 +76,9 @@
             });
           }
           var defer = $q.defer();
-          gnEditor.save(false, true)
+          //gnEditor.save(false, true)
+          // Terminate so that lock is cleared
+          gnEditor.save(false, true, true)
               .then(function() {
                 if (!skipSave) {
                   $http.post('../api/records/' + (params.id || params.uuid) +
