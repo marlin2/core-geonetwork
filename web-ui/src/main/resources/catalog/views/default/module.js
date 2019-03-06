@@ -161,13 +161,13 @@
                 anyField.focus();
               }
             }
-          }).add({
-            combo: 'enter',
-            description: $translate.instant('hotkeySearchTheCatalog'),
-            allowIn: 'INPUT',
-            callback: function() {
-              $location.search('tab=search');
-            }
+          //}).add({
+          //  combo: 'enter',
+          //  description: $translate.instant('hotkeySearchTheCatalog'),
+          //  allowIn: 'INPUT',
+          //  callback: function() {
+          //    $location.search('tab=search');
+          //  }
             //}).add({
             //  combo: 'r',
             //  description: $translate.instant('hotkeyResetSearch'),
