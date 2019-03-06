@@ -239,7 +239,7 @@ public class MEFLib {
         metadata.removeChild("info", Edit.NAMESPACE);
         Element mdEl = new Element("data").setText(Xml.getString(metadata));
         record.addContent(mdEl);
-
+        record.addContent(new Element("status").setText(dm.getCurrentStatus(dbms, Integer.parseInt(id))));
         return record;
 	}
 
@@ -364,6 +364,9 @@ public class MEFLib {
 		String siteId = md.getChildText("source");
 		String rating = md.getChildText("rating");
 		String popularity = md.getChildText("popularity");
+		String status = md.getChildText("status");
+		String owner = md.getChildText("owner");
+		String groupOwner = md.getChildText("groupOwner");
 
 		Element general = new Element("general").addContent(
 				new Element("createDate").setText(createDate)).addContent(
@@ -373,7 +376,10 @@ public class MEFLib {
 				new Element("localId").setText(id)).addContent(
 				new Element("format").setText(format.toString())).addContent(
 				new Element("rating").setText(rating)).addContent(
-				new Element("popularity").setText(popularity));
+				new Element("popularity").setText(popularity)).addContent(
+				new Element("status").setText(status)).addContent(
+				new Element("owner").setText(owner)).addContent(
+				new Element("groupOwner").setText(groupOwner));
 
 		if (!skipUUID) {
 			GeonetContext gc = (GeonetContext) context
