@@ -59,8 +59,8 @@ public class SearchParameter {
     public static final String PUBLICATIONDATEFROM = "publicationDateFrom";
     public static final String CREATIONDATETO = "creationDateTo";
     public static final String CREATIONDATEFROM = "creationDateFrom";
-    public static final String EXTTO = "extTo";
-    public static final String EXTFROM = "extFrom";
+    public static final String EXTTO = "tempExtentBegin";
+    public static final String EXTFROM = "tempExtentEnd";
     public static final String METADATASTANDARDNAME = "metadataStandardName";
     public static final String _SCHEMA = "_schema";
     public static final String PARENTUUID = "parentUuid";
