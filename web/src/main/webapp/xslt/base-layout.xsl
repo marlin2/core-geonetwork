@@ -68,7 +68,7 @@
       and a facet search to get main site information.
       -->
       <body data-ng-controller="GnCatController">
-
+        <div id="logo"></div>
         <div data-gn-alert-manager=""></div>
 
         <xsl:choose>
