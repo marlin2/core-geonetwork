@@ -53,8 +53,10 @@
 
     <!-- <data-gn-md-validation-tools></data-gn-md-validation-tools> -->
     <!-- TODO: automatic save status -->
+    <!-- Add auto focus to cancel so that back button doesn't close editor and
+         leave record locked -->
     <button type="button" class="btn btn-default navbar-btn gn-tooltip"
-            gn-click-and-spin="cancel()"
+            gn-click-and-spin="cancel()" gn-auto-focus=""
             data-ng-mouseover="getCancelStatus()" title="{{cancelStatus}}">
       <i class="fa fa-undo"/>&nbsp;
       <span class="visible-lg" data-translate="">cancel</span>
