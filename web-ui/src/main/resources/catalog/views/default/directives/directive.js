@@ -119,10 +119,12 @@
         scope: {
           label: '@gnPeriodChooser',
           dateFrom: '=',
-          dateTo: '='
+          dateTo: '=',
+          dropdownHidden: '='
         },
         link: function linkFn(scope, element, attr) {
           var today = moment();
+          scope.dropdownHidden = (scope.dropdownHidden == undefined) ? false : scope.dropdownHidden;
           scope.format = 'YYYY-MM-DD';
           scope.options = ['today', 'yesterday', 'thisWeek', 'thisMonth',
             'last3Months', 'last6Months', 'thisYear'];

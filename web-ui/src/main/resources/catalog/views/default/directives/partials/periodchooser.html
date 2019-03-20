@@ -1,5 +1,5 @@
 <div>
-  <div class="btn-group btn-group-xs">
+  <div class="btn-group btn-group-xs" ng-if="!(dropdownHidden)">
     <button type="button" class="btn btn-link dropdown-toggle"
             data-toggle="dropdown" aria-expanded="false">
       <span data-translate="">{{label}}</span> <span class="caret"></span>
@@ -11,6 +11,8 @@
            data-translate="">{{o}}</a></li>
     </ul>
   </div>
+  <!-- TODO: Move style into css someday -->
+  <span data-translate="" ng-if="dropdownHidden" style="font-size: 12px; line-height: 1.5; margin-left: 5px;">{{label}}</span>
   <br/>
   <div class="row">
     <div class="col-md-6">

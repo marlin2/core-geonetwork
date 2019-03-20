@@ -234,6 +234,7 @@
   "where": "Where ?",
   "resourcesCreatedTheLast": "<strong>Resources</strong> created in the last",
   "recordsCreatedTheLast": "<strong>Records</strong> created in the last",
+  "recordsTemporalExtent": "Records with resource temporal extent that overlaps:",
   "today": "today",
   "yesterday": "yesterday",
   "thisWeek": "this week",
