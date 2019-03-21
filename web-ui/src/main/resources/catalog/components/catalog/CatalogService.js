@@ -197,7 +197,7 @@
            * @param {string} metadataUuid , the uuid of the metadata to create
            *                 (when metadata uuid is set to manual)
            * @param {boolean} hasCategoryOfSource copy categories from source
-           * @param {boolean} isEditor is the user an editor? if true then redirect 
+           * @param {boolean} isEditor is the user an editor? if true then redirect
            *                  back to search, otherwise to the editor board
            * @return {HttpPromise} Future object
            */
@@ -816,6 +816,10 @@
         } else {
           return '';
         }
+      },
+      getLastModifiedDate: function() {
+        lastModifiedDate = new Date(this['geonet:info'].changeDate);
+        return lastModifiedDate.toISOString().slice(0, 10);
       },
       isWorkflowEnabled: function() {
         var st = this.mdStatus;

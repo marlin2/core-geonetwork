@@ -6,8 +6,8 @@
 
       <!--Edit button (create draft if status == 2 ie. approved) and user can edit
           record -->
-      <a class="pull-right  gn-md-edit-btn" 
-         ng-show="md.mdStatus !== '2' && user.canEditRecord(md)" 
+      <a class="pull-right  gn-md-edit-btn"
+         ng-show="md.mdStatus !== '2' && user.canEditRecord(md)"
          ng-disable="md.isLocked()"
          ng-show="user.canEditRecord(md)"
          ng-href="catalog.edit#/metadata/{{md['geonet:info'].id}}?redirectUrl={{user.isReviewerOrMore() ? 'catalog.edit' : 'catalog.search'}}"
@@ -15,7 +15,7 @@
         <i class="fa fa-pencil"></i>
       </a>
       <a class="pull-right  gn-md-edit-btn"
-         ng-show="md.mdStatus === '2' && user.canEditRecord(md)" 
+         ng-show="md.mdStatus === '2' && user.canEditRecord(md)"
          ng-disable="md.isLocked()"
          gn-confirm-click="{{'confirmCreateDraft' | translate}}"
          ng-click="mdService.createDraftAndEditRecord(md, user.isReviewerOrMore())"
@@ -63,6 +63,10 @@
         	<div class="col-md-3">
             <b>Owner: </b>
             <span>{{md.getOwnername()}}</span>
+          </div>
+        	<div class="col-md-3">
+            <b>Last Modified: </b>
+            <span>{{md.getLastModifiedDate()}}</span>
           </div>
         </div>
         <div class="pull-right" ng-if="user.isEditorOrMore()">
