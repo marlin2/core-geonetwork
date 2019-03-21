@@ -382,8 +382,9 @@
       $scope.socialMediaLink = $location.absUrl();
       $scope.$on('$locationChangeSuccess', function(event) {
         $scope.socialMediaLink = $location.absUrl();
-        $scope.showSocialMediaLink =
-            ($scope.socialMediaLink.indexOf('/metadata/') != -1);
+        // $scope.showSocialMediaLink =
+        //     ($scope.socialMediaLink.indexOf('/metadata/') != -1);
+        $scope.showSocialMediaLink = false;
       });
       $scope.getPermalink = gnUtilityService.getPermalink;
 

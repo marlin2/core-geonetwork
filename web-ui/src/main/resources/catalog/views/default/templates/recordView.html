@@ -104,7 +104,7 @@
        title="{{'see published' | translate}}">
       <i class="fa fa-clipboard"></i>
     </a>
-    
+
     <a class="btn btn-primary gn-md-edit-btn pull-right"
        data-ng-show="mdView.current.record.draft == 'E'
                         && user.canEditRecord(mdView.current.record)"
@@ -112,7 +112,7 @@
        data-ng-click="showDraft(mdView.current.record.getUuid())"
        title="{{'see draft' | translate}}">
       <i class="fa fa-clipboard"></i>
-    </a>     
+    </a>
 
     <div class="gnMdfeedback"></div>
 
@@ -130,7 +130,7 @@
 
         </h1>
         <h2     class="text-warning"
-                data-ng-show="mdView.current.record.draft == 'Y'" 
+                data-ng-show="mdView.current.record.draft == 'Y'"
                 data-translate="">Working Copy</h2>
 
         <div class="alert alert-info"
@@ -575,7 +575,7 @@
           </p>
         </section>
 
-        <section class="gn-md-side-social">
+        <section class="gn-md-side-social" ng-show="showSocialMediaLink">
           <h4>
             <i class="fa fa-fw fa-share-square-o"></i>
             <span data-translate="">shareOn</span>
