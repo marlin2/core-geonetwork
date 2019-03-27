@@ -241,6 +241,6 @@
   </root>
 
   <logger name="com.github.isrsal.logging.LoggingFilter">
-      <level value="DEBUG"/>
+      <level value="WARN"/>
    </logger>
 </log4j:configuration>
