@@ -135,7 +135,7 @@ public class ImportWebMap extends NotInReadOnlyModeService {
         // Import record
         Importer.importRecord(uuid, MEFLib.UuidAction.parse(uuidAction), md, "iso19139", 0, sm.getSiteId(),
             sm.getSiteName(), null, context, id, date, date, groupId,
-            MetadataType.METADATA);
+            MetadataType.METADATA, null, null, null);
 
         // Save the context if no context-url provided
         if (StringUtils.isEmpty(mapUrl)) {

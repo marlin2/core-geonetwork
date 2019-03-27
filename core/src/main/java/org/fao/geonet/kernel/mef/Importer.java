@@ -296,6 +296,9 @@ public class Importer {
 //                String groupId = null;
                 Element categs = null;
                 final Element privileges;
+                String owner = null;
+                String groupOwner = null;
+                String status = null;
 
 
                 // Apply a stylesheet transformation if requested
@@ -393,6 +396,10 @@ public class Importer {
                     }
                     rating = general.getChildText("rating");
                     popularity = general.getChildText("popularity");
+                    // extensions for Marlin2 and Marlin3
+                    owner = general.getChildText("owner");
+                    groupOwner = general.getChildText("groupOwner");
+                    status = general.getChildText("status");
                 }
 
                 if (schema.startsWith("iso19139")) {
@@ -413,7 +420,8 @@ public class Importer {
                 importRecord(uuid, uuidAction, md, schema, index,
                     source, sourceName, sourceTranslations,
                     context, metadataIdMap, createDate,
-                    changeDate, groupId, isTemplate);
+                    changeDate, groupId, isTemplate,
+                    status, owner, groupOwner);
 
                 if (fc.size() != 0 && fc.get(index) != null) {
                     // UUID is set as @uuid in root element
@@ -552,7 +560,8 @@ public class Importer {
             List<Element> md, String schema, int index, String source,
             String sourceName, Map<String, String> sourceTranslations,
             ServiceContext context, List<String> id, String createDate,
-            String changeDate, String groupId, MetadataType isTemplate)
+            String changeDate, String groupId, MetadataType isTemplate,
+            String status, String owner, String groupOwner)
                     throws Exception {
 
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
@@ -613,15 +622,24 @@ public class Importer {
         // insert metadata
         //
         int userid = context.getUserSession().getUserIdAsInt();
+        if (owner != null) {
+          try {
+             userid = Integer.parseInt(owner);
+          } catch (NumberFormatException nfe) {
+             throw new Exception(" Could not parse owner id as integer from "+owner);
+          }
+        }
+        if (groupOwner != null) groupId = groupOwner;
         String docType = null, title = null, category = null;
         boolean ufo = false, indexImmediate = false;
 
         String metadataId = mdManager.insertMetadata(context, schema, md.get(index), uuid, userid, groupId, source, isTemplate.codeString, docType, category, createDate, changeDate, ufo, indexImmediate);
-
-        // Disable as causes oracle to run out of cursors......records should have
-        // their status set manually in any case - assuming draft is not ideal
-        //mdStatus.activateWorkflowIfConfigured(context, metadataId, groupId);
-
+       
+        try { 
+          mdStatus.setStatusExt(context, Integer.parseInt(metadataId), Integer.parseInt(status), new ISODate(), "Status set on import");
+        } catch (NumberFormatException nfe) {
+             throw new Exception(" Could not parse integer from "+status);
+        }
         id.add(index, metadataId);
 
     }

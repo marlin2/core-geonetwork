@@ -1082,7 +1082,7 @@ public class MetadataInsertDeleteApi {
             "iso19139", 0, sm.getSiteId(),
             sm.getSiteName(), null,
             context, id, date, date, group,
-            MetadataType.METADATA);
+            MetadataType.METADATA, null, null, null);
 
         // Save the context if no context-url provided
         if (StringUtils.isEmpty(url)) {
@@ -1220,7 +1220,8 @@ public class MetadataInsertDeleteApi {
             Importer.importRecord(uuid, uuidProcessing, md, schema, 0,
                 settingManager.getSiteId(),
                 settingManager.getSiteName(),
-                sourceTranslations, context, id, date, date, group, metadataType);
+                sourceTranslations, context, id, date, date, group, metadataType,
+                null, null, null);
 
         } catch (DataIntegrityViolationException ex) {
             throw ex;

@@ -149,7 +149,8 @@ public class Insert extends NotInReadOnlyModeService {
         Map<String, String> sourceTranslations = Maps.newHashMap();
         Importer.importRecord(uuid, MEFLib.UuidAction.parse(uuidAction), md, schema, 0,
             gc.getBean(SettingManager.class).getSiteId(), gc.getBean(SettingManager.class).getSiteName(),
-            sourceTranslations, context, id, date, date, group, metadataType);
+            sourceTranslations, context, id, date, date, group, metadataType,
+            null, null, null);
 
         int iId = Integer.parseInt(id.get(0));
 

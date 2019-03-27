@@ -324,7 +324,7 @@ public abstract class AbstractCoreIntegrationTest extends AbstractSpringDataTest
             MEFLib.UuidAction.parse(uuidAction), Lists.newArrayList(metadata), schema, 0,
             source.getUuid(), source.getName(), Maps.<String, String>newHashMap(), context,
             id, createDate, createDate,
-            "" + groupId, metadataType);
+            "" + groupId, metadataType, null, null, null);
 
         dataManager.indexMetadata(id.get(0), true, null);
         return Integer.parseInt(id.get(0));

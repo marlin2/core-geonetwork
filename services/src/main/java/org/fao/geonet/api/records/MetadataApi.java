@@ -173,9 +173,10 @@ public class MetadataApi implements ApplicationContextAware {
             || accept.contains(MediaType.APPLICATION_XHTML_XML_VALUE)
             || accept.contains("application/pdf")) {
             return "forward:/api/records/" + (metadataUuid + "/formatters/" + defaultFormatter);
-        } else if (accept.contains(MediaType.APPLICATION_XML_VALUE)
-                || accept.contains(MediaType.APPLICATION_JSON_VALUE)) {
+        } else if (accept.contains(MediaType.APPLICATION_XML_VALUE)) {
             return "forward:/api/records/" + (metadataUuid + "/formatters/xml");
+        } else if (accept.contains(MediaType.APPLICATION_JSON_VALUE)) {
+            return "forward:/api/records/" + (metadataUuid + "/formatters/json");
         } else if (accept.contains("application/zip")
                 || accept.contains(MEF_V1_ACCEPT_TYPE)
                 || accept.contains(MEF_V2_ACCEPT_TYPE)) {
