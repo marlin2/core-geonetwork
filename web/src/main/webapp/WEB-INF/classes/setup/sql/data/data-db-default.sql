@@ -695,3 +695,86 @@ INSERT INTO GUF_RatingCriteria (id, name, isinternal) VALUES (1, 'Discoverabilit
 INSERT INTO GUF_RatingCriteria (id, name, isinternal) VALUES (2, 'Readability', 'n');
 INSERT INTO GUF_RatingCriteria (id, name, isinternal) VALUES (3, 'DataQuality', 'n');
 INSERT INTO GUF_RatingCriteria (id, name, isinternal) VALUES (4, 'ServiceQuality', 'n');
+
+-- MARLIN INSERTIONS
+
+-- ======================================================================
+-- === Table: Marlin Harvesters for organisations and persons
+-- ======================================================================
+
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34550,'node','wfsfeatures',1);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34282,'node','wfsfeatures',1);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34283,'site','',34282);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34284,'translations','',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34285,'options','',34282);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34286,'info','',34282);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34287,'content','',34282);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34288,'name','marlin organisations',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34289,'uuid','3fdafadd-86aa-4c13-a9b1-6ad240991ed6',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34290,'ownerId','1',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34291,'ownerUser','1',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34292,'ownerGroup','2',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34293,'useAccount','false',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34294,'username','',34293);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34295,'password','',34293);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34296,'every','0 0 0 ? * *',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34297,'oneRunOnly','true',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34298,'overrideUUID','SKIP',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34299,'status','inactive',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34300,'importxslt','none',34287);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34301,'validate','NOVALIDATION',34287);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34302,'lastRun','2019-03-27T07:50:03.882Z',34286);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34303,'privileges','',34282);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34304,'group','1',34303);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34305,'operation','0',34304);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34306,'operation','5',34304);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34307,'operation','1',34304);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34308,'categories','',34282);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34309,'category','9',34308);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34310,'url','http://geonetwork-dev-hba.it.csiro.au:6060/deegree-wfs/services',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34311,'icon','blank.png',34283);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34312,'lang','eng',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34313,'query','<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:app="http://www.deegree.org/app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><!-- request all MarlinOrganisations instances --><wfs:Query typeName="app:MarlinOrganisations" /></wfs:GetFeature>',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34314,'outputSchema','iso19139.mcp-2.0',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34315,'stylesheet','marlin_organisations_fragments.xsl',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34316,'streamFeatures','false',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34317,'createSubtemplates','true',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34318,'templateId','',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34319,'recordsCategory','2',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34855,'site','',34550);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34856,'translations','',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34857,'options','',34550);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34858,'info','',34550);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34859,'content','',34550);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34860,'name','marlin persons',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34861,'uuid','cdb8234b-9886-475a-afec-022b3032db75',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34862,'ownerId','1',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34863,'ownerUser','1',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34864,'ownerGroup','2',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34865,'useAccount','false',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34866,'username','',34865);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34867,'password','',34865);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34868,'every','0 0 0 ? * *',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34869,'oneRunOnly','false',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34870,'overrideUUID','SKIP',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34871,'status','active',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34872,'importxslt','none',34859);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34873,'validate','NOVALIDATION',34859);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34874,'lastRun','2019-03-27T08:03:53.227Z',34858);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34875,'privileges','',34550);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34876,'group','1',34875);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34877,'operation','0',34876);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34878,'operation','5',34876);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34879,'operation','1',34876);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34880,'categories','',34550);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34881,'category','9',34880);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34882,'url','http://geonetwork-dev-hba.it.csiro.au:6060/deegree-wfs/services',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34883,'icon','blank.png',34855);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34884,'lang','eng',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34885,'query','<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:app="http://www.deegree.org/app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" maxFeatures="100000" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><!-- request all MarlinPersons instances --><wfs:Query typeName="app:MarlinPersons"/></wfs:GetFeature>',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34886,'outputSchema','iso19139.mcp-2.0',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34887,'stylesheet','marlin_persons_fragments.xsl',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34888,'streamFeatures','false',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34889,'createSubtemplates','true',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34890,'templateId','',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34891,'recordsCategory','2',34857);
