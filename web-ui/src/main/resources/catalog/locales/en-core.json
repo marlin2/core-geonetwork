@@ -57,7 +57,7 @@
     "adminConsole": "Admin console",
     "loadCapabilitiesLayers": "Load service layers",
     "any": "Full text",
-    "anyPlaceHolder": "Change this to something more meaningful for Marlin users e.g. Search for vessel (Investigator), voyage (IN2019_V01), dataset (some example), datat type (some example)...",
+    "anyPlaceHolder": "Search.. eg. Investigator, wave, salinity, handfish",
     "VALID": "Valid",
     "INVALID": "Invalid",
     "clickToFilterOn": "Click to filter on ",
