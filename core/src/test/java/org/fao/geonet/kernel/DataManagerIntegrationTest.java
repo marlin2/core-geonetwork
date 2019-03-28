@@ -284,7 +284,7 @@ public class DataManagerIntegrationTest extends AbstractCoreIntegrationTest {
         String parentUuid = UUID.randomUUID().toString();
         Element md = Xml.loadFile(AbstractCoreIntegrationTest.class.getResource("kernel/multilingual-metadata.xml"));
         final Element updateMd = _dataManager.updateFixedInfo("iso19139", Optional.<Integer>absent(), uuid, md, parentUuid,
-            UpdateDatestamp.YES, context);
+            UpdateDatestamp.YES, context, false);
 
         final List<Namespace> namespaces = _dataManager.getSchema("iso19139").getNamespaces();
         assertEquals(uuid, Xml.selectString(updateMd, "gmd:fileIdentifier/gco:CharacterString", namespaces));

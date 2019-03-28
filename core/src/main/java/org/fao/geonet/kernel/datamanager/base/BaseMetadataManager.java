@@ -434,9 +434,12 @@ public class BaseMetadataManager implements IMetadataManager {
         String schema = templateMetadata.getDataInfo().getSchemaId();
         String data = templateMetadata.getData();
         Element xml = Xml.loadString(data, false);
-        if (templateMetadata.getDataInfo().getType() == MetadataType.METADATA) {
-            xml = updateFixedInfo(schema, Optional.<Integer> absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context);
-        }
+        // Run the XML through update fixed info so that things that must be done on
+        // creation are done now
+        //if (templateMetadata.getDataInfo().getType() == MetadataType.METADATA) {
+            boolean created = true;
+            xml = updateFixedInfo(schema, Optional.<Integer> absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context, created);
+        //}
         final Metadata newMetadata = new Metadata();
         newMetadata.setUuid(uuid);
         newMetadata.getDataInfo().setChangeDate(new ISODate()).setCreateDate(new ISODate()).setSchemaId(schema)
@@ -550,7 +553,7 @@ public class BaseMetadataManager implements IMetadataManager {
         if (updateFixedInfo && newMetadata.getDataInfo().getType() == MetadataType.METADATA) {
             String parentUuid = null;
             metadataXml = updateFixedInfo(schema, Optional.<Integer> absent(), newMetadata.getUuid(), metadataXml, parentUuid,
-                    updateDatestamp, context);
+                    updateDatestamp, context, false);
         }
 
         // --- store metadata
@@ -698,7 +701,7 @@ public class BaseMetadataManager implements IMetadataManager {
             }
 
             metadataXml = updateFixedInfo(schema, Optional.of(intId), uuid, metadataXml, parentUuid,
-                    (updateDateStamp ? UpdateDatestamp.YES : UpdateDatestamp.NO), context);
+                    (updateDateStamp ? UpdateDatestamp.YES : UpdateDatestamp.NO), context, false);
         }
 
         // --- force namespace prefix for iso19139 metadata
@@ -884,7 +887,7 @@ public class BaseMetadataManager implements IMetadataManager {
      */
     @Override
     public Element updateFixedInfo(String schema, Optional<Integer> metadataId, String uuid, Element md, String parentUuid,
-            UpdateDatestamp updateDatestamp, ServiceContext context) throws Exception {
+            UpdateDatestamp updateDatestamp, ServiceContext context, boolean created) throws Exception {
         boolean autoFixing = settingManager.getValueAsBool(Settings.SYSTEM_AUTOFIXING_ENABLE, true);
         if (autoFixing) {
             if (Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
@@ -920,6 +923,10 @@ public class BaseMetadataManager implements IMetadataManager {
             Element schemaLoc = new Element("schemaLocation");
             schemaLoc.setAttribute(schemaManager.getSchemaLocation(schema, context));
             env.addContent(schemaLoc);
+
+            if (created) {
+               env.addContent(new Element("created").setText(new ISODate().toString()));
+            }
 
             if (updateDatestamp == UpdateDatestamp.YES) {
                 env.addContent(new Element("changeDate").setText(new ISODate().toString()));

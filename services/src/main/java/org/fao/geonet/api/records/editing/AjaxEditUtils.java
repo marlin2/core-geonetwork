@@ -579,7 +579,7 @@ public class AjaxEditUtils extends EditUtils {
         editLib.removeEditingInfo(md);
         editLib.contractElements(md);
         String parentUuid = null;
-        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
+        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context, false);
         Processor.processXLink(md, this.context);
 
         //--- do the validation on the metadata
@@ -625,7 +625,7 @@ public class AjaxEditUtils extends EditUtils {
 
         editLib.contractElements(md);
         String parentUuid = null;
-        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
+        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context, false);
         String changeDate = null;
         xmlSerializer.update(id, md, changeDate, false, null, context);
 
@@ -673,7 +673,7 @@ public class AjaxEditUtils extends EditUtils {
 
         editLib.contractElements(md);
         String parentUuid = null;
-        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context);
+        md = context.getBean(IMetadataManager.class).updateFixedInfo(schema, Optional.of(Integer.valueOf(id)), null, md, parentUuid, UpdateDatestamp.NO, context, false);
 
         String changeDate = null;
         xmlSerializer.update(id, md, changeDate, false, null, context);

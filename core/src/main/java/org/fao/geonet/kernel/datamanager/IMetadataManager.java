@@ -59,7 +59,7 @@ public interface IMetadataManager {
                 throws Exception;
 
         Element updateFixedInfo(String schema, Optional<Integer> metadataId, String uuid, Element md, String parentUuid,
-                UpdateDatestamp updateDatestamp, ServiceContext context) throws Exception;
+                UpdateDatestamp updateDatestamp, ServiceContext context, boolean created) throws Exception;
 
         void flush();
 

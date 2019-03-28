@@ -331,9 +331,9 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
     String schema = templateMetadata.getDataInfo().getSchemaId();
     String data = templateMetadata.getData();
     Element xml = Xml.loadString(data, false);
-    if (templateMetadata.getDataInfo().getType() == MetadataType.METADATA) {
-      xml = metadataManager.updateFixedInfo(schema, Optional.<Integer>absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context);
-    }
+    //if (templateMetadata.getDataInfo().getType() == MetadataType.METADATA) {
+      xml = metadataManager.updateFixedInfo(schema, Optional.<Integer>absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context, true);
+    //}
     final MetadataDraft newMetadata = new MetadataDraft();
     newMetadata.setUuid(uuid);
     

@@ -181,7 +181,7 @@ public class DraftMetadataManager extends BaseMetadataManager {
    */
   @Override
   public Element updateFixedInfo(String schema, Optional<Integer> metadataId, String uuid, Element md,
-      String parentUuid, UpdateDatestamp updateDatestamp, ServiceContext context) throws Exception {
+      String parentUuid, UpdateDatestamp updateDatestamp, ServiceContext context, boolean created) throws Exception {
     boolean autoFixing = context.getBean(SettingManager.class).getValueAsBool("system/autofixing/enable", true);
     if (autoFixing) {
       if (Log.isDebugEnabled(Geonet.DATA_MANAGER))
@@ -220,6 +220,10 @@ public class DraftMetadataManager extends BaseMetadataManager {
       Element schemaLoc = new Element("schemaLocation");
       schemaLoc.setAttribute(schemaManager.getSchemaLocation(schema, context));
       env.addContent(schemaLoc);
+
+      if (created) {
+        env.addContent(new Element("created").setText(new ISODate().toString()));
+      }
 
       if (updateDatestamp == UpdateDatestamp.YES) {
         env.addContent(new Element("changeDate").setText(new ISODate().toString()));

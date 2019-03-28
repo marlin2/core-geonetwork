@@ -60,7 +60,7 @@ public class UpdateFixedInfoTest extends AbstractServiceIntegrationTest {
         Element md = Xml.loadFile(UpdateFixedInfoTest.class.getResource("descriptiveKeywordsUpdateFixedInfo.xml"));
         ServiceContext context = createServiceContext();
         final Element updatedXml = dataManager.updateFixedInfo("iso19139", Optional.<Integer>absent(), "test-uuid-123", md, null,
-            UpdateDatestamp.NO, context);
+            UpdateDatestamp.NO, context, false);
 
         assertEquals(4, Xml.selectNodes(updatedXml,
             "*//gmd:descriptiveKeywords", NAMESPACES).size());
@@ -102,7 +102,7 @@ public class UpdateFixedInfoTest extends AbstractServiceIntegrationTest {
         Element md = Xml.loadFile(UpdateFixedInfoTest.class.getResource("descriptiveKeywordsUpdateFixedInfoXLinked.xml"));
         ServiceContext context = createServiceContext();
         final Element updatedXml = dataManager.updateFixedInfo("iso19139", Optional.<Integer>absent(), "test-uuid-123", md, null,
-            UpdateDatestamp.NO, context);
+            UpdateDatestamp.NO, context, false);
 
         assertEquals(Xml.getString(updatedXml), 4, Xml.selectNodes(updatedXml,
             "*//gmd:descriptiveKeywords", NAMESPACES).size());
