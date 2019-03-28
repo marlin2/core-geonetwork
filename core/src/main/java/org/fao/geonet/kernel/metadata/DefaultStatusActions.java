@@ -317,14 +317,15 @@ public class DefaultStatusActions implements StatusActions {
     private User getPreviousOwner(ServiceContext context, IMetadata metadata) {
       UserRepository userRepository = context.getBean(UserRepository.class);
       Map<String,String> extra = metadata.getDataInfo().getExtra();
-      String oldOwner = extra.get(Params.PREVIOUSOWNER);
-      if (oldOwner != null) {
-        User owner = userRepository.findOne(oldOwner);
-        return owner;
-      } else {
-        context.error("Cannot find previous owner of metadata record "+ metadata.getId());
-        return null;
+      if (extra != null) {
+        String oldOwner = extra.get(Params.PREVIOUSOWNER);
+        if (oldOwner != null) {
+          User owner = userRepository.findOne(oldOwner);
+          return owner;
+        }
       }
+      context.error("Cannot find previous owner of metadata record "+ metadata.getId());
+      return null;
     }
 
     /**
