@@ -435,8 +435,7 @@ public class BaseMetadataManager implements IMetadataManager {
         String data = templateMetadata.getData();
         Element xml = Xml.loadString(data, false);
         if (templateMetadata.getDataInfo().getType() == MetadataType.METADATA) {
-            boolean created = true; // this is a new metadata created by the editor
-            xml = updateFixedInfoWithCreated(schema, Optional.<Integer> absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context, created);
+            xml = updateFixedInfo(schema, Optional.<Integer> absent(), uuid, xml, parentUuid, UpdateDatestamp.NO, context);
         }
         final Metadata newMetadata = new Metadata();
         newMetadata.setUuid(uuid);
@@ -886,11 +885,6 @@ public class BaseMetadataManager implements IMetadataManager {
     @Override
     public Element updateFixedInfo(String schema, Optional<Integer> metadataId, String uuid, Element md, String parentUuid,
             UpdateDatestamp updateDatestamp, ServiceContext context) throws Exception {
-        return updateFixedInfoWithCreated(schema, metadataId, uuid, md, parentUuid, updateDatestamp, context, false);
-    }
-
-    private Element updateFixedInfoWithCreated(String schema, Optional<Integer> metadataId, String uuid, Element md, String parentUuid,
-            UpdateDatestamp updateDatestamp, ServiceContext context, boolean created) throws Exception {
         boolean autoFixing = settingManager.getValueAsBool(Settings.SYSTEM_AUTOFIXING_ENABLE, true);
         if (autoFixing) {
             if (Log.isDebugEnabled(Geonet.DATA_MANAGER)) {
@@ -926,10 +920,6 @@ public class BaseMetadataManager implements IMetadataManager {
             Element schemaLoc = new Element("schemaLocation");
             schemaLoc.setAttribute(schemaManager.getSchemaLocation(schema, context));
             env.addContent(schemaLoc);
-
-            if (created) {
-               env.addContent(new Element("created").setText(new ISODate().toString()));
-            }
 
             if (updateDatestamp == UpdateDatestamp.YES) {
                 env.addContent(new Element("changeDate").setText(new ISODate().toString()));
