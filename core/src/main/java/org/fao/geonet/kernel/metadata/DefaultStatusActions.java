@@ -301,7 +301,7 @@ public class DefaultStatusActions implements StatusActions {
         if (status.equals(Params.Status.SUBMITTED)) {
             informContentReviewers(metadataIds, users, changeDate.toString(), changeMessage);
             // --- inform owners if status is approved and someone is there to inform
-        } else if ((status.equals(Params.Status.APPROVED) || status.equals(Params.Status.REJECTED)) && users.size() > 0) {
+        } else if ((status.equals(Params.Status.APPROVED) || status.equals(Params.Status.REJECTED)) && (users != null) && (users.size() > 0)) {
             informOwners(metadataIds, users, changeDate.toString(), changeMessage, status);
         }
 

@@ -12,7 +12,7 @@
     </button>
     <ul class="dropdown-menu" role="menu">
       <li><a data-ng-href=""
-             data-ng-if="user.isAdmin() || user.isOwner(md)"
+             data-ng-if="user.isOwner(md) || user.isReviewerOrMore()"
              data-ng-click="mdService.openPrivilegesPanel(md, getCatScope())">
         <i class="fa fa-key"></i>&nbsp;
         <span data-translate="">privileges</span>
