@@ -50,6 +50,7 @@ import org.fao.geonet.repository.MetadataDraftRepository;
 import org.fao.geonet.repository.MetadataLockRepository;
 import org.fao.geonet.repository.SortUtils;
 import org.fao.geonet.repository.Updater;
+import org.fao.geonet.repository.UserRepository;
 import org.fao.geonet.repository.specification.MetadataDraftSpecs;
 import org.fao.geonet.repository.specification.MetadataSpecs;
 import org.fao.geonet.repository.specification.OperationAllowedSpecs;
@@ -66,6 +67,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
 
+import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
 
 /**
@@ -229,6 +231,23 @@ public class DraftMetadataManager extends BaseMetadataManager {
         String metadataIdString = String.valueOf(metadataId.get());
         final Path resourceDir = Lib.resource.getDir(context, Params.Access.PRIVATE, metadataIdString);
         env.addContent(new Element("datadir").setText(resourceDir.toString()));
+      }
+
+      // add user information to env if user is authenticated (should be)
+      Element elUser = new Element("user");
+      UserSession usrSess = context.getUserSession();
+      if (usrSess.isAuthenticated()) {
+        String myUserId = usrSess.getUserId();
+        User user = context.getBean(UserRepository.class).findOne(myUserId);
+        if (user != null) {
+          Element elUserDetails = new Element("details");
+          elUserDetails.addContent(new Element("surname").setText(user.getSurname()));
+          elUserDetails.addContent(new Element("firstname").setText(user.getName()));
+          elUserDetails.addContent(new Element("organisation").setText(user.getOrganisation()));
+          elUserDetails.addContent(new Element("username").setText(user.getUsername()));
+          elUser.addContent(elUserDetails);
+          env.addContent(elUser);
+        }
       }
 
       // add original metadata to result
