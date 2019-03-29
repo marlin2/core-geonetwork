@@ -89,9 +89,11 @@
 
   <xsl:template match="@xlink:href">
 	  <xsl:variable name="url" select="replace(.,':80','')"/>
+<!--
     <xsl:message><xsl:value-of select="if (contains($url,$marlinUrl)) then
                               concat($machine,substring-after($url,$marlinUrl)) 
                             else $url"/></xsl:message>
+-->
     <xsl:attribute name="xlink:href">
       <xsl:value-of select="
         if (contains($url,$marlinUrl)) then
