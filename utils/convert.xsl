@@ -113,6 +113,15 @@
 
 	<!-- ================================================================= -->
 
+  <xsl:template match="gmd:URL[../../gmd:protocol/gco:CharacterString='WWW:LINK-1.0-http--metadata-URL']">
+	  <xsl:variable name="uuid" select="substring-after(.,'uuid=')"/>
+    <xsl:copy copy-namespaces="no">
+      <xsl:value-of select="concat($machine,'/geonetwork/srv/eng/catalog.search#/metadata/',$uuid)"/>
+    </xsl:copy>
+  </xsl:template>
+
+	<!-- ================================================================= -->
+
 	<xsl:template match="@*|node()">
 		 <xsl:copy copy-namespaces="no">
 			  <xsl:apply-templates select="@*|node()"/>
