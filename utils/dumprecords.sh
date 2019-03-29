@@ -9,7 +9,7 @@
 #
 export FROM_HOST=
 export FROM_CRED=
-export SEARCH_TERM=_groupPublished=forPublic
+export SEARCH_TERM=
 export FROM_COOK=from_cookies
 export OUTPUTFILE=
 
