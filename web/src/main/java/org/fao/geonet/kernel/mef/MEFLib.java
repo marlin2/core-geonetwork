@@ -366,7 +366,7 @@ public class MEFLib {
 		String popularity = md.getChildText("popularity");
 		String status = md.getChildText("status");
 		String owner = md.getChildText("owner");
-		String groupOwner = md.getChildText("groupOwner");
+		String groupOwner = md.getChildText("groupowner");
 
 		Element general = new Element("general").addContent(
 				new Element("createDate").setText(createDate)).addContent(
