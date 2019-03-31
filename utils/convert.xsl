@@ -173,6 +173,10 @@
             </gmd:onlineResource>
           </xsl:element>
         </xsl:element>
+        <gmd:role>
+          <gmd:CI_RoleCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+                             codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+        </gmd:role>
       </xsl:element>
     </xsl:element>
   </xsl:template>
