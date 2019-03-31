@@ -22,11 +22,13 @@
 
   <xsl:variable name="oldmcp" select="'http://bluenet3.antcrc.utas.edu.au/mcp'"/>
   <xsl:variable name="marlinUrl" select="'http://www.marlin.csiro.au'"/>
+  <xsl:variable name="idcContact" select="document('http://www.marlin.csiro.au/geonetwork/srv/eng/subtemplate?uuid=urn:marlin.csiro.au:person:125_person_organisation')"/>
 
   <!-- We will produce an output document that is XML, so indent the elements nicely in order to retain readability -->
 	<xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="*:MD_Metadata[namespace-uri()=$oldmcp]" priority="5">
+    <xsl:message><xsl:copy-of select="$idcContact"/></xsl:message>
     <xsl:element name="mcp:MD_Metadata">
       <xsl:attribute name="xsi:schemaLocation">http://schemas.aodn.org.au/mcp-2.0 http://schemas.aodn.org.au/mcp-2.0/schema.xsd http://www.isotc211.org/2005/srv http://schemas.opengis.net/iso/19139/20060504/srv/srv.xsd http://www.isotc211.org/2005/gmx http://www.isotc211.org/2005/gmx/gmx.xsd http://rs.tdwg.org/dwc/terms/ http://schemas.aodn.org.au/mcp-2.0/mcpDwcTerms.xsd</xsl:attribute>
       <xsl:namespace name="mcp" select="'http://schemas.aodn.org.au/mcp-2.0'"/>
@@ -39,7 +41,41 @@
       <xsl:namespace name="gml" select="'http://www.opengis.net/gml'"/>
       <xsl:namespace name="xsi" select="'http://www.w3.org/2001/XMLSchema-instance'"/>
       <xsl:namespace name="xlink" select="'http://www.w3.org/1999/xlink'"/>
-      <xsl:apply-templates select="@*[name()!='xsi:schemaLocation']|*"/>
+      <xsl:apply-templates select="@*[name()!='xsi:schemaLocation']"/>
+      <xsl:apply-templates select="
+          gmd:fileIdentifier|
+          gmd:language|
+          gmd:characterSet|
+          gmd:parentIdentifier|
+          gmd:hierarchyLevel|
+          gmd:hierarchyLevelName"/>
+      <xsl:call-template name="addIDCContact"/>
+      <xsl:apply-templates select="
+          gmd:dateStamp|
+          gmd:metadataStandardName|
+          gmd:metadataStandardVersion|
+          gmd:dataSetURI|
+          gmd:locale|
+          gmd:spatialRepresentationInfo|
+          gmd:referenceSystemInfo|
+          gmd:metadataExtensionInfo|
+          gmd:identificationInfo|
+          gmd:contentInfo|
+          gmd:distributionInfo|
+          gmd:dataQualityInfo|
+          gmd:portrayalCatalogueInfo|
+          gmd:metadataConstraints|
+          gmd:applicationSchemaInfo|
+          gmd:metadataMaintenance|
+          gmd:series|
+          gmd:describes|
+          gmd:propertyType|
+          gmd:featureType|
+          gmd:featureAttribute"/>
+       <!-- all the rest - usually mcp stuff -->
+       <xsl:apply-templates select="
+        *[namespace-uri()!='http://www.isotc211.org/2005/gmd' and
+          namespace-uri()!='http://www.isotc211.org/2005/srv']"/>
     </xsl:element>
   </xsl:template>
 
@@ -100,6 +136,45 @@
           concat($machine,substring-after($url,$marlinUrl)) 
         else $url"/>
     </xsl:attribute>
+  </xsl:template>
+
+	<!-- ================================================================= -->
+
+  <xsl:template match="@xlink:href[.='http://www.marlin.csiro.au/geonetwork/srv/eng/subtemplate?uuid=urn:marlin.csiro.au:person:125_person_organisation']">
+    <xsl:attribute name="xlink:href">local://xml.metadata.get?uuid=urn:marlin.csiro.au:person:125_person_organisation</xsl:attribute>
+  </xsl:template>
+
+	<!-- ================================================================= -->
+
+  <xsl:template name="addIDCContact">
+    <xsl:variable name="org" select="$idcContact//*:name/gco:CharacterString"/>
+    <xsl:element name="gmd:contact">
+      <xsl:element name="gmd:CI_ResponsibleParty">
+        <xsl:element name="gmd:organisationName"><gco:CharacterString><xsl:value-of select="$org"/></gco:CharacterString></xsl:element>
+        <xsl:element name="gmd:positionName"><gco:CharacterString><xsl:value-of select="$idcContact//*:positionName/gco:CharacterString"/></gco:CharacterString></xsl:element>
+        <xsl:element name="gmd:contactInfo">
+          <xsl:element name="gmd:CI_Contact">
+            <xsl:copy-of select="$idcContact//*:contactInfo/gmd:CI_Contact/gmd:address" copy-namespaces="no"/>
+            <gmd:onlineResource>
+              <gmd:CI_OnlineResource>
+                <gmd:linkage>
+                  <gmd:URL>https://research.csiro.au/oa-idc/</gmd:URL>
+                </gmd:linkage>
+                <gmd:protocol>
+                  <gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+                </gmd:protocol>
+                <gmd:name>
+                  <gco:CharacterString><xsl:value-of select="concat($org,' homepage')"/></gco:CharacterString>
+                </gmd:name>
+                <gmd:description>
+                  <gco:CharacterString><xsl:value-of select="concat('Link to ',$org,' homepage')"/></gco:CharacterString>
+                </gmd:description>
+              </gmd:CI_OnlineResource>
+            </gmd:onlineResource>
+          </xsl:element>
+        </xsl:element>
+      </xsl:element>
+    </xsl:element>
   </xsl:template>
 
 	<!-- ================================================================= -->
