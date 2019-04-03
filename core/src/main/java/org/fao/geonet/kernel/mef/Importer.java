@@ -398,7 +398,9 @@ public class Importer {
                     popularity = general.getChildText("popularity");
                     // extensions for Marlin2 and Marlin3
                     owner = general.getChildText("owner");
-                    groupOwner = general.getChildText("groupOwner");
+                    // Not used as the groupOwner="true" attribute on 
+                    // the list of groups in privileges handles this
+                    //groupOwner = general.getChildText("groupOwner");
                     status = general.getChildText("status");
                 }
 
@@ -479,7 +481,7 @@ public class Importer {
 
                         addCategoriesToMetadata(metadata, finalCategs, context);
 
-                        if (finalGroupId == null) {
+                        if (StringUtils.isEmpty(finalGroupId)) {
                             Group ownerGroup = addPrivileges(context, mdManager, iMetadataId, privileges);
                             if (ownerGroup != null) {
                                 metadata.getSourceInfo().setGroupOwner(ownerGroup.getId());
