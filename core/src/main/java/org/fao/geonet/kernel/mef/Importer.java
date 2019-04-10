@@ -636,11 +636,13 @@ public class Importer {
         boolean ufo = false, indexImmediate = false;
 
         String metadataId = mdManager.insertMetadata(context, schema, md.get(index), uuid, userid, groupId, source, isTemplate.codeString, docType, category, createDate, changeDate, ufo, indexImmediate);
-       
-        try { 
-          mdStatus.setStatusExt(context, Integer.parseInt(metadataId), Integer.parseInt(status), new ISODate(), "Status set on import");
-        } catch (NumberFormatException nfe) {
-             throw new Exception(" Could not parse integer from "+status);
+      
+        if (!StringUtils.isEmpty(status)) { 
+          try { 
+            mdStatus.setStatusExt(context, Integer.parseInt(metadataId), Integer.parseInt(status), new ISODate(), "Status set on import");
+          } catch (NumberFormatException nfe) {
+               throw new Exception(" Could not parse integer from "+status);
+          }
         }
         id.add(index, metadataId);
 
