@@ -27,7 +27,8 @@
        -->
 
       <!-- Thumbnail -->
-      <div class="pull-right gn-md-thumbnail" style="margin-left: 10px;" ng-if="md.getThumbnails().small">
+      <!--<div class="pull-right gn-md-thumbnail" style="margin-left: 10px;" ng-if="md.getThumbnails().small"> -->
+      <div class="pull-right gn-md-thumbnail" ng-if="md.getThumbnails().small">
         <img ng-src="{{md.getThumbnails().small}}" class="img-thumbnail"/>
       </div>
 
@@ -54,18 +55,18 @@
         </h4>
         <p class="text-justify" dd-text-collapse dd-text-collapse-max-length="350"
            dd-text-collapse-text="{{md.abstract || md.defaultAbstract}}"></p>
-        <div class="pull-right" style="font-style:italic;" ng-if="user.isEditorOrMore()">
-        	<p class="text-justify" style="margin-bottom: 0px;" ng-if="md.mdStatus > 1">
+        <div class="pull-right" ng-if="user.isEditorOrMore()">
+        	<p class="italics-text-justify" ng-if="md.mdStatus > 1">
             <span ng-if="md.mdStatus==2">Approved</span>
         	  <span ng-if="md.mdStatus==3">Retired</span>
         	  <span ng-if="md.mdStatus==4">Submitted</span>
         	  <span ng-if="md.mdStatus==5">Rejected</span>
           </p>
-        	<p class="text-justify" style="margin-bottom: 0px;" >
+        	<p class="italics-text-justify">
             <b>Owner: </b>
             <span>{{md.getOwnername()}}</span>
           </p>
-        	<p class="text-justify" style="margin-bottom: 0px;" ng-if="md.draft=='Y'"><i>Working Copy</i></p>
+        	<p class="italics-text-justify" ng-if="md.draft=='Y'"><i>Working Copy</i></p>
         </div>
         <!--
         <blockquote ng-if="md.getContacts().resource">{{::md.getContacts().resource}}</blockquote>
@@ -73,7 +74,7 @@
       </div>
     </div>
 
-    <div class="text-justify">
+    <div class="italics-text-justify">
       <b>Last Modified: </b>
       <span>{{md.getLastModifiedDate()}}</span>
     </div>
