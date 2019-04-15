@@ -156,6 +156,7 @@
               <xsl:call-template name="render-form-field-control-remove">
                 <xsl:with-param name="editInfo" select="$editInfo"/>
                 <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
+                <xsl:with-param name="isRequired" select="$isRequired"/>
               </xsl:call-template>
             </xsl:if>
           </div>
@@ -276,11 +277,12 @@
               </xsl:for-each>
             </xsl:if>
           </div>
-          <div class="col-sm-1 gn-control">
+          <div class="col-sm-1 col-xs-1 gn-control">
             <xsl:if test="not($isDisabled)">
               <xsl:call-template name="render-form-field-control-remove">
                 <xsl:with-param name="editInfo" select="$editInfo"/>
                 <xsl:with-param name="parentEditInfo" select="$parentEditInfo"/>
+                <xsl:with-param name="isRequired" select="$isRequired"/>
               </xsl:call-template>
             </xsl:if>
           </div>
@@ -782,7 +784,7 @@
                     select="concat($childEditInfo/@prefix, ':', $childEditInfo/@name)"/>
       <xsl:variable name="parentName"
                     select="name(ancestor::*[not(contains(name(), 'CHOICE_ELEMENT'))][1])"/>
-      <xsl:variable name="isRequired" select="$childEditInfo/@min = 1 and $childEditInfo/@max = 1"/>
+      <xsl:variable name="isRequired" select="$childEditInfo/@min = 1"/>
 
       <!-- This element is replaced by the content received when clicking add -->
       <div
@@ -1278,15 +1280,17 @@
   <xsl:template name="render-form-field-control-remove">
     <xsl:param name="editInfo"/>
     <xsl:param name="parentEditInfo" required="no"/>
+    <xsl:param name="isRequired" required="no"/>
     <xsl:if
-      test="($parentEditInfo and
+      test="(($parentEditInfo and
                      ($parentEditInfo/@del = 'true' or
                      $parentEditInfo/@min != 1)
                    ) or
                    (not($parentEditInfo) and ($editInfo and
                    ($editInfo/@del = 'true' or
                    $editInfo/@min != 1)
-                   ))">
+                   ))) and 
+                   not($isRequired and ($editInfo and $editInfo/@max and $editInfo/@max = 1) and ($parentEditInfo and $parentEditInfo/@max and $parentEditInfo/@max = 1))">
 
       <xsl:variable name="elementToRemove" select="if ($parentEditInfo) then
         $parentEditInfo else $editInfo"/>
