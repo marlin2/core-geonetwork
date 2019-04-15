@@ -547,13 +547,13 @@
 
 
           <xsl:if test="not($addDirective)">
-            <div>
               <xsl:if test="$hasAddAction">
                 <xsl:attribute name="class">hidden</xsl:attribute>
               </xsl:if>
               <!-- For each template field create an input.
               The directive takes care of setting values. -->
               <xsl:for-each select="$template/values/key">
+               <div class="row">
                 <xsl:variable name="valueLabelKey" select="@label"/>
                 <xsl:variable name="keyRequired" select="@required"/>
                 <xsl:variable name="helper"
@@ -565,7 +565,7 @@
 
                 <!-- Only display label if more than one key to match -->
                 <xsl:if test="count($template/values/key) > 1">
-                  <label for="{$id}_{@label}">
+                  <label class="col-sm-2" for="{$id}_{@label}">
                     <!-- if key has an attr required="true"-->
                     <xsl:if test="$keyRequired">
                       <xsl:attribute name="class" select="'gn-required'"/>
@@ -576,6 +576,7 @@
 
                 <xsl:choose>
                   <xsl:when test="@use = 'textarea'">
+                   <div class="col-sm-10">
                     <textarea class="form-control"
                               data-gn-field-tooltip="{$schema}|{@tooltip}"
                               id="{$id}_{@label}">
@@ -583,8 +584,10 @@
                         <xsl:attribute name="disabled"/>
                       </xsl:if>
                     </textarea>
+                   </div>
                   </xsl:when>
                   <xsl:when test="$codelist != ''">
+                   <div class="col-sm-9">
                     <select class="form-control input-sm"
                             data-gn-field-tooltip="{$schema}|{@tooltip}"
                             id="{$id}_{@label}">
@@ -600,8 +603,10 @@
                         </option>
                       </xsl:for-each>
                     </select>
+                   </div>
                   </xsl:when>
                   <xsl:when test="@use = 'checkbox'">
+                   <div class="col-sm-10">
                     <span class="pull-left">
                       <input type="checkbox"
                              data-gn-field-tooltip="{$schema}|{@tooltip}"
@@ -612,6 +617,7 @@
                       </input>
                       &#160;
                     </span>
+                   </div>
                   </xsl:when>
                   <!-- A directive -->
                   <xsl:when test="@use = 'data-gn-language-picker'">
@@ -656,12 +662,13 @@
                     </div>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:variable name="keyIndex" select="position()"/>
+                   <xsl:variable name="keyIndex" select="position()"/>
+                   <div class="col-sm-10">
                     <input class="form-control"
                            type="{if (@use) then @use else 'text'}"
+                           data-gn-field-tooltip="{$schema}|{@tooltip}"
                            value="{if ($keyValues) then $keyValues/field[$keyIndex]/value/text() else ''}"
-                           id="{$id}_{@label}"
-                           data-gn-field-tooltip="{$schema}|{@tooltip}">
+                           id="{$id}_{@label}">
                       <xsl:if test="$helper">
                         <!-- hide the form field if helper is available, the
                           value is set by the directive which provide customized
@@ -672,6 +679,7 @@
                         <xsl:attribute name="disabled"/>
                       </xsl:if>
                     </input>
+                   </div>
                   </xsl:otherwise>
                 </xsl:choose>
 
@@ -687,7 +695,7 @@
                     <xsl:with-param name="tooltip" select="concat($schema, '|', @tooltip)"/>
                   </xsl:call-template>
                 </xsl:if>
-
+               </div> <!-- end row of controls -->
               </xsl:for-each>
 
               <xsl:if test="not($isExisting)">
@@ -718,7 +726,6 @@
                 <xsl:value-of select="saxon:serialize($template/snippet[1]/*,
                                       'default-serialize-mode')"/>
               </textarea>
-            </div>
           </xsl:if>
         </div>
       </div>
