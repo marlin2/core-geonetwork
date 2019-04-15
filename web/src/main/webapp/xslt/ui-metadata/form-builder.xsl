@@ -547,6 +547,7 @@
 
 
           <xsl:if test="not($addDirective)">
+            <div>
               <xsl:if test="$hasAddAction">
                 <xsl:attribute name="class">hidden</xsl:attribute>
               </xsl:if>
@@ -726,6 +727,7 @@
                 <xsl:value-of select="saxon:serialize($template/snippet[1]/*,
                                       'default-serialize-mode')"/>
               </textarea>
+            </div>
           </xsl:if>
         </div>
       </div>
