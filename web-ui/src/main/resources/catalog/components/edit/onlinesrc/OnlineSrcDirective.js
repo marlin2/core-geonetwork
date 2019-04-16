@@ -266,8 +266,8 @@
                     }, {
                       label: 'addThumbnail',
                       sources: {
-                        filestore: false,
-                        thumbnailMaker: true
+                        filestore: true,
+                        thumbnailMaker: false
                       },
                       icon: 'fa gn-icon-thumbnail',
                       fileStoreFilter: '*.{jpg,JPG,png,PNG,gif,GIF}',
@@ -287,7 +287,8 @@
                     types: [{
                       label: 'addOnlinesrc',
                       sources: {
-                        filestore: false
+                        filestore: true,
+                        thumbnailMaker: false
                       },
                       icon: 'fa gn-icon-onlinesrc',
                       process: 'onlinesrc-add',
