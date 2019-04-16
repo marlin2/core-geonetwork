@@ -180,6 +180,8 @@ public class SettingManager {
         }
         String value = se.getValue();
         if (value == null && ! nullable) {
+            // port is allowed to be nothing....
+            if (path.equals("system/server/port")) return "";
             Log.warning(Geonet.SETTINGS, "  Requested setting with name: " + path + " but null value found. Check the settings table.");
         }
         return value;
@@ -401,6 +403,8 @@ public class SettingManager {
         String protocol = getValue(Settings.SYSTEM_SERVER_PROTOCOL);
         String host = getValue(Settings.SYSTEM_SERVER_HOST);
         String port = getValue(Settings.SYSTEM_SERVER_PORT);
+
+        if (StringUtils.isEmpty(port)) port = "80";
 
         return protocol + "://" + host + (port.equals("80") ? "" : ":" + port) + baseURL + "/";
     }
