@@ -125,7 +125,7 @@
             </xsl:call-template>
           </xsl:if>
 
-          <div data-gn-toggle=""/>
+          <!--<div data-gn-toggle=""/>-->
 
           <xsl:choose>
             <xsl:when test="$service != 'md.element.add' and $tabConfig/section">
