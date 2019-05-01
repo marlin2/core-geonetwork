@@ -38,6 +38,7 @@ import org.fao.geonet.api.ApiParams;
 import org.fao.geonet.api.tools.i18n.LanguageUtils;
 import org.fao.geonet.domain.IMetadata;
 import org.fao.geonet.domain.MetadataLock;
+import org.fao.geonet.domain.Profile;
 import org.fao.geonet.domain.User;
 import org.fao.geonet.kernel.AccessManager;
 import org.fao.geonet.kernel.datamanager.IMetadataManager;
@@ -112,7 +113,7 @@ public class MetadataLockApi {
         User me = userRepository
                 .findOneByUsername(context.getAuthentication().getName());
 
-        return mdLockRepo.isLocked(md, me);
+        return mdLockRepo.isLocked(md);
     }
 
     @ApiOperation(value = "Release the lock over a record.", nickname = "editor")
@@ -140,8 +141,15 @@ public class MetadataLockApi {
 
         User me = userRepository
                 .findOneByUsername(context.getAuthentication().getName());
-
-        return mdLockRepo.unlock(Integer.toString(id), me);
+        if (me.getProfile() == Profile.Reviewer || me.getProfile() == Profile.Administrator) {
+          return mdLockRepo.unlock(Integer.toString(id));
+        } else {
+          if (mdLockRepo.isLockedByUser(Integer.toString(id), me)) {
+            return mdLockRepo.unlock(Integer.toString(id));
+          } else {
+            throw new SecurityException("You are not the user that locked this metadata.");
+          }
+       }
     }
 
     @ApiOperation(value = "Get all locks on metadata.", nickname = "editor")

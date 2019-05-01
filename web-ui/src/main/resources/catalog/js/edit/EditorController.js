@@ -110,13 +110,13 @@
    */
   module.controller('GnEditorController', ['$q',
     '$scope', '$routeParams', '$http', '$rootScope',
-    '$translate', '$compile', '$timeout', '$location',
+    '$translate', '$compile', '$timeout', '$location', '$route',
     'gnEditor', 'gnSearchManagerService', 'gnSchemaManagerService',
     'gnConfigService', 'gnUtilityService', 'gnOnlinesrc',
     'gnCurrentEdit', 'gnConfig', 'gnMetadataActions', 'Metadata',
     'gnValidation',
     function($q, $scope, $routeParams, $http, $rootScope,
-        $translate, $compile, $timeout, $location,
+        $translate, $compile, $timeout, $location, $route,
         gnEditor, gnSearchManagerService, gnSchemaManagerService,
         gnConfigService, gnUtilityService, gnOnlinesrc,
         gnCurrentEdit, gnConfig, gnMetadataActions, Metadata,
@@ -313,6 +313,21 @@
           }
         });
       };
+
+      $scope.unlockAndReload = function() {
+        $http({ method: 'DELETE',
+                url: '../api/records/' + $routeParams.id + '/releaseLock'
+              }).then(function successCallback(response) {
+                  $scope.metadataLocked = response.data;
+                  // reload the current location
+                  $route.reload();
+              }, function errorCallback(response) { // usually because user isn't the owner
+                                                    // of the lock
+                  $scope.metadataLocked = true;
+                  $route.reload();
+              });                
+      };
+
 
       $scope.$watch('gnCurrentEdit.isMinor', function() {
         if ($('#minor')[0]) {

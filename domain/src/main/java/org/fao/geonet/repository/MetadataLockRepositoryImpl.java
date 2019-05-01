@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.fao.geonet.domain.MetadataLock;
@@ -32,7 +33,7 @@ public class MetadataLockRepositoryImpl
      */
     @Override
     public synchronized boolean lock(String id, User user) {
-        if (isLocked(id, user)) {
+        if (isLocked(id)) {
             return false;
         }
 
@@ -55,15 +56,30 @@ public class MetadataLockRepositoryImpl
      * @return
      */
     @Override
-    public boolean isLocked(String id, User user) {
+    public boolean isLocked(String id) {
+        return isLockedByUser(id, null);
+    }    
+
+    /**
+     * @see org.fao.geonet.repository.MetadataLockRepositoryCustom#isLockedByUser(java.lang.String, User user)
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean isLockedByUser(String id, User user) {
+        
         _entityManager.flush();
         removeOldLocks();
         CriteriaBuilder cb = _entityManager.getCriteriaBuilder();
         CriteriaQuery<MetadataLock> cquery = cb.createQuery(MetadataLock.class);
         Root<MetadataLock> root = cquery.from(MetadataLock.class);
-        cquery.where(cb.equal(root.get(MetadataLock_.metadata),
-                Integer.valueOf(id)));
-      //  cquery.where(cb.notEqual(root.get(MetadataLock_.user), user));
+        final Predicate equalMetadataId = cb.equal(root.get(MetadataLock_.metadata), Integer.valueOf(id));
+        if (user != null) {
+          final Predicate equalUser = cb.equal(root.get(MetadataLock_.user), user);
+          cquery.where(cb.and(equalMetadataId, equalUser));
+        } else {
+          cquery.where(equalMetadataId);
+        }
         return _entityManager.createQuery(cquery).getResultList().size() > 0;
     }
 
@@ -73,9 +89,9 @@ public class MetadataLockRepositoryImpl
      * @return
      */
     @Override
-    public synchronized boolean unlock(String id, User user) {
+    public synchronized boolean unlock(String id) {
 
-        if (!isLocked(id, user)) {
+        if (!isLocked(id)) {
             return false;
         }
 

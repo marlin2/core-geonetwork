@@ -3,8 +3,13 @@
     data-translate="" 
     data-translate-values="{ id: '{{metadataNotFoundId}}'}">metadataNotFound</div>
     
-  <div data-ng-show="metadataLocked" class="alert alert-warning" 
-    data-translate="" >metadataLocked</div>
+  <div data-ng-show="metadataLocked">
+    <span class="alert alert-warning" data-translate="" >metadataLocked</span>&nbsp;
+    <button type="button" class="btn btn-warning" gn-click-and-spin="unlockAndReload()" gn-auto-focus="">
+      <i class="fa fa-unlock-alt"/>&nbsp;
+      <span class="visible-lg" data-translate="">tryUnlock</span>
+    </button>
+  </div>
 </div>
 
 <div data-ng-show="metadataFound && !metadataLocked">

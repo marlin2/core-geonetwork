@@ -275,7 +275,7 @@ public class DraftMetadataUtils extends BaseMetadataUtils {
 
         // lock the original record until the draft is destroyed
         synchronized (this) {
-            if (mdLockRepository.isLocked(id, userSession.getPrincipal())) {
+            if (mdLockRepository.isLocked(id)) {
                  throw new MetadataLockedException(id);
             }
             mdLockRepository.lock(id, userSession.getPrincipal());

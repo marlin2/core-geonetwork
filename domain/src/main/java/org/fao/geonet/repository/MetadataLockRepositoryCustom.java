@@ -6,8 +6,10 @@ public interface MetadataLockRepositoryCustom {
 
     boolean lock(String id, User user);
     
-    boolean isLocked(String id, User user);
+    boolean isLocked(String id);
     
-    boolean unlock(String id, User user);
+    boolean isLockedByUser(String id, User user);
+    
+    boolean unlock(String id);
 
 }

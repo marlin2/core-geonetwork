@@ -128,7 +128,7 @@ public class XmlSearch implements Service {
                         Edit.NAMESPACE);
                     String id = info.getChildText(Edit.Info.Elem.ID);
 
-                    if (mdLockRepo.isLocked(id, null)) {
+                    if (mdLockRepo.isLocked(id)) {
                         info.addContent(new Element(Edit.Info.Elem.IS_LOCKED)
                             .setText("true"));
                     } else {

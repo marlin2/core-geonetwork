@@ -156,7 +156,7 @@ public class DraftMetadataManager extends BaseMetadataManager {
       if (originalMd != null) {
         mdIndexer.indexMetadata(Integer.toString(originalMd.getId()), true, null);
         // remove any locks on the original metadata
-        mdLockRepository.unlock(Integer.toString(originalMd.getId()), context.getUserSession().getPrincipal());
+        mdLockRepository.unlock(Integer.toString(originalMd.getId()));
       } else {
         Log.error(Geonet.DATA_MANAGER, "Draft with uuid " + uuid + " was removed. No original metadata was found.");
 

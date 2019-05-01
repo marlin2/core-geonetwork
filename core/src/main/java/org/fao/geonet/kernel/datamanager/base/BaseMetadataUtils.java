@@ -182,7 +182,7 @@ public class BaseMetadataUtils implements IMetadataUtils {
         UserSession userSession = context.getUserSession();
         if(lock) {
             synchronized (this) {
-                if(mdLockRepository.isLocked(id, userSession.getPrincipal())) {
+                if(mdLockRepository.isLocked(id)) {
                     throw new MetadataLockedException(id);
                 }
                 mdLockRepository.lock(id, userSession.getPrincipal());
@@ -232,7 +232,7 @@ public class BaseMetadataUtils implements IMetadataUtils {
             }
         }
 
-        mdLockRepository.unlock(id, session.getPrincipal());
+        mdLockRepository.unlock(id);
 
     }
 
@@ -246,7 +246,7 @@ public class BaseMetadataUtils implements IMetadataUtils {
         }
         session.removeProperty(Geonet.Session.METADATA_BEFORE_ANY_CHANGES + id);
 
-        mdLockRepository.unlock(id, session.getPrincipal());
+        mdLockRepository.unlock(id);
     }
 
     /**
