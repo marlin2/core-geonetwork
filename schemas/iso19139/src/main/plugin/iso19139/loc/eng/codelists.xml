@@ -1393,13 +1393,13 @@
       <description>Production of the data has been completed</description>
     </entry>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <entry>
+    <entry hideInEditMode="true">
       <code>historicalArchive</code>
       <label>Historical archive</label>
       <description>Data has been stored in an offline storage facility</description>
     </entry>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <entry>
+    <entry hideInEditMode="true">
       <code>obsolete</code>
       <label>Obsolete</label>
       <description>Data is no longer relevant</description>
@@ -1419,13 +1419,13 @@
       </description>
     </entry>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <entry>
+    <entry hideInEditMode="true">
       <code>required</code>
       <label>Required</label>
       <description>Data needs to be generated or updated</description>
     </entry>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <entry>
+    <entry hideInEditMode="true">
       <code>underDevelopment</code>
       <label>Under development</label>
       <description>Data is currently in the process of being created</description>
