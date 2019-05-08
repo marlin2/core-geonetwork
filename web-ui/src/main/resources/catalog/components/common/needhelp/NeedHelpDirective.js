@@ -54,14 +54,27 @@
             'needhelp.html',
         link: function(scope, element, attrs) {
           scope.iconOnly = attrs.iconOnly === 'true';
-          var helpBaseUrl = gnGlobalSettings.docUrl ||
+          scope.csiro = attrs.csiro === 'true';
+         
+          var helpBaseUrl, helpPageUrl; 
+          if (scope.csiro) { // override
+            helpBaseUrl = gnGlobalSettings.csiroDocUrl ||
+              'https://confluence.csiro.au/display/DataCentreShared/';
+          } else {
+            helpBaseUrl = gnGlobalSettings.docUrl ||
               'https://geonetwork-opensource.org/manuals/3.4.x/';
+          }
 
           scope.showHelp = function() {
             var page = attrs.gnNeedHelp;
-            var helpPageUrl =
-                 gnGlobalSettings.docUrl ? helpBaseUrl + page : 
+            var helpPageUrl;
+            if (scope.csiro) {
+              helpPageUrl = helpBaseUrl + page; 
+            } else {
+              helpPageUrl =
+                 gnGlobalSettings.docUrl ? helpBaseUrl + page :
                        helpBaseUrl + gnGlobalSettings.lang + '/' + page;
+            }
             window.open(helpPageUrl, 'gn-documentation');
             return true;
           };

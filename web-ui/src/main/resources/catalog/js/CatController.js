@@ -230,8 +230,8 @@
       requireProxy: [],
       gnCfg: angular.copy(defaultConfig),
       gnUrl: '',
-      docUrl: 'https://confluence.csiro.au/display/DataCentreShared/',
-      //docUrl: '../../doc/',
+      csiroDocUrl: 'https://confluence.csiro.au/display/DataCentreShared/',
+      docUrl: '../../doc/',
       modelOptions: {
         updateOn: 'default blur',
         debounce: {
