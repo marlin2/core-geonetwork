@@ -28,7 +28,7 @@
 	<xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="*:MD_Metadata[namespace-uri()=$oldmcp]" priority="5">
-    <xsl:message><xsl:copy-of select="$idcContact"/></xsl:message>
+    <!-- <xsl:message><xsl:copy-of select="$idcContact"/></xsl:message> -->
     <xsl:element name="mcp:MD_Metadata">
       <xsl:attribute name="xsi:schemaLocation">http://schemas.aodn.org.au/mcp-2.0 http://schemas.aodn.org.au/mcp-2.0/schema.xsd http://www.isotc211.org/2005/srv http://schemas.opengis.net/iso/19139/20060504/srv/srv.xsd http://www.isotc211.org/2005/gmx http://www.isotc211.org/2005/gmx/gmx.xsd http://rs.tdwg.org/dwc/terms/ http://schemas.aodn.org.au/mcp-2.0/mcpDwcTerms.xsd</xsl:attribute>
       <xsl:namespace name="mcp" select="'http://schemas.aodn.org.au/mcp-2.0'"/>
@@ -51,9 +51,14 @@
           gmd:hierarchyLevelName"/>
       <xsl:call-template name="addIDCContact"/>
       <xsl:apply-templates select="
-          gmd:dateStamp|
-          gmd:metadataStandardName|
-          gmd:metadataStandardVersion|
+          gmd:dateStamp"/>
+      <gmd:metadataStandardName>
+       <gco:CharacterString>Australian Marine Community Profile of ISO 19115:2005/19139</gco:CharacterString>
+      </gmd:metadataStandardName>
+      <gmd:metadataStandardVersion>
+       <gco:CharacterString>2.0</gco:CharacterString>
+      </gmd:metadataStandardVersion>
+      <xsl:apply-templates select="
           gmd:dataSetURI|
           gmd:locale|
           gmd:spatialRepresentationInfo|
@@ -83,7 +88,7 @@
   <!-- convert mcp:EX_Extent to gmd:EX_Extent because we don't have
        mcp:taxonomicCoverage in mcp-2.0  -->
 
-  <xsl:template match="oldmcp:EX_Extent">
+  <xsl:template priority="5" match="oldmcp:EX_Extent">
     <xsl:element name="gmd:EX_Extent">
       <xsl:apply-templates select="*"/>
     </xsl:element>
@@ -140,8 +145,9 @@
 
 	<!-- ================================================================= -->
 
-  <xsl:template match="@xlink:href[.='http://www.marlin.csiro.au/geonetwork/srv/eng/subtemplate?uuid=urn:marlin.csiro.au:person:125_person_organisation']">
-    <xsl:attribute name="xlink:href">local://xml.metadata.get?uuid=urn:marlin.csiro.au:person:125_person_organisation</xsl:attribute>
+  <xsl:template match="@xlink:href[contains(.,'/geonetwork/srv/eng/subtemplate')]" priority="5">
+	  <xsl:variable name="url" select="replace(replace(.,':80',''),'&amp;process=undefined','')"/>
+    <xsl:attribute name="xlink:href"><xsl:value-of select="replace($url,'http://www.marlin.csiro.au/geonetwork/srv/eng/subtemplate','local://xml.metadata.get')"/></xsl:attribute>
   </xsl:template>
 
 	<!-- ================================================================= -->
@@ -183,7 +189,7 @@
 
 	<!-- ================================================================= -->
 
-  <xsl:template match="gmd:URL">
+  <xsl:template match="gmd:URL|gco:CharacterString[starts-with(.,'http')]">
 	  <xsl:variable name="url" select="replace(.,':80','')"/>
     <xsl:copy copy-namespaces="no">
       <xsl:value-of select="if (starts-with($url,'http:')) then 
