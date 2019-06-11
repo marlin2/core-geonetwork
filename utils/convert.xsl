@@ -24,6 +24,23 @@
   <xsl:variable name="marlinUrl" select="'http://www.marlin.csiro.au'"/>
   <xsl:variable name="idcContact" select="document('http://www.marlin.csiro.au/geonetwork/srv/eng/subtemplate?uuid=urn:marlin.csiro.au:person:125_person_organisation')"/>
 
+  <xsl:variable name="mapping" select="document('mcp-equipment/equipmentToDataParamsMapping.xml')"/>
+
+  <!-- The csv layout for each element in the above file is:
+                          1)OA_EQUIPMENT_ID,
+                          2)OA_EQUIPMENT_LABEL,
+                          3)AODN_PLATFORM,
+                          4)Platform IRI,
+                          5)AODN_INSTRUMENT,
+                          6)Instrument IRI,
+                          7)AODN_PARAMETER,
+                          8)Parameter IRI,
+                          9)AODN_UNITS,
+                          10)UNITS IRI
+        NOTE: can be multiple rows for each equipment keyword -->
+
+  <xsl:variable name="equipThesaurus" select="'geonetwork.thesaurus.register.equipment.urn:marlin.csiro.au:Equipment'"/>
+
   <!-- We will produce an output document that is XML, so indent the elements nicely in order to retain readability -->
 	<xsl:output method="xml" indent="yes"/>
 
@@ -83,6 +100,198 @@
           namespace-uri()!='http://www.isotc211.org/2005/srv']"/>
     </xsl:element>
   </xsl:template>
+
+  <!-- ================================================================= -->
+
+  <xsl:template match="oldmcp:MD_DataIdentification" priority="100">
+    <mcp:MD_DataIdentification>
+      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates select="gmd:citation"/>
+      <xsl:apply-templates select="gmd:abstract"/>
+      <xsl:apply-templates select="gmd:purpose"/>
+      <xsl:apply-templates select="gmd:credit"/>
+      <xsl:apply-templates select="gmd:status"/>
+      <xsl:apply-templates select="gmd:pointOfContact"/>
+      <xsl:apply-templates select="gmd:resourceMaintenance"/>
+      <xsl:apply-templates select="gmd:graphicOverview"/>
+      <xsl:apply-templates select="gmd:resourceFormat"/>
+      <xsl:apply-templates select="gmd:descriptiveKeywords[count(descendant::gmd:keyword)>0]"/>
+      <xsl:apply-templates select="gmd:resourceSpecificUsage"/>
+      <xsl:apply-templates select="gmd:resourceConstraints"/>
+      <xsl:apply-templates select="gmd:aggregationInfo"/>
+      <xsl:apply-templates select="gmd:spatialRepresentationType"/>
+      <xsl:choose>
+        <xsl:when test="normalize-space(gmd:spatialResolution//gmd:equivalentScale//gco:denominator/gco:Integer)=''">
+          <gmd:spatialResolution>
+            <gmd:MD_Resolution>
+              <gmd:equivalentScale>
+                <gmd:MD_RepresentativeFraction>
+                  <gmd:denominator gco:nilReason="inapplicable"/>
+                </gmd:MD_RepresentativeFraction>
+              </gmd:equivalentScale>
+            </gmd:MD_Resolution>
+          </gmd:spatialResolution>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="gmd:spatialResolution"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="gmd:language"/>
+      <xsl:apply-templates select="gmd:characterSet"/>
+      <xsl:apply-templates select="gmd:topicCategory"/>
+      <xsl:apply-templates select="gmd:environmentDescription"/>
+      <xsl:apply-templates select="gmd:extent"/>
+      <xsl:apply-templates select="gmd:supplementalInformation"/>
+      <xsl:apply-templates select="oldmcp:samplingFrequency"/>
+
+      <!-- Add/Overwrite data parameters if we have an equipment keyword that matches one in our mapping -->
+      <!-- if we have an equipment thesaurus with a match keyword then we process -->
+
+      <xsl:variable name="equipPresent">
+       <xsl:for-each select="//gmd:descriptiveKeywords/gmd:MD_Keywords[normalize-space(gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor)=$equipThesaurus]/gmd:keyword/gmx:Anchor">
+        <xsl:element name="dp">
+          <mcp:dataParameters>
+           <mcp:DP_DataParameters>
+           <xsl:variable name="currentKeyword" select="text()"/>
+           <!-- <xsl:message>Automatically created dp from <xsl:value-of select="$currentKeyword"/></xsl:message> -->
+           <xsl:for-each select="$mapping/map/equipment">
+              <xsl:variable name="tokens" select="tokenize(string(),',')"/>
+              <!-- <xsl:message>Checking <xsl:value-of select="$tokens[2]"/></xsl:message> -->
+              <xsl:if test="$currentKeyword=$tokens[2]">
+                 <!-- <xsl:message>KW MATCHED TOKEN: <xsl:value-of select="$tokens[2]"/></xsl:message> -->
+                 <xsl:call-template name="fillOutDataParameters">
+                    <xsl:with-param name="tokens" select="$tokens"/>
+                 </xsl:call-template>
+              </xsl:if>
+           </xsl:for-each>
+           </mcp:DP_DataParameters>
+          </mcp:dataParameters>
+        </xsl:element>
+       </xsl:for-each>
+      </xsl:variable>
+
+      <!-- Now copy the constructed data parameters into the record -->
+      <xsl:for-each select="$equipPresent/dp/mcp:dataParameters[count(mcp:DP_DataParameters/*) > 0]">
+        <xsl:copy-of select="."/>
+      </xsl:for-each>
+      <xsl:apply-templates select="oldmcp:resourceContactInfo"/>
+
+    </mcp:MD_DataIdentification>
+  </xsl:template>
+
+	<!-- ================================================================= -->
+
+  <xsl:template name="fillOutDataParameters">
+    <xsl:param name="tokens"/>
+
+    <mcp:dataParameter>
+      <mcp:DP_DataParameter>
+      	<mcp:parameterName>
+					<mcp:DP_Term>
+						<mcp:term>
+							<gco:CharacterString><xsl:value-of select="$tokens[7]"/></gco:CharacterString>
+						</mcp:term>
+						<mcp:type>
+							<mcp:DP_TypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_TypeCode" codeListValue="longName">longName</mcp:DP_TypeCode>
+						</mcp:type>
+						<mcp:usedInDataset>
+							<gco:Boolean>false</gco:Boolean>
+						</mcp:usedInDataset>
+						<mcp:vocabularyRelationship>
+						  <mcp:DP_VocabularyRelationship>
+						    <mcp:relationshipType>
+							    <mcp:DP_RelationshipTypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_RelationshipTypeCode" codeListValue="skos:exactmatch">skos:exactmatch</mcp:DP_RelationshipTypeCode>
+						    </mcp:relationshipType>
+						    <mcp:vocabularyTermURL>
+							    <gmd:URL><xsl:value-of select="$tokens[8]"/></gmd:URL>
+						    </mcp:vocabularyTermURL>
+						    <mcp:vocabularyListURL gco:nilReason="inapplicable"/>
+						  </mcp:DP_VocabularyRelationship>
+						</mcp:vocabularyRelationship>
+					</mcp:DP_Term>
+			  </mcp:parameterName>
+				<mcp:parameterUnits>
+					<mcp:DP_Term>
+						<mcp:term>
+							<gco:CharacterString><xsl:value-of select="$tokens[9]"/></gco:CharacterString>
+						</mcp:term>
+						<mcp:type>
+							<mcp:DP_TypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_TypeCode" codeListValue="longName">longName</mcp:DP_TypeCode>
+						</mcp:type>
+						<mcp:usedInDataset>
+							<gco:Boolean>false</gco:Boolean>
+						</mcp:usedInDataset>
+						<mcp:vocabularyRelationship>
+						  <mcp:DP_VocabularyRelationship>
+						    <mcp:relationshipType>
+							    <mcp:DP_RelationshipTypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_RelationshipTypeCode" codeListValue="skos:exactmatch">skos:exactmatch</mcp:DP_RelationshipTypeCode>
+						    </mcp:relationshipType>
+						    <mcp:vocabularyTermURL>
+							    <gmd:URL><xsl:value-of select="$tokens[10]"/></gmd:URL>
+						    </mcp:vocabularyTermURL>
+						    <mcp:vocabularyListURL gco:nilReason="inapplicable"/>
+						  </mcp:DP_VocabularyRelationship>
+						</mcp:vocabularyRelationship>
+					</mcp:DP_Term>
+				</mcp:parameterUnits>
+				<mcp:parameterMinimumValue gco:nilReason="missing">
+					<gco:CharacterString/>
+				</mcp:parameterMinimumValue>
+				<mcp:parameterMaximumValue gco:nilReason="missing">
+					<gco:CharacterString/>
+				</mcp:parameterMaximumValue>
+        <mcp:parameterDeterminationInstrument>
+					<mcp:DP_Term>
+						<mcp:term>
+							<gco:CharacterString><xsl:value-of select="$tokens[5]"/></gco:CharacterString>
+						</mcp:term>
+						<mcp:type>
+							<mcp:DP_TypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_TypeCode" codeListValue="longName">longName</mcp:DP_TypeCode>
+						</mcp:type>
+						<mcp:usedInDataset>
+							<gco:Boolean>false</gco:Boolean>
+						</mcp:usedInDataset>
+						<mcp:vocabularyRelationship>
+						  <mcp:DP_VocabularyRelationship>
+						    <mcp:relationshipType>
+							    <mcp:DP_RelationshipTypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_RelationshipTypeCode" codeListValue="skos:exactmatch">skos:exactmatch</mcp:DP_RelationshipTypeCode>
+						    </mcp:relationshipType>
+						    <mcp:vocabularyTermURL>
+							    <gmd:URL><xsl:value-of select="$tokens[6]"/></gmd:URL>
+						    </mcp:vocabularyTermURL>
+						    <mcp:vocabularyListURL gco:nilReason="inapplicable"/>
+						  </mcp:DP_VocabularyRelationship>
+						</mcp:vocabularyRelationship>
+					</mcp:DP_Term>
+				</mcp:parameterDeterminationInstrument>
+        <mcp:platform>
+					<mcp:DP_Term>
+						<mcp:term>
+							<gco:CharacterString><xsl:value-of select="$tokens[3]"/></gco:CharacterString>
+						</mcp:term>
+						<mcp:type>
+							<mcp:DP_TypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_TypeCode" codeListValue="longName">longName</mcp:DP_TypeCode>
+						</mcp:type>
+						<mcp:usedInDataset>
+							<gco:Boolean>false</gco:Boolean>
+						</mcp:usedInDataset>
+						<mcp:vocabularyRelationship>
+						  <mcp:DP_VocabularyRelationship>
+						    <mcp:relationshipType>
+							    <mcp:DP_RelationshipTypeCode codeList="http://schemas.aodn.org.au/mcp-2.0/schema/resources/Codelist/gmxCodelists.xml#DP_RelationshipTypeCode" codeListValue="skos:exactmatch">skos:exactmatch</mcp:DP_RelationshipTypeCode>
+						    </mcp:relationshipType>
+						    <mcp:vocabularyTermURL>
+							    <gmd:URL><xsl:value-of select="$tokens[4]"/></gmd:URL>
+						    </mcp:vocabularyTermURL>
+						    <mcp:vocabularyListURL gco:nilReason="inapplicable"/>
+						  </mcp:DP_VocabularyRelationship>
+						</mcp:vocabularyRelationship>
+					</mcp:DP_Term>
+				</mcp:platform>
+      </mcp:DP_DataParameter>
+    </mcp:dataParameter>
+  </xsl:template>
+	
 
 	<!-- ================================================================= -->
   <!-- convert mcp:EX_Extent to gmd:EX_Extent because we don't have
@@ -205,6 +414,19 @@
     <xsl:copy copy-namespaces="no">
       <xsl:value-of select="concat($machine,'/geonetwork/srv/eng/catalog.search#/metadata/',$uuid)"/>
     </xsl:copy>
+  </xsl:template>
+
+	<!-- ================================================================= -->
+  <!-- Remove empty date blocks -->
+
+  <xsl:template match="gmd:date[descendant::gco:Date='']"/>
+  <xsl:template match="gmd:date[descendant::gco:DateTime='']"/>
+
+	<!-- ================================================================= -->
+  <!-- Remove dq report pass/fail - not used or valid in marlin -->
+
+  <xsl:template match="gmd:pass[ancestor::gmd:report]">
+    <gmd:pass gco:nilReason='inapplicable'/>
   </xsl:template>
 
 	<!-- ================================================================= -->
