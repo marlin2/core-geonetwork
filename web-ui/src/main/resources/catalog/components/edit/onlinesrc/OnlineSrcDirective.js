@@ -282,6 +282,45 @@
                     }],
                     multilingualFields: ['name', 'desc']
                   },
+                  'iso19115-3': {
+                    display: 'radio',
+                    types: [{
+                      label: 'addOnlinesrc',
+                      sources: {
+                        filestore: false
+                      },
+                      icon: 'fa gn-icon-onlinesrc',
+                      process: 'onlinesrc-add',
+                      fields: {
+                        'url': {isMultilingual: false},
+                        'protocol': {
+                          value: 'WWW:LINK-1.0-http--link',
+                          isMultilingual: false
+                        },
+                        'name': {},
+                        'desc': {},
+                        'function': {isMultilingual: false, hidden: true},
+                        'applicationProfile': {isMultilingual: false, hidden: true}
+                      }
+                    }, {
+                      label: 'addThumbnail',
+                      sources: {
+                        filestore: true,
+                        thumbnailMaker: false
+                      },
+                      icon: 'fa gn-icon-thumbnail',
+                      fileStoreFilter: '*.{jpg,JPG,png,PNG,gif,GIF}',
+                      process: 'thumbnail-add',
+                      fields: {
+                        'url': {
+                          param: 'thumbnail_url',
+                          isMultilingual: false
+                        },
+                        'name': {param: 'thumbnail_desc'}
+                      }
+                    }],
+                    multilingualFields: ['name', 'desc']
+                  },
                   'iso19139.mcp': {
                     display: 'radio',
                     types: [{
@@ -360,7 +399,7 @@
                       }
                     }],
                     multilingualFields: ['name', 'desc']
-                  },
+                  }/*,
                   'iso19115-3': {
                     display: 'select',
                     types: [{
@@ -847,6 +886,7 @@
                       }
                     }]
                   }
+                  */
                 };
                 scope.config = null;
                 scope.linkType = null;
