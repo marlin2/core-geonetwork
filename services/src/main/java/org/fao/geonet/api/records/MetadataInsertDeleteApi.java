@@ -1238,6 +1238,7 @@ public class MetadataInsertDeleteApi {
             appContext.getBean(IMetadataOperations.class).setOperation(context, iId, ReservedGroup.all.getId(), ReservedOperation.view.getId());
             appContext.getBean(IMetadataOperations.class).setOperation(context, iId, ReservedGroup.all.getId(), ReservedOperation.download.getId());
             appContext.getBean(IMetadataOperations.class).setOperation(context, iId, ReservedGroup.all.getId(), ReservedOperation.dynamic.getId());
+            appContext.getBean(IMetadataStatus.class).setStatusExt(context, iId, Integer.valueOf(Params.Status.APPROVED), new ISODate(), "Approved on import");
         }
 
         if (category != null) {
