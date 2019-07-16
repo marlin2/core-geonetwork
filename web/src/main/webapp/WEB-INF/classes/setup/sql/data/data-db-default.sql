@@ -735,7 +735,7 @@ INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34310,'url','ht
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34311,'icon','blank.png',34283);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34312,'lang','eng',34285);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34313,'query','<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:app="http://www.deegree.org/app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><!-- request all MarlinOrganisations instances --><wfs:Query typeName="app:MarlinOrganisations" /></wfs:GetFeature>',34285);
-INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34314,'outputSchema','iso19139.mcp-2.0',34285);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34314,'outputSchema','iso19115-3',34285);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34315,'stylesheet','marlin_organisations_fragments.xsl',34285);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34316,'streamFeatures','false',34285);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34317,'createSubtemplates','true',34285);
@@ -772,7 +772,7 @@ INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34882,'url','ht
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34883,'icon','blank.png',34855);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34884,'lang','eng',34857);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34885,'query','<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" xmlns:app="http://www.deegree.org/app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" maxFeatures="100000" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"><!-- request all MarlinPersons instances --><wfs:Query typeName="app:MarlinPersons"/></wfs:GetFeature>',34857);
-INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34886,'outputSchema','iso19139.mcp-2.0',34857);
+INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34886,'outputSchema','iso19115-3',34857);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34887,'stylesheet','marlin_persons_fragments.xsl',34857);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34888,'streamFeatures','false',34857);
 INSERT INTO HarvesterSettings (id, name, value, parentid) VALUES(34889,'createSubtemplates','true',34857);
