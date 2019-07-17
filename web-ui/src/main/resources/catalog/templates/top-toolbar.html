@@ -46,7 +46,18 @@
       <li class="dropdown dropdown-hover open" data-ng-if="gnCfg.mods.editor.enabled"
           data-ng-show="authenticated && user.isEditorOrMore()"
           id="gn-login-dropdown">
+        <!-- if reviewer then clicking on contribute does editor board -->
         <a data-gn-active-tb-item="{{gnCfg.mods.editor.appUrl}}"
+           ng-if="user.isReviewerOrMore()"
+           title="{{'editorBoard' | translate}}"
+           class="dropdown-toggle"
+           role="button" aria-expanded="false">
+          <i class="fa fa-fw fa-pencil hidden-sm"></i>
+          <span data-translate="">contribute</span>
+        </a>
+        <!-- if not reviewer then clicking on contribute does create -->
+        <a data-gn-active-tb-item="{{gnCfg.mods.editor.appUrl}}#/create"
+           ng-if="!user.isReviewerOrMore()"
            title="{{'editorBoard' | translate}}"
            class="dropdown-toggle"
            role="button" aria-expanded="false">
