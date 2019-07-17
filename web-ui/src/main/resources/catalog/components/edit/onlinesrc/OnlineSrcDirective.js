@@ -313,10 +313,10 @@
                       process: 'thumbnail-add',
                       fields: {
                         'url': {
-                          param: 'thumbnail_url',
+                          param: 'url',
                           isMultilingual: false
                         },
-                        'name': {param: 'thumbnail_desc'}
+                        'name': {param: 'desc'}
                       }
                     }],
                     multilingualFields: ['name', 'desc']
