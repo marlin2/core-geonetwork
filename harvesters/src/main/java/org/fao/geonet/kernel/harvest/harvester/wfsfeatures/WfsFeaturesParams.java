@@ -29,6 +29,8 @@ import org.fao.geonet.kernel.harvest.harvester.AbstractParams;
 import org.fao.geonet.utils.Xml;
 import org.jdom.Element;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import java.util.List;
 
 //=============================================================================
@@ -85,7 +87,7 @@ public class WfsFeaturesParams extends AbstractParams {
         if (q != null) {
           // query string will be an escaped XML string as a result of 
           // jdom Element.setText and XSLT processing, so fix it up
-          query = q.getText().replace("&lt;","<").replace("&gt;",">");
+          query = StringEscapeUtils.unescapeXml(q.getText());
         }
         return query;
     }
