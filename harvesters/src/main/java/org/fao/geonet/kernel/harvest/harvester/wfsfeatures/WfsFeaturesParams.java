@@ -83,10 +83,9 @@ public class WfsFeaturesParams extends AbstractParams {
         String query = "";
         Element q = Util.getChild(params, "query");
         if (q != null) {
-          List<Element> qu = q.getChildren();
-          if (qu.size() == 1) {
-            query = Xml.getString(qu.get(0));
-          }
+          // query string will be an escaped XML string as a result of 
+          // jdom Element.setText and XSLT processing, so fix it up
+          query = q.getText().replace("&lt;","<").replace("&gt;",">");
         }
         return query;
     }
