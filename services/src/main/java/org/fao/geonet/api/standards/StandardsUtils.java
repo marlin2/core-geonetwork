@@ -61,6 +61,7 @@ public class StandardsUtils {
                                               String isoType, ServiceContext context,
                                               String fileName) throws Exception {
         String elementName = StandardsUtils.findNamespace(element, schemaManager, schema);
+        xpath = StandardsUtils.removeChoiceAndGroupFromXPath(xpath);
         Element e = StandardsUtils.getHelp(schemaManager, fileName,
             schema, elementName, parent, xpath, isoType, context);
         if (e == null) {
@@ -185,5 +186,21 @@ public class StandardsUtils {
         elem.setAttribute("error", error);
 
         return elem;
+    }
+
+    public static String removeChoiceAndGroupFromXPath(String xpath) {
+        String[] splits = xpath.split("/");
+        StringBuffer newXpath = new StringBuffer();
+        for (String split : splits) {
+            if (!(split.contains("CHOICE_ELEMENT")) && !(split.contains("GROUP_ELEMENT"))) {
+                newXpath.append(split); newXpath.append(" ");
+            }
+        }
+        if (splits.length > 0) {
+            String w = "/"+newXpath.toString().trim().replace(" ","/");
+            return w;
+        } else {
+            return newXpath.toString();
+        }
     }
 }

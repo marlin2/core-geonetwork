@@ -99,12 +99,22 @@
       </xsl:choose>
     </xsl:variable>
 
+    <!-- remove stuff from XPATH that confuses the context eg. CHOICE_ELEMENT -->
+    <xsl:variable name="xpathTokens">
+      <xsl:for-each select="tokenize($xpath,'/')">
+          <xsl:variable name="token" select="."/>
+          <xsl:value-of select="if (contains($token,'CHOICE_ELEMENT')) then ' '
+                                else concat($token,' ')"/>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:variable name="fixedxpath" select="if (normalize-space($xpath)='') then '' else concat('/',replace(normalize-space($xpathTokens),' ','/'))"/>
+
     <!-- Name with context in current schema -->
     <xsl:variable name="schemaLabelWithContextCollection"
-                  select="$labels/element[@name=$escapedName and (@context=$xpath or @context=$parent or @context=$parentIsoType)]"/>
+                  select="$labels/element[@name=$escapedName and (@context=$fixedxpath or @context=$parent or @context=$parentIsoType)]"/>
     <xsl:variable name="schemaLabelWithContext" select="$schemaLabelWithContextCollection[1]"/>
     <xsl:if test="count($schemaLabelWithContextCollection) > 1">
-      <xsl:message>WARNING: gn-fn-metadata:getLabel | multiple labels found for element '<xsl:value-of select="$escapedName"/>' with context=('<xsl:value-of select="$xpath"/>' or '<xsl:value-of select="$parent"/>' or '<xsl:value-of select="$parentIsoType"/>') in schema <xsl:value-of select="$schema"/></xsl:message>
+      <xsl:message>WARNING: gn-fn-metadata:getLabel | multiple labels found for element '<xsl:value-of select="$escapedName"/>' with context=('<xsl:value-of select="$fixedxpath"/>' or '<xsl:value-of select="$parent"/>' or '<xsl:value-of select="$parentIsoType"/>') in schema <xsl:value-of select="$schema"/></xsl:message>
     </xsl:if>
 
     <!-- Name in current schema -->
@@ -122,7 +132,7 @@
         <xsl:choose>
           <xsl:when test="starts-with($schema, 'iso19139.')">
             <xsl:copy-of select="gn-fn-metadata:getLabel('iso19139', $name, $iso19139labels,
-              $parent, $parentIsoType, $xpath)"/>
+              $parent, $parentIsoType, $fixedxpath)"/>
           </xsl:when>
           <xsl:otherwise>
             <element>
