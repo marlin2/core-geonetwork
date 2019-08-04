@@ -189,6 +189,8 @@ public class StandardsUtils {
     }
 
     public static String removeChoiceAndGroupFromXPath(String xpath) {
+        if (xpath == null) return xpath;
+
         String[] splits = xpath.split("/");
         StringBuffer newXpath = new StringBuffer();
         for (String split : splits) {
