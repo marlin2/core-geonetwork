@@ -290,19 +290,35 @@
 
   <xsl:template mode="render-view"
                 match="section[not(@xpath)]">
-    <div id="gn-section-{generate-id()}" class="gn-tab-content">
-      <xsl:if test="@name">
-        <xsl:variable name="title"
-                      select="gn-fn-render:get-schema-strings($schemaStrings, @name)"/>
+    <xsl:variable name="match">
+      <xsl:choose>
+        <xsl:when test="@displayIfRecord">
+          <saxon:call-template name="{concat('evaluate-', $schema, '-boolean')}">
+            <xsl:with-param name="base" select="$metadata"/>
+            <xsl:with-param name="in" select="concat('/../', @displayIfRecord)"/>
+          </saxon:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="true()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
-        <xsl:element name="h{3 + count(ancestor-or-self::*[name(.) = 'section'])}">
-          <xsl:attribute name="class" select="'view-header'"/>
-          <xsl:value-of select="$title"/>
-        </xsl:element>
-      </xsl:if>
-      <xsl:apply-templates mode="render-view"
-                           select="section|field"/>&#160;
-    </div>
+    <xsl:if test="$match = true()">
+      <div id="gn-section-{generate-id()}" class="gn-tab-content">
+        <xsl:if test="@name">
+          <xsl:variable name="title"
+                        select="gn-fn-render:get-schema-strings($schemaStrings, @name)"/>
+  
+          <xsl:element name="h{3 + count(ancestor-or-self::*[name(.) = 'section'])}">
+            <xsl:attribute name="class" select="'view-header'"/>
+            <xsl:value-of select="$title"/>
+          </xsl:element>
+        </xsl:if>
+        <xsl:apply-templates mode="render-view"
+                             select="section|field"/>&#160;
+      </div>
+    </xsl:if>
   </xsl:template>
 
 
