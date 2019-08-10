@@ -305,7 +305,7 @@
     </xsl:variable>
 
     <xsl:if test="$match = true()">
-      <div id="gn-section-{generate-id()}" class="gn-tab-content">
+      <div data-gn-slide-toggle="" first="true" id="gn-section-{generate-id()}" class="gn-tab-content">
         <xsl:if test="@name">
           <xsl:variable name="title"
                         select="gn-fn-render:get-schema-strings($schemaStrings, @name)"/>

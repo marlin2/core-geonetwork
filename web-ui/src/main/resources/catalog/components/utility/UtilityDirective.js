@@ -626,7 +626,7 @@
              */
             var legend = $(this);
             //getting the next element
-            var content = legend.nextAll();
+            var content = attrs.first ? legend.children().slice(1) : legend.nextAll();
             //open up the content needed - toggle the slide-
             //if visible, slide up, if not slidedown.
             content.slideToggle(attrs.duration || 250, function() {
