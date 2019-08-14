@@ -282,7 +282,7 @@
   -->
   <xsl:template mode="render-view"
                 match="section[@xpath]">
-    <div id="gn-view-{generate-id()}" class="gn-tab-content">
+    <div data-gn-slide-toggle="" first="true" id="gn-view-{generate-id()}" class="gn-tab-content">
       <xsl:apply-templates mode="render-view" select="@xpath"/>
     </div>
   </xsl:template>
