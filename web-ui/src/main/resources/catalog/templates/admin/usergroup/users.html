@@ -19,7 +19,7 @@
             <img class="img-circle"
                  ng-src="http://gravatar.com/avatar/{{u.emailAddresses[0] | md5}}?s=18"/>
             <span class='badge' data-ng-show="u.enabled === false"
-                  data-translate="">disabled</span> {{u.name}} {{u.surname}}
+                  data-translate="">disabled</span> {{u.username}} - {{u.name}} {{u.surname}}
             ({{u.profile | translate}})
           </a>
           <span data-gn-pagination-list=""
