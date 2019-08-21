@@ -170,7 +170,8 @@
               });
 
           scope.groupSearch = function(group) {
-              if (group.id > 0) {
+              // we only want to show CSIRO or all in the status window
+              if (group.name === "all" || group.name === "CSIRO") {
                   return true;
               } else {
                   return false;
