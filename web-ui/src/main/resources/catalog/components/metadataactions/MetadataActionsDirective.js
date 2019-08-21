@@ -122,12 +122,10 @@
               $http.put(url)
                 .success(function(data) {
                   scope.report = data;
-                  defer.resolve(data);
                 }).error(function(data) {
                   scope.report = data;
-                  defer.reject(data);
                 });
-              return defer.promise;
+              return;
             } else {
               return $http.put('../api/records/' + metadataId +
                 '/status?status=' + scope.newStatus.value +
