@@ -30,9 +30,9 @@
 
   var module = angular.module('gn_mdactions_directive', []);
 
-  module.directive('gnMetadataStatusUpdater', ['$translate', '$http',
+  module.directive('gnMetadataStatusUpdater', ['$translate', '$http', '$q',
     'gnMetadataManager', 'gnShareConstants', 'gnMdView',
-    function($translate, $http, gnMetadataManager, gnShareConstants, gnMdView) {
+    function($translate, $http, $q, gnMetadataManager, gnShareConstants, gnMdView) {
 
       return {
         restrict: 'A',
@@ -113,6 +113,7 @@
                 }
             }
             if (scope.batch) {
+              var defer = $q.defer();
               var url = '../api/records/status?' +
                           '&bucket=' + attrs.selectionBucket + 
                           '&status=' + scope.newStatus.value +
@@ -122,10 +123,12 @@
               $http.put(url)
                 .success(function(data) {
                   scope.report = data;
+                  defer.resolve(data);
                 }).error(function(data) {
                   scope.report = data;
+                  defer.reject(data);
                 });
-              return;
+              return defer.promise;
             } else {
               return $http.put('../api/records/' + metadataId +
                 '/status?status=' + scope.newStatus.value +
