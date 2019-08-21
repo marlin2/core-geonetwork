@@ -374,6 +374,14 @@ public class MetadataInsertDeleteApi {
         )
         final boolean rejectIfInvalid,
         @ApiParam(
+            value = "(XML file only) Publish record.",
+            required = false)
+        @RequestParam(
+            required = false,
+            defaultValue = "false"
+        )
+        final boolean publishToAll,
+        @ApiParam(
             value = API_PARAM_RECORD_XSL,
             required = false,
             defaultValue = "_none_"
@@ -494,7 +502,7 @@ public class MetadataInsertDeleteApi {
                     try {
                         Pair<Integer, String> pair = loadRecord(
                             metadataType, Xml.loadFile(f),
-                            uuidProcessing, group, category, rejectIfInvalid, false, transformWith, schema, extra, request);
+                            uuidProcessing, group, category, rejectIfInvalid, publishToAll, transformWith, schema, extra, request);
                         report.addMetadataInfos(pair.one(), String.format(
                             "Metadata imported from server folder with UUID '%s'", pair.two())
                         );
