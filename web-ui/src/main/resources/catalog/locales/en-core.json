@@ -57,7 +57,7 @@
     "adminConsole": "Admin console",
     "loadCapabilitiesLayers": "Load service layers",
     "any": "Full text",
-    "anyPlaceHolder": "Search... eg. Investigator, wave, salinity, 'handfish'",
+    "anyPlaceHolder": "Search... eg. Investigator, wave, salinity, 'handfish', *bird",
     "VALID": "Valid",
     "INVALID": "Invalid",
     "clickToFilterOn": "Click to filter on ",
