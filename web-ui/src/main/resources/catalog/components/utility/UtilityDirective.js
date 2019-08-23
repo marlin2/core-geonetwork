@@ -619,11 +619,6 @@
         restrict: 'A',
         link: function(scope, element, attrs) {
           element.on('click', function(e) {
-            /**
-             * Toggle collapse-expand fieldsets
-             * TODO: This is in conflict with click
-             * event added by field tooltip
-             */
             var legend = $(this);
             //getting the next element
             var content = attrs.first ? legend.children().slice(1) : legend.nextAll();
