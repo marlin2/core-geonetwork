@@ -1043,7 +1043,7 @@ public class LuceneQueryBuilder {
                //query to show md in group "group"
                BooleanQuery viewQuery = new BooleanQuery();
                for (String group : groups) {
-                   if (StringUtils.isNotBlank(group) && !editableGroups.contains(group)) {
+                   if (StringUtils.isNotBlank(group)) {
                        groupsQueryEmpty = false;
                        
                        //group has view privileges
