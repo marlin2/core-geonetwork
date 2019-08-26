@@ -563,7 +563,7 @@ input[type=file] {
 
 [data-gn-slide-toggle] {
   padding-left: 20px;
-  cursor: pointer;
+  pointer-events: none;
 }
 [data-gn-slide-toggle]:before {
   content: "\f0d7";
@@ -574,6 +574,8 @@ input[type=file] {
   position: absolute;
   margin-left: -14px;
   font-size: 16px;
+  cursor: pointer;
+  pointer-events: auto;
 }
 [data-gn-slide-toggle].collapsed:before {
   content: "\f0da"
