@@ -46,7 +46,9 @@
 
                 scope.showLabel = attrs.showLabel;
 
-                scope.isFeedbackEnabled = gnConfig[gnConfig.key.isFeedbackEnabled];
+                // scope.isFeedbackEnabled = gnConfig[gnConfig.key.isFeedbackEnabled];
+                // TODO: Not sure why, but gnConfig.key.isFeedbackEnabled doesn't seem to be working so hard-coding here
+                scope.isFeedbackEnabled = true;
                 scope.recaptchaEnabled =
                   gnConfig['system.userSelfRegistration.recaptcha.enable'];
                 scope.recaptchaKey =

@@ -2,9 +2,9 @@
      data-ng-show="isFeedbackEnabled">
   <a href data-ng-click="toggle()"
      title="{{'fbFeedback' | translate}}"
-     class="gn-md-feedback-btn">
+     class="btn btn-default col-md-12">
     <i class="fa fa-fw fa-envelope"></i>
-    <span class="hidden-xs" data-ng-show="showLabel" data-translate="">{{showLabel}}</span>
+    Submit feedback
   </a>
   <div class="modal fade">
     <div class="modal-dialog">
@@ -25,23 +25,23 @@
           <div class="modal-body">
             <div>
               <div class="">
-                <h4 data-translate="">fbContact</h4>
+                <!--<h4 data-translate="">fbContact</h4>-->
                 <div class="form-group gn-required">
                   <label class="col-sm-3 control-label gn-required"
                          data-translate="">fbName</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" name="name"
-                           value="{{user.name}}" required="required"/>
+                           value="{{user.name}} {{user.surname}}" required="required"/>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label"
-                         data-translate="">fbFunction</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" name="function"
-                           value="{{user.function}}"/>
-                  </div>
-                </div>
+                <!--<div class="form-group">-->
+                  <!--<label class="col-sm-3 control-label"-->
+                         <!--data-translate="">fbFunction</label>-->
+                  <!--<div class="col-sm-9">-->
+                    <!--<input type="text" class="form-control" name="function"-->
+                           <!--value="{{user.function}}"/>-->
+                  <!--</div>-->
+                <!--</div>-->
                 <div class="form-group gn-required">
                   <label class="col-sm-3 control-label"
                          data-translate="">fbOrganization</label>
@@ -50,14 +50,14 @@
                            required="required"/>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label"
-                         data-translate="">fbPhone</label>
-                  <div class="col-sm-9">
-                    <input type="tel" class="form-control" name="phone"
-                           data-gn-autogrow=""></input>
-                  </div>
-                </div>
+                <!--<div class="form-group">-->
+                  <!--<label class="col-sm-3 control-label"-->
+                         <!--data-translate="">fbPhone</label>-->
+                  <!--<div class="col-sm-9">-->
+                    <!--<input type="tel" class="form-control" name="phone"-->
+                           <!--data-gn-autogrow=""></input>-->
+                  <!--</div>-->
+                <!--</div>-->
                 <div class="form-group gn-required">
                   <label class="col-sm-3 control-label"
                          data-translate="">fbEmail</label>
@@ -67,51 +67,51 @@
                   </div>
                 </div>
               </div>
-              <div class="ngr-margin-top">
-                <h4 data-translate="">fbFeedback</h4>
-                <div class="form-group gn-required">
-                  <label class="col-sm-3 control-label"
-                         data-translate="">fbFunction</label>
-                  <div class="col-sm-9">
-                    <select class="form-control" name="type" required="required">
-                      <option value="question" data-translate="">fbQuestion</option>
-                      <option value="error" data-translate="">fbError</option>
-                      <option value="comment" data-translate="">fbComments</option>
-                      <option value="contact" data-translate="">fbContact</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group gn-required">
-                  <label class="col-sm-3 control-label"
-                         data-translate="">fbCategory</label>
-                  <div class="col-sm-9">
-                    <select class="form-control" name="category"
-                            required="required">
-                      <option value="Metadata Contents" data-translate="">fbCatMetadataContents</option>
-                      <option value="Data Contents" data-translate="">fbCatDataContents</option>
-                      <option value="Service Contents" data-translate="">fbCatServiceContents</option>
-                      <option value="Support" data-translate="">fbCatSupport</option>
-                      <option value="Map Viewer" data-translate="">fbCatMapViewer</option>
-                      <option value="Search" data-translate="">fbCatSearch</option>
-                      <option value="Organizations" data-translate="">fbCatOrganizations</option>
-                      <option value="Content Management" data-translate="">fbCatContentManagement</option>
-                      <option value="Metadata Import" data-translate="">fbCatMetadataImport</option>
-                      <option value="Metadata Editing" data-translate="">fbCatMetadataEditing</option>
-                      <option value="Harvesting" data-translate="">fbCatHarvesting</option>
-                      <option value="Validator" data-translate="">fbCatValidator</option>
-                      <option value="Others" data-translate="">fbCatOthers</option>
-                    </select>
-                  </div>
-                </div>
+              <!--<div class="ngr-margin-top">-->
+                <!--<h4 data-translate="">fbFeedback</h4>-->
+                <!--<div class="form-group gn-required">-->
+                  <!--<label class="col-sm-3 control-label"-->
+                         <!--data-translate="">fbFunction</label>-->
+                  <!--<div class="col-sm-9">-->
+                    <!--<select class="form-control" name="type" required="required">-->
+                      <!--<option value="question" data-translate="">fbQuestion</option>-->
+                      <!--<option value="error" data-translate="">fbError</option>-->
+                      <!--<option value="comment" data-translate="">fbComments</option>-->
+                      <!--<option value="contact" data-translate="">fbContact</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group gn-required">-->
+                  <!--<label class="col-sm-3 control-label"-->
+                         <!--data-translate="">fbCategory</label>-->
+                  <!--<div class="col-sm-9">-->
+                    <!--<select class="form-control" name="category"-->
+                            <!--required="required">-->
+                      <!--<option value="Metadata Contents" data-translate="">fbCatMetadataContents</option>-->
+                      <!--<option value="Data Contents" data-translate="">fbCatDataContents</option>-->
+                      <!--<option value="Service Contents" data-translate="">fbCatServiceContents</option>-->
+                      <!--<option value="Support" data-translate="">fbCatSupport</option>-->
+                      <!--<option value="Map Viewer" data-translate="">fbCatMapViewer</option>-->
+                      <!--<option value="Search" data-translate="">fbCatSearch</option>-->
+                      <!--<option value="Organizations" data-translate="">fbCatOrganizations</option>-->
+                      <!--<option value="Content Management" data-translate="">fbCatContentManagement</option>-->
+                      <!--<option value="Metadata Import" data-translate="">fbCatMetadataImport</option>-->
+                      <!--<option value="Metadata Editing" data-translate="">fbCatMetadataEditing</option>-->
+                      <!--<option value="Harvesting" data-translate="">fbCatHarvesting</option>-->
+                      <!--<option value="Validator" data-translate="">fbCatValidator</option>-->
+                      <!--<option value="Others" data-translate="">fbCatOthers</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                <!--</div>-->
                 <div class="form-group gn-required">
                   <label class="col-sm-3 control-label"
                          data-translate="">fbComments</label>
                   <div class="col-sm-9">
                   <textarea class="form-control" name="comments"
-                            data-gn-autogrow="" required="required"></textarea>
+                            data-gn-autogrow="" required="required" style="min-height:150px;height:100%"></textarea>
                   </div>
                 </div>
-              </div>
+              <!--</div>-->
 
               <input type="hidden"
                      name="uuid"
