@@ -96,6 +96,11 @@
 
           };
 
+          searchSettings.formatter = {
+            label: 'full',
+            url: '../api/records/{{uuid}}/formatters/xsl-view?root=div&view=advanced'
+          };
+
           var searchMap = gnMapsManager.createMap(gnMapsManager.SEARCH_MAP);
           var viewerMap = gnMapsManager.createMap(gnMapsManager.VIEWER_MAP);
 
