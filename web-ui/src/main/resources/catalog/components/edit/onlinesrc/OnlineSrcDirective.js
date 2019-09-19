@@ -1523,6 +1523,11 @@
                       setParameterValue(pName, o[pName]);
                     });
                     scope.params.protocol = 'WWW:DOWNLOAD-1.0-http--download';
+                  } else {
+                    ['url', 'name'].forEach(function(pName) {
+                      setParameterValue(pName, '');
+                    });
+                    scope.params.protocol = '';
                   }
                 };
 

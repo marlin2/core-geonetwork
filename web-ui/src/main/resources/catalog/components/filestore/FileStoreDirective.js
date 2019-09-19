@@ -62,6 +62,11 @@
               scope.loadMetadataResources = function() {
                 gnfilestoreService.get(scope.uuid, scope.filter).success(
                     function(data) {
+                      if (data.length > 0) {
+                        scope.setResource(data[0]);
+                      } else {
+                        scope.setResource(undefined); // signal nothing left
+                      }
                       scope.metadataResources = data;
                     }
                 );
@@ -89,6 +94,13 @@
 
               var uploadResourceSuccess = function(data) {
                 $rootScope.$broadcast('gnFileStoreUploadDone');
+                // remove any stuff already uploaded, only one file can be uploaded
+                // in the thumbnail store
+                if (scope.metadataResources.length > 0) {
+                  _.each(scope.metadataResources, function(mr) {
+                     scope.deleteResource(mr);
+                  });
+                }
                 scope.clear(scope.queue);
               };
 
