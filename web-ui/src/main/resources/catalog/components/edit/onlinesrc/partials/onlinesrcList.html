@@ -20,12 +20,20 @@
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li data-ng-show="::isCategoryEnable('thumbnail') || isCategoryEnable('onlinesrc')">
+        <li data-ng-show="::isCategoryEnable('onlinesrc')">
           <a href=""
-             data-ng-click="onlinesrcService.onOpenPopup('onlinesrc')">
+             data-ng-click="onlinesrcService.onOpenPopup('onlinesrc', undefined, 'onlinesrc')">
             <i class="fa gn-icon-onlinesrc"></i>
             <i class="icon-external-link"></i>&nbsp;
             <span data-translate="">addOnlinesrcTitle</span>
+          </a>
+        </li>
+        <li data-ng-show="isCategoryEnable('thumbnail') && (relations.thumbnails.length == 0)">
+          <a href=""
+             data-ng-click="onlinesrcService.onOpenPopup('onlinesrc', undefined, 'thumbnail')">
+            <i class="fa gn-icon-onlinesrc"></i>
+            <i class="icon-external-link"></i>&nbsp;
+            <span data-translate="">addThumbnailTitle</span>
           </a>
         </li>
 <!--

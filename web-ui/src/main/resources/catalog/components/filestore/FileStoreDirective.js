@@ -62,10 +62,13 @@
               scope.loadMetadataResources = function() {
                 gnfilestoreService.get(scope.uuid, scope.filter).success(
                     function(data) {
-                      if (data.length > 0) {
-                        scope.setResource(data[0]);
-                      } else {
-                        scope.setResource(undefined); // signal nothing left
+                      // for thumbnails we select it because there is only ever 1
+                      if (scope.$parent.params && scope.$parent.params.linkType && scope.$parent.params.linkType.label == 'addThumbnail') {
+                        if (data.length > 0) {
+                          scope.setResource(data[0]);
+                        } else {
+                          scope.setResource(undefined); // signal nothing left
+                        }
                       }
                       scope.metadataResources = data;
                     }

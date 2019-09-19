@@ -1046,7 +1046,12 @@
                   return scope.config.types[0];
                 }
 
-                gnOnlinesrc.register('onlinesrc', function(linkToEdit) {
+                function getConfigForTypeToAdd(typeToAdd) {
+                  if (typeToAdd == 'thumbnail') return scope.config.types[1];
+                  else return scope.config.types[0];
+                }
+
+                gnOnlinesrc.register('onlinesrc', function(linkToEdit, typeToAdd) {
                   scope.isEditing = angular.isDefined(linkToEdit);
 
                   scope.metadataId = gnCurrentEdit.id;
@@ -1084,7 +1089,7 @@
 
                   var typeConfig = linkToEdit ?
                       getTypeConfig(linkToEdit) :
-                      scope.config.types[0];
+                      getConfigForTypeToAdd(typeToAdd);
                   scope.config.multilingualFields = [];
                   angular.forEach(typeConfig.fields, function(f, k) {
                     if (f.isMultilingual !== false) {
@@ -1162,15 +1167,15 @@
                       function: linkToEdit.function,
                       selectedLayers: []
                       };
-                      } else {
+                  } else {
                       scope.editingKey= null;
-                      scope.params.linkType= scope.config.types[0];
+                      scope.params.linkType= typeConfig;
                       scope.params.protocol= null;
                       scope.params.name= '';
                       scope.params.desc= '';
                       initMultilingualFields();
-                    }
-                  });
+                  }
+                });
 
                 // mode can be 'url' or 'thumbnailMaker' to init thumbnail panel
                 scope.mode = 'url';
@@ -1210,10 +1215,12 @@
                 };
 
                 var initMultilingualFields = function() {
-                  scope.config.multilingualFields.forEach(function(f) {
-                    scope.params[f] = {};
-                    setParameterValue(f, '');
-                  });
+                  if (scope.config && scope.config.multilingualFields) {
+                    scope.config.multilingualFields.forEach(function(f) {
+                      scope.params[f] = {};
+                      setParameterValue(f, '');
+                    });
+                  }
                 };
 
 
