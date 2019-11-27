@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+
+  jetty:
+    image: docker-registry.it.csiro.au/idc/geonetwork:dev
+    networks:
+      - traefik-net
+#    volumes:
+#      - ./web-ui:/usr/src/web-ui
+    deploy:
+        replicas: 1
+        labels:
+          traefik.frontend.rule: Host:geonetwork.localhost
+          traefik.port: 8080
+          traefik.docker.network: swarm-infra_traefik-net
+
+networks:
+  traefik-net:
+    external: true
+    name: swarm-infra_traefik-net
