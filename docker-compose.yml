@@ -7,10 +7,12 @@ services:
     networks:
       - traefik-net
     volumes:
-      - .:/usr/src
+      - .:/usr/src/geonetwork
       - ./m2:/root/.m2
-    working_dir: /usr/src
-    command: ["mvn", "clean", "install", "-DskipTests"]
+    working_dir: /usr/src/geonetwork
+    command: >
+      bash -c "mvn clean install -DskipTests
+      && mvn jetty:run"
     deploy:
         replicas: 1
         labels:
