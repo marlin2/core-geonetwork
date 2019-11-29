@@ -4,8 +4,6 @@ services:
 
   jetty:
     image: docker-registry.it.csiro.au/idc/geonetwork:base
-    networks:
-      - traefik-net
     volumes:
       - .:/usr/src/geonetwork
       - ./m2:/root/.m2
@@ -14,14 +12,3 @@ services:
       bash -c "mvn clean install -DskipTests
       && cd /usr/src/geonetwork/web
       && mvn jetty:run"
-    deploy:
-        replicas: 1
-        labels:
-          traefik.frontend.rule: Host:geonetwork.localhost
-          traefik.port: 8080
-          traefik.docker.network: swarm-infra_traefik-net
-
-networks:
-  traefik-net:
-    external: true
-    name: swarm-infra_traefik-net
