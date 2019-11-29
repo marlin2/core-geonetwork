@@ -12,6 +12,7 @@ services:
     working_dir: /usr/src/geonetwork
     command: >
       bash -c "mvn clean install -DskipTests
+      && cd /usr/src/geonetwork/web
       && mvn jetty:run"
     deploy:
         replicas: 1
