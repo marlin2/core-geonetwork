@@ -3,5 +3,6 @@ version: '3.5'
 services:
 
   jetty:
+    container_name: geonetwork_jetty
     ports:
       - "80:8080"

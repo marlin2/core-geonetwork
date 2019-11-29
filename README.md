@@ -18,14 +18,12 @@ The basic idea of this fork is customise the MCP schema for Marlin requirements.
 
 ## GeoNetwork Development Environment Setup
 
-To get a development environment working we have developed a containerised solution
-You can either choose to build and run GeoNetwork on a Docker Swarm (which requires a Traefik edge-router), or more simply using Docker compose.
+To get a development environment working we have developed a containerised build process to minimised the required steps for setup. You can either choose to build and run GeoNetwork on a Docker Swarm (which requires a Traefik edge-router), or more simply using Docker compose.
 
 #### Retrieving the GeoNetwork codebase
 
 ```shell script
 git clone --recursive https://github.com/marlin2/core-geonetwork.git -b workflow
-git submodule update --init --recursive && cd schemas/iso19115-3 && git checkout 3.4.x
 ```
 
 #### Building and running containerised GeoNetwork using Docker Compose
@@ -33,21 +31,21 @@ git submodule update --init --recursive && cd schemas/iso19115-3 && git checkout
 To start the GeoNetwork container with Docker Compose, just run:
 
 ```shell script
-sudo ./bin/start-compose-dev.sh
+sudo ./bin/start-compose.sh
 ```
 
 This brings up the GeoNetwork container in detached mode. To view the container output, follow the Docker logs with:
 
 ```shell script
-sudo docker logs coregeonetwork_jetty_1 -f
+sudo docker logs geonetwork_jetty -f
 ```
 
-To view the website, go to: [http://localhost/](http://localhost/)
+To access the application, go to: [http://localhost/geonetwork](http://localhost/geonetwork)
 
 To shut down the container and remove the Docker network, run:
 
 ```shell script
-sudo ./bin/stop-compose-dev.sh
+sudo ./bin/stop-compose.sh
 ```
 
 #### Building and running containerised GeoNetwork using Docker Swarm
@@ -55,7 +53,7 @@ sudo ./bin/stop-compose-dev.sh
 To start the GeoNetwork container on a Docker Swarm, run:
 
 ```shell script
-sudo ./bin/start-swarm-dev.sh
+sudo ./bin/start-swarm.sh
 ```
 
 This requires a Traefik edge router to be running. To view the container output, follow the Docker logs with:
@@ -64,10 +62,10 @@ This requires a Traefik edge router to be running. To view the container output,
 sudo docker service logs geonetwork_jetty -f
 ```
 
-To view the website, go to: [geonetwork.localhost](geonetwork.localhost)
+To access the application, go to: [geonetwork.localhost/geonetwork](geonetwork.localhost/geonetwork)
 
 To shut down the container and remove the Docker stack, run:
 
 ```shell script
-sudo ./bin/stop-swarm-dev.sh
+sudo ./bin/stop-swarm.sh
 ```
