@@ -9,6 +9,4 @@ services:
       - ./m2:/root/.m2
     working_dir: /usr/src/geonetwork
     command: >
-      bash -c "mvn clean install -DskipTests
-      && cd /usr/src/geonetwork/web
-      && mvn jetty:run"
+      bash -c "cd /usr/src/geonetwork/web && mvn jetty:run"

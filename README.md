@@ -26,12 +26,22 @@ To get a development environment working we have developed a containerised build
 git clone --recursive https://github.com/marlin2/core-geonetwork.git -b workflow
 ```
 
-#### Building and running containerised GeoNetwork using Docker Compose
+#### Building the GeoNetwork container
+
+To build GeoNetwork on top of the base container, simply run:
+
+```shell script
+sudo ./bin/build-dev.sh
+```
+
+This will download all of the necessary backages into the `m2` directory and build the application.
+
+#### Running containerised GeoNetwork using Docker Compose
 
 To start the GeoNetwork container with Docker Compose, just run:
 
 ```shell script
-sudo ./bin/start-compose.sh
+sudo ./bin/start-dev-compose.sh
 ```
 
 This brings up the GeoNetwork container in detached mode. To view the container output, follow the Docker logs with:
@@ -45,15 +55,15 @@ To access the application, go to: [http://localhost/geonetwork](http://localhost
 To shut down the container and remove the Docker network, run:
 
 ```shell script
-sudo ./bin/stop-compose.sh
+sudo ./bin/stop-dev-compose.sh
 ```
 
-#### Building and running containerised GeoNetwork using Docker Swarm
+#### Running containerised GeoNetwork using Docker Swarm
 
 To start the GeoNetwork container on a Docker Swarm, run:
 
 ```shell script
-sudo ./bin/start-swarm.sh
+sudo ./bin/start-dev-swarm.sh
 ```
 
 This requires a Traefik edge router to be running. To view the container output, follow the Docker logs with:
@@ -67,5 +77,5 @@ To access the application, go to: [geonetwork.localhost/geonetwork](geonetwork.l
 To shut down the container and remove the Docker stack, run:
 
 ```shell script
-sudo ./bin/stop-swarm.sh
+sudo ./bin/stop-dev-swarm.sh
 ```
