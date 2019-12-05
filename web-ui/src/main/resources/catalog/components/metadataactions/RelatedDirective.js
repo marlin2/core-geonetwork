@@ -140,6 +140,7 @@
                 scope.relations = null;
                 if (scope.uuid) {
                   scope.relationFound = false;
+                  scope.hasFilteredResults = false;
                   if (controller) {
                     controller.startGnRelatedRequest(elem);
                   }
@@ -163,12 +164,14 @@
                                filter = tokens[1];
                            scope.relations[idx] = [];
                            for (var i = 0; i < value.length; i++) {
-                             if (filter.indexOf(value[i][field]) !== -1) {
+                             if (value[i][field] && value[i][field].indexOf(filter) !== -1) {
                                 scope.relations[idx].push(value[i]);
+                                scope.hasFilteredResults = true;
                              }
                            }
                          } else {
                            scope.relations[idx] = value;
+                           scope.hasFilteredResults = true;
                          }
                        });
                        if (controller) {
