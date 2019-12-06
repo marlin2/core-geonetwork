@@ -69,7 +69,7 @@ sudo ./bin/start-dev-swarm.sh
 This requires a Traefik edge router to be running. To view the container output, follow the Docker logs with:
 
 ```shell script
-sudo docker service logs geonetwork_jetty -f
+sudo docker service logs geonetwork_jetty -f --since 2m
 ```
 
 To access the application, go to: [geonetwork.localhost/geonetwork](geonetwork.localhost/geonetwork)
