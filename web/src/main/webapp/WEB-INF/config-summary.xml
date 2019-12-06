@@ -201,6 +201,7 @@
     flat facet. It's recommended to use format="DIMENSION" for facet.
     See above. -->
     <summaryType name="hits">
+      <!--   
       <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
       <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
       <item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>
@@ -219,7 +220,14 @@
       <item facet="serviceType"/>
       <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
       <item facet="resolution" sortBy="numValue" sortOrder="desc"/>
-      <!--<item facet="metadataPOC" max="15"/>-->
+      <!- -<item facet="metadataPOC" max="15"/>- ->
+      -->
+      <item facet="orgName" max="15"/>
+      <item facet="source" max="40"/>
+      <item facet="survey" max="40"/>
+      <item facet="project" max="15"/>
+      <item facet="gcmd" max="15"/>
+      <item facet="otherkeyword" max="15"/>
     </summaryType>
     <summaryType name="subtemplates">
       <item facet="subTemplateType"/>
