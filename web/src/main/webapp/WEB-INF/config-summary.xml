@@ -131,7 +131,7 @@
     <facet name="source" label="sources" indexKey="source"/>
     <facet name="survey" label="surveys" indexKey="survey"/>
     <facet name="project" label="projects" indexKey="project"/>
-    <facet name="gcmd" label="gcmds" indexKey="gcmd"/>
+    <facet name="gcmd" label="gcmds" indexKey="gcmd_reverse"/>
     <facet name="otherkeyword" label="otherkeywords" indexKey="otherkeyword"/>
     <facet name="mdActions" indexKey="_mdActions" label="mdActions"/>
   </facets>
