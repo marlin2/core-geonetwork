@@ -519,28 +519,30 @@
             <dt data-translate>creationDate</dt>
             <dd data-ng-repeat="creaDate in mdView.current.record.creationDate track by $index"
                 data-gn-humanize-time="{{creaDate}}"
-                data-format="YYYY-MM-DD"/>
+                data-format="Do MMM YYYY"/>
           </dl>
           <dl data-ng-show="mdView.current.record.publicationDate.length > 0">
             <dt data-translate>publicationDate</dt>
             <dd data-ng-repeat="pubDate in mdView.current.record.publicationDate track by $index"
                 data-gn-humanize-time="{{pubDate}}"
-                data-format="YYYY-MM-DD"/>
+                data-format="Do MMM YYYY"/>
           </dl>
           <dl data-ng-show="mdView.current.record.revisionDate.length > 0">
             <dt data-translate>revisionDate</dt>
             <dd data-ng-repeat="revDate in mdView.current.record.revisionDate track by $index"
                 data-gn-humanize-time="{{revDate}}"
-                data-format="YYYY-MM-DD"/>
+                data-format="Do MMM YYYY"/>
           </dl>
           <dl
             data-ng-show="mdView.current.record.tempExtentBegin ||
                               mdView.current.record.tempExtentEnd">
             <dt data-translate>tempExtentBegin</dt>
             <dd>
-              <span data-gn-humanize-time="{{mdView.current.record.tempExtentBegin}}"/>
+              <span data-gn-humanize-time="{{mdView.current.record.tempExtentBegin}}"
+                    data-format="Do MMM YYYY"/>
               &nbsp;<i class="fa fa-fw fa-forward"></i>
-              <span data-gn-humanize-time="{{mdView.current.record.tempExtentEnd}}"/>
+              <span data-gn-humanize-time="{{mdView.current.record.tempExtentEnd}}"
+                    data-format="Do MMM YYYY"/>
             </dd>
           </dl>
           </p>
