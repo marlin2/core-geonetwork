@@ -1020,7 +1020,7 @@
     </helper>
   </element>
   <element name="gmd:distributionFormat" id="271.0">
-    <label>Distribution format</label>
+    <label>Distribution Format</label>
     <condition>mandatory</condition>
     <description>Provides a description of the format of the data to be
       distributed
