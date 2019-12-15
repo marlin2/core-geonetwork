@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+
+  jetty:
+    image: docker-registry.it.csiro.au/idc/geonetwork:base
+    volumes:
+      - .:/usr/src/geonetwork
+      - ./m2:/root/.m2
+    working_dir: /usr/src/geonetwork
+    command: >
+      bash -c "cd /usr/src/geonetwork/web && mvn jetty:run"

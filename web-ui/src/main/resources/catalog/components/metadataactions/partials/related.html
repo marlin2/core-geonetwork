@@ -1,5 +1,13 @@
 <div class="gn-related-resources"
-     data-ng-if="relationFound">
+       data-ng-if="!hasFilteredResults && title == ('download' | translate)">
+  <h2>
+<!--    <i class="fa fa-exclamation-circle"/>-->
+    {{::title}} - there are no downloads for this record.
+  </h2>
+</div>
+
+<div class="gn-related-resources"
+     data-ng-if="hasFilteredResults">
   <h2>{{::title}}</h2>
 
   <div class=""
@@ -148,13 +156,13 @@
                      value="{{::r.url | gnLocalized: lang}}"/>
             </p>
           </div>
-          
+
           <div data-ng-switch-when="MDFCATS">
           <p class="text-muted">
             <h2>{{(r.title | gnLocalized: lang) }}</h2>
-            
+
            <h2 data-translate="">technicalInformation</h2>
-           
+
            <div data-gn-attribute-table-renderer="r.featureType.attributeTable.element">
 	        </div>
             </p>

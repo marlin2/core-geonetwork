@@ -713,11 +713,6 @@
         <version>${geotools.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.geotools.jdbc</groupId>
-        <artifactId>gt-jdbc-oracle</artifactId>
-        <version>${geotools.version}</version>
-      </dependency>
-      <dependency>
         <groupId>lizard</groupId>
         <artifactId>lizard-tiff</artifactId>
         <version>1.0</version>

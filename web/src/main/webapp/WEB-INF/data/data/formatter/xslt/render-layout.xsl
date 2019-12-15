@@ -282,9 +282,25 @@
   -->
   <xsl:template mode="render-view"
                 match="section[@xpath]">
-    <div data-gn-slide-toggle="" first="true" id="gn-view-{generate-id()}" class="gn-tab-content">
-      <xsl:apply-templates mode="render-view" select="@xpath"/>
-    </div>
+    <xsl:variable name="match">
+      <xsl:choose>
+        <xsl:when test="@displayIfRecord">
+          <saxon:call-template name="{concat('evaluate-', $schema, '-boolean')}">
+            <xsl:with-param name="base" select="$metadata"/>
+            <xsl:with-param name="in" select="concat('/../', @displayIfRecord)"/>
+          </saxon:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="true()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:if test="$match = true()">
+      <div data-gn-slide-toggle="" first="true" id="gn-view-{generate-id()}" class="gn-tab-content">
+        <xsl:apply-templates mode="render-view" select="@xpath"/>
+      </div>
+    </xsl:if>
   </xsl:template>
 
 

@@ -109,6 +109,11 @@
     -->
     <xsl:variable name="isRequired" as="xs:boolean">
       <xsl:choose>
+        <!-- Simon: allow override of schema as sometimes it thinks something is mandatory
+             but it is actually conditional on the element being present -->
+        <xsl:when test="gn-fn-metadata:getLabel($schema, name(), $labels, name(..),$isoType, $xpath)/condition = 'optional'">
+          <xsl:value-of select="false()"/>
+        </xsl:when>
         <xsl:when
           test="($parentEditInfo and $parentEditInfo/@min = 1 and $parentEditInfo/@max = 1) or
           (not($parentEditInfo) and $editInfo and $editInfo/@min = 1 and $editInfo/@max = 1)">

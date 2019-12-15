@@ -9,6 +9,10 @@
               <input type="hidden" name="_csrf" value="{{csrf}}"/>
         <div class="onlinesrc-container">
 
+          <div class="alert alert-info">
+            {{params.linkType.label | translate}}
+          </div>
+          <!--
           <div data-ng-show="config.types.length > 1 && config.display == 'radio'">
             <label class="radio-inline"
                    data-ng-repeat="c in config.types">
@@ -34,6 +38,7 @@
                 data-ng-model="params.linkType"/>
             </div>
           </div>
+          -->
 
           <br/>
           <div class="alert alert-info"
@@ -333,7 +338,7 @@
         {{((isEditing ? 'update' : 'add') + 'LinkAnyway') | translate}}
       </span>
     </button>
-    <div data-gn-need-help="Adding+an+online+resource+or+thumbnail"
+    <div data-gn-need-help="Adding+a+data+link+or+thumbnail"
          data-csiro="true"
          class="pull-right"></div>
     <br/>

@@ -74,6 +74,7 @@
                   for (var i = 0; i < contacts.length; i ++){
                     if (contacts[i].email !== '') {
                       contacts[i].selected = true;
+                      contacts[i]['email'] = contacts[i]['email'].trim().replace(/^,*/,"");
                       scope.contactList.push(contacts[i]);
                     }
                   }
