@@ -90,6 +90,18 @@
             }
           };
 
+          function processReport(data, success) {
+            output = {};
+            if (!success || data["numberOfRecordsProcessed"] === 0) {
+              output["Result"] = "Failed: ";
+            } else {
+              output["Result"] = "Success: ";
+            }
+            output["Result"] += "from "+data["numberOfRecords"]+" records, "+ 
+               data["numberOfRecordsProcessed"]+" were processed";
+            return output;
+          };
+
           scope.updateStatus = function() {
             if (scope.user.isEditor()) {
               scope.newStatus.value = '4'; // editors can only submit....
@@ -122,10 +134,10 @@
                           '&editingGroups=' + editingGroups.join()
               $http.put(url)
                 .success(function(data) {
-                  scope.report = data;
+                  scope.report = processReport(data, true);
                   defer.resolve(data);
                 }).error(function(data) {
-                  scope.report = data;
+                  scope.report = processReport(data, false);
                   defer.reject(data);
                 });
               return defer.promise;
