@@ -179,14 +179,14 @@ public class MetadataInsertDeleteApi {
             Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class),
                 String.valueOf(metadata.getId())));
 
-        appContext.getBean(IMetadataManager.class).deleteMetadata(context, metadataUuid);
+        appContext.getBean(IMetadataManager.class).deleteMetadata(context, String.valueOf(metadata.getId()));
 
         searchManager.forceIndexChanges();
     }
 
     @ApiOperation(
         value = "Delete one or more records",
-        notes = "User MUST be able to edit the record to delete it. " +
+        notes = "User MUST be the OWNER of the record to delete it. " +
             "",
         nickname = "deleteRecords")
     @RequestMapping(
@@ -237,7 +237,7 @@ public class MetadataInsertDeleteApi {
             Metadata metadata = metadataRepository.findOneByUuid(uuid);
             if (metadata == null) {
                 report.incrementNullRecords();
-            } else if (!accessMan.canEdit(context, String.valueOf(metadata.getId()))) {
+            } else if (!accessMan.isOwner(context, String.valueOf(metadata.getId()))) {
                 report.addNotEditableMetadataId(metadata.getId());
             } else {
                 if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE &&
