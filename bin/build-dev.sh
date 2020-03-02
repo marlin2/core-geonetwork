@@ -7,8 +7,8 @@ if [ -f web-ui/src/main/resources/catalog/lib/bootstrap-table/dist/extensions/gr
     mv web-ui/src/main/resources/catalog/lib/bootstrap-table/dist/extensions/group-by-v2/bootstrap-table-group-by.css web-ui/src/main/resources/catalog/lib/bootstrap-table/dist/extensions/group-by-v2/bootstrap-table-group-by-v2.css
 fi
 
-docker run -d -t -i --rm --name geonetwork_build -w /usr/src/geonetwork --volume `pwd`:/usr/src/geonetwork --volume `pwd`/m2:/root/.m2 docker-registry.it.csiro.au/idc/geonetwork:base bash
+docker run -d -t -i --rm --name geonetwork_dev -w /usr/src/geonetwork --volume `pwd`:/usr/src/geonetwork --volume `pwd`/m2:/root/.m2 docker-registry.it.csiro.au/idc/geonetwork:base bash
 
-docker exec -it geonetwork_build mvn clean install -DskipTests
+docker exec -it geonetwork_dev mvn clean install -DskipTests
 
-docker stop geonetwork_build
+docker stop geonetwork_dev
