@@ -9,6 +9,6 @@ fi
 
 docker run -d -t -i --rm --name geonetwork_dev -w /usr/src/geonetwork --volume `pwd`:/usr/src/geonetwork --volume `pwd`/m2:/root/.m2 docker-registry.it.csiro.au/idc/geonetwork:base bash
 
-docker exec -it geonetwork_dev mvn clean install -DskipTests
+docker exec -w /usr/src/geonetwork -it geonetwork_dev mvn clean install -DskipTests
 
 docker stop geonetwork_dev

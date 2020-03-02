@@ -260,7 +260,7 @@ public class MetadataWorkflowApi {
 
             Set<Integer> metadataIds = new HashSet<Integer>();
             for (String uuid : records) {
-                Metadata info = metadataRepository.findOneByUuid(uuid);
+                IMetadata info = ApiUtils.canEditRecord(uuid, request);
                 if (info == null) {
                     report.incrementNullRecords();
                 //--- only allow the owner of the record to set its status

@@ -179,14 +179,14 @@ public class MetadataInsertDeleteApi {
             Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class),
                 String.valueOf(metadata.getId())));
 
-        appContext.getBean(IMetadataManager.class).deleteMetadata(context, metadataUuid);
+        appContext.getBean(IMetadataManager.class).deleteMetadata(context, String.valueOf(metadata.getId()));
 
         searchManager.forceIndexChanges();
     }
 
     @ApiOperation(
         value = "Delete one or more records",
-        notes = "User MUST be able to edit the record to delete it. " +
+        notes = "User MUST be the OWNER of the record to delete it. " +
             "",
         nickname = "deleteRecords")
     @RequestMapping(
@@ -194,7 +194,7 @@ public class MetadataInsertDeleteApi {
     )
     @ApiResponses(value = {
         @ApiResponse(code = 204, message = "Report about deleted records."),
-        @ApiResponse(code = 403, message = ApiParams.API_RESPONSE_NOT_ALLOWED_ONLY_EDITOR)
+        @ApiResponse(code = 403, message = ApiParams.API_RESPONSE_NOT_ALLOWED_OWNER)
     })
     @PreAuthorize("hasRole('Editor')")
     @ResponseStatus(HttpStatus.OK)
@@ -234,27 +234,31 @@ public class MetadataInsertDeleteApi {
         final MetadataRepository metadataRepository = appContext.getBean(MetadataRepository.class);
         SimpleMetadataProcessingReport report = new SimpleMetadataProcessingReport();
         for (String uuid : records) {
-            Metadata metadata = metadataRepository.findOneByUuid(uuid);
-            if (metadata == null) {
-                report.incrementNullRecords();
-            } else if (!accessMan.canEdit(context, String.valueOf(metadata.getId()))) {
-                report.addNotEditableMetadataId(metadata.getId());
-            } else {
-                if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE &&
-                    metadata.getDataInfo().getType() != MetadataType.TEMPLATE_OF_SUB_TEMPLATE &&
-                    withBackup) {
+          report.incrementProcessedRecords();
+          IMetadata metadata = null;
+          try {
+            metadata = ApiUtils.isOwner(uuid, request);
+            if (metadata != null) {
+              if (metadata.getDataInfo().getType() != MetadataType.SUB_TEMPLATE &&
+                metadata.getDataInfo().getType() != MetadataType.TEMPLATE_OF_SUB_TEMPLATE && withBackup) {
                     MetadataUtils.backupRecord(metadata, context);
-                }
+              }
 
-                IO.deleteFileOrDirectory(
-                    Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class),
-                        String.valueOf(metadata.getId())));
+              IO.deleteFileOrDirectory(
+               Lib.resource.getMetadataDir(context.getBean(GeonetworkDataDirectory.class),
+                  String.valueOf(metadata.getId())));
 
-                appContext.getBean(IMetadataManager.class).deleteMetadata(context, String.valueOf(metadata.getId()));
-
-                report.incrementProcessedRecords();
-                report.addMetadataId(metadata.getId());
+              appContext.getBean(IMetadataManager.class).deleteMetadata(context, String.valueOf(metadata.getId()));
+              report.addMetadataId(metadata.getId());
+            } else {
+              report.incrementNullRecords();
             }
+
+          } catch (SecurityException e) {
+            if (metadata != null) { // not likely to be ever true but report is useless so doesn't matter
+              report.addNotOwnerMetadataId(metadata.getId());
+            }
+          } 
         }
 
         searchManager.forceIndexChanges();

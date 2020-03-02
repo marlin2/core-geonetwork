@@ -26,7 +26,7 @@
 
   <!-- Geonetwork module (and submodule) logging -->
   <logger name="geonetwork" additivity="false">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
     <appender-ref ref="consoleAppender"/>
     <appender-ref ref="fileAppender"/>
   </logger>
@@ -43,7 +43,7 @@
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.editor">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
   </logger>
   <logger name="geonetwork.schemamanager">
     <level value="WARN"/>
@@ -79,7 +79,7 @@
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.harvester" additivity="false">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
     <appender-ref ref="consoleAppender"/>
     <appender-ref ref="fileAppender"/>
   </logger>
@@ -120,18 +120,18 @@
     <level value="WARN"/>
   </logger>
   <logger name="geonetwork.camel-harvester">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
   </logger>
   <logger name="geonetwork.harvest.wfs.features">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
   </logger>
   <logger name="geonetwork.backup">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
   </logger>
 
   <!--  Jeeves module and submodule logger configuration -->
   <logger name="jeeves" additivity="false">
-    <level value="DEBUG"/>
+    <level value="WARN"/>
     <appender-ref ref="consoleAppender"/>
     <appender-ref ref="fileAppender"/>
   </logger>
@@ -234,13 +234,13 @@
     <appender-ref ref="fileAppender"/>
   </logger>
 
+  <logger name="com.github.isrsal.logging.LoggingFilter">
+      <level value="WARN"/>
+  </logger>
+
   <!-- Turn off logging except when explicitly declared below -->
   <root>
     <level value="OFF"></level>
     <appender-ref ref="consoleAppender"/>
   </root>
-
-  <logger name="com.github.isrsal.logging.LoggingFilter">
-      <level value="WARN"/>
-   </logger>
 </log4j:configuration>
