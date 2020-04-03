@@ -1,18 +1,17 @@
 version: '3.5'
 
-services:
+networks:
+  proxy:
+    external: true
 
+services:
   jetty:
     networks:
-      - traefik-net
+      - proxy
     deploy:
         replicas: 1
         labels:
-          traefik.frontend.rule: Host:geonetwork.localhost
-          traefik.port: 8080
-          traefik.docker.network: swarm-infra_traefik-net
-
-networks:
-  traefik-net:
-    external: true
-    name: swarm-infra_traefik-net
+          - traefik.frontend.rule=PathPrefixStrip:/geonetwork
+          - traefik.docker.network=proxy
+          - traefik.port=80
+          - traefik.enable=true
