@@ -11,7 +11,7 @@ services:
     deploy:
         replicas: 1
         labels:
-          - traefik.frontend.rule=PathPrefixStrip:/geonetwork
+          - traefik.frontend.rule=PathPrefixStrip:/core-geonetwork
           - traefik.docker.network=proxy
           - traefik.port=80
           - traefik.enable=true
