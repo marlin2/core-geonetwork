@@ -1,15 +1,43 @@
 version: '3.5'
 
 networks:
+  geonetwork:
   proxy:
     external: true
 
 # GeoNetwork is heavily hard-coded to be served at localhost:8080/geonetwork. This means it's really difficult to route
 # it anywhere on the swarm other than the root route. I.e, PathPrefix needs to be set to / for the Traefik frontend rule
 services:
+  geonetwork-db:
+    image: "docker-registry.it.csiro.au/idc/oracle:18.4.0-xe"
+    ports:
+      - "1521:1521"
+    networks:
+      - geonetwork
+    volumes:
+      - ./volumes/oracle_db:/opt/oracle/oradata
+      - ./volumes/oracle_setup_scripts:/opt/oracle/scripts/setup
+    environment:
+      ORACLE_PWD: geonetwork
+
   jetty:
     networks:
       - proxy
+      - geonetwork
+    depends_on:
+      - geonetwork-db
+    restart: always
+    command: >
+      /bin/bash -c "
+        while ! nc -z geonetwork-db 1521;
+        do
+          echo waiting for oracle;
+          sleep 1;
+        done;
+        echo Oracle is up, sleeping 60 seconds to make sure!;
+        sleep 60;
+        cd /opt/marlin3/bin && bash startup.sh -f
+      "
     deploy:
         replicas: 1
         labels:
