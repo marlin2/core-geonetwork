@@ -197,6 +197,16 @@
                 </button>
               </td>
             </tr>
+          <tr data-ng-if="mdView.current.record.getAllContacts().resource">
+            <th data-translate="">resourceContact</th>
+            <td>
+              <div data-gn-metadata-contacts="mdView.current.record.getAllContacts().resource" data-gn-mode="org-role" />
+            </td>
+          </tr>
+          <tr data-ng-if="mdView.current.record.credit">
+            <th data-translate="">credit</th>
+            <td>{{mdView.current.record.credit}}</td>
+          </tr>
             <tr
               data-ng-if="mdView.current.record.category.length > 0 ||
                       mdView.current.record.topicCat.length > 0">
@@ -294,16 +304,6 @@
             </td>
           </tr>
 
-          <tr data-ng-if="mdView.current.record.getAllContacts().resource">
-            <th data-translate="">resourceContact</th>
-            <td>
-              <div data-gn-metadata-contacts="mdView.current.record.getAllContacts().resource" data-gn-mode="org-role" />
-            </td>
-          </tr>
-          <tr data-ng-if="mdView.current.record.credit">
-            <th data-translate="">credit</th>
-            <td>{{mdView.current.record.credit}}</td>
-          </tr>
           <tr data-ng-if="mdView.current.record.status_text.length > 0">
             <th data-translate="">resourceStatus</th>
             <td>
@@ -423,6 +423,7 @@
           <span data-translate="">metadataInXML</span>
         </a>
 
+        <!--
         <table class="table table-striped">
           <tbody>
           <tr data-ng-if="mdView.current.record.getAllContacts()">
@@ -447,6 +448,7 @@
           </tr>
           </tbody>
         </table>
+        -->
       </div>
 
       <div class="col-md-4 gn-md-side">
