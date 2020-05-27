@@ -203,6 +203,16 @@
               <div data-gn-metadata-contacts="mdView.current.record.getAllContacts().resource" data-gn-mode="org-role" />
             </td>
           </tr>
+          <tr data-ng-if="mdView.current.record.licenseGraphic">
+            <th data-translate="">resourceConstraints</th>
+            <td>
+              <ul>
+                <li style="list-style-type: none;"><img src="{{mdView.current.record.licenseGraphic.split('|')[0]}}"/></li>
+                <li style="list-style-type: none;"><a href="{{mdView.current.record.licenseGraphic.split('|')[2]}}" target="_blank">License Text</a></li>
+                <li>{{mdView.current.record.licenseGraphic.split('|')[3]}}</li>
+              </ul>
+            </td>
+          </tr>
           <tr data-ng-if="mdView.current.record.credit">
             <th data-translate="">credit</th>
             <td>{{mdView.current.record.credit}}</td>
