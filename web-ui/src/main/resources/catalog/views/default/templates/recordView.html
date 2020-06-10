@@ -124,7 +124,6 @@
     <div data-ng-show="!usingFormatter" class="gn-metadata-display">
 
       <div class="col-md-8 gn-record">
-        <div data-ng-if="mdView.current.record.status_text.length > 0 && mdView.current.record.status_text[0] != 'Completed'">
           <div class="row">
             <div class="col-md-10" style="padding:0">
               <h1>
@@ -133,22 +132,16 @@
               </h1>
             </div>
             <div class="col-md-2" style="padding:0">
+        <div data-ng-if="mdView.current.record.status_text.length > 0 && mdView.current.record.status_text[0] != 'Completed'">
               <!-- Display the first metadata status (apply to ISO19139 record) -->
               <div data-ng-if="mdView.current.record.status_text.length > 0"
                    title="{{mdView.current.record.status_text[0]}}"
                    class="gn-status gn-status-mdview gn-status-{{mdView.current.record.status[0]}}">
                 {{mdView.current.record.status_text[0]}}
               </div>
+        </div>
             </div>
           </div>
-        </div>
-
-        <div data-ng-if="mdView.current.record.status_text.length == 0 || mdView.current.record.status_text[0] == 'Completed'">
-          <h1>
-            <i class="fa gn-icon-{{mdView.current.record.type[0]}}"/>
-            {{mdView.current.record.title || mdView.current.record.defaultTitle}}
-          </h1>
-        </div>
 
         <h2     class="text-warning"
                 data-ng-show="mdView.current.record.draft == 'Y'"
