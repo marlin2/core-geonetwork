@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:gml="http://www.opengis.net/gml#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/">
+   <skos:ConceptScheme rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0">
+      <dc:identifier>urn:marlin.csiro.au:keywords:cmarAOI</dc:identifier>
+      <dc:title>CSIRO Areas Of Interest</dc:title>
+      <dc:description>CSIRO Oceans and Atmosphere list of Area of Interest keywords</dc:description>
+      <dc:URI>http://www.marlin.csiro.au/geonetwork/srv/eng/xml.metadata.get?uuid=urn:marlin.csiro.au:keywords:cmarAOI</dc:URI>
+      <dct:modified>2012-06-30</dct:modified>
+      <dc:creator>
+         <foaf:Organization>
+            <foaf:name>CSIRO Oceans and Atmosphere Data Centre</foaf:name>
+         </foaf:Organization>
+      </dc:creator>
+      <dc:publisher/>
+      <dct:issued>2018-08-27T15:31:33</dct:issued>
+   </skos:ConceptScheme>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3207">
+      <skos:prefLabel xml:lang="en">WA Data Inventory 2007-8</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">WA Data Inventory 2007-8</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3206">
+      <skos:prefLabel xml:lang="en">Data Mining</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Data Mining</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3204">
+      <skos:prefLabel xml:lang="en">Northern Bioreg Data</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Northern Bioreg Data</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3205">
+      <skos:prefLabel xml:lang="en">Weipa_BPV</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Weipa_BPV</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3201">
+      <skos:prefLabel xml:lang="en">WfO Biogeochemistry</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">WfO Biogeochemistry</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3202">
+      <skos:prefLabel xml:lang="en">Prawn Warehouse</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Prawn Warehouse</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3203">
+      <skos:prefLabel xml:lang="en">GoC Historical</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">GoC Historical</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3208">
+      <skos:prefLabel xml:lang="en">Marine National Facility</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Marine National Facility</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3209">
+      <skos:prefLabel xml:lang="en">Torres Strait Research Repository 2013</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Torres Strait Research Repository 2013</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:3210">
+      <skos:prefLabel xml:lang="en">Pilbara MCP</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Pilbara MCP</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:cmarAOI:concept:7413">
+      <skos:prefLabel xml:lang="en">Shallow Swath Internal Facility</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:cmarAOI:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Shallow Swath Internal Facility</skos:scopeNote>
+   </skos:Concept>
+</rdf:RDF>

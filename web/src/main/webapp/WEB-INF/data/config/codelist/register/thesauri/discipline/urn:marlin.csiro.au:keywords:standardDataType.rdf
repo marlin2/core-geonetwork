@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:gml="http://www.opengis.net/gml#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/">
+   <skos:ConceptScheme rdf:about="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0">
+      <dc:identifier>urn:marlin.csiro.au:keywords:standardDataType</dc:identifier>
+      <dc:title>CSIRO Standard Data Types</dc:title>
+      <dc:description>CSIRO Oceans and Atmosphere list of Standard Data Type keywords</dc:description>
+      <dc:URI>http://www.marlin.csiro.au/geonetwork/srv/eng/xml.metadata.get?uuid=urn:marlin.csiro.au:keywords:standardDataType</dc:URI>
+      <dct:modified>2012-06-30</dct:modified>
+      <dc:creator>
+         <foaf:Organization>
+            <foaf:name>CSIRO Oceans and Atmosphere Data Centre</foaf:name>
+         </foaf:Organization>
+      </dc:creator>
+      <dc:publisher/>
+      <dct:issued>2016-07-24T23:35:13</dct:issued>
+   </skos:ConceptScheme>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3510">
+      <skos:prefLabel xml:lang="en">Vessel Data: ADCP</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: ADCP</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3516">
+      <skos:prefLabel xml:lang="en">Moored Instrument Data: Current Meters and Tide Gauges</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Moored Instrument Data: Current Meters and Tide Gauges</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3517">
+      <skos:prefLabel xml:lang="en">Moored Instrument Data: ADCP</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Moored Instrument Data: ADCP</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3518">
+      <skos:prefLabel xml:lang="en">Vessel Data: Catch (by voyage)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: Catch (by voyage)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3519">
+      <skos:prefLabel xml:lang="en">Vessel Data: Catch (by project)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: Catch (by project)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3511">
+      <skos:prefLabel xml:lang="en">Vessel Data: CTD</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: CTD</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3512">
+      <skos:prefLabel xml:lang="en">Vessel Data: Dissolved Oxygen</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: Dissolved Oxygen</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3513">
+      <skos:prefLabel xml:lang="en">Vessel/Station Data: Hydrology</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel/Station Data: Hydrology</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3514">
+      <skos:prefLabel xml:lang="en">Vessel Data: Underway</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: Underway</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3515">
+      <skos:prefLabel xml:lang="en">Vessel Data: XBT</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: XBT</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3520">
+      <skos:prefLabel xml:lang="en">Vessel Data: Acoustics (Fisheries)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: Acoustics (Fisheries)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3521">
+      <skos:prefLabel xml:lang="en">Vessel Data: Multibeam Echosounder</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: Multibeam Echosounder</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3522">
+      <skos:prefLabel xml:lang="en">Vessel Data: undulating CTD</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: undulating CTD</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:keywords:standardDataType:concept:3523">
+      <skos:prefLabel xml:lang="en">Vessel Data: BUNYIP</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:keywords:standardDataType:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en"/>
+      <skos:scopeNote xml:lang="en">Vessel Data: BUNYIP</skos:scopeNote>
+   </skos:Concept>
+</rdf:RDF>
