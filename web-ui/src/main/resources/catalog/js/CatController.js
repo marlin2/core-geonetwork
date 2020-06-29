@@ -377,6 +377,12 @@
              gnViewerSettings, gnSearchSettings, $cookies) {
       $scope.version = '0.0.1';
 
+      // Redirect historical hash-bang urls
+      if ($location.path().includes('!')) {
+        var uuid = $location.path().split('!').slice(-1);
+        var url = '/metadata/' + uuid;
+        $location.path(url);
+      }
 
       //Update Links for social media
       $scope.socialMediaLink = $location.absUrl();
