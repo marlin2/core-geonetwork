@@ -47,6 +47,17 @@
            $location, $window, $timeout,
                gnUtilityService, gnConfig, gnGlobalSettings,
                vcRecaptchaService, $q) {
+
+         // TODO: This is a fairly terrible hack to make historical hash-bangs work. Needs to be improved...
+         // Redirect historical hash-bang urls
+         var locationUrl = $location.absUrl();
+         if (locationUrl.includes('!')) {
+           var baseUrl = locationUrl.split('/geonetwork/srv', 1).slice(0);
+           var uuid = locationUrl.split('!').slice(-1);
+           var url = baseUrl + '/geonetwork/srv/eng/catalog.search#/metadata/' + uuid;
+           window.location.href = url;
+         }
+
           $scope.formAction = '../../signin#' +
          $location.path();
           $scope.registrationStatus = null;
