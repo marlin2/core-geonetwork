@@ -59,6 +59,16 @@
         <link href="portal.opensearch" rel="search" type="application/opensearchdescription+xml"
               title="{concat($env/system/site/name, ' - ', $env/system/site/organization)}"/>
 
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-46122762-4"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-46122762-4');
+        </script>
+
         <xsl:call-template name="css-load"/>
       </head>
 
