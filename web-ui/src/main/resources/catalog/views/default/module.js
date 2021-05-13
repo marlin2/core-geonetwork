@@ -303,9 +303,9 @@
       // Set the default browse mode for the home page
       $scope.$watch('searchInfo', function (n, o) {
         if (angular.isDefined($scope.searchInfo.facet)) {
-          if ($scope.searchInfo.facet['inspireThemes'].length > 0) {
+          if ($scope.searchInfo.facet['inspireThemes'] && $scope.searchInfo.facet['inspireThemes'].length > 0) {
             $scope.browse = 'inspire';
-          } else if ($scope.searchInfo.facet['topicCats'].length > 0) {
+          } else if ($scope.searchInfo.facet['topicCats'] && $scope.searchInfo.facet['topicCats'].length > 0) {
             $scope.browse = 'topics';
           //} else if ($scope.searchInfo.facet['categories'].length > 0) {
           //  $scope.browse = 'cat';

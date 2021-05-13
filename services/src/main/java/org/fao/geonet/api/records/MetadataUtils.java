@@ -375,7 +375,7 @@ public class MetadataUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (file == null) {
+            if (file != null) {
                 IO.deleteFile(file, false, Geonet.MEF);
             }
         }

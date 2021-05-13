@@ -55,11 +55,11 @@
         link: function(scope, element, attrs) {
           scope.iconOnly = attrs.iconOnly === 'true';
           scope.csiro = attrs.csiro === 'true';
-         
-          var helpBaseUrl, helpPageUrl; 
+
+          var helpBaseUrl, helpPageUrl;
           if (scope.csiro) { // override
             helpBaseUrl = gnGlobalSettings.csiroDocUrl ||
-              'https://confluence.csiro.au/display/DataCentreShared/';
+              'https://confluence.csiro.au/pages/viewpage.action?';
           } else {
             helpBaseUrl = gnGlobalSettings.docUrl ||
               'https://geonetwork-opensource.org/manuals/3.4.x/';
@@ -69,7 +69,7 @@
             var page = attrs.gnNeedHelp;
             var helpPageUrl;
             if (scope.csiro) {
-              helpPageUrl = helpBaseUrl + page; 
+              helpPageUrl = helpBaseUrl + page;
             } else {
               helpPageUrl =
                  gnGlobalSettings.docUrl ? helpBaseUrl + page :

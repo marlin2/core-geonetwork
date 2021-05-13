@@ -1,0 +1,1204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:gml="http://www.opengis.net/gml#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/">
+   <skos:ConceptScheme rdf:about="urn:marlin.csiro.au:Equipment:conceptscheme:1.0">
+      <dc:identifier>urn:marlin.csiro.au:Equipment</dc:identifier>
+      <dc:title>CSIRO Equipment</dc:title>
+      <dc:description>CSIRO Oceans and Atmosphere list of Equipment keywords</dc:description>
+      <dc:URI>http://www.marlin.csiro.au/geonetwork/srv/eng/xml.metadata.get?uuid=urn:marlin.csiro.au:Equipment</dc:URI>
+      <dct:modified>2012-06-30</dct:modified>
+      <dc:creator>
+         <foaf:Organization>
+            <foaf:name>CSIRO Oceans and Atmosphere Data Centre</foaf:name>
+         </foaf:Organization>
+      </dc:creator>
+      <dc:publisher/>
+      <dct:issued>2018-08-27T14:29:54</dct:issued>
+   </skos:ConceptScheme>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:1">
+      <skos:prefLabel xml:lang="en">Acoustic Equipment/Echosounders</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Acoustic Equipment/Echosounders</skos:definition>
+      <skos:scopeNote xml:lang="en">Acoustic Equipment/Echosounders: Acoustic Equipment/Echosounders</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:2">
+      <skos:prefLabel xml:lang="en">ADCP (Acoustic Doppler Current Profiler)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">ADCP (Acoustic Doppler Current Profiler)</skos:definition>
+      <skos:scopeNote xml:lang="en">ADCP (Acoustic Doppler Current Profiler): ADCP (Acoustic Doppler Current Profiler)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:3">
+      <skos:prefLabel xml:lang="en">Aircraft/Airborne Equipment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aircraft/Airborne Equipment</skos:definition>
+      <skos:scopeNote xml:lang="en">Aircraft/Airborne Equipment: Aircraft/Airborne Equipment</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:4">
+      <skos:prefLabel xml:lang="en">Aerial Photography</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aerial Photography</skos:definition>
+      <skos:scopeNote xml:lang="en">Aerial Photography: Aerial Photography</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:5">
+      <skos:prefLabel xml:lang="en">Aerial Surveys</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aerial Surveys</skos:definition>
+      <skos:scopeNote xml:lang="en">Aerial Surveys: Aerial Surveys</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:6">
+      <skos:prefLabel xml:lang="en">Altimeters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Altimeters</skos:definition>
+      <skos:scopeNote xml:lang="en">Altimeters: Altimeters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:7">
+      <skos:prefLabel xml:lang="en">Laser Altimeters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Laser Altimeters</skos:definition>
+      <skos:scopeNote xml:lang="en">Laser Altimeters: Laser Altimeters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:8">
+      <skos:prefLabel xml:lang="en">Radar Altimeters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Radar Altimeters</skos:definition>
+      <skos:scopeNote xml:lang="en">Radar Altimeters: Radar Altimeters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:9">
+      <skos:prefLabel xml:lang="en">TOPEX Radar Altimeter</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">TOPEX Radar Altimeter</skos:definition>
+      <skos:scopeNote xml:lang="en">TOPEX Radar Altimeter: TOPEX Radar Altimeter</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:10">
+      <skos:prefLabel xml:lang="en">Aquaculture Systems</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aquaculture Systems</skos:definition>
+      <skos:scopeNote xml:lang="en">Aquaculture Systems: Aquaculture Systems</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:11">
+      <skos:prefLabel xml:lang="en">Aquaria</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aquaria</skos:definition>
+      <skos:scopeNote xml:lang="en">Aquaria: Aquaria</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:12">
+      <skos:prefLabel xml:lang="en">Artificial Reefs</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Artificial Reefs</skos:definition>
+      <skos:scopeNote xml:lang="en">Artificial Reefs: Artificial Reefs</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:13">
+      <skos:prefLabel xml:lang="en">Artificial Substrates</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Artificial Substrates</skos:definition>
+      <skos:scopeNote xml:lang="en">Artificial Substrates: Artificial Substrates</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:14">
+      <skos:prefLabel xml:lang="en">Atomic Absorption Spectrophotometer</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Atomic Absorption Spectrophotometer</skos:definition>
+      <skos:scopeNote xml:lang="en">Atomic Absorption Spectrophotometer: Atomic Absorption Spectrophotometer</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:15">
+      <skos:prefLabel xml:lang="en">Autoanalysers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Autoanalysers</skos:definition>
+      <skos:scopeNote xml:lang="en">Autoanalysers: Autoanalysers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:16">
+      <skos:prefLabel xml:lang="en">CHN Analysers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CHN Analysers</skos:definition>
+      <skos:scopeNote xml:lang="en">CHN Analysers: CHN Analysers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:17">
+      <skos:prefLabel xml:lang="en">CO2 Analysers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CO2 Analysers</skos:definition>
+      <skos:scopeNote xml:lang="en">CO2 Analysers: CO2 Analysers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:18">
+      <skos:prefLabel xml:lang="en">Nutrient Analysers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Nutrient Analysers</skos:definition>
+      <skos:scopeNote xml:lang="en">Nutrient Analysers: Nutrient Analysers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:19">
+      <skos:prefLabel xml:lang="en">Bathythermographs</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Bathythermographs</skos:definition>
+      <skos:scopeNote xml:lang="en">Bathythermographs: Bathythermographs</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:20">
+      <skos:prefLabel xml:lang="en">MBTs (Mechanical Bathythermographs)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MBTs (Mechanical Bathythermographs)</skos:definition>
+      <skos:scopeNote xml:lang="en">MBTs (Mechanical Bathythermographs): MBTs (Mechanical Bathythermographs)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:21">
+      <skos:prefLabel xml:lang="en">XBTs (Expendable Bathythermographs)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">XBTs (Expendable Bathythermographs)</skos:definition>
+      <skos:scopeNote xml:lang="en">XBTs (Expendable Bathythermographs): XBTs (Expendable Bathythermographs)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:22">
+      <skos:prefLabel xml:lang="en">Boats and Small Vessels</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Boats and Small Vessels</skos:definition>
+      <skos:scopeNote xml:lang="en">Boats and Small Vessels: Boats and Small Vessels</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:23">
+      <skos:prefLabel xml:lang="en">Undulating CTD - Bunyip</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Undulating CTD - Bunyip</skos:definition>
+      <skos:scopeNote xml:lang="en">Undulating CTD - Bunyip: Undulating CTD - Bunyip</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:24">
+      <skos:prefLabel xml:lang="en">Cages and Enclosures</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cages and Enclosures</skos:definition>
+      <skos:scopeNote xml:lang="en">Cages and Enclosures: Cages and Enclosures</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:25">
+      <skos:prefLabel xml:lang="en">Cameras</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cameras</skos:definition>
+      <skos:scopeNote xml:lang="en">Cameras: Cameras</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:26">
+      <skos:prefLabel xml:lang="en">Cameras - Cine</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cameras - Cine</skos:definition>
+      <skos:scopeNote xml:lang="en">Cameras - Cine: Cameras - Cine</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:27">
+      <skos:prefLabel xml:lang="en">Cameras - Still - Surface</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cameras - Still - Surface</skos:definition>
+      <skos:scopeNote xml:lang="en">Cameras - Still - Surface: Cameras - Still - Surface</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:28">
+      <skos:prefLabel xml:lang="en">Cameras - Still - Underwater</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cameras - Still - Underwater</skos:definition>
+      <skos:scopeNote xml:lang="en">Cameras - Still - Underwater: Cameras - Still - Underwater</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:29">
+      <skos:prefLabel xml:lang="en">Cameras - Video - Surface</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cameras - Video - Surface</skos:definition>
+      <skos:scopeNote xml:lang="en">Cameras - Video - Surface: Cameras - Video - Surface</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:30">
+      <skos:prefLabel xml:lang="en">Cameras - Video - Underwater</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cameras - Video - Underwater</skos:definition>
+      <skos:scopeNote xml:lang="en">Cameras - Video - Underwater: Cameras - Video - Underwater</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:31">
+      <skos:prefLabel xml:lang="en">Cell Counters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cell Counters</skos:definition>
+      <skos:scopeNote xml:lang="en">Cell Counters: Cell Counters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:32">
+      <skos:prefLabel xml:lang="en">Corers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Corers</skos:definition>
+      <skos:scopeNote xml:lang="en">Corers: Corers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:33">
+      <skos:prefLabel xml:lang="en">CTDs (Conductivity-Temperature-Depth Profilers)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CTDs (Conductivity-Temperature-Depth Profilers)</skos:definition>
+      <skos:scopeNote xml:lang="en">CTDs (Conductivity-Temperature-Depth Profilers): CTDs (Conductivity-Temperature-Depth Profilers)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:34">
+      <skos:prefLabel xml:lang="en">Current Meters/Profilers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Current Meters/Profilers</skos:definition>
+      <skos:scopeNote xml:lang="en">Current Meters/Profilers: Current Meters/Profilers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:35">
+      <skos:prefLabel xml:lang="en">Data Loggers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Data Loggers</skos:definition>
+      <skos:scopeNote xml:lang="en">Data Loggers: Data Loggers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:36">
+      <skos:prefLabel xml:lang="en">Digital Imaging (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Digital Imaging (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Digital Imaging (acquisition and/or analysis): Digital Imaging (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:37">
+      <skos:prefLabel xml:lang="en">DNA Sequencers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">DNA Sequencers</skos:definition>
+      <skos:scopeNote xml:lang="en">DNA Sequencers: DNA Sequencers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:38">
+      <skos:prefLabel xml:lang="en">Dredges</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Dredges</skos:definition>
+      <skos:scopeNote xml:lang="en">Dredges: Dredges</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:39">
+      <skos:prefLabel xml:lang="en">Drift Bottles</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Drift Bottles</skos:definition>
+      <skos:scopeNote xml:lang="en">Drift Bottles: Drift Bottles</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:40">
+      <skos:prefLabel xml:lang="en">Drift Cards</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Drift Cards</skos:definition>
+      <skos:scopeNote xml:lang="en">Drift Cards: Drift Cards</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:41">
+      <skos:prefLabel xml:lang="en">Drifting Data Buoys</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Drifting Data Buoys</skos:definition>
+      <skos:scopeNote xml:lang="en">Drifting Data Buoys: Drifting Data Buoys</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:42">
+      <skos:prefLabel xml:lang="en">Field Surveys (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Field Surveys (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Field Surveys (acquisition and/or analysis): Field Surveys (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:43">
+      <skos:prefLabel xml:lang="en">Shore Surveys (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Shore Surveys (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Shore Surveys (acquisition and/or analysis): Shore Surveys (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:44">
+      <skos:prefLabel xml:lang="en">Terrestrial Surveys (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Terrestrial Surveys (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Terrestrial Surveys (acquisition and/or analysis): Terrestrial Surveys (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:45">
+      <skos:prefLabel xml:lang="en">Underwater Surveys (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Underwater Surveys (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Underwater Surveys (acquisition and/or analysis): Underwater Surveys (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:46">
+      <skos:prefLabel xml:lang="en">Fish Traps</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fish Traps</skos:definition>
+      <skos:scopeNote xml:lang="en">Fish Traps: Fish Traps</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:47">
+      <skos:prefLabel xml:lang="en">Fluorometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fluorometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Fluorometers: Fluorometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:48">
+      <skos:prefLabel xml:lang="en">Gas Chromatographs</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Gas Chromatographs</skos:definition>
+      <skos:scopeNote xml:lang="en">Gas Chromatographs: Gas Chromatographs</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:49">
+      <skos:prefLabel xml:lang="en">Gel Electrophoresis</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Gel Electrophoresis</skos:definition>
+      <skos:scopeNote xml:lang="en">Gel Electrophoresis: Gel Electrophoresis</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:50">
+      <skos:prefLabel xml:lang="en">Grabs</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Grabs</skos:definition>
+      <skos:scopeNote xml:lang="en">Grabs: Grabs</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:51">
+      <skos:prefLabel xml:lang="en">Growth Chambers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Growth Chambers</skos:definition>
+      <skos:scopeNote xml:lang="en">Growth Chambers: Growth Chambers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:52">
+      <skos:prefLabel xml:lang="en">Handlines</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Handlines</skos:definition>
+      <skos:scopeNote xml:lang="en">Handlines: Handlines</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:53">
+      <skos:prefLabel xml:lang="en">Hand Sampling (specimens and/or tissue samples)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Hand Sampling (specimens and/or tissue samples)</skos:definition>
+      <skos:scopeNote xml:lang="en">Hand Sampling (specimens and/or tissue samples): Hand Sampling (specimens and/or tissue samples)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:54">
+      <skos:prefLabel xml:lang="en">HPLC (High Performance Liquid Chromatography)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">HPLC (High Performance Liquid Chromatography)</skos:definition>
+      <skos:scopeNote xml:lang="en">HPLC (High Performance Liquid Chromatography): HPLC (High Performance Liquid Chromatography)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:55">
+      <skos:prefLabel xml:lang="en">Length-Frequency Measurements (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Length-Frequency Measurements (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Length-Frequency Measurements (acquisition and/or analysis): Length-Frequency Measurements (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:56">
+      <skos:prefLabel xml:lang="en">LIDAR Altimeter</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">LIDAR Altimeter</skos:definition>
+      <skos:scopeNote xml:lang="en">LIDAR Altimeter: LIDAR Altimeter</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:57">
+      <skos:prefLabel xml:lang="en">Logbook/Catch Data (acquisition and/or analysis)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Logbook/Catch Data (acquisition and/or analysis)</skos:definition>
+      <skos:scopeNote xml:lang="en">Logbook/Catch Data (acquisition and/or analysis): Logbook/Catch Data (acquisition and/or analysis)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:58">
+      <skos:prefLabel xml:lang="en">Longlines</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Longlines</skos:definition>
+      <skos:scopeNote xml:lang="en">Longlines: Longlines</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:59">
+      <skos:prefLabel xml:lang="en">Mass Spectrometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Mass Spectrometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Mass Spectrometers: Mass Spectrometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:60">
+      <skos:prefLabel xml:lang="en">Mesocosms</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Mesocosms</skos:definition>
+      <skos:scopeNote xml:lang="en">Mesocosms: Mesocosms</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:61">
+      <skos:prefLabel xml:lang="en">Meteorological Instruments</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Meteorological Instruments</skos:definition>
+      <skos:scopeNote xml:lang="en">Meteorological Instruments: Meteorological Instruments</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:62">
+      <skos:prefLabel xml:lang="en">Microprobes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Microprobes</skos:definition>
+      <skos:scopeNote xml:lang="en">Microprobes: Microprobes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:63">
+      <skos:prefLabel xml:lang="en">Electron Microprobes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Electron Microprobes</skos:definition>
+      <skos:scopeNote xml:lang="en">Electron Microprobes: Electron Microprobes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:64">
+      <skos:prefLabel xml:lang="en">Proton Microprobes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Proton Microprobes</skos:definition>
+      <skos:scopeNote xml:lang="en">Proton Microprobes: Proton Microprobes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:65">
+      <skos:prefLabel xml:lang="en">Microscopes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Microscopes</skos:definition>
+      <skos:scopeNote xml:lang="en">Microscopes: Microscopes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:66">
+      <skos:prefLabel xml:lang="en">Optical Microscopes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Optical Microscopes</skos:definition>
+      <skos:scopeNote xml:lang="en">Optical Microscopes: Optical Microscopes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:67">
+      <skos:prefLabel xml:lang="en">Fluorescence Microscopes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fluorescence Microscopes</skos:definition>
+      <skos:scopeNote xml:lang="en">Fluorescence Microscopes: Fluorescence Microscopes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:68">
+      <skos:prefLabel xml:lang="en">Video Microscopes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Video Microscopes</skos:definition>
+      <skos:scopeNote xml:lang="en">Video Microscopes: Video Microscopes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:69">
+      <skos:prefLabel xml:lang="en">Scanning Electron Microscopes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Scanning Electron Microscopes</skos:definition>
+      <skos:scopeNote xml:lang="en">Scanning Electron Microscopes: Scanning Electron Microscopes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:70">
+      <skos:prefLabel xml:lang="en">Transmission Electron Microscopes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Transmission Electron Microscopes</skos:definition>
+      <skos:scopeNote xml:lang="en">Transmission Electron Microscopes: Transmission Electron Microscopes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:71">
+      <skos:prefLabel xml:lang="en">Moored Instruments</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Moored Instruments</skos:definition>
+      <skos:scopeNote xml:lang="en">Moored Instruments: Moored Instruments</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:72">
+      <skos:prefLabel xml:lang="en">Nansen Bottles</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Nansen Bottles</skos:definition>
+      <skos:scopeNote xml:lang="en">Nansen Bottles: Nansen Bottles</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:73">
+      <skos:prefLabel xml:lang="en">Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Nets: Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:74">
+      <skos:prefLabel xml:lang="en">Gill Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Gill Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Gill Nets: Gill Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:75">
+      <skos:prefLabel xml:lang="en">Plankton Nets/Drop Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Plankton Nets/Drop Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Plankton Nets/Drop Nets: Plankton Nets/Drop Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:76">
+      <skos:prefLabel xml:lang="en">Phytoplankton Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Phytoplankton Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Phytoplankton Nets: Phytoplankton Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:77">
+      <skos:prefLabel xml:lang="en">Zooplankton Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Zooplankton Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Zooplankton Nets: Zooplankton Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:78">
+      <skos:prefLabel xml:lang="en">Seine Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Seine Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Seine Nets: Seine Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:79">
+      <skos:prefLabel xml:lang="en">Surface Nets</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Surface Nets</skos:definition>
+      <skos:scopeNote xml:lang="en">Surface Nets: Surface Nets</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:80">
+      <skos:prefLabel xml:lang="en">Niskin Bottles</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Niskin Bottles</skos:definition>
+      <skos:scopeNote xml:lang="en">Niskin Bottles: Niskin Bottles</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:81">
+      <skos:prefLabel xml:lang="en">Pressure Gauges</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Pressure Gauges</skos:definition>
+      <skos:scopeNote xml:lang="en">Pressure Gauges: Pressure Gauges</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:82">
+      <skos:prefLabel xml:lang="en">Pumps</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Pumps</skos:definition>
+      <skos:scopeNote xml:lang="en">Pumps: Pumps</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:83">
+      <skos:prefLabel xml:lang="en">Radiation Sensors</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Radiation Sensors</skos:definition>
+      <skos:scopeNote xml:lang="en">Radiation Sensors: Radiation Sensors</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:84">
+      <skos:prefLabel xml:lang="en">Radiosondes</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Radiosondes</skos:definition>
+      <skos:scopeNote xml:lang="en">Radiosondes: Radiosondes</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:85">
+      <skos:prefLabel xml:lang="en">SAR (Synthetic Aperture Radar)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SAR (Synthetic Aperture Radar)</skos:definition>
+      <skos:scopeNote xml:lang="en">SAR (Synthetic Aperture Radar): SAR (Synthetic Aperture Radar)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:86">
+      <skos:prefLabel xml:lang="en">Satellites</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Satellites</skos:definition>
+      <skos:scopeNote xml:lang="en">Satellites: Satellites</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:87">
+      <skos:prefLabel xml:lang="en">Scintillation Counters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Scintillation Counters</skos:definition>
+      <skos:scopeNote xml:lang="en">Scintillation Counters: Scintillation Counters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:88">
+      <skos:prefLabel xml:lang="en">SCUBA (observations and/or sampling)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SCUBA (observations and/or sampling)</skos:definition>
+      <skos:scopeNote xml:lang="en">SCUBA (observations and/or sampling): SCUBA (observations and/or sampling)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:89">
+      <skos:prefLabel xml:lang="en">Seabed Vehicles</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Seabed Vehicles</skos:definition>
+      <skos:scopeNote xml:lang="en">Seabed Vehicles: Seabed Vehicles</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:90">
+      <skos:prefLabel xml:lang="en">Undulating CTD - SeaSoar</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Undulating CTD - SeaSoar</skos:definition>
+      <skos:scopeNote xml:lang="en">Undulating CTD - SeaSoar: Undulating CTD - SeaSoar</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:91">
+      <skos:prefLabel xml:lang="en">SEAWIFS (Sea-Viewing Wide Field-of-View Sensor)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SEAWIFS (Sea-Viewing Wide Field-of-View Sensor)</skos:definition>
+      <skos:scopeNote xml:lang="en">SEAWIFS (Sea-Viewing Wide Field-of-View Sensor): SEAWIFS (Sea-Viewing Wide Field-of-View Sensor)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:92">
+      <skos:prefLabel xml:lang="en">Secchi Discs</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Secchi Discs</skos:definition>
+      <skos:scopeNote xml:lang="en">Secchi Discs: Secchi Discs</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:93">
+      <skos:prefLabel xml:lang="en">Sediment Traps</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Sediment Traps</skos:definition>
+      <skos:scopeNote xml:lang="en">Sediment Traps: Sediment Traps</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:94">
+      <skos:prefLabel xml:lang="en">SLAR (Side-Looking Airborne Radar)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SLAR (Side-Looking Airborne Radar)</skos:definition>
+      <skos:scopeNote xml:lang="en">SLAR (Side-Looking Airborne Radar): SLAR (Side-Looking Airborne Radar)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:95">
+      <skos:prefLabel xml:lang="en">Sledges/Sleds</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Sledges/Sleds</skos:definition>
+      <skos:scopeNote xml:lang="en">Sledges/Sleds: Sledges/Sleds</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:96">
+      <skos:prefLabel xml:lang="en">SONAR</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SONAR</skos:definition>
+      <skos:scopeNote xml:lang="en">SONAR: SONAR</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:97">
+      <skos:prefLabel xml:lang="en">Spectrophotometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Spectrophotometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Spectrophotometers: Spectrophotometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:98">
+      <skos:prefLabel xml:lang="en">Tags and Tracking Devices</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Tags and Tracking Devices</skos:definition>
+      <skos:scopeNote xml:lang="en">Tags and Tracking Devices: Tags and Tracking Devices</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:99">
+      <skos:prefLabel xml:lang="en">Thermistors</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Thermistors</skos:definition>
+      <skos:scopeNote xml:lang="en">Thermistors: Thermistors</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:100">
+      <skos:prefLabel xml:lang="en">Thermometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Thermometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Thermometers: Thermometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:101">
+      <skos:prefLabel xml:lang="en">Thermosalinographs</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Thermosalinographs</skos:definition>
+      <skos:scopeNote xml:lang="en">Thermosalinographs: Thermosalinographs</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:102">
+      <skos:prefLabel xml:lang="en">Thin-Layer Chromatography</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Thin-Layer Chromatography</skos:definition>
+      <skos:scopeNote xml:lang="en">Thin-Layer Chromatography: Thin-Layer Chromatography</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:103">
+      <skos:prefLabel xml:lang="en">Tide Gauges</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Tide Gauges</skos:definition>
+      <skos:scopeNote xml:lang="en">Tide Gauges: Tide Gauges</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:104">
+      <skos:prefLabel xml:lang="en">Trawls</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Trawls</skos:definition>
+      <skos:scopeNote xml:lang="en">Trawls: Trawls</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:105">
+      <skos:prefLabel xml:lang="en">Beam Trawls</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Beam Trawls</skos:definition>
+      <skos:scopeNote xml:lang="en">Beam Trawls: Beam Trawls</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:106">
+      <skos:prefLabel xml:lang="en">Demersal Trawls</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Demersal Trawls</skos:definition>
+      <skos:scopeNote xml:lang="en">Demersal Trawls: Demersal Trawls</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:107">
+      <skos:prefLabel xml:lang="en">Midwater Trawls</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Midwater Trawls</skos:definition>
+      <skos:scopeNote xml:lang="en">Midwater Trawls: Midwater Trawls</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:108">
+      <skos:prefLabel xml:lang="en">Prawn Trawls</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Prawn Trawls</skos:definition>
+      <skos:scopeNote xml:lang="en">Prawn Trawls: Prawn Trawls</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:109">
+      <skos:prefLabel xml:lang="en">T/S (Temperature-Salinity) Profilers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">T/S (Temperature-Salinity) Profilers</skos:definition>
+      <skos:scopeNote xml:lang="en">T/S (Temperature-Salinity) Profilers: T/S (Temperature-Salinity) Profilers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:110">
+      <skos:prefLabel xml:lang="en">Turbulence Sensors</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Turbulence Sensors</skos:definition>
+      <skos:scopeNote xml:lang="en">Turbulence Sensors: Turbulence Sensors</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:111">
+      <skos:prefLabel xml:lang="en">Visual Counts/Observations</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Visual Counts/Observations</skos:definition>
+      <skos:scopeNote xml:lang="en">Visual Counts/Observations: Visual Counts/Observations</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:112">
+      <skos:prefLabel xml:lang="en">Water Column Samplers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Water Column Samplers</skos:definition>
+      <skos:scopeNote xml:lang="en">Water Column Samplers: Water Column Samplers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:113">
+      <skos:prefLabel xml:lang="en">Wave Recorders</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Wave Recorders</skos:definition>
+      <skos:scopeNote xml:lang="en">Wave Recorders: Wave Recorders</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:114">
+      <skos:prefLabel xml:lang="en">X-Ray Microanalysers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">X-Ray Microanalysers</skos:definition>
+      <skos:scopeNote xml:lang="en">X-Ray Microanalysers: X-Ray Microanalysers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:115">
+      <skos:prefLabel xml:lang="en">Multibeam Echosounder</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Echosounder</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Echosounder: Multibeam Echosounder</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:116">
+      <skos:prefLabel xml:lang="en">Incubators</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Incubators</skos:definition>
+      <skos:scopeNote xml:lang="en">Incubators: Incubators</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:117">
+      <skos:prefLabel xml:lang="en">High Volume Air Samplers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">High Volume Air Samplers</skos:definition>
+      <skos:scopeNote xml:lang="en">High Volume Air Samplers: High Volume Air Samplers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:118">
+      <skos:prefLabel xml:lang="en">Chemiluminescence Gas Analysers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Chemiluminescence Gas Analysers</skos:definition>
+      <skos:scopeNote xml:lang="en">Chemiluminescence Gas Analysers: Chemiluminescence Gas Analysers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:119">
+      <skos:prefLabel xml:lang="en">GFC (Gas Filter Correlation) Spectrophotometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">GFC (Gas Filter Correlation) Spectrophotometers</skos:definition>
+      <skos:scopeNote xml:lang="en">GFC (Gas Filter Correlation) Spectrophotometers: GFC (Gas Filter Correlation) Spectrophotometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:120">
+      <skos:prefLabel xml:lang="en">Fluorometers - UV</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fluorometers - UV</skos:definition>
+      <skos:scopeNote xml:lang="en">Fluorometers - UV: Fluorometers - UV</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:121">
+      <skos:prefLabel xml:lang="en">Photometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Photometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Photometers: Photometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:122">
+      <skos:prefLabel xml:lang="en">UV Photometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">UV Photometers</skos:definition>
+      <skos:scopeNote xml:lang="en">UV Photometers: UV Photometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:123">
+      <skos:prefLabel xml:lang="en">Balances/Weighing systems</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Balances/Weighing systems</skos:definition>
+      <skos:scopeNote xml:lang="en">Balances/Weighing systems: Balances/Weighing systems</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:124">
+      <skos:prefLabel xml:lang="en">Tapered Element Oscillating Microbalances (TEOM)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Tapered Element Oscillating Microbalances (TEOM)</skos:definition>
+      <skos:scopeNote xml:lang="en">Tapered Element Oscillating Microbalances (TEOM): Tapered Element Oscillating Microbalances (TEOM)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:125">
+      <skos:prefLabel xml:lang="en">Nephelometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Nephelometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Nephelometers: Nephelometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:126">
+      <skos:prefLabel xml:lang="en">CPC (Condensation Particle Counters)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CPC (Condensation Particle Counters)</skos:definition>
+      <skos:scopeNote xml:lang="en">CPC (Condensation Particle Counters): CPC (Condensation Particle Counters)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:127">
+      <skos:prefLabel xml:lang="en">CCN (Cloud Condensation Nuclei Counter)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CCN (Cloud Condensation Nuclei Counter)</skos:definition>
+      <skos:scopeNote xml:lang="en">CCN (Cloud Condensation Nuclei Counter): CCN (Cloud Condensation Nuclei Counter)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:128">
+      <skos:prefLabel xml:lang="en">SMPS (Scanning Mobility Particle Sizers)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SMPS (Scanning Mobility Particle Sizers)</skos:definition>
+      <skos:scopeNote xml:lang="en">SMPS (Scanning Mobility Particle Sizers): SMPS (Scanning Mobility Particle Sizers)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:129">
+      <skos:prefLabel xml:lang="en">SMPS (Scanning Mobility Particle Sizers) - Nano</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SMPS (Scanning Mobility Particle Sizers) - Nano</skos:definition>
+      <skos:scopeNote xml:lang="en">SMPS (Scanning Mobility Particle Sizers) - Nano: SMPS (Scanning Mobility Particle Sizers) - Nano</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:130">
+      <skos:prefLabel xml:lang="en">DMA (Differential Mobility Analyser) - Nano</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">DMA (Differential Mobility Analyser) - Nano</skos:definition>
+      <skos:scopeNote xml:lang="en">DMA (Differential Mobility Analyser) - Nano: DMA (Differential Mobility Analyser) - Nano</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:131">
+      <skos:prefLabel xml:lang="en">Particle Counters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Particle Counters</skos:definition>
+      <skos:scopeNote xml:lang="en">Particle Counters: Particle Counters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:132">
+      <skos:prefLabel xml:lang="en">DMA (Differential Mobility Analyser)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">DMA (Differential Mobility Analyser)</skos:definition>
+      <skos:scopeNote xml:lang="en">DMA (Differential Mobility Analyser): DMA (Differential Mobility Analyser)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:133">
+      <skos:prefLabel xml:lang="en">Rain Gauges</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Rain Gauges</skos:definition>
+      <skos:scopeNote xml:lang="en">Rain Gauges: Rain Gauges</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:134">
+      <skos:prefLabel xml:lang="en">CTDs (Conductivity-Temperature-Depth Profilers) - Towed</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CTDs (Conductivity-Temperature-Depth Profilers) - Towed</skos:definition>
+      <skos:scopeNote xml:lang="en">CTDs (Conductivity-Temperature-Depth Profilers) - Towed: CTDs (Conductivity-Temperature-Depth Profilers) - Towed</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:135">
+      <skos:prefLabel xml:lang="en">SUNA (Submersible Ultraviolet Nitrate Analyser)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SUNA (Submersible Ultraviolet Nitrate Analyser)</skos:definition>
+      <skos:scopeNote xml:lang="en">SUNA (Submersible Ultraviolet Nitrate Analyser): SUNA (Submersible Ultraviolet Nitrate Analyser)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:136">
+      <skos:prefLabel xml:lang="en">Video Cameras - underwater - Deep BRUV</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Video Cameras - underwater - Deep BRUV</skos:definition>
+      <skos:scopeNote xml:lang="en">Video Cameras - underwater - Deep BRUV: Video Cameras - underwater - Deep BRUV</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:137">
+      <skos:prefLabel xml:lang="en">Video Cameras - underwater - Deep Towed Camera System</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Video Cameras - underwater - Deep Towed Camera System</skos:definition>
+      <skos:scopeNote xml:lang="en">Video Cameras - underwater - Deep Towed Camera System: Video Cameras - underwater - Deep Towed Camera System</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:138">
+      <skos:prefLabel xml:lang="en">Video Cameras</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Video Cameras</skos:definition>
+      <skos:scopeNote xml:lang="en">Video Cameras: Video Cameras</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:139">
+      <skos:prefLabel xml:lang="en">LADCP (Lowered Acoustic Doppler Current Profiler)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">LADCP (Lowered Acoustic Doppler Current Profiler)</skos:definition>
+      <skos:scopeNote xml:lang="en">LADCP (Lowered Acoustic Doppler Current Profiler): LADCP (Lowered Acoustic Doppler Current Profiler)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:140">
+      <skos:prefLabel xml:lang="en">Acoustic - DECAF (Deepwater Calibration Facility)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Acoustic - DECAF (Deepwater Calibration Facility)</skos:definition>
+      <skos:scopeNote xml:lang="en">Acoustic - DECAF (Deepwater Calibration Facility): Acoustic - DECAF (Deepwater Calibration Facility)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:141">
+      <skos:prefLabel xml:lang="en">Fisheries echosounder EK60</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fisheries echosounder EK60</skos:definition>
+      <skos:scopeNote xml:lang="en">Fisheries echosounder EK60: Fisheries echosounder EK60</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:142">
+      <skos:prefLabel xml:lang="en">Multibeam Echosounder - EM710</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Echosounder - EM710</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Echosounder - EM710: Multibeam Echosounder - EM710</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:143">
+      <skos:prefLabel xml:lang="en">Echosounder - Fisheries</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Echosounder - Fisheries</skos:definition>
+      <skos:scopeNote xml:lang="en">Echosounder - Fisheries: Echosounder - Fisheries</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:144">
+      <skos:prefLabel xml:lang="en">Multibeam Echosounder - EM122</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Echosounder - EM122</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Echosounder - EM122: Multibeam Echosounder - EM122</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:146">
+      <skos:prefLabel xml:lang="en">Multibeam Fisheries Echosounder - ME70</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Fisheries Echosounder - ME70</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Fisheries Echosounder - ME70: Multibeam Fisheries Echosounder - ME70</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:147">
+      <skos:prefLabel xml:lang="en">Echosounder - Profiling AOS (Acoustic and Optical System)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Echosounder - Profiling AOS (Acoustic and Optical System)</skos:definition>
+      <skos:scopeNote xml:lang="en">Echosounder - Profiling AOS (Acoustic and Optical System): Echosounder - Profiling AOS (Acoustic and Optical System)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:148">
+      <skos:prefLabel xml:lang="en">Echosounder SH90</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Echosounder SH90</skos:definition>
+      <skos:scopeNote xml:lang="en">Echosounder SH90: Echosounder SH90</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:150">
+      <skos:prefLabel xml:lang="en">Profiling Float - Argo</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Profiling Float - Argo</skos:definition>
+      <skos:scopeNote xml:lang="en">Profiling Float - Argo: Profiling Float - Argo</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:151">
+      <skos:prefLabel xml:lang="en">Profiling Float- SOCCOM</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Profiling Float- SOCCOM</skos:definition>
+      <skos:scopeNote xml:lang="en">Profiling Float- SOCCOM: Profiling Float- SOCCOM</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:152">
+      <skos:prefLabel xml:lang="en">Fluorometer - PAM (Pulse Amplitude Modulated)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fluorometer - PAM (Pulse Amplitude Modulated)</skos:definition>
+      <skos:scopeNote xml:lang="en">Fluorometer - PAM (Pulse Amplitude Modulated): Fluorometer - PAM (Pulse Amplitude Modulated)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:153">
+      <skos:prefLabel xml:lang="en">Macrofauna Net - 500 um</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Macrofauna Net - 500 um</skos:definition>
+      <skos:scopeNote xml:lang="en">Macrofauna Net - 500 um: Macrofauna Net - 500 um</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:154">
+      <skos:prefLabel xml:lang="en">Micronekton Nets - IKMT (Isaacs Kid Midwater Trawl)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Micronekton Nets - IKMT (Isaacs Kid Midwater Trawl)</skos:definition>
+      <skos:scopeNote xml:lang="en">Micronekton Nets - IKMT (Isaacs Kid Midwater Trawl): Micronekton Nets - IKMT (Isaacs Kid Midwater Trawl)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:155">
+      <skos:prefLabel xml:lang="en">Plankton Net - 150 um</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Plankton Net - 150 um</skos:definition>
+      <skos:scopeNote xml:lang="en">Plankton Net - 150 um: Plankton Net - 150 um</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:156">
+      <skos:prefLabel xml:lang="en">Plankton Net - 20 um</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Plankton Net - 20 um</skos:definition>
+      <skos:scopeNote xml:lang="en">Plankton Net - 20 um: Plankton Net - 20 um</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:157">
+      <skos:prefLabel xml:lang="en">Plankton Net - 335 um</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Plankton Net - 335 um</skos:definition>
+      <skos:scopeNote xml:lang="en">Plankton Net - 335 um: Plankton Net - 335 um</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:158">
+      <skos:prefLabel xml:lang="en">Plankton Net -EZNET</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Plankton Net -EZNET</skos:definition>
+      <skos:scopeNote xml:lang="en">Plankton Net -EZNET: Plankton Net -EZNET</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:159">
+      <skos:prefLabel xml:lang="en">Plankton Net -MIDOC</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Plankton Net -MIDOC</skos:definition>
+      <skos:scopeNote xml:lang="en">Plankton Net -MIDOC: Plankton Net -MIDOC</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:160">
+      <skos:prefLabel xml:lang="en">Disdrometer (Rain Droplet Particle Sizer)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Disdrometer (Rain Droplet Particle Sizer)</skos:definition>
+      <skos:scopeNote xml:lang="en">Disdrometer (Rain Droplet Particle Sizer): Disdrometer (Rain Droplet Particle Sizer)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:161">
+      <skos:prefLabel xml:lang="en">Cloud Radars</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Cloud Radars</skos:definition>
+      <skos:scopeNote xml:lang="en">Cloud Radars: Cloud Radars</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:162">
+      <skos:prefLabel xml:lang="en">Weather Radars</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Weather Radars</skos:definition>
+      <skos:scopeNote xml:lang="en">Weather Radars: Weather Radars</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:163">
+      <skos:prefLabel xml:lang="en">SVP (Surface Velocity Program) Drifters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">SVP (Surface Velocity Program) Drifters</skos:definition>
+      <skos:scopeNote xml:lang="en">SVP (Surface Velocity Program) Drifters: SVP (Surface Velocity Program) Drifters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:164">
+      <skos:prefLabel xml:lang="en">Sub-bottom Profiler - SBP120</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Sub-bottom Profiler - SBP120</skos:definition>
+      <skos:scopeNote xml:lang="en">Sub-bottom Profiler - SBP120: Sub-bottom Profiler - SBP120</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:165">
+      <skos:prefLabel xml:lang="en">Aerosol analyser</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aerosol analyser</skos:definition>
+      <skos:scopeNote xml:lang="en">Aerosol analyser: Aerosol analyser</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:166">
+      <skos:prefLabel xml:lang="en">CPR (Continuous Plankton Recorder)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CPR (Continuous Plankton Recorder)</skos:definition>
+      <skos:scopeNote xml:lang="en">CPR (Continuous Plankton Recorder): CPR (Continuous Plankton Recorder)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:167">
+      <skos:prefLabel xml:lang="en">GPS (Global Positioning System)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">GPS (Global Positioning System)</skos:definition>
+      <skos:scopeNote xml:lang="en">GPS (Global Positioning System): GPS (Global Positioning System)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:168">
+      <skos:prefLabel xml:lang="en">Gravity meters</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Gravity meters</skos:definition>
+      <skos:scopeNote xml:lang="en">Gravity meters: Gravity meters</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:169">
+      <skos:prefLabel xml:lang="en">Hydrophones</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Hydrophones</skos:definition>
+      <skos:scopeNote xml:lang="en">Hydrophones: Hydrophones</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:170">
+      <skos:prefLabel xml:lang="en">Integrated Coring Platform</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Integrated Coring Platform</skos:definition>
+      <skos:scopeNote xml:lang="en">Integrated Coring Platform: Integrated Coring Platform</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:171">
+      <skos:prefLabel xml:lang="en">Radiometer</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Radiometer</skos:definition>
+      <skos:scopeNote xml:lang="en">Radiometer: Radiometer</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:172">
+      <skos:prefLabel xml:lang="en">Radon Detector</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Radon Detector</skos:definition>
+      <skos:scopeNote xml:lang="en">Radon Detector: Radon Detector</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:173">
+      <skos:prefLabel xml:lang="en">TMR (Trace Metal Rosette)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">TMR (Trace Metal Rosette)</skos:definition>
+      <skos:scopeNote xml:lang="en">TMR (Trace Metal Rosette): TMR (Trace Metal Rosette)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:174">
+      <skos:prefLabel xml:lang="en">Undulating CTD - Triaxus</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Undulating CTD - Triaxus</skos:definition>
+      <skos:scopeNote xml:lang="en">Undulating CTD - Triaxus: Undulating CTD - Triaxus</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:175">
+      <skos:prefLabel xml:lang="en">Heat Flow Probe</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Heat Flow Probe</skos:definition>
+      <skos:scopeNote xml:lang="en">Heat Flow Probe: Heat Flow Probe</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:176">
+      <skos:prefLabel xml:lang="en">Greenhouse gas analyser - Aerodyne</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Greenhouse gas analyser - Aerodyne</skos:definition>
+      <skos:scopeNote xml:lang="en">Greenhouse gas analyser - Aerodyne: Greenhouse gas analyser - Aerodyne</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:177">
+      <skos:prefLabel xml:lang="en">Greenhouse gas analyser - Picarro</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Greenhouse gas analyser - Picarro</skos:definition>
+      <skos:scopeNote xml:lang="en">Greenhouse gas analyser - Picarro: Greenhouse gas analyser - Picarro</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:178">
+      <skos:prefLabel xml:lang="en">Ozone monitor</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Ozone monitor</skos:definition>
+      <skos:scopeNote xml:lang="en">Ozone monitor: Ozone monitor</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:179">
+      <skos:prefLabel xml:lang="en">Air sampling systems</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Air sampling systems</skos:definition>
+      <skos:scopeNote xml:lang="en">Air sampling systems: Air sampling systems</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:180">
+      <skos:prefLabel xml:lang="en">MAAP (Multiangle Absorption Photometer)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MAAP (Multiangle Absorption Photometer)</skos:definition>
+      <skos:scopeNote xml:lang="en">MAAP (Multiangle Absorption Photometer): MAAP (Multiangle Absorption Photometer)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:181">
+      <skos:prefLabel xml:lang="en">LOPC (Laser Optical Particle Counter)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">LOPC (Laser Optical Particle Counter)</skos:definition>
+      <skos:scopeNote xml:lang="en">LOPC (Laser Optical Particle Counter): LOPC (Laser Optical Particle Counter)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:182">
+      <skos:prefLabel xml:lang="en">PTR-MS (Proton Transfer Reaction Mass Spectrometer)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">PTR-MS (Proton Transfer Reaction Mass Spectrometer)</skos:definition>
+      <skos:scopeNote xml:lang="en">PTR-MS (Proton Transfer Reaction Mass Spectrometer): PTR-MS (Proton Transfer Reaction Mass Spectrometer)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:183">
+      <skos:prefLabel xml:lang="en">Autoanalysers - Submersible</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Autoanalysers - Submersible</skos:definition>
+      <skos:scopeNote xml:lang="en">Autoanalysers - Submersible: Autoanalysers - Submersible</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:184">
+      <skos:prefLabel xml:lang="en">Chemical Speciation monitor</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Chemical Speciation monitor</skos:definition>
+      <skos:scopeNote xml:lang="en">Chemical Speciation monitor: Chemical Speciation monitor</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:185">
+      <skos:prefLabel xml:lang="en">Spectrometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Spectrometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Spectrometers: Spectrometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:186">
+      <skos:prefLabel xml:lang="en">MODIS (Moderate Resolution Imaging Spectroradiometer)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MODIS (Moderate Resolution Imaging Spectroradiometer)</skos:definition>
+      <skos:scopeNote xml:lang="en">MODIS (Moderate Resolution Imaging Spectroradiometer): MODIS (Moderate Resolution Imaging Spectroradiometer)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:187">
+      <skos:prefLabel xml:lang="en">AVISO satellite altimeter</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">AVISO satellite altimeter</skos:definition>
+      <skos:scopeNote xml:lang="en">AVISO satellite altimeter: AVISO satellite altimeter</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:188">
+      <skos:prefLabel xml:lang="en">In-line aerosol sampling system</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">In-line aerosol sampling system</skos:definition>
+      <skos:scopeNote xml:lang="en">In-line aerosol sampling system: In-line aerosol sampling system</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:189">
+      <skos:prefLabel xml:lang="en">Filtration Systems</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Filtration Systems</skos:definition>
+      <skos:scopeNote xml:lang="en">Filtration Systems: Filtration Systems</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:190">
+      <skos:prefLabel xml:lang="en">Trace metal sampling systems</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Trace metal sampling systems</skos:definition>
+      <skos:scopeNote xml:lang="en">Trace metal sampling systems: Trace metal sampling systems</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:191">
+      <skos:prefLabel xml:lang="en">NOX monitor</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">NOX monitor</skos:definition>
+      <skos:scopeNote xml:lang="en">NOX monitor: NOX monitor</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:192">
+      <skos:prefLabel xml:lang="en">Imaging Radar systems</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Imaging Radar systems</skos:definition>
+      <skos:scopeNote xml:lang="en">Imaging Radar systems: Imaging Radar systems</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:193">
+      <skos:prefLabel xml:lang="en">Microwave Radiometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Microwave Radiometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Microwave Radiometers: Microwave Radiometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:194">
+      <skos:prefLabel xml:lang="en">Microwave Scatterometers</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Microwave Scatterometers</skos:definition>
+      <skos:scopeNote xml:lang="en">Microwave Scatterometers: Microwave Scatterometers</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:196">
+      <skos:prefLabel xml:lang="en">Fisheries echosounder - EK80</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Fisheries echosounder - EK80</skos:definition>
+      <skos:scopeNote xml:lang="en">Fisheries echosounder - EK80: Fisheries echosounder - EK80</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:197">
+      <skos:prefLabel xml:lang="en">Multibeam Fisheries echosounder - WBAT</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Fisheries echosounder - WBAT</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Fisheries echosounder - WBAT: Multibeam Fisheries echosounder - WBAT</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:195">
+      <skos:prefLabel xml:lang="en">Multibeam Echosounder - EM710 MkII</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Echosounder - EM710 MkII</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Echosounder - EM710 MkII: Multibeam Echosounder - EM710 MkII</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:198">
+      <skos:prefLabel xml:lang="en">Surface Velocity Profile (SVP)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Surface Velocity Profile (SVP)</skos:definition>
+      <skos:scopeNote xml:lang="en">Surface Velocity Profile (SVP): Surface Velocity Profile (SVP)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:Equipment:concept:199">
+      <skos:prefLabel xml:lang="en">Multibeam Echosounder - EM2040c</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:Equipment:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Multibeam Echosounder - EM2040c</skos:definition>
+      <skos:scopeNote xml:lang="en">Multibeam Echosounder - EM2040c: Multibeam Echosounder - EM2040c</skos:scopeNote>
+   </skos:Concept>
+</rdf:RDF>

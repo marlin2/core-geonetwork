@@ -109,6 +109,7 @@
           <div class="gn-md-side gn-md-side-advanced col-md-4">
             <xsl:apply-templates mode="getOverviews" select="$metadata"/>
 
+            <!--
             <section class="gn-md-side-providedby">
               <h4>
                 <i class="fa fa-fw fa-cog">&#160;</i>
@@ -144,6 +145,7 @@
                 <i class="fa fa-fw fa-envelope-o">&#160;</i>
               </a>
             </section>
+            -->
 
             <!-- Display link to portal and other view only
             when in pure HTML mode. -->
@@ -198,6 +200,7 @@
               </section>
             </xsl:if>
 
+            <!--
             <section class="gn-md-side-associated">
               <h4>
                 <i class="fa fa-fw fa-link">&#160;</i>
@@ -209,6 +212,7 @@
                 Not available
               </div>
             </section>
+            -->
           </div>
         </div>
 

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:gml="http://www.opengis.net/gml#">
+   <skos:ConceptScheme rdf:about="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0">
+      <dc:identifier>urn:marlin.csiro.au:globalprojectregister</dc:identifier>
+      <dc:title>CSIRO Global Project List</dc:title>
+      <dc:description>CSIRO Oceans and Atmosphere List of Global Project codes and descriptions</dc:description>
+      <dc:URI>http://www.marlin.csiro.au/geonetwork/srv/eng/xml.metadata.get?uuid=urn:marlin.csiro.au:globalprojectregister</dc:URI>
+      <dct:modified>2012-06-30</dct:modified>
+      <dc:creator>
+         <foaf:Organization>
+            <foaf:name>CSIRO Oceans and Atmosphere Data Centre</foaf:name>
+         </foaf:Organization>
+      </dc:creator>
+      <dc:publisher/>
+      <dct:issued>2018-08-02T13:33:51</dct:issued>
+   </skos:ConceptScheme>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:11">
+      <skos:prefLabel xml:lang="en">Western Equatorial Pacific Ocean Circulation Studies</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Western Equatorial Pacific Ocean Circulation Studies (WEPOCS)</skos:definition>
+      <skos:scopeNote xml:lang="en">Western Equatorial Pacific Ocean Circulation Studies: Western Equatorial Pacific Ocean Circulation Studies (WEPOCS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:19">
+      <skos:prefLabel xml:lang="en">Tropical River-Ocean Processes In Coastal Settings (TROPICS) 2000</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Tropical River-Ocean Processes In Coastal Settings (TROPICS) 2000 (TROPICS 2000)</skos:definition>
+      <skos:scopeNote xml:lang="en">Tropical River-Ocean Processes In Coastal Settings (TROPICS) 2000: Tropical River-Ocean Processes In Coastal Settings (TROPICS) 2000 (TROPICS 2000)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:2">
+      <skos:prefLabel xml:lang="en">Broad-Scale Global Array of Temperature/Salinity Profiling Floats</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Broad-Scale Global Array of Temperature/Salinity Profiling Floats (ARGO)</skos:definition>
+      <skos:scopeNote xml:lang="en">Broad-Scale Global Array of Temperature/Salinity Profiling Floats: Broad-Scale Global Array of Temperature/Salinity Profiling Floats (ARGO)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:3">
+      <skos:prefLabel xml:lang="en">Comprehensive Ocean Atmosphere Data Set</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Comprehensive Ocean Atmosphere Data Set  (COADS)</skos:definition>
+      <skos:scopeNote xml:lang="en">Comprehensive Ocean Atmosphere Data Set: Comprehensive Ocean Atmosphere Data Set  (COADS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:4">
+      <skos:prefLabel xml:lang="en">Global Sea Level Observing System</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Global Sea Level Observing System  (GLOSS)</skos:definition>
+      <skos:scopeNote xml:lang="en">Global Sea Level Observing System: Global Sea Level Observing System  (GLOSS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:5">
+      <skos:prefLabel xml:lang="en">Global Ocean Observing System</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Global Ocean Observing System  (GOOS)</skos:definition>
+      <skos:scopeNote xml:lang="en">Global Ocean Observing System: Global Ocean Observing System  (GOOS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:6">
+      <skos:prefLabel xml:lang="en">Joint Global Ocean Flux Study,  IGBP</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Joint Global Ocean Flux Study,  IGBP  (JGOFS)</skos:definition>
+      <skos:scopeNote xml:lang="en">Joint Global Ocean Flux Study,  IGBP: Joint Global Ocean Flux Study,  IGBP  (JGOFS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:7">
+      <skos:prefLabel xml:lang="en">Tropical Ocean Global Atmosphere Program</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Tropical Ocean Global Atmosphere Program (TOGA)</skos:definition>
+      <skos:scopeNote xml:lang="en">Tropical Ocean Global Atmosphere Program: Tropical Ocean Global Atmosphere Program (TOGA)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:8">
+      <skos:prefLabel xml:lang="en">TOGA Coupled Ocean Atmosphere Response Experiment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">TOGA Coupled Ocean Atmosphere Response Experiment  (TOGA COARE)</skos:definition>
+      <skos:scopeNote xml:lang="en">TOGA Coupled Ocean Atmosphere Response Experiment: TOGA Coupled Ocean Atmosphere Response Experiment  (TOGA COARE)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:9">
+      <skos:prefLabel xml:lang="en">World Ocean Circulation Experiment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">World Ocean Circulation Experiment  (WOCE)</skos:definition>
+      <skos:scopeNote xml:lang="en">World Ocean Circulation Experiment: World Ocean Circulation Experiment  (WOCE)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:10">
+      <skos:prefLabel xml:lang="en">Australian Coastal Experiment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Australian Coastal Experiment (ACE)</skos:definition>
+      <skos:scopeNote xml:lang="en">Australian Coastal Experiment: Australian Coastal Experiment (ACE)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:12">
+      <skos:prefLabel xml:lang="en">Leeuwin Current Interdisciplinary Experiment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Leeuwin Current Interdisciplinary Experiment (LUCIE)</skos:definition>
+      <skos:scopeNote xml:lang="en">Leeuwin Current Interdisciplinary Experiment: Leeuwin Current Interdisciplinary Experiment (LUCIE)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:13">
+      <skos:prefLabel xml:lang="en">International Indian Ocean Expedition</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">International Indian Ocean Expedition (IIOE)</skos:definition>
+      <skos:scopeNote xml:lang="en">International Indian Ocean Expedition: International Indian Ocean Expedition (IIOE)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:15">
+      <skos:prefLabel xml:lang="en">WESTROPAC-82</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">WESTROPAC-82 (WESTROPAC '82)</skos:definition>
+      <skos:scopeNote xml:lang="en">WESTROPAC-82: WESTROPAC-82 (WESTROPAC '82)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:14">
+      <skos:prefLabel xml:lang="en">Global Weather Experiment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Global Weather Experiment (GWE)</skos:definition>
+      <skos:scopeNote xml:lang="en">Global Weather Experiment: Global Weather Experiment (GWE)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:16">
+      <skos:prefLabel xml:lang="en">AUROREX</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">AUROREX (AUROREX)</skos:definition>
+      <skos:scopeNote xml:lang="en">AUROREX: AUROREX (AUROREX)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:17">
+      <skos:prefLabel xml:lang="en">Tropical River-Ocean Processes In Coastal Settings (TROPICS) 1997</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Tropical River-Ocean Processes In Coastal Settings (TROPICS) 1997 (TROPICS 97)</skos:definition>
+      <skos:scopeNote xml:lang="en">Tropical River-Ocean Processes In Coastal Settings (TROPICS) 1997: Tropical River-Ocean Processes In Coastal Settings (TROPICS) 1997 (TROPICS 97)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:18">
+      <skos:prefLabel xml:lang="en">ASEAN-Australia Regional Ocean Dynamics Expeditions</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">ASEAN-Australia Regional Ocean Dynamics Expeditions (ASEAN-Australia ROD)</skos:definition>
+      <skos:scopeNote xml:lang="en">ASEAN-Australia Regional Ocean Dynamics Expeditions: ASEAN-Australia Regional Ocean Dynamics Expeditions (ASEAN-Australia ROD)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:20">
+      <skos:prefLabel xml:lang="en">North West Shelf Joint Environmental Management Study</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">North West Shelf Joint Environmental Management Study (NWS-JEMS)</skos:definition>
+      <skos:scopeNote xml:lang="en">North West Shelf Joint Environmental Management Study: North West Shelf Joint Environmental Management Study (NWS-JEMS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:21">
+      <skos:prefLabel xml:lang="en">Strategic Research Fund for the Marine Environment (of WA)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Strategic Research Fund for the Marine Environment (of WA) (SRFME)</skos:definition>
+      <skos:scopeNote xml:lang="en">Strategic Research Fund for the Marine Environment (of WA): Strategic Research Fund for the Marine Environment (of WA) (SRFME)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:22">
+      <skos:prefLabel xml:lang="en">CRC Torres Strait</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">CRC Torres Strait (CRC-TS)</skos:definition>
+      <skos:scopeNote xml:lang="en">CRC Torres Strait: CRC Torres Strait (CRC-TS)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:23">
+      <skos:prefLabel xml:lang="en">Aquafin Cooperative Research Centre</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Aquafin Cooperative Research Centre (Aquafin CRC)</skos:definition>
+      <skos:scopeNote xml:lang="en">Aquafin Cooperative Research Centre: Aquafin Cooperative Research Centre (Aquafin CRC)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:24">
+      <skos:prefLabel xml:lang="en">Benthic habitat image surveys and analysis</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Benthic habitat image surveys and analysis (Benthic Habitats)</skos:definition>
+      <skos:scopeNote xml:lang="en">Benthic habitat image surveys and analysis: Benthic habitat image surveys and analysis (Benthic Habitats)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:29">
+      <skos:prefLabel xml:lang="en">Mapping the distribution and movement of gulper shark</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Mapping the distribution and movement of gulper shark (Spatial Closures)</skos:definition>
+      <skos:scopeNote xml:lang="en">Mapping the distribution and movement of gulper shark: Mapping the distribution and movement of gulper shark (Spatial Closures)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:25">
+      <skos:prefLabel xml:lang="en">Western Australian Marine Science Institute</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Western Australian Marine Science Institute (WAMSI)</skos:definition>
+      <skos:scopeNote xml:lang="en">Western Australian Marine Science Institute: Western Australian Marine Science Institute (WAMSI)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:26">
+      <skos:prefLabel xml:lang="en">South East Fishery Habitat Ecosystem Study</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">South East Fishery Habitat Ecosystem Study (SEFHES)</skos:definition>
+      <skos:scopeNote xml:lang="en">South East Fishery Habitat Ecosystem Study: South East Fishery Habitat Ecosystem Study (SEFHES)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:27">
+      <skos:prefLabel xml:lang="en">Commonwealth Environment Research Facilities</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Commonwealth Environment Research Facilities (CERF)</skos:definition>
+      <skos:scopeNote xml:lang="en">Commonwealth Environment Research Facilities: Commonwealth Environment Research Facilities (CERF)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:28">
+      <skos:prefLabel xml:lang="en">Biogeochemical cycles and large-scale distribution of trace elements and their isotopes in the marine environment</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">Biogeochemical cycles and large-scale distribution of trace elements and their isotopes in the marine environment (GEOTRACES)</skos:definition>
+      <skos:scopeNote xml:lang="en">Biogeochemical cycles and large-scale distribution of trace elements and their isotopes in the marine environment: Biogeochemical cycles and large-scale distribution of trace elements and their isotopes in the marine environment (GEOTRACES)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:31">
+      <skos:prefLabel xml:lang="en">XBT Southern Surveyor</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">XBT Southern Surveyor  (XBT SouthernSurveyor)</skos:definition>
+      <skos:scopeNote xml:lang="en">XBT Southern Surveyor: XBT Southern Surveyor  (XBT SouthernSurveyor)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:30">
+      <skos:prefLabel xml:lang="en">XBT Franklin</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">XBT Franklin (XBT Franklin )</skos:definition>
+      <skos:scopeNote xml:lang="en">XBT Franklin: XBT Franklin (XBT Franklin )</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:32">
+      <skos:prefLabel xml:lang="en">MNF Charter voyage (ShortNameSuffix _cnn)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MNF Charter voyage (ShortNameSuffix _cnn) (MNF_CharterVoyage)</skos:definition>
+      <skos:scopeNote xml:lang="en">MNF Charter voyage (ShortNameSuffix _cnn): MNF Charter voyage (ShortNameSuffix _cnn) (MNF_CharterVoyage)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:33">
+      <skos:prefLabel xml:lang="en">MNF Event voyage (ShortNameSuffix _enn)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MNF Event voyage (ShortNameSuffix _enn) (MNF_EventVoyage)</skos:definition>
+      <skos:scopeNote xml:lang="en">MNF Event voyage (ShortNameSuffix _enn): MNF Event voyage (ShortNameSuffix _enn) (MNF_EventVoyage)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:34">
+      <skos:prefLabel xml:lang="en">MNF Research voyage (ShortNameSuffix _vnn)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MNF Research voyage (ShortNameSuffix _vnn) (MNF_ResearchVoyage)</skos:definition>
+      <skos:scopeNote xml:lang="en">MNF Research voyage (ShortNameSuffix _vnn): MNF Research voyage (ShortNameSuffix _vnn) (MNF_ResearchVoyage)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:35">
+      <skos:prefLabel xml:lang="en">MNF Transit voyage (ShortNameSuffix _tnn)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MNF Transit voyage (ShortNameSuffix _tnn) (MNF_TransitVoyage)</skos:definition>
+      <skos:scopeNote xml:lang="en">MNF Transit voyage (ShortNameSuffix _tnn): MNF Transit voyage (ShortNameSuffix _tnn) (MNF_TransitVoyage)</skos:scopeNote>
+   </skos:Concept>
+   <skos:Concept rdf:about="urn:marlin.csiro.au:globalprojectregister:concept:36">
+      <skos:prefLabel xml:lang="en">MNF Trial voyage (ShortNameSuffix _enn)</skos:prefLabel>
+      <skos:inScheme rdf:resource="urn:marlin.csiro.au:globalprojectregister:conceptscheme:1.0"/>
+      <skos:definition xml:lang="en">MNF Trial voyage (ShortNameSuffix _enn) (MNF_TrialVoyage)</skos:definition>
+      <skos:scopeNote xml:lang="en">MNF Trial voyage (ShortNameSuffix _enn): MNF Trial voyage (ShortNameSuffix _enn) (MNF_TrialVoyage)</skos:scopeNote>
+   </skos:Concept>
+</rdf:RDF>

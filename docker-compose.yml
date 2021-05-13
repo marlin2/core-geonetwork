@@ -3,7 +3,7 @@ version: '3.5'
 services:
 
   jetty:
-    image: docker-registry.it.csiro.au/idc/geonetwork:base
+    image: docker-registry.it.csiro.au/idc/geonetwork:dev
     volumes:
       - .:/usr/src/geonetwork
       - ./m2:/root/.m2
