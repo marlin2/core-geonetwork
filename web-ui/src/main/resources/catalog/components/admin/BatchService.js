@@ -94,7 +94,7 @@
                    } else {
                      console.log("Retry on "+times+" for batch processing");
                      times = times - 1; 
-                     return doFunction(times);
+                     return doProcessAndRestartEditor(times);
                    }
                }
              );
