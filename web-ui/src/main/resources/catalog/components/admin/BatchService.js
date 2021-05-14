@@ -78,7 +78,7 @@
           var defer = $q.defer();
 
                     
-          var doProcessAndRestartEditor = function() {
+          var doProcessAndRestartEditor = function(times) {
              return $http.post('../api/records/' + (params.id || params.uuid) + '/processes/' + params.process + '?' +
                    gnUrlUtils.toKeyValue(params)
              ).then( function(data) {
@@ -88,8 +88,14 @@
                       gnEditor.refreshEditorForm(snippet);
                       defer.resolve(data);
                     });
-               }, function(err) { // keep trying until process succeeds
-                   return doFunction();
+               }, function(err) { // keep trying until process succeeds or we run out of attempts
+                   if (times == 0) {
+                     defer.reject("Tried 10 times and failed");
+                   } else {
+                     console.log("Retry on "+times+" for batch processing");
+                     times = times - 1; 
+                     return doFunction(times);
+                   }
                }
              );
           };
@@ -99,7 +105,8 @@
           gnEditor.save(false, true, true)
               .then(function() {
                 if (!skipSave) {
-                  doProcessAndRestartEditor();
+                  // try and redo the process 10 times, before failing
+                  doProcessAndRestartEditor(10);
                 } else {
                   $http.post('../api/records/' + (params.id || params.uuid) +
                     '/processes/' + params.process + '?' +
