@@ -76,24 +76,30 @@
             });
           }
           var defer = $q.defer();
-          //gnEditor.save(false, true)
-          // Terminate so that lock is cleared
-          gnEditor.save(false, true, true)
-              .then(function() {
-                if (!skipSave) {
-                  $http.post('../api/records/' + (params.id || params.uuid) +
-                    '/processes/' + params.process + '?' +
-                    gnUrlUtils.toKeyValue(params)
-                  ).then(function(data) {
-                    $http.get('../api/records/' + gnCurrentEdit.id + '/editor' +
+
+                    
+          var doProcessAndRestartEditor = function() {
+             return $http.post('../api/records/' + (params.id || params.uuid) + '/processes/' + params.process + '?' +
+                   gnUrlUtils.toKeyValue(params)
+             ).then( function(data) {
+                   $http.get('../api/records/' + gnCurrentEdit.id + '/editor' +
                       '?currTab=' + gnCurrentEdit.tab).then(function(data) {
                       var snippet = $(data.data);
                       gnEditor.refreshEditorForm(snippet);
                       defer.resolve(data);
                     });
-                  }, function(error) {
-                    defer.reject(error);
-                  });
+               }, function(err) { // keep trying until process succeeds
+                   return doFunction();
+               }
+             );
+          };
+
+          //gnEditor.save(false, true)
+          // Terminate so that lock is cleared
+          gnEditor.save(false, true, true)
+              .then(function() {
+                if (!skipSave) {
+                  doProcessAndRestartEditor();
                 } else {
                   $http.post('../api/records/' + (params.id || params.uuid) +
                     '/processes/' + params.process + '?' +
